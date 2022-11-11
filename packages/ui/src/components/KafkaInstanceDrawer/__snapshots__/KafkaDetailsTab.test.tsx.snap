@@ -1,0 +1,195 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Details Tab renders standard instance 1`] = `
+<body>
+  <div>
+    <div
+      class="mas--details__drawer--tab-content"
+    >
+      <div
+        class="pf-c-content"
+      >
+        <dl
+          class=""
+        >
+          <dt
+            class=""
+          >
+            Size
+          </dt>
+          <dd
+            class=""
+          >
+            1 streaming unit
+          </dd>
+          <dt
+            class=""
+          >
+            Ingress
+          </dt>
+          <dd
+            class=""
+          >
+            up to 50 MiB/second
+          </dd>
+          <dt
+            class=""
+          >
+            Egress
+          </dt>
+          <dd
+            class=""
+          >
+            up to 50 MiB/second
+          </dd>
+          <dt
+            class=""
+          >
+            Storage
+          </dt>
+          <dd
+            class=""
+          >
+            up to 50 GiB
+          </dd>
+          <dt
+            class=""
+          >
+            Partitions
+          </dt>
+          <dd
+            class=""
+          >
+            up to 1500
+          </dd>
+          <dt
+            class=""
+          >
+            Client connections
+          </dt>
+          <dd
+            class=""
+          >
+            up to 2000
+          </dd>
+          <dt
+            class=""
+          >
+            Connection rate
+          </dt>
+          <dd
+            class=""
+          >
+            up to 100 connections/second
+          </dd>
+          <dt
+            class=""
+          >
+            Message size
+          </dt>
+          <dd
+            class=""
+          >
+            up to 1 MiB
+          </dd>
+          <dt
+            class=""
+          >
+            ID
+          </dt>
+          <dd
+            class=""
+          >
+            c7tkgchgb2d04561srg
+          </dd>
+          <dt
+            class=""
+          >
+            Kafka version
+          </dt>
+          <dd
+            class=""
+          >
+            3.0.1
+          </dd>
+          <dt
+            class=""
+          >
+            Owner
+          </dt>
+          <dd
+            class=""
+          >
+            snaithan_kafka_devexp
+          </dd>
+          <dt
+            class=""
+          >
+            Time created
+          </dt>
+          <dd
+            class=""
+          >
+            <time
+              datetime="2022-07-02T00:00:00Z"
+            >
+              Jul 2, 2022, 12:00 AM UTC
+            </time>
+          </dd>
+          <dt
+            class=""
+          >
+            Time updated
+          </dt>
+          <dd
+            class=""
+          >
+            <time
+              datetime="2022-07-02T00:00:00Z"
+            >
+              Jul 2, 2022, 12:00 AM UTC
+            </time>
+          </dd>
+          <dt
+            class=""
+          >
+            Cloud provider
+          </dt>
+          <dd
+            class=""
+          >
+            Amazon Web Services
+          </dd>
+          <dt
+            class=""
+          >
+            Region
+          </dt>
+          <dd
+            class=""
+          >
+            US East, N. Virginia
+          </dd>
+          <dt
+            class=""
+          >
+            Billing
+          </dt>
+          <dd
+            class=""
+          >
+            Red Hat prepaid
+          </dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+  <div>
+    <ul
+      aria-atomic="false"
+      aria-live="polite"
+      class="pf-c-alert-group pf-m-toast"
+    />
+  </div>
+</body>
+`;

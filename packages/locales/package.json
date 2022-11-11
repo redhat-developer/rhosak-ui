@@ -1,0 +1,14 @@
+{
+  "name": "locales",
+  "version": "0.0.0",
+  "files": [
+    "en/"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "build": "i18next '../**/src/**/*.tsx' '../**/src/**/*.ts'"
+  },
+  "devDependencies": {
+    "i18next-parser": "6.5.0"
+  }
+}

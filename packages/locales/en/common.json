@@ -1,0 +1,31 @@
+{
+  "back": "",
+  "cancel": "",
+  "cloud_provider": "",
+  "cloudProviders": {
+    "aws": "",
+    "azure": "",
+    "gcp": ""
+  },
+  "delete": "",
+  "disabled": "",
+  "finish": "",
+  "id": "",
+  "kafka_instance": "",
+  "kafka_instance_name": "",
+  "kafka_version": "",
+  "next": "",
+  "owner": "",
+  "progress_stepper_current_step": "",
+  "region": "",
+  "required": "",
+  "save": "",
+  "search_button_label": "",
+  "size": "",
+  "skeleton_loader_screenreader_text": "",
+  "submitting_request": "",
+  "table_cell_no_data": "",
+  "time_created": "",
+  "time_updated": "",
+  "yes": ""
+}

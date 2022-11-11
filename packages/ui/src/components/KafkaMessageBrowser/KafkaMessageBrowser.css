@@ -1,0 +1,11 @@
+.mas-KafkaMessageBrowser-Toolbar {
+  z-index: 999;
+}
+
+.mas-KafkaMessageBrowser-Toolbar .pf-c-toolbar__content-section {
+  align-items: flex-start;
+}
+
+.mas-KafkaMessageBrowser-Toolbar .pf-c-toolbar__group {
+  align-items: flex-start;
+}
