@@ -59,7 +59,7 @@
     "@patternfly/react-table": "^4.93.1",
     "@patternfly/react-tokens": "^4.54.16",
     "@rhoas/account-management-sdk": "^0.48.0",
-    "@rhoas/app-services-ui-components": "2.14.2",
+    "@rhoas/app-services-ui-components": "2.14.3",
     "@rhoas/kafka-management-sdk": "^0.48.0",
     "@xstate/react": "3.0.0",
     "axios": "^1.1.3",
