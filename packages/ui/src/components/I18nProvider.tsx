@@ -1,10 +1,13 @@
+import type { I18nProviderProps } from "@rhoas/app-services-ui-components";
 import { I18nProvider as UiComponentsI18nProvider } from "@rhoas/app-services-ui-components";
-import { FunctionComponent } from "react";
+import type { FunctionComponent } from "react";
 
-export const I18nProvider: FunctionComponent = ({ children }) => {
+export const I18nProvider: FunctionComponent<
+  Omit<I18nProviderProps, "resources">
+> = ({ lng, debug, children }) => {
   return (
     <UiComponentsI18nProvider
-      lng={"en"}
+      lng={lng}
       resources={{
         en: {
           common: () =>
@@ -26,7 +29,7 @@ export const I18nProvider: FunctionComponent = ({ children }) => {
           common: () => Promise.resolve({ delete: "Elimina" }),
         },
       }}
-      debug={true}
+      debug={debug}
     >
       {children}
     </UiComponentsI18nProvider>

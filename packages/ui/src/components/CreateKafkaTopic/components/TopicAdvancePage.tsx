@@ -1,26 +1,26 @@
-import type React from "react";
-import { useState } from "react";
-import { useTranslation } from "@rhoas/app-services-ui-components";
 import {
   ActionGroup,
   Button,
-  Sidebar,
-  ValidatedOptions,
-  SidebarContent,
-  Form,
-  PageSection,
-  PageGroup,
   Divider,
+  Form,
+  PageGroup,
+  PageSection,
+  Sidebar,
+  SidebarContent,
+  ValidatedOptions,
 } from "@patternfly/react-core";
+import { useTranslation } from "@rhoas/app-services-ui-components";
+import type React from "react";
+import { useState } from "react";
 import type { ConstantValues, NewTopic } from "../types";
-import { TopicAdvanceJumpLinks } from "./TopicAdvanceJumpLinks";
-import { Message } from "./Message";
-import { Log } from "./Log";
-import { Replication } from "./Replication";
 import { Cleanup } from "./Cleanup";
-import { TopicAdvanceIndex } from "./TopicAdvanceIndex";
-import { Flush } from "./Flush";
 import { CoreConfiguration } from "./CoreConfiguration";
+import { Flush } from "./Flush";
+import { Log } from "./Log";
+import { Message } from "./Message";
+import { Replication } from "./Replication";
+import { TopicAdvanceIndex } from "./TopicAdvanceIndex";
+import { TopicAdvanceJumpLinks } from "./TopicAdvanceJumpLinks";
 
 export type TopicAdvancePageProps = {
   isCreate: boolean;
@@ -79,7 +79,11 @@ export const TopicAdvancePage: React.FunctionComponent<
       <Sidebar hasGutter>
         <TopicAdvanceJumpLinks />
         <SidebarContent>
-          <PageGroup hasOverflowScroll id="topic-detail-view">
+          <PageGroup
+            hasOverflowScroll
+            id="topic-detail-view"
+            aria-label={"TODO"}
+          >
             <PageSection padding={{ default: "noPadding" }}>
               <Form>
                 <CoreConfiguration

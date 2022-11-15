@@ -22,7 +22,7 @@ export const withMas = (
     <InsightsChromeLayout withLayout={globals.withInsightsChrome === "true"}>
       <Router>
         <AlertProvider>
-          <I18nProvider>
+          <I18nProvider lng={globals.locale} debug={true}>
             <Suspense fallback={<AppServicesLoading />}>
               <Story />
             </Suspense>
