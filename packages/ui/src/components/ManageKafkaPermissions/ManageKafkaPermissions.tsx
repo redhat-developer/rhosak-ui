@@ -1,6 +1,6 @@
 import { Button, Form, FormGroup, Modal } from "@patternfly/react-core";
 import { useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import { SelectAccount } from "./components/SelectAccount";
 import type { Account } from "./types";
 

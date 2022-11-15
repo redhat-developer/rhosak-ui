@@ -126,7 +126,7 @@ export const globalTypes = {
         { value: "true", title: "Show layout" },
         { value: "false", title: "Hide layout" },
       ],
-      showName: true,
+      title: "Insights Chrome",
     },
   },
   ouia: {
@@ -138,7 +138,7 @@ export const globalTypes = {
         { value: "true", title: "Show OUIA ids" },
         { value: "false", title: "Hide OUIA ids" },
       ],
-      showName: true,
+      title: "OUIA",
     },
   },
 };

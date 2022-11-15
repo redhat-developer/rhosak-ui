@@ -8,7 +8,7 @@ import {
 } from "@patternfly/react-core";
 import { OutlinedClockIcon } from "@patternfly/react-icons";
 import type { FunctionComponent, VoidFunctionComponent } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 
 import { CreateKafkaInstanceProvider } from "./machines/CreateKafkaInstanceProvider";
 

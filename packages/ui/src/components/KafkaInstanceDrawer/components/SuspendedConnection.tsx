@@ -8,7 +8,7 @@ import {
 } from "@patternfly/react-core";
 import { ExclamationTriangleIcon } from "@patternfly/react-icons";
 import type { VoidFunctionComponent } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 
 export const SuspendedConnection: VoidFunctionComponent = () => {
   const { t } = useTranslation("kafka");

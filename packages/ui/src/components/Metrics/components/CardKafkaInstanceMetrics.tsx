@@ -1,6 +1,6 @@
 import { Card, CardBody, CardTitle, Divider } from "@patternfly/react-core";
 import type { FunctionComponent } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import type { DurationOptions, TimeSeriesMetrics } from "../types";
 import { CardBodyLoading } from "./CardBodyLoading";
 import { ChartPopover } from "./ChartPopover";

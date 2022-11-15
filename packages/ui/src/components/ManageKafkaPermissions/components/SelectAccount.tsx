@@ -1,6 +1,6 @@
 import type React from "react";
 import { useLayoutEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import type { Account } from "../types";
 import { PrincipalType } from "../types";
 import type { SelectProps } from "@patternfly/react-core";

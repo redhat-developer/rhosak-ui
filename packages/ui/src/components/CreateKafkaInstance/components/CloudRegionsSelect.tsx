@@ -2,7 +2,7 @@ import type { SelectProps } from "@patternfly/react-core";
 import { Select, SelectOption, SelectVariant } from "@patternfly/react-core";
 import type { FunctionComponent } from "react";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import type { CloudRegion } from "../../../types";
 import type { RegionInfo } from "../types";
 

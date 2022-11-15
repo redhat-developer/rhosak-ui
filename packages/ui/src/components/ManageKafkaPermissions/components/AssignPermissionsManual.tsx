@@ -9,7 +9,7 @@ import type { ResourcePrefixRuleValue } from "./ResourcePrefixRule";
 import { ResourceType } from "./ResourceType";
 import type { ResourceTypeValue } from "./ResourceType";
 import { ShortcutsTableHead } from "./ShortcutsTableHead";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import { KafkaInstanceManualPermissions } from "./KafkaInstanceManualPermissions";
 
 export type AssignPermissionsManualProps = {

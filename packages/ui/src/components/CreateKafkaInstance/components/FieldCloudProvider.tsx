@@ -1,6 +1,6 @@
 import { FormGroup } from "@patternfly/react-core";
 import type { VoidFunctionComponent } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import type { CloudProvidersTilesProps } from "./CloudProviderTiles";
 import { CloudProvidersTiles } from "./CloudProviderTiles";
 

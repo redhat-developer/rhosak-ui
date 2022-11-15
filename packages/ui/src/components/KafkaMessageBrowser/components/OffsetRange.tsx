@@ -1,6 +1,6 @@
 import { Text, TextContent } from "@patternfly/react-core";
 import type { VoidFunctionComponent } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 
 export const OffsetRange: VoidFunctionComponent<{
   min: number;

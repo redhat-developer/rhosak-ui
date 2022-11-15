@@ -7,7 +7,7 @@ import {
 import type { TableViewProps } from "@rhoas/app-services-ui-components";
 import { FormatDate, TableView } from "@rhoas/app-services-ui-components";
 import { parseISO } from "date-fns";
-import { Trans, useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "@rhoas/app-services-ui-components";
 import { Link } from "react-router-dom";
 import { useKafkaLabels } from "../../../hooks";
 import { KafkaInstanceStatus } from "../../KafkaInstanceStatus";

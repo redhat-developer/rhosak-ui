@@ -1,6 +1,6 @@
 import type React from "react";
 import { useCallback, useEffect } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import {
   Form,
   FormGroup,

@@ -8,7 +8,7 @@ import {
 } from "@patternfly/react-core";
 import { FormatDate } from "@rhoas/app-services-ui-components";
 import type { ReactChild, VoidFunctionComponent } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import type { MarketplaceSubscription, Plan } from "../../types";
 import { DetailsTabAlert } from "./components/DetailsTabAlert";
 

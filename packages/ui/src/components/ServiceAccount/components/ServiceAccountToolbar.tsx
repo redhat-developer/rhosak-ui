@@ -9,7 +9,7 @@ import {
 import { FilterIcon } from "@patternfly/react-icons";
 import type { VoidFunctionComponent } from "react";
 import { useEffect, useReducer } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import type { SearchCategory } from "../types";
 import type { SearchProps } from "./Search";
 import { SearchChips } from "./SearchChips";

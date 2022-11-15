@@ -1,7 +1,7 @@
 import type { SelectProps } from "@patternfly/react-core";
 import { Select, SelectOption, SelectVariant } from "@patternfly/react-core";
 import { useLayoutEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 
 export type ResourcePrefixRuleValue = "Is" | "Starts with";
 

@@ -8,7 +8,7 @@ import {
 } from "@patternfly/react-core";
 import { CubesIcon } from "@patternfly/react-icons";
 import type { VoidFunctionComponent } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 
 export const NoDataEmptyState: VoidFunctionComponent<{
   onRefresh: () => void;

@@ -1,5 +1,5 @@
 import type { VoidFunctionComponent } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "@rhoas/app-services-ui-components";
 import type { DeleteModalProps } from "@rhoas/app-services-ui-components";
 import { DeleteModal } from "@rhoas/app-services-ui-components";
 

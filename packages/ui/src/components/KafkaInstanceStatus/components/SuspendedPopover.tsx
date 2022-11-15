@@ -1,7 +1,7 @@
 import { Popover, TextContent } from "@patternfly/react-core";
 import type { RefObject, VoidFunctionComponent } from "react";
 import { ExclamationTriangleIcon } from "@patternfly/react-icons";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import { ExternalLink } from "@rhoas/app-services-ui-components";
 import type { PopoverProps } from "@patternfly/react-core";
 

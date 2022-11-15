@@ -11,7 +11,7 @@ import {
 
 import type { VoidFunctionComponent } from "react";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import type { DateIsoString } from "../../../types";
 import { DateTimePicker } from "./DateTimePicker";
 

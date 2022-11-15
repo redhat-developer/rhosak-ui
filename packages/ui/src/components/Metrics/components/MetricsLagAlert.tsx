@@ -1,6 +1,6 @@
 import type { VoidFunctionComponent } from "react";
 import { Alert, AlertActionCloseButton } from "@patternfly/react-core";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 
 export type MetricsLagAlertProps = {
   isClosed: boolean;

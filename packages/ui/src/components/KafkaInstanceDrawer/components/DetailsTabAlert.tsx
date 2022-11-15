@@ -1,7 +1,7 @@
 import { Alert } from "@patternfly/react-core";
 import { differenceInHours } from "date-fns";
 import type { FunctionComponent } from "react";
-import { Trans } from "react-i18next";
+import { Trans } from "@rhoas/app-services-ui-components";
 import { FormatDate } from "@rhoas/app-services-ui-components";
 
 type DetailsTabAlertProps = {

@@ -1,6 +1,6 @@
 import type { FunctionComponent } from "react";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import {
   Button,
   Card,
@@ -31,9 +31,9 @@ export const Settings: FunctionComponent<SettingsProps> = ({
   const { t } = useTranslation("kafka");
   const { addAlert } = {
     //TODO
-    addAlert: (args: {[key:string]: any}) => {
+    addAlert: (args: { [key: string]: any }) => {
       // TODO
-  }
+    },
   };
   //states
   const [connectionStatus, setConnectionStatus] = useState<SettingsStatus>(
@@ -61,7 +61,7 @@ export const Settings: FunctionComponent<SettingsProps> = ({
         setConnectionStatus(reauthentication ? "On" : "Off");
 
         addAlert({
-          variant: 'success',
+          variant: "success",
           title: t("settings.success_alert", {
             status: reauthentication ? "on" : "off",
           }),
@@ -71,7 +71,7 @@ export const Settings: FunctionComponent<SettingsProps> = ({
         setConnectionStatus(!reAuthValue ? "On" : "Off");
 
         addAlert({
-          variant: 'danger',
+          variant: "danger",
           title: t("settings.error_alert_title"),
           description: t("settings.error_alert_title_description"),
         });

@@ -14,7 +14,7 @@ import {
   chart_color_blue_300,
 } from "@patternfly/react-tokens";
 import type { ReactElement, VoidFunctionComponent } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import { chartHeight, chartPadding } from "../consts";
 import type { DurationOptions, TimeSeriesMetrics } from "../types";
 import { ChartSkeletonLoader } from "./ChartSkeletonLoader";

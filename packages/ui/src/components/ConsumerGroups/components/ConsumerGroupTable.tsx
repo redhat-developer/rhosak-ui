@@ -9,7 +9,7 @@ import {
 } from "@patternfly/react-table";
 import type { FunctionComponent } from "react";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import type { ConsumerGroup } from "../types";
 import { ConsumerGroupStateLabel } from "./ConsumerGroupState";
 

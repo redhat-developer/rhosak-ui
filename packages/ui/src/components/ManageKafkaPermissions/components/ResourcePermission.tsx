@@ -1,5 +1,5 @@
 import { useLayoutEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import type { SelectProps } from "@patternfly/react-core";
 import { Select, SelectOption, SelectVariant } from "@patternfly/react-core";
 

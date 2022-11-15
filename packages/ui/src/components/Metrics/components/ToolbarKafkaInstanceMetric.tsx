@@ -8,7 +8,7 @@ import {
 } from "@patternfly/react-core";
 import { FilterByTime } from "./FilterByTime";
 import type { DurationOptions } from "../types";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import type { ToolbarRefreshProps } from "./ToolbarRefresh";
 import { ToolbarRefresh } from "./ToolbarRefresh";
 

@@ -20,7 +20,7 @@ import type { FunctionComponent, ReactNode } from "react";
 import { useState } from "react";
 import type { ConsumerGroupState, Consumer } from "../types";
 import { ConsumerGroupDetails } from "./ConsumerGroupDetails";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import "./ConsumerGroup.css";
 
 export type ConsumerGroupDrawerProps = {

@@ -9,7 +9,7 @@ import {
 import { FilterIcon } from "@patternfly/react-icons";
 import type { VoidFunctionComponent } from "react";
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import "./FilterByTopic.css";
 
 const widths = {

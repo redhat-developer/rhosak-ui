@@ -14,7 +14,7 @@ import {
   ExclamationTriangleIcon,
 } from "@patternfly/react-icons";
 import { forwardRef } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import type { Status } from "../../../types";
 import {
   CreatingStatuses,

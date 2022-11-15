@@ -5,7 +5,7 @@ import {
   Tooltip,
 } from "@patternfly/react-core";
 import type { VoidFunctionComponent } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import type { AZ } from "../../../types";
 
 export type FieldAZProps = {

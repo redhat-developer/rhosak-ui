@@ -1,6 +1,6 @@
 import type React from "react";
 import { useState, useCallback } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import type { NumberInputProps } from "@patternfly/react-core";
 import {
   FormSection,
@@ -13,7 +13,10 @@ import {
   Stack,
   Radio,
 } from "@patternfly/react-core";
-import { FormGroupWithPopover, TextWithLabelPopover } from "@rhoas/app-services-ui-components";
+import {
+  FormGroupWithPopover,
+  TextWithLabelPopover,
+} from "@rhoas/app-services-ui-components";
 import { CustomRetentionMessage } from "./CustomRetentionMessage";
 import { CustomRetentionSize } from "./CustomRetentionSize";
 import {

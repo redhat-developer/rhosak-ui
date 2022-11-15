@@ -13,7 +13,7 @@ import {
 import { HelpIcon } from "@patternfly/react-icons";
 import { useState } from "react";
 import type { FunctionComponent } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "@rhoas/app-services-ui-components";
 import { Link } from "react-router-dom";
 import { ExternalLink } from "@rhoas/app-services-ui-components";
 import "./KafkaInstanceDrawer.css";

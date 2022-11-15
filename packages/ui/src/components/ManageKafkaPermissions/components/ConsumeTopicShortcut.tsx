@@ -1,6 +1,6 @@
 import { Flex, FlexItem, Popover, Title } from "@patternfly/react-core";
 import { Tbody, Td, Tr } from "@patternfly/react-table";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import { ResourceTypeLabel } from "./ResourceTypeLabel";
 import { ResourcePrefixRule } from "./ResourcePrefixRule";
 import type { ResourcePrefixRuleValue } from "./ResourcePrefixRule";

@@ -16,7 +16,7 @@ import {
   ExclamationTriangleIcon,
 } from "@patternfly/react-icons";
 import type { VoidFunctionComponent } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import { ChartPopover } from "./ChartPopover";
 import { EmptyStateNoMetricsData } from "./EmptyStateNoMetricsData";
 

@@ -18,7 +18,7 @@ import { useMachine } from "@xstate/react";
 import { parseISO } from "date-fns";
 import type { VoidFunctionComponent } from "react";
 import { useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import {
   FormatDate,
   Loading,

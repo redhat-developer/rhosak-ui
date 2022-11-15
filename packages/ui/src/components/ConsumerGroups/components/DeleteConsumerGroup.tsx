@@ -1,6 +1,6 @@
 import { Alert, Text } from "@patternfly/react-core";
 import type { FunctionComponent } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "@rhoas/app-services-ui-components";
 import { DeleteModal } from "@rhoas/app-services-ui-components";
 import type { ConsumerGroupState } from "../types";
 

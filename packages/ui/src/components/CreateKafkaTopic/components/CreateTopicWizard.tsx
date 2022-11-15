@@ -9,7 +9,7 @@ import {
 } from "@patternfly/react-core";
 import type React from "react";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import type { ConstantValues, NewTopic } from "../types";
 import type { IWizardFooter } from "./index";
 import {

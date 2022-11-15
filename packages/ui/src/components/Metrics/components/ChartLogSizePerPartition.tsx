@@ -13,7 +13,7 @@ import {
   chart_color_cyan_300,
 } from "@patternfly/react-tokens";
 import type { FunctionComponent, ReactElement } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import { chartHeight, chartPadding } from "../consts";
 import type { PartitionBytesMetric } from "../types";
 import { ChartSkeletonLoader } from "./ChartSkeletonLoader";

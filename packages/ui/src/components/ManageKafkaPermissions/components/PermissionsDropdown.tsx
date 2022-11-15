@@ -16,7 +16,7 @@ import type {
   VoidFunctionComponent,
 } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 
 export type PermissionsDropdownProps = {
   onAddPermission: () => void;

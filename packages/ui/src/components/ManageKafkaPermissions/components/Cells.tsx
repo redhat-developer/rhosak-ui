@@ -1,5 +1,5 @@
 import type { VFC } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 
 import { Label, LabelGroup } from "@patternfly/react-core";
 

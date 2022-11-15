@@ -2,7 +2,7 @@ import { Select, SelectOption, SelectVariant } from "@patternfly/react-core";
 import type { SelectProps } from "@patternfly/react-core";
 import { useState } from "react";
 import type { FunctionComponent } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import type { OffsetValue } from "../types";
 
 export type OffsetSelectProps = {

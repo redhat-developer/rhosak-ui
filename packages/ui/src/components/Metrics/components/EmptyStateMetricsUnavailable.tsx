@@ -7,7 +7,7 @@ import {
 } from "@patternfly/react-core";
 import { TachometerAltIcon } from "@patternfly/react-icons";
 import type { FunctionComponent } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 
 export const EmptyStateMetricsUnavailable: FunctionComponent = () => {
   const { t } = useTranslation();

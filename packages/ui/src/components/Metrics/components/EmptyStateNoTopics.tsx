@@ -8,7 +8,7 @@ import {
 } from "@patternfly/react-core";
 import { WrenchIcon } from "@patternfly/react-icons";
 import type { FunctionComponent } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 
 type EmptyStateNoTopicsProps = {
   onCreateTopic?: () => void;

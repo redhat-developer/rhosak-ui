@@ -8,7 +8,7 @@ import {
 } from "@patternfly/react-core";
 import { PlusCircleIcon } from "@patternfly/react-icons";
 import type { VoidFunctionComponent } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "@rhoas/app-services-ui-components";
 
 export type EmptyStateNoInstancesProps = {
   onCreate: () => void;

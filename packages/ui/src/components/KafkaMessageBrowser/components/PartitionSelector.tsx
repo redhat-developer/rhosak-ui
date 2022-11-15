@@ -9,7 +9,7 @@ import {
 } from "@patternfly/react-core";
 import type { VoidFunctionComponent } from "react";
 import { useCallback, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 
 const MAX_OPTIONS = 20;
 

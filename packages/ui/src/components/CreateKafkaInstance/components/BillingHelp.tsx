@@ -1,7 +1,7 @@
 import { Popover } from "@patternfly/react-core";
 import { OutlinedQuestionCircleIcon } from "@patternfly/react-icons";
 import type { VoidFunctionComponent } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "@rhoas/app-services-ui-components";
 import { Link } from "react-router-dom";
 
 export type BillingHelpProps = {

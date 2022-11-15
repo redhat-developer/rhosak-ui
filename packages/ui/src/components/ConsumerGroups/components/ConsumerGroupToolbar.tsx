@@ -12,7 +12,7 @@ import {
 import { FilterIcon, SearchIcon } from "@patternfly/react-icons";
 import type { FunctionComponent } from "react";
 import { useCallback, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import type { PaginationProps } from "@rhoas/app-services-ui-components";
 import { Pagination } from "@rhoas/app-services-ui-components";
 

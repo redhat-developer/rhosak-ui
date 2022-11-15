@@ -7,7 +7,7 @@ import {
 } from "@patternfly/react-core";
 import { FilterIcon } from "@patternfly/react-icons";
 import type { VoidFunctionComponent } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 
 export const EmptyStateNoTopicSelected: VoidFunctionComponent = () => {
   const { t } = useTranslation();

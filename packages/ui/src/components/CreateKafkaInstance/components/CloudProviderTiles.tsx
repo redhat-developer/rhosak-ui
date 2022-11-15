@@ -8,7 +8,7 @@ import {
   Tile,
 } from "@patternfly/react-core";
 import type { VoidFunctionComponent } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import { AWSLogo, AzureLogo, GCPLogo } from "../../Logos";
 import type { CloudProvider } from "../../../types";
 import type { CloudProviderInfo } from "../types";

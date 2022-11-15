@@ -6,7 +6,7 @@ import {
   ToolbarContent,
 } from "@patternfly/react-core";
 import type { FunctionComponent } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import type { DurationOptions } from "../types";
 import { FilterByTime } from "./FilterByTime";
 import { FilterByTopic } from "./FilterByTopic";

@@ -1,7 +1,7 @@
 import type { VoidFunctionComponent } from "react";
 import { truncate } from "../utils";
 import { Flex, FlexItem } from "@patternfly/react-core";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 
 const PREVIEW_LENGTH = 170;
 

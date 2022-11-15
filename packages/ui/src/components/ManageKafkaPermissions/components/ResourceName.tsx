@@ -1,4 +1,4 @@
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import type { ResourceTypeValue } from "./ResourceType";
 import type { ResourcePrefixRuleValue } from "./ResourcePrefixRule";
 import { AsyncTypeaheadSelect } from "@rhoas/app-services-ui-components";

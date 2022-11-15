@@ -5,7 +5,7 @@ import {
   WizardFooter,
   ValidatedOptions,
 } from "@patternfly/react-core";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 
 export interface IWizardFooter {
   isLoading: boolean;
@@ -13,6 +13,7 @@ export interface IWizardFooter {
   topicNameValidated: ValidatedOptions;
   closeWizard: () => void;
 }
+
 export const WizardCustomFooter: React.FC<IWizardFooter> = ({
   isLoading,
   onValidate,

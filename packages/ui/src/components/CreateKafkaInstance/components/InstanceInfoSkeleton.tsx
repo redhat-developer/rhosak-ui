@@ -16,7 +16,7 @@ import {
 } from "@patternfly/react-core";
 import { ClockIcon } from "@patternfly/react-icons";
 import type { VoidFunctionComponent } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 
 export type InstanceInfoSkeletonProps = {
   isTrial: boolean;
