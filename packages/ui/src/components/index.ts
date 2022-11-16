@@ -3,6 +3,7 @@ export * from "./KafkaInstanceDrawer";
 export * from "./KafkaInstanceStatus";
 export * from "./KafkaMessageBrowser";
 export * from "./KafkaInstances";
+export * from "./KafkaInstancesHeader";
 export * from "./I18nProvider";
 export * from "./Logos";
 export * from "./ManageKafkaPermissions";

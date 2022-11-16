@@ -3,13 +3,13 @@ import { notificationsReducer } from "@redhat-cloud-services/frontend-components
 
 import { getRegistry } from "@redhat-cloud-services/frontend-components-utilities/Registry";
 import { useChrome } from "@redhat-cloud-services/frontend-components/useChrome";
-import React, { Fragment, useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { Reducer } from "redux";
+import type { Reducer } from "redux";
 import pckg from "../package.json";
 import "./App.scss";
 
-import { Routes } from "./Routes";
+import { AppRoutes } from "./AppRoutes";
 
 type Unregister =
   | undefined
@@ -42,7 +42,7 @@ const App = () => {
   return (
     <Fragment>
       <NotificationsPortal />
-      <Routes />
+      <AppRoutes />
     </Fragment>
   );
 };

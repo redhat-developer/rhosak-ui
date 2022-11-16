@@ -1,4 +1,3 @@
-import { getBaseName } from "@redhat-cloud-services/frontend-components-utilities/helpers";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router } from "react-router-dom";
 import logger from "redux-logger";
@@ -12,8 +11,8 @@ const AppEntry = () => (
       ...(process.env.NODE_ENV !== "production" ? [logger] : [])
     ).getStore()}
   >
-    <I18nProvider>
-      <Router basename={getBaseName(window.location.pathname)}>
+    <I18nProvider lng={"en"}>
+      <Router basename={"/application-services"}>
         <App />
       </Router>
     </I18nProvider>
