@@ -5,18 +5,20 @@ import { I18nProvider } from "ui";
 import App from "./App";
 import { init } from "./store";
 
-const AppEntry = () => (
-  <Provider
-    store={init(
-      ...(process.env.NODE_ENV !== "production" ? [logger] : [])
-    ).getStore()}
-  >
-    <I18nProvider lng={"en"}>
+const AppEntry = () => {
+  return (
+    <Provider
+      store={init(
+        ...(process.env.NODE_ENV !== "production" ? [logger] : [])
+      ).getStore()}
+    >
       <Router basename={"/application-services"}>
-        <App />
+        <I18nProvider lng={"en"}>
+          <App />
+        </I18nProvider>
       </Router>
-    </I18nProvider>
-  </Provider>
-);
+    </Provider>
+  );
+};
 
 export default AppEntry;

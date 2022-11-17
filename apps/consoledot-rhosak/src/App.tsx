@@ -3,33 +3,29 @@ import { notificationsReducer } from "@redhat-cloud-services/frontend-components
 
 import { getRegistry } from "@redhat-cloud-services/frontend-components-utilities/Registry";
 import { useChrome } from "@redhat-cloud-services/frontend-components/useChrome";
-import { Fragment, useEffect } from "react";
+import type { OnChromeEvent } from "@redhat-cloud-services/types";
+import { useTranslation } from "@rhoas/app-services-ui-components";
+import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import type { Reducer } from "redux";
-import pckg from "../package.json";
 import "./App.scss";
 
 import { AppRoutes } from "./AppRoutes";
 
-type Unregister =
-  | undefined
-  | (() => void)
-  | (() => undefined)
-  | (() => boolean);
-
 const App = () => {
   const history = useHistory();
   const chrome = useChrome();
+  const { t } = useTranslation();
+  const title = t("kafka:rhosakTitle");
 
   useEffect(() => {
-    let unregister: Unregister;
+    let unregister: ReturnType<typeof OnChromeEvent>;
     if (chrome) {
       const registry = getRegistry();
       registry.register({ notifications: notificationsReducer as Reducer });
-      const { identifyApp, on } = chrome.init();
+      const { updateDocumentTitle, on } = chrome.init();
 
-      // You can use directly the name of your app
-      identifyApp(pckg.insights.appname);
+      updateDocumentTitle(title);
       unregister = on("APP_NAVIGATION", (event) =>
         history.push(`/${event.navId}`)
       );
@@ -37,13 +33,13 @@ const App = () => {
     return () => {
       unregister && unregister();
     };
-  }, [chrome]);
+  }, [history, chrome]);
 
   return (
-    <Fragment>
+    <>
       <NotificationsPortal />
       <AppRoutes />
-    </Fragment>
+    </>
   );
 };
 

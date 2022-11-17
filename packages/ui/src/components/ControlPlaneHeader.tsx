@@ -9,11 +9,11 @@ import {
 import { useTranslation } from "@rhoas/app-services-ui-components";
 import type { VoidFunctionComponent } from "react";
 
-export const KafkaInstancesHeader: VoidFunctionComponent = () => {
+export const ControlPlaneHeader: VoidFunctionComponent = () => {
   const { t } = useTranslation();
 
   return (
-    <PageSection variant={PageSectionVariants.light}>
+    <PageSection variant={PageSectionVariants.light} hasShadowBottom={true}>
       <Level>
         <LevelItem>
           <TextContent>

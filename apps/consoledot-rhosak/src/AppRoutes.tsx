@@ -4,15 +4,20 @@ import { Route, Switch } from "react-router-dom";
 import { ControlPlaneRoute } from "./routes";
 
 export const AppRoutes = () => (
-  <Suspense
-    fallback={
-      <Bullseye>
-        <Spinner />
-      </Bullseye>
-    }
-  >
-    <Switch>
-      <Route path="/streams" component={ControlPlaneRoute} />
-    </Switch>
-  </Suspense>
+  <Switch>
+    <Route
+      path="/streams"
+      render={() => (
+        <Suspense
+          fallback={
+            <Bullseye>
+              <Spinner />
+            </Bullseye>
+          }
+        >
+          <ControlPlaneRoute />
+        </Suspense>
+      )}
+    />
+  </Switch>
 );

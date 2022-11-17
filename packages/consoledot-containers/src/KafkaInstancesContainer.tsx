@@ -4,9 +4,12 @@ import { KafkaInstances } from "ui";
 import type { PageRoute } from "./types";
 import { useKafkaInstances } from "./useKafkaInstances";
 
+export type KafkaInstancesContainerProps = PageRoute &
+  Pick<KafkaInstancesProps<KafkaInstance>, "getUrlForInstance" | "onDetails">;
+
 export const KafkaInstancesContainer: FunctionComponent<
-  PageRoute & Pick<KafkaInstancesProps<KafkaInstance>, "getUrlForInstance">
-> = ({ getUrlForInstance, ...params }) => {
+  KafkaInstancesContainerProps
+> = ({ getUrlForInstance, onDetails, ...params }) => {
   const fetchInstances = useKafkaInstances(params);
 
   return (
@@ -15,7 +18,7 @@ export const KafkaInstancesContainer: FunctionComponent<
       getInstances={fetchInstances}
       getUrlForInstance={getUrlForInstance}
       onCreate={() => {}}
-      onDetails={() => {}}
+      onDetails={onDetails}
       onConnection={() => {}}
       onChangeOwner={() => {}}
       onDelete={() => {}}
