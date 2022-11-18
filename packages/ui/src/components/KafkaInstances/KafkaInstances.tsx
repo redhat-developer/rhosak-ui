@@ -1,205 +1,313 @@
-import { PageSection } from "@patternfly/react-core";
-import type { SortDirection } from "@rhoas/app-services-ui-components";
 import {
-  usePaginationSearchParams,
-  useSortableSearchParams,
-  useURLSearchParamsChips,
+  Button,
+  DropdownGroup,
+  PageSection,
+  Stack,
+  StackItem,
+} from "@patternfly/react-core";
+import type { TableViewProps } from "@rhoas/app-services-ui-components";
+import {
+  FormatDate,
+  TableView,
+  Trans,
+  useTranslation,
 } from "@rhoas/app-services-ui-components";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { parseISO } from "date-fns";
+import { Link } from "react-router-dom";
 import { useKafkaLabels } from "../../hooks";
 import type { KafkaInstance, SimplifiedStatus } from "../../types";
-import type { InstancesTableProps } from "./components";
-import { InstancesTable } from "./components";
+import { DeletingStatuses } from "../../types";
+import { KafkaInstanceStatus } from "../KafkaInstanceStatus";
+import type { EmptyStateNoInstancesProps } from "./components/EmptyStateNoInstances";
+import { EmptyStateNoInstances } from "./components/EmptyStateNoInstances";
+import type { EmptyStateNoResultsProps } from "./components/EmptyStateNoResults";
+import { EmptyStateNoResults } from "./components/EmptyStateNoResults";
 
-type Query = {
-  name: string[];
-  owner: string[];
-  status: SimplifiedStatus[];
-};
-
-const SortableColumns = [
+export const Columns = [
   "name",
   "owner",
   "createdAt",
   "provider",
   "region",
+  "status",
 ] as const;
 
-export type KafkaInstancesProps<T extends KafkaInstance> = {
-  getInstances: (
-    page: number,
-    perPage: number,
-    query: Query,
-    sort: typeof SortableColumns[number] | null,
-    sortDirection: SortDirection
-  ) => Promise<{
-    instances: T[];
-    count: number;
-  }>;
-  onChangeOwner: (row: T, onDone: () => void) => void;
-  onDelete: (row: T, onDone: () => void) => void;
-  onCreate: (onDone: () => void) => void;
-} & Omit<
-  InstancesTableProps<T>,
-  | "instances"
+export type InstancesTableProps<T extends KafkaInstance> = {
+  instances: Array<T> | undefined | null;
+  getUrlForInstance: (row: T) => string;
+  names: string[];
+  owners: string[];
+  statuses: string[];
+  onCreate: () => void;
+  onSearchName: (value: string) => void;
+  onRemoveNameChip: (value: string) => void;
+  onRemoveNameChips: () => void;
+  onSearchOwner: (value: string) => void;
+  onRemoveOwnerChip: (value: string) => void;
+  onRemoveOwnerChips: () => void;
+  onSearchStatus: (value: SimplifiedStatus) => void;
+  onRemoveStatusChip: (value: SimplifiedStatus) => void;
+  onRemoveStatusChips: () => void;
+  onDetails: (row: T) => void;
+  onConnection: (row: T) => void;
+  canChangeOwner: (row: T) => boolean;
+  onChangeOwner: (row: T) => void;
+  canDelete: (row: T) => boolean;
+  onDelete: (row: T) => void;
+  onClickConnectionTabLink: (row: T) => void;
+  onClickSupportLink: () => void;
+  onInstanceLinkClick: (row: T) => void;
+} & Pick<
+  TableViewProps<T, typeof Columns[number]>,
   | "itemCount"
   | "page"
   | "perPage"
   | "onPageChange"
-  | "names"
-  | "owners"
-  | "statuses"
-  | "isRefreshing"
-  | "onSearchName"
-  | "onRemoveNameChip"
-  | "onRemoveNameChips"
-  | "onSearchOwner"
-  | "onRemoveOwnerChip"
-  | "onRemoveOwnerChips"
-  | "onSearchStatus"
-  | "onRemoveStatusChip"
-  | "onRemoveStatusChips"
+  | "isRowSelected"
+  | "isColumnSortable"
   | "onClearAllFilters"
-  | "onRefresh"
-  | "onChangeOwner"
-  | "onDelete"
-  | "onCreate"
->;
+> &
+  EmptyStateNoInstancesProps &
+  EmptyStateNoResultsProps;
 
-export const KafkaInstances = <T extends KafkaInstance>({
-  getInstances,
+export const InstancesTable = <T extends KafkaInstance>({
+  instances,
+  itemCount,
+  page,
+  perPage,
+  names,
+  owners,
+  statuses,
+  getUrlForInstance,
+  isRowSelected,
+  isColumnSortable,
+  onPageChange,
+  onDetails,
+  onConnection,
+  canChangeOwner,
   onChangeOwner,
+  canDelete,
   onDelete,
   onCreate,
-  ...props
-}: KafkaInstancesProps<T>) => {
+  onQuickstartGuide,
+  onClickConnectionTabLink,
+  onClickSupportLink,
+  onInstanceLinkClick,
+  onSearchName,
+  onRemoveNameChip,
+  onRemoveNameChips,
+  onSearchOwner,
+  onRemoveOwnerChip,
+  onRemoveOwnerChips,
+  onSearchStatus,
+  onRemoveStatusChip,
+  onRemoveStatusChips,
+  onClearAllFilters,
+}: InstancesTableProps<T>) => {
+  const { t } = useTranslation("kafka");
   const labels = useKafkaLabels();
-  const [instances, setInstances] = useState<T[] | undefined | null>(null);
-  const [count, setCount] = useState<number | undefined>(undefined);
-  const [isRefreshing, setIsRefreshing] = useState(false);
+  const breakpoint = "lg";
 
-  const { page, perPage, setPagination, setPaginationQuery } =
-    usePaginationSearchParams();
-  const resetPaginationQuery = useCallback(
-    () => setPaginationQuery(1, perPage),
-    [perPage, setPaginationQuery]
-  );
-
-  const namesChips = useURLSearchParamsChips("names", resetPaginationQuery);
-  const ownersChips = useURLSearchParamsChips("owners", resetPaginationQuery);
-  const statusesChips = useURLSearchParamsChips<SimplifiedStatus>(
-    "statuses",
-    resetPaginationQuery
-  );
-
-  const [isColumnSortable, sort, sortDirection] = useSortableSearchParams(
-    SortableColumns,
-    labels.fields,
-    "createdAt",
-    "desc"
-  );
-
-  const previousFetchArgs = useRef([
-    page,
-    perPage,
-    {
-      name: namesChips.chips,
-      owner: ownersChips.chips,
-      status: statusesChips.chips,
-    },
-    sort,
-    sortDirection,
-  ] as const);
-
-  const onClearAllFilters = useCallback(() => {
-    setInstances(undefined);
-    namesChips.clearChained(
-      ownersChips.clearChained(
-        statusesChips.clearChained(setPaginationQuery(1, perPage))
-      ),
-      true
-    );
-  }, [namesChips, ownersChips, perPage, setPaginationQuery, statusesChips]);
-
-  const fetchData = useCallback(() => {
-    const fetchArgs = [
-      page,
-      perPage,
-      {
-        name: namesChips.chips,
-        owner: ownersChips.chips,
-        status: statusesChips.chips,
-      },
-      sort,
-      sortDirection,
-    ] as const;
-    if (
-      JSON.stringify(fetchArgs) !== JSON.stringify(previousFetchArgs.current)
-    ) {
-      setInstances(undefined);
-    }
-    previousFetchArgs.current = fetchArgs;
-    return getInstances(...fetchArgs)
-      .then(({ instances, count }) => {
-        setInstances(instances);
-        setCount(count);
-      })
-      .catch((e) => console.error(e));
-  }, [
-    getInstances,
-    namesChips.chips,
-    ownersChips.chips,
-    page,
-    perPage,
-    sort,
-    sortDirection,
-    statusesChips.chips,
-  ]);
-
-  const onRefresh = useCallback(() => {
-    if (instances !== undefined && !isRefreshing) {
-      setIsRefreshing(true);
-      fetchData().finally(() => setIsRefreshing(false));
-    }
-  }, [fetchData, instances, isRefreshing]);
-
-  // first load of data, independent of a user action
-  useEffect(() => {
-    void fetchData();
-  }, [fetchData]);
-
-  // polling
-  useEffect(() => {
-    const timer = setInterval(onRefresh, 5000);
-    return () => clearInterval(timer);
-  }, [onRefresh]);
+  const isFiltered =
+    names.length > 0 || owners.length > 0 || statuses.length > 0;
 
   return (
     <PageSection isFilled={true}>
-      <InstancesTable
-        instances={instances}
-        itemCount={count}
+      <TableView
+        data={instances}
+        columns={Columns}
+        renderHeader={({ column, Th, key }) => (
+          <Th key={key}>{labels.fields[column]}</Th>
+        )}
+        renderCell={({ column, row, Td, key }) => {
+          const timeCreatedDate = parseISO(row.createdAt);
+          return (
+            <Td key={key} dataLabel={labels.fields[column]}>
+              {(() => {
+                switch (column) {
+                  case "name":
+                    return (
+                      <Button
+                        variant="link"
+                        component={(props) => (
+                          <Link to={getUrlForInstance(row)} {...props}>
+                            {row.name}
+                          </Link>
+                        )}
+                        isDisabled={DeletingStatuses.includes(row["status"])}
+                        onClick={() => onInstanceLinkClick(row)}
+                      />
+                    );
+                  case "provider":
+                    return labels.providers[row.provider];
+                  case "createdAt":
+                    return (
+                      <Stack>
+                        <StackItem>
+                          <FormatDate
+                            date={timeCreatedDate}
+                            format={"distanceToNowWithAgo"}
+                          />
+                        </StackItem>
+                        {row.expiryDate && (
+                          <StackItem>
+                            <Trans
+                              i18nKey="will_expire_short"
+                              ns={["kafka"]}
+                              components={{
+                                time: (
+                                  <FormatDate
+                                    date={parseISO(row.expiryDate)}
+                                    format="expiration"
+                                  />
+                                ),
+                              }}
+                            />
+                          </StackItem>
+                        )}
+                      </Stack>
+                    );
+                  case "status":
+                    return (
+                      <KafkaInstanceStatus
+                        status={row["status"]}
+                        createdAt={timeCreatedDate}
+                        onClickConnectionTabLink={() =>
+                          onClickConnectionTabLink(row)
+                        }
+                        onClickSupportLink={onClickSupportLink}
+                      />
+                    );
+                  default:
+                    return row[column];
+                }
+              })()}
+            </Td>
+          );
+        }}
+        renderActions={({ row, ActionsColumn }) => {
+          const changeOwnerEnabled = canChangeOwner(row);
+          const deleteEnabled = canDelete(row);
+          return (
+            <ActionsColumn
+              items={[
+                {
+                  customChild: (
+                    <DropdownGroup
+                      label={t("table.actions.view-instance-information")}
+                    />
+                  ),
+                },
+                {
+                  title: t("table.actions.details"),
+                  onClick: () => onDetails(row),
+                },
+                {
+                  title: t("table.actions.connection"),
+                  onClick: () => onConnection(row),
+                },
+                {
+                  isSeparator: true,
+                },
+                {
+                  title: t("table.actions.change-owner"),
+                  ...(!changeOwnerEnabled
+                    ? {
+                        isDisabled: true,
+                        tooltipProps: {
+                          position: "left",
+                          content: t("kafka:no_permission_to_change_owner"),
+                        },
+                        tooltip: true,
+                        style: {
+                          pointerEvents: "auto",
+                          cursor: "default",
+                        },
+                      }
+                    : {
+                        onClick: () => onChangeOwner(row),
+                      }),
+                },
+                {
+                  title: t("table.actions.delete"),
+                  ...(!deleteEnabled
+                    ? {
+                        isDisabled: true,
+                        tooltipProps: {
+                          position: "left",
+                          content: t("kafka:no_permission_to_delete_kafka"),
+                        },
+                        tooltip: true,
+                        style: {
+                          pointerEvents: "auto",
+                          cursor: "default",
+                        },
+                      }
+                    : {
+                        onClick: () => onDelete(row),
+                      }),
+                  onClick: () => onDelete(row),
+                },
+              ]}
+            />
+          );
+        }}
+        onRowClick={({ row }) => onDetails(row)}
+        isColumnSortable={isColumnSortable}
+        isRowSelected={isRowSelected}
+        isRowDeleted={({ row }) => DeletingStatuses.includes(row["status"])}
+        toolbarBreakpoint={breakpoint}
+        filters={{
+          [labels.fields.name]: {
+            type: "search",
+            chips: names,
+            onSearch: onSearchName,
+            onRemoveChip: onRemoveNameChip,
+            onRemoveGroup: onRemoveNameChips,
+            validate: (value) => /^[a-z]([-a-z0-9]*[a-z0-9])?$/.test(value),
+            errorMessage: t("kafka:input_field_invalid_message"),
+          },
+          [labels.fields.owner]: {
+            type: "search",
+            chips: owners,
+            onSearch: onSearchOwner,
+            onRemoveChip: onRemoveOwnerChip,
+            onRemoveGroup: onRemoveOwnerChips,
+            validate: (value: string) => !/["$^<>|+%/;:,\s*=~#()]/.test(value),
+            errorMessage: t("kafka:input_field_invalid_message"),
+          },
+          [labels.fields.status]: {
+            type: "checkbox",
+            chips: statuses,
+            options: labels.statusesSimplified,
+            onToggle: onSearchStatus,
+            onRemoveChip: onRemoveStatusChip,
+            onRemoveGroup: onRemoveStatusChips,
+          },
+        }}
+        actions={[
+          {
+            label: t("create_instance"),
+            onClick: onCreate,
+            isPrimary: true,
+          },
+        ]}
+        itemCount={itemCount}
         page={page}
         perPage={perPage}
-        names={namesChips.chips}
-        owners={ownersChips.chips}
-        statuses={statusesChips.chips}
-        isColumnSortable={isColumnSortable}
-        onPageChange={setPagination}
-        onSearchName={namesChips.add}
-        onRemoveNameChip={namesChips.remove}
-        onRemoveNameChips={namesChips.clear}
-        onSearchOwner={ownersChips.add}
-        onRemoveOwnerChip={ownersChips.remove}
-        onRemoveOwnerChips={ownersChips.clear}
-        onSearchStatus={statusesChips.toggle}
-        onRemoveStatusChip={statusesChips.remove}
-        onRemoveStatusChips={statusesChips.clear}
+        onPageChange={onPageChange}
         onClearAllFilters={onClearAllFilters}
-        onChangeOwner={(row) => onChangeOwner(row, onRefresh)}
-        onDelete={(row) => onDelete(row, onRefresh)}
-        onCreate={() => onCreate(onRefresh)}
-        {...props}
+        ariaLabel={t("table.title")}
+        isFiltered={isFiltered}
+        emptyStateNoData={
+          <EmptyStateNoInstances
+            onCreate={onCreate}
+            onQuickstartGuide={onQuickstartGuide}
+          />
+        }
+        emptyStateNoResults={
+          <EmptyStateNoResults onClearAllFilters={onClearAllFilters} />
+        }
       />
     </PageSection>
   );

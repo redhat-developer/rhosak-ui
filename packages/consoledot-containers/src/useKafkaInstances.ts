@@ -9,7 +9,7 @@ import type { KafkaRequest } from "@rhoas/kafka-management-sdk";
 // import type { AxiosCacheRequestConfig } from "axios-simple-cache-adapter";
 import { useCallback } from "react";
 import { SimplifiedStatuses } from "ui";
-import { UseApiParams, useKms } from "./useApi";
+import { useKms } from "./useApi";
 import {
   useGetSizes,
   useStandardQuota,
@@ -19,9 +19,9 @@ export type KafkaInstanceEnhanced = Required<KafkaInstance> & {
   request: KafkaRequest;
 };
 
-export function useKafkaInstances(params: UseApiParams) {
-  const getKms = useKms(params);
-  const { kafkaRequestToKafkaInstance } = useEnrichedKafkaInstance(params);
+export function useKafkaInstances() {
+  const getKms = useKms();
+  const { kafkaRequestToKafkaInstance } = useEnrichedKafkaInstance();
   return useCallback<
     KafkaInstancesProps<KafkaInstanceEnhanced>["getInstances"]
   >(
@@ -51,7 +51,7 @@ export function useKafkaInstances(params: UseApiParams) {
           ),
         ]
           .filter(Boolean)
-          .map((q) => `(${q})`)
+          .map((q) => `(${q!})`)
           .join(" and ");
 
         const res = await apisService.getKafkas(
@@ -84,10 +84,10 @@ export function useKafkaInstances(params: UseApiParams) {
   );
 }
 
-export function useEnrichedKafkaInstance(params: UseApiParams) {
-  const getQuota = useStandardQuota(params);
-  const getDeveloperSizes = useGetSizes(params, "developer");
-  const getStandardSizes = useGetSizes(params, "standard");
+export function useEnrichedKafkaInstance() {
+  const getQuota = useStandardQuota();
+  const getDeveloperSizes = useGetSizes("developer");
+  const getStandardSizes = useGetSizes("standard");
 
   const kafkaRequestToKafkaInstance = useCallback(
     async (data: KafkaRequest): Promise<KafkaInstanceEnhanced> => {

@@ -1,5 +1,5 @@
-import { QuotaCost } from "@rhoas/account-management-sdk";
-import {
+import type { QuotaCost } from "@rhoas/account-management-sdk";
+import type {
   CloudProvider,
   CloudProviderInfo,
   CreateKafkaInstanceServices,
@@ -9,9 +9,12 @@ import {
   Size,
   StandardSizes,
 } from "@rhoas/app-services-ui-components";
-import { CloudRegion, SupportedKafkaSize } from "@rhoas/kafka-management-sdk";
+import type {
+  CloudRegion,
+  SupportedKafkaSize,
+} from "@rhoas/kafka-management-sdk";
 import { useCallback } from "react";
-import { useAms, UseApiParams, useKms } from "./useApi";
+import { useAms, useKms } from "./useApi";
 
 const standardId = "RHOSAK" as const;
 const developerId = "RHOSAKTrial" as const;
@@ -25,8 +28,8 @@ function isMarketplaceQuota(q: QuotaCost) {
   return q.related_resources?.find((r) => r.billing_model === "marketplace");
 }
 
-export const useStandardQuota = (params: UseApiParams) => {
-  const getApi = useAms(params);
+export const useStandardQuota = () => {
+  const getApi = useAms();
   return useCallback(async () => {
     const api = getApi();
     const account = await api.apiAccountsMgmtV1CurrentAccountGet();
@@ -102,127 +105,124 @@ export const useStandardQuota = (params: UseApiParams) => {
   }, [getApi]);
 };
 
-export const useCheckStandardQuota = (
-  params: UseApiParams
-): CreateKafkaInstanceServices["checkStandardQuota"] => {
-  const getQuota = useStandardQuota(params);
-  const checkStandardQuota: CreateKafkaInstanceServices["checkStandardQuota"] =
-    useCallback(
-      async ({ onNoQuotaAvailable, onOutOfQuota, onQuotaAvailable }) => {
-        try {
-          const {
-            hasTrialQuota,
-            remainingPrepaidQuota,
-            remainingMarketplaceQuota,
-            marketplaceSubscriptions,
-          } = await getQuota();
+export const useCheckStandardQuota =
+  (): CreateKafkaInstanceServices["checkStandardQuota"] => {
+    const getQuota = useStandardQuota();
+    const checkStandardQuota: CreateKafkaInstanceServices["checkStandardQuota"] =
+      useCallback(
+        async ({ onNoQuotaAvailable, onOutOfQuota, onQuotaAvailable }) => {
+          try {
+            const {
+              hasTrialQuota,
+              remainingPrepaidQuota,
+              remainingMarketplaceQuota,
+              marketplaceSubscriptions,
+            } = await getQuota();
 
-          if (
-            remainingMarketplaceQuota !== undefined ||
-            remainingPrepaidQuota !== undefined
-          ) {
             if (
-              (remainingMarketplaceQuota || 0) === 0 &&
-              (remainingPrepaidQuota || 0) === 0
+              remainingMarketplaceQuota !== undefined ||
+              remainingPrepaidQuota !== undefined
             ) {
-              onOutOfQuota({
-                quota: {
-                  marketplaceSubscriptions,
-                },
-              });
+              if (
+                (remainingMarketplaceQuota || 0) === 0 &&
+                (remainingPrepaidQuota || 0) === 0
+              ) {
+                onOutOfQuota({
+                  quota: {
+                    marketplaceSubscriptions,
+                  },
+                });
+              } else {
+                onQuotaAvailable({
+                  quota: {
+                    remainingPrepaidQuota,
+                    remainingMarketplaceQuota,
+                    marketplaceSubscriptions,
+                  },
+                });
+              }
             } else {
-              onQuotaAvailable({
-                quota: {
-                  remainingPrepaidQuota,
-                  remainingMarketplaceQuota,
-                  marketplaceSubscriptions,
-                },
-              });
+              onNoQuotaAvailable({ hasTrialQuota });
             }
-          } else {
-            onNoQuotaAvailable({ hasTrialQuota });
+          } catch (e) {
+            onNoQuotaAvailable({ hasTrialQuota: false });
           }
-        } catch (e) {
-          onNoQuotaAvailable({ hasTrialQuota: false });
-        }
-      },
-      [getQuota]
-    );
-  return checkStandardQuota;
-};
+        },
+        [getQuota]
+      );
+    return checkStandardQuota;
+  };
 
-export const useCheckDeveloperAvailability = (
-  params: UseApiParams
-): CreateKafkaInstanceServices["checkDeveloperAvailability"] => {
-  const getApi = useKms(params);
-  const checkDeveloperAvailability: CreateKafkaInstanceServices["checkDeveloperAvailability"] =
-    useCallback(
-      async ({ onAvailable, onUnavailable, onUsed }) => {
-        try {
-          const api = getApi();
-          const loggedInUser = /*TODO*/ "await getUsername()";
-          const filter = `owner = ${loggedInUser}`;
+export const useCheckDeveloperAvailability =
+  (): CreateKafkaInstanceServices["checkDeveloperAvailability"] => {
+    const getApi = useKms();
+    const checkDeveloperAvailability: CreateKafkaInstanceServices["checkDeveloperAvailability"] =
+      useCallback(
+        async ({ onAvailable, onUnavailable, onUsed }) => {
+          try {
+            const api = getApi();
+            const loggedInUser = /*TODO*/ "await getUsername()";
+            const filter = `owner = ${loggedInUser}`;
 
-          const res = await api.getKafkas("", "", "", filter);
-          if (res.data.items) {
-            const hasTrialRunning = res.data.items.some(
-              (k) => k?.instance_type !== "standard"
+            const res = await api.getKafkas("", "", "", filter);
+            if (res.data.items) {
+              const hasTrialRunning = res.data.items.some(
+                (k) => k?.instance_type !== "standard"
+              );
+              if (hasTrialRunning) {
+                onUsed();
+              } else {
+                onAvailable();
+              }
+            }
+          } catch (e) {
+            onUnavailable();
+          }
+        },
+        [getApi]
+      );
+    return checkDeveloperAvailability;
+  };
+
+export const useFetchProvidersWithRegions =
+  (): CreateKafkaInstanceServices["fetchProvidersWithRegions"] => {
+    const getApi = useKms();
+    const fetchRegions = useFetchProviderRegions();
+    const fetchProvidersWithRegions: CreateKafkaInstanceServices["fetchProvidersWithRegions"] =
+      useCallback(
+        async (plan, { onAvailable, onUnavailable }) => {
+          try {
+            const api = getApi();
+            const res = await api.getCloudProviders();
+            const allProviders = res?.data?.items || [];
+
+            const providers = await Promise.all(
+              allProviders
+                .filter((p) => p.enabled)
+                .map(async (provider) => {
+                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                  const regions = await fetchRegions(provider.id!, plan);
+                  const providerInfo: CloudProviderInfo = {
+                    id: provider.id as CloudProvider,
+                    displayName: provider.display_name!,
+                    regions,
+                  };
+                  return providerInfo;
+                })
             );
-            if (hasTrialRunning) {
-              onUsed();
-            } else {
-              onAvailable();
-            }
+            const firstProvider = providers[0];
+            onAvailable({ providers, defaultProvider: firstProvider?.id });
+          } catch (e) {
+            onUnavailable();
           }
-        } catch (e) {
-          onUnavailable();
-        }
-      },
-      [getApi]
-    );
-  return checkDeveloperAvailability;
-};
+        },
+        [fetchRegions, getApi]
+      );
+    return fetchProvidersWithRegions;
+  };
 
-export const useFetchProvidersWithRegions = (
-  params: UseApiParams
-): CreateKafkaInstanceServices["fetchProvidersWithRegions"] => {
-  const getApi = useKms(params);
-  const fetchRegions = useFetchProviderRegions(params);
-  const fetchProvidersWithRegions: CreateKafkaInstanceServices["fetchProvidersWithRegions"] =
-    useCallback(
-      async (plan, { onAvailable, onUnavailable }) => {
-        try {
-          const api = getApi();
-          const res = await api.getCloudProviders();
-          const allProviders = res?.data?.items || [];
-
-          const providers = await Promise.all(
-            allProviders
-              .filter((p) => p.enabled)
-              .map(async (provider) => {
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                const regions = await fetchRegions(provider.id!, plan);
-                const providerInfo: CloudProviderInfo = {
-                  id: provider.id as CloudProvider,
-                  displayName: provider.display_name!,
-                  regions,
-                };
-                return providerInfo;
-              })
-          );
-          const firstProvider = providers[0];
-          onAvailable({ providers, defaultProvider: firstProvider?.id });
-        } catch (e) {
-          onUnavailable();
-        }
-      },
-      [fetchRegions, getApi]
-    );
-  return fetchProvidersWithRegions;
-};
-
-export const useFetchProviderRegions = (params: UseApiParams) => {
-  const getApi = useKms(params);
+export const useFetchProviderRegions = () => {
+  const getApi = useKms();
   return useCallback(
     async function fetchProviderRegions(
       provider: string,
@@ -262,12 +262,9 @@ export const useFetchProviderRegions = (params: UseApiParams) => {
   );
 };
 
-export const useGetSizes = (
-  params: UseApiParams,
-  instanceType: "developer" | "standard"
-) => {
-  const getApi = useKms(params);
-  const fetchRegions = useFetchProviderRegions(params);
+export const useGetSizes = (instanceType: "developer" | "standard") => {
+  const getApi = useKms();
+  const fetchRegions = useFetchProviderRegions();
   return useCallback(
     async (provider: CloudProvider, region: string) => {
       const api = getApi();
@@ -300,40 +297,38 @@ export const useGetSizes = (
   );
 };
 
-export const useGetStandardSizes = (
-  params: UseApiParams
-): CreateKafkaInstanceServices["getStandardSizes"] => {
-  const getSizes = useGetSizes(params, "standard");
-  return getSizes;
-};
+export const useGetStandardSizes =
+  (): CreateKafkaInstanceServices["getStandardSizes"] => {
+    const getSizes = useGetSizes("standard");
+    return getSizes;
+  };
 
-export const useGetTrialSizes = (
-  params: UseApiParams
-): CreateKafkaInstanceServices["getTrialSizes"] => {
-  const getStandardSizes = useGetSizes(params, "standard");
-  const getDeveloperSizes = useGetSizes(params, "developer");
-  return useCallback(
-    async (provider, region) => {
-      let standardSizes: StandardSizes;
-      try {
-        standardSizes = await getStandardSizes(provider, region);
-      } catch (e) {
-        // It can happen that the selected provider doesn't support standard instances.
-        // In this case we provide a faux sample list of sizes just to make the slider happy.
-        standardSizes = [
-          { id: "1", displayName: "1" },
-          { id: "2", displayName: "2" },
-        ] as StandardSizes;
-      }
-      const trialSizes = await getDeveloperSizes(provider, region);
-      return {
-        standard: standardSizes,
-        trial: trialSizes[0],
-      };
-    },
-    [getDeveloperSizes, getStandardSizes]
-  );
-};
+export const useGetTrialSizes =
+  (): CreateKafkaInstanceServices["getTrialSizes"] => {
+    const getStandardSizes = useGetSizes("standard");
+    const getDeveloperSizes = useGetSizes("developer");
+    return useCallback(
+      async (provider, region) => {
+        let standardSizes: StandardSizes;
+        try {
+          standardSizes = await getStandardSizes(provider, region);
+        } catch (e) {
+          // It can happen that the selected provider doesn't support standard instances.
+          // In this case we provide a faux sample list of sizes just to make the slider happy.
+          standardSizes = [
+            { id: "1", displayName: "1" },
+            { id: "2", displayName: "2" },
+          ] as StandardSizes;
+        }
+        const trialSizes = await getDeveloperSizes(provider, region);
+        return {
+          standard: standardSizes,
+          trial: trialSizes[0],
+        };
+      },
+      [getDeveloperSizes, getStandardSizes]
+    );
+  };
 
 function apiSizeToComponentSize(
   isDisabled: (id: string) => boolean,

@@ -1,4 +1,3 @@
-import type { ConfigurationParameters } from "@rhoas/kafka-management-sdk";
 import type { ReactChild } from "react";
 
 export type PageRoute = {
@@ -8,4 +7,4 @@ export type PageRoute = {
     description?: ReactChild;
     dismissable?: boolean | undefined;
   }) => void;
-} & Pick<ConfigurationParameters, "accessToken" | "basePath">;
+};
