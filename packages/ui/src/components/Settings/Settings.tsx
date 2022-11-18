@@ -1,6 +1,3 @@
-import type { FunctionComponent } from "react";
-import { useState } from "react";
-import { useTranslation } from "@rhoas/app-services-ui-components";
 import {
   Button,
   Card,
@@ -13,9 +10,12 @@ import {
   Spinner,
   Switch,
 } from "@patternfly/react-core";
+import { useTranslation } from "@rhoas/app-services-ui-components";
+import type { FunctionComponent } from "react";
+import { useState } from "react";
+import "./Settings.css";
 // import { useAlert, AlertVariant } from "@rhoas/app-services-ui-components";
 import type { SettingsStatus } from "./types";
-import "./Settings.css";
 
 export type SettingsProps = {
   onSubmitReAuthentication: (
@@ -85,7 +85,7 @@ export const Settings: FunctionComponent<SettingsProps> = ({
 
   return (
     <>
-      <PageSection padding={{ default: "noPadding" }}>
+      <PageSection>
         <Card>
           <CardBody>{t("settings.kafka_instance_settings_label")}</CardBody>
         </Card>

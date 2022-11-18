@@ -11,16 +11,12 @@ import {
   TextVariants,
 } from "@patternfly/react-core";
 import { HelpIcon } from "@patternfly/react-icons";
-import { useState } from "react";
-import type { FunctionComponent } from "react";
 import { Trans, useTranslation } from "@rhoas/app-services-ui-components";
+import type { FunctionComponent } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ExternalLink } from "@rhoas/app-services-ui-components";
-import "./KafkaInstanceDrawer.css";
-import { SuspendedConnection } from "./components/SuspendedConnection";
 
-export type KafkaConnectionTabP2Props = {
-  isKafkaSuspended?: boolean;
+export type KafkaConnectionTabP1Props = {
   isKafkaPending?: boolean;
   externalServer?: string;
   tokenEndPointUrl: string;
@@ -31,10 +27,9 @@ export type KafkaConnectionTabP2Props = {
   kafkaFleetManagerUrl: string;
 };
 
-export const KafkaConnectionTabP2: FunctionComponent<
-  KafkaConnectionTabP2Props
+export const KafkaConnectionTabP1: FunctionComponent<
+  KafkaConnectionTabP1Props
 > = ({
-  isKafkaSuspended,
   isKafkaPending,
   externalServer,
   tokenEndPointUrl,
@@ -44,7 +39,7 @@ export const KafkaConnectionTabP2: FunctionComponent<
   kafkaFleetManagerUrl,
   showCreateServiceAccountModal,
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("connection-tab-p1");
 
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
@@ -52,26 +47,24 @@ export const KafkaConnectionTabP2: FunctionComponent<
     setIsExpanded(!isExpanded);
   };
 
-  return isKafkaSuspended ? (
-    <SuspendedConnection />
-  ) : (
+  return (
     <div className="mas--details__drawer--tab-content">
       <TextContent className="pf-u-pb-sm">
         <Text component={TextVariants.small}>
-          {t("connection-tab:drawer_resource_tab_body_description_1")}
+          {t("drawer_resource_tab_body_description_1")}
         </Text>
         <Text component={TextVariants.h3} className="pf-u-mt-xl">
-          {t("connection-tab:bootstrap_server")}
+          {t("bootstrap_server")}
         </Text>
         <Text component={TextVariants.small}>
-          {t("connection-tab:bootstrap_server_description")}
+          {t("bootstrap_server_description")}
         </Text>
         {isKafkaPending ? (
           <Skeleton fontSize="2xl" />
         ) : (
           <ClipboardCopy
             data-testid="drawerStreams-copyBootstrapURL"
-            textAriaLabel={t("connection-tab:bootstrap_server")}
+            textAriaLabel={t("bootstrap_server")}
             isReadOnly
           >
             {externalServer}
@@ -80,13 +73,13 @@ export const KafkaConnectionTabP2: FunctionComponent<
       </TextContent>
       <TextContent className="pf-u-pb-sm">
         <Text component={TextVariants.h3} className="pf-u-mt-xl">
-          {t("connection-tab:service_accounts_small")}
+          {t("service_accounts_small")}
         </Text>
         <Text component={TextVariants.small}>
           {
             <Trans
               i18nKey={
-                "connection-tab:create_service_account_to_generate_credentials"
+                "connection-tab-p1:create_service_account_to_generate_credentials"
               }
               components={{
                 value: (
@@ -106,13 +99,13 @@ export const KafkaConnectionTabP2: FunctionComponent<
         onClick={showCreateServiceAccountModal}
         data-testid="drawerStreams-buttonCreateServiceAccount"
       >
-        {t("connection-tab:create_service_account")}
+        {t("create_service_account")}
       </Button>
       <TextContent className="pf-u-pt-sm">
         <Text component={TextVariants.small}>
           {
             <Trans
-              i18nKey={"connection-tab:current_instance"}
+              i18nKey={"connection-tab-p1:current_instance"}
               components={{
                 value: <Link to={linkToAccessTab}></Link>,
               }}
@@ -125,7 +118,7 @@ export const KafkaConnectionTabP2: FunctionComponent<
           toggleContent={
             <div className="pf-c-content">
               <Text component={TextVariants.h3} className={"pf-c-content"}>
-                {t("connection-tab:rest_api_header")}
+                {t("rest_api_header")}
               </Text>
             </div>
           }
@@ -135,24 +128,22 @@ export const KafkaConnectionTabP2: FunctionComponent<
         >
           <TextContent className="pf-u-pb-sm">
             <Text component={TextVariants.small}>
-              {t("connection-tab:rest_api_description")}
+              {t("rest_api_description")}
             </Text>
           </TextContent>
           <TextContent>
             <strong>
-              {t("connection-tab:kafka_instance_url_label")}
+              {t("kafka_instance_url_label")}
               <Popover
                 headerContent={
-                  <div>
-                    {t("connection-tab:kafka_instance_url_popover_label")}
-                  </div>
+                  <div>{t("kafka_instance_url_popover_label")}</div>
                 }
                 bodyContent={
                   <TextContent>
-                    <p>{t("connection-tab:kafka_instance_url_popover_body")}</p>
+                    <p>{t("kafka_instance_url_popover_body")}</p>
                     <p>
                       <Trans
-                        ns={"connection-tab"}
+                        ns={"connection-tab-p1"}
                         i18nKey={"popover_helper_text"}
                         components={[
                           <Button
@@ -160,11 +151,6 @@ export const KafkaConnectionTabP2: FunctionComponent<
                             variant={ButtonVariant.link}
                             component="a"
                             href="https://console.redhat.com/docs/api/kafkainstance?github-owner=redhat-developer&github-repo=app-services-sdk-core&github-content=kafka-admin-rest.yaml%3Fref%3Ddoc-portal&readonly=true"
-                          />,
-                          <ExternalLink
-                            testId={"customerPortal-link"}
-                            href="https://access.redhat.com/documentation/en-us/red_hat_openshift_application_services/1/guide/2409253a-45ee-470e-bdc9-5db4bfcf9d0f"
-                            className={"pf-u-ml-xs"}
                           />,
                         ]}
                       />
@@ -174,9 +160,7 @@ export const KafkaConnectionTabP2: FunctionComponent<
               >
                 <Button
                   variant={ButtonVariant.plain}
-                  aria-label={t(
-                    "connection-tab:kafka_instance_url_button_aria_label"
-                  )}
+                  aria-label={t("kafka_instance_url_button_aria_label")}
                 >
                   <HelpIcon />
                 </Button>
@@ -184,7 +168,7 @@ export const KafkaConnectionTabP2: FunctionComponent<
             </strong>
             {adminAPIUrl ? (
               <ClipboardCopy
-                textAriaLabel={t("connection-tab:kafka_instance_url_label")}
+                textAriaLabel={t("kafka_instance_url_label")}
                 isReadOnly
               >
                 {adminAPIUrl}
@@ -194,25 +178,23 @@ export const KafkaConnectionTabP2: FunctionComponent<
             )}
             <TextContent className="pf-u-pt-sm">
               <Text component={TextVariants.small}>
-                {t("connection-tab:kafka_instance_url_description")}
+                {t("kafka_instance_url_description")}
               </Text>
             </TextContent>
           </TextContent>
           <TextContent className="pf-u-mt-md">
             <strong>
-              {t("connection-tab:kafka_management_url")}
+              {t("kafka_management_url")}
               <Popover
                 headerContent={
-                  <div>
-                    {t("connection-tab:kafka_management_popover_header")}
-                  </div>
+                  <div>{t("kafka_management_popover_header")}</div>
                 }
                 bodyContent={
                   <TextContent>
-                    <p>{t("connection-tab:kafka_management_popover_body")}</p>
+                    <p>{t("kafka_management_popover_body")}</p>
                     <p>
                       <Trans
-                        ns={"connection-tab"}
+                        ns={"connection-tab-p1"}
                         i18nKey={"popover_helper_text"}
                         components={[
                           <Button
@@ -220,11 +202,6 @@ export const KafkaConnectionTabP2: FunctionComponent<
                             variant={ButtonVariant.link}
                             component="a"
                             href="https://console.redhat.com/docs/api/kafkamgmt?github-owner=redhat-developer&github-repo=app-services-sdk-core&github-content=kas-fleet-manager.yaml%3Fref%3Ddoc-portal"
-                          />,
-                          <ExternalLink
-                            testId={"customerPortal-link"}
-                            href="https://access.redhat.com/documentation/en-us/red_hat_openshift_application_services/1/guide/2409253a-45ee-470e-bdc9-5db4bfcf9d0f"
-                            className={"pf-u-ml-xs"}
                           />,
                         ]}
                       />
@@ -234,9 +211,7 @@ export const KafkaConnectionTabP2: FunctionComponent<
               >
                 <Button
                   variant={ButtonVariant.plain}
-                  aria-label={t(
-                    "connection-tab:kafka_management_button_aria_label"
-                  )}
+                  aria-label={t("kafka_management_button_aria_label")}
                 >
                   <HelpIcon />
                 </Button>
@@ -246,7 +221,7 @@ export const KafkaConnectionTabP2: FunctionComponent<
               <Skeleton fontSize="2xl" />
             ) : (
               <ClipboardCopy
-                textAriaLabel={t("connection-tab:kafka_management_url")}
+                textAriaLabel={t("kafka_management_url")}
                 isReadOnly
               >
                 {kafkaFleetManagerUrl}
@@ -254,7 +229,7 @@ export const KafkaConnectionTabP2: FunctionComponent<
             )}
             <TextContent className="pf-u-pt-sm">
               <Text component={TextVariants.small}>
-                {t("connection-tab:kafka_management_description")}
+                {t("kafka_management_description")}
               </Text>
             </TextContent>
           </TextContent>
@@ -262,46 +237,41 @@ export const KafkaConnectionTabP2: FunctionComponent<
       </TextContent>
       <TextContent className="pf-u-pb-sm">
         <Text component={TextVariants.h3} className="pf-u-mt-xl">
-          {t("connection-tab:authentication_method")}
+          {t("authentication_method")}
         </Text>
         <Text component={TextVariants.h4} className="pf-u-mt-md">
-          {t("connection-tab:sasl_oauthbearer")}{" "}
-          <Label color="green">{t("connection-tab:recommended")}</Label>
+          {t("sasl_oauthbearer")}{" "}
+          <Label color="green">{t("recommended")}</Label>
           <Popover
-            aria-label={t("connection-tab:sasl_oauthbearer")}
-            bodyContent={
-              <div>{t("connection-tab:sasl_oauthbearer_popover_content")}</div>
-            }
+            aria-label={t("sasl_oauthbearer")}
+            bodyContent={<div>{t("sasl_oauthbearer_popover_content")}</div>}
           >
             <Button
               variant={ButtonVariant.plain}
-              aria-label={t("connection-tab:more_info_about_sasl_oauthbearer")}
+              aria-label={t("more_info_about_sasl_oauthbearer")}
             >
               <HelpIcon />
             </Button>
           </Popover>
         </Text>
         <Text component={TextVariants.small}>
-          {t("connection-tab:sasl_oauthbearer_description")}
+          {t("sasl_oauthbearer_description")}
         </Text>
-        <strong>{t("connection-tab:token_endpoint_url")}</strong>
+        <strong>{t("token_endpoint_url")}</strong>
         {isKafkaPending ? (
           <Skeleton fontSize="2xl" />
         ) : (
-          <ClipboardCopy
-            textAriaLabel={t("connection-tab:token_endpoint_url")}
-            isReadOnly
-          >
+          <ClipboardCopy textAriaLabel={t("token_endpoint_url")} isReadOnly>
             {tokenEndPointUrl}
           </ClipboardCopy>
         )}
       </TextContent>
       <TextContent className="pf-u-pb-sm">
         <Text component={TextVariants.h4} className="pf-u-mt-md">
-          {t("connection-tab:sasl_plain")}
+          {t("sasl_plain")}
         </Text>
         <Text component={TextVariants.small}>
-          {t("connection-tab:sasl_plain_description")}
+          {t("sasl_plain_description")}
         </Text>
       </TextContent>
     </div>

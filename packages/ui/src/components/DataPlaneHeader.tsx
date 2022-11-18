@@ -83,6 +83,7 @@ export const DataPlaneHeader: VoidFunctionComponent<DataPlaneHeaderProps> = ({
         >
           <NavList>
             <NavItem
+              style={{ borderTop: 0 }}
               data-testid="pageKafka-tabDashboard"
               id="dashboard-tab-section"
               aria-label={t("dashboard.dashboard")}
@@ -94,6 +95,7 @@ export const DataPlaneHeader: VoidFunctionComponent<DataPlaneHeaderProps> = ({
               </Link>
             </NavItem>
             <NavItem
+              style={{ borderTop: 0 }}
               data-testid="pageKafka-tabTopics"
               id="topics-tab-section"
               aria-label={t("topic.topics")}
@@ -103,6 +105,7 @@ export const DataPlaneHeader: VoidFunctionComponent<DataPlaneHeaderProps> = ({
               <Link to={sectionsHref["topics"]}>{t("topic.topics")}</Link>
             </NavItem>
             <NavItem
+              style={{ borderTop: 0 }}
               data-testid="pageKafka-tabConsumers"
               id="consumer-groups-tab-section"
               aria-label={t("consumerGroup.consumer_groups")}
@@ -114,6 +117,7 @@ export const DataPlaneHeader: VoidFunctionComponent<DataPlaneHeaderProps> = ({
               </Link>
             </NavItem>
             <NavItem
+              style={{ borderTop: 0 }}
               data-testid="pageKafka-tabPermissions"
               id="permissions-tab-section"
               aria-label={t("permission.tab.label")}
@@ -125,6 +129,7 @@ export const DataPlaneHeader: VoidFunctionComponent<DataPlaneHeaderProps> = ({
               </Link>
             </NavItem>
             <NavItem
+              style={{ borderTop: 0 }}
               data-testid="pageKafka-tabSettings"
               id="settings-tab-section"
               aria-label={t("settings.settings")}

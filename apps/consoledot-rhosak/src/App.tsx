@@ -8,7 +8,7 @@ import { useTranslation } from "@rhoas/app-services-ui-components";
 import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import type { Reducer } from "redux";
-import "./App.scss";
+import "./App.css";
 
 import { AppRoutes } from "./AppRoutes";
 
@@ -26,14 +26,15 @@ const App = () => {
       const { updateDocumentTitle, on } = chrome.init();
 
       updateDocumentTitle(title);
-      unregister = on("APP_NAVIGATION", (event) =>
-        history.push(`/${event.navId}`)
+      unregister = on(
+        "APP_NAVIGATION",
+        (event) => event.navId && history.push(`/${event.navId}`)
       );
     }
     return () => {
       unregister && unregister();
     };
-  }, [history, chrome]);
+  }, [history, chrome, title]);
 
   return (
     <>

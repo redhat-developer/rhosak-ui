@@ -1,3 +1,4 @@
+import { PageSection } from "@patternfly/react-core";
 import type { SortDirection } from "@rhoas/app-services-ui-components";
 import {
   usePaginationSearchParams,
@@ -174,30 +175,32 @@ export const KafkaInstances = <T extends KafkaInstance>({
   }, [onRefresh]);
 
   return (
-    <InstancesTable
-      instances={instances}
-      itemCount={count}
-      page={page}
-      perPage={perPage}
-      names={namesChips.chips}
-      owners={ownersChips.chips}
-      statuses={statusesChips.chips}
-      isColumnSortable={isColumnSortable}
-      onPageChange={setPagination}
-      onSearchName={namesChips.add}
-      onRemoveNameChip={namesChips.remove}
-      onRemoveNameChips={namesChips.clear}
-      onSearchOwner={ownersChips.add}
-      onRemoveOwnerChip={ownersChips.remove}
-      onRemoveOwnerChips={ownersChips.clear}
-      onSearchStatus={statusesChips.toggle}
-      onRemoveStatusChip={statusesChips.remove}
-      onRemoveStatusChips={statusesChips.clear}
-      onClearAllFilters={onClearAllFilters}
-      onChangeOwner={(row) => onChangeOwner(row, onRefresh)}
-      onDelete={(row) => onDelete(row, onRefresh)}
-      onCreate={() => onCreate(onRefresh)}
-      {...props}
-    />
+    <PageSection isFilled={true}>
+      <InstancesTable
+        instances={instances}
+        itemCount={count}
+        page={page}
+        perPage={perPage}
+        names={namesChips.chips}
+        owners={ownersChips.chips}
+        statuses={statusesChips.chips}
+        isColumnSortable={isColumnSortable}
+        onPageChange={setPagination}
+        onSearchName={namesChips.add}
+        onRemoveNameChip={namesChips.remove}
+        onRemoveNameChips={namesChips.clear}
+        onSearchOwner={ownersChips.add}
+        onRemoveOwnerChip={ownersChips.remove}
+        onRemoveOwnerChips={ownersChips.clear}
+        onSearchStatus={statusesChips.toggle}
+        onRemoveStatusChip={statusesChips.remove}
+        onRemoveStatusChips={statusesChips.clear}
+        onClearAllFilters={onClearAllFilters}
+        onChangeOwner={(row) => onChangeOwner(row, onRefresh)}
+        onDelete={(row) => onDelete(row, onRefresh)}
+        onCreate={() => onCreate(onRefresh)}
+        {...props}
+      />
+    </PageSection>
   );
 };

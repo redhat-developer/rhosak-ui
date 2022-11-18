@@ -6,11 +6,10 @@ import {
   TextListItemVariants,
   TextListVariants,
 } from "@patternfly/react-core";
-import { FormatDate } from "@rhoas/app-services-ui-components";
+import { FormatDate, useTranslation } from "@rhoas/app-services-ui-components";
 import type { ReactChild, VoidFunctionComponent } from "react";
-import { useTranslation } from "@rhoas/app-services-ui-components";
-import type { MarketplaceSubscription, Plan } from "../../types";
-import { DetailsTabAlert } from "./components/DetailsTabAlert";
+import type { MarketplaceSubscription, Plan } from "../../../types";
+import { DetailsTabAlert } from "./DetailsTabAlert";
 
 /**
  * All fields marked as accepting undefined will show a skeleton loader until the value is available.

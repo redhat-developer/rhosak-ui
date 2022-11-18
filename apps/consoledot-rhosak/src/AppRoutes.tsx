@@ -1,4 +1,4 @@
-import { Bullseye, Spinner } from "@patternfly/react-core";
+import { Loading } from "@rhoas/app-services-ui-components";
 import { Suspense } from "react";
 import { Route, Switch } from "react-router-dom";
 import { ControlPlaneRoute } from "./routes";
@@ -8,13 +8,7 @@ export const AppRoutes = () => (
     <Route
       path="/streams"
       render={() => (
-        <Suspense
-          fallback={
-            <Bullseye>
-              <Spinner />
-            </Bullseye>
-          }
-        >
+        <Suspense fallback={<Loading />}>
           <ControlPlaneRoute />
         </Suspense>
       )}
