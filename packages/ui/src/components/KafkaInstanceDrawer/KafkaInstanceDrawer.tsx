@@ -1,3 +1,4 @@
+import type { TabsProps } from "@patternfly/react-core";
 import {
   Drawer,
   DrawerActions,
@@ -19,30 +20,39 @@ import {
 import { useTranslation } from "@rhoas/app-services-ui-components";
 import { parseISO } from "date-fns";
 import type { FunctionComponent, VoidFunctionComponent } from "react";
+import { useCallback, useMemo } from "react";
 import type { KafkaInstance } from "../../types";
 import { CreatingStatuses } from "../../types";
 import { KafkaConnectionTabP2, KafkaDetailsTab } from "./components";
 
 export type KafkaInstanceDrawerProps = {
   instance?: KafkaInstance;
+  activeTab: KafkaInstanceDrawerTab;
+  onTabChange: (tab: KafkaInstanceDrawerTab) => void;
   onClose: () => void;
 };
 
 export const KafkaInstanceDrawer: FunctionComponent<
   KafkaInstanceDrawerProps
-> = ({ instance, onClose, children }) => {
+> = ({ instance, activeTab, onTabChange, onClose, children }) => {
   const isDrawerOpen = instance !== undefined;
+  const content = useMemo(() => {
+    return (
+      <DrawerPanelContent>
+        {instance ? (
+          <KafkaInstanceDrawerPanel
+            instance={instance}
+            activeTab={activeTab}
+            onTabChange={onTabChange}
+            onClose={onClose}
+          />
+        ) : null}
+      </DrawerPanelContent>
+    );
+  }, [activeTab, instance, onClose, onTabChange]);
   return (
     <Drawer isExpanded={isDrawerOpen} isInline={true}>
-      <DrawerContent
-        panelContent={
-          <DrawerPanelContent>
-            {instance ? (
-              <KafkaInstanceDrawerPanel instance={instance} onClose={onClose} />
-            ) : null}
-          </DrawerPanelContent>
-        }
-      >
+      <DrawerContent panelContent={content}>
         <DrawerContentBody
           className={"pf-u-display-flex pf-u-flex-direction-column"}
         >
@@ -53,10 +63,20 @@ export const KafkaInstanceDrawer: FunctionComponent<
   );
 };
 
+export type KafkaInstanceDrawerTab = "details" | "connections";
+
 export const KafkaInstanceDrawerPanel: VoidFunctionComponent<
-  Required<KafkaInstanceDrawerProps>
-> = ({ instance, onClose }) => {
+  Required<KafkaInstanceDrawerProps> & { activeTab: KafkaInstanceDrawerTab }
+> = ({ instance, activeTab, onTabChange, onClose }) => {
   const { t } = useTranslation(["kafka"]);
+
+  const handleSelect: TabsProps["onSelect"] = useCallback(
+    (_, tab) => {
+      const t = tab as KafkaInstanceDrawerTab;
+      onTabChange(t);
+    },
+    [onTabChange]
+  );
 
   const getExternalServer = () => {
     // const { bootstrap_server_host } = instance.request;
@@ -94,12 +114,9 @@ export const KafkaInstanceDrawerPanel: VoidFunctionComponent<
         </DrawerActions>
       </DrawerHead>
       <DrawerPanelBody>
-        <Tabs
-          activeKey={"DETAILS"}
-          // onSelect={(_, tab) => setActiveTab(tab)}
-        >
+        <Tabs activeKey={activeTab} onSelect={handleSelect}>
           <Tab
-            eventKey={"DETAILS"}
+            eventKey={"details"}
             title={<TabTitleText>{t("drawer-tabs.details")}</TabTitleText>}
           >
             <KafkaDetailsTab
@@ -125,7 +142,7 @@ export const KafkaInstanceDrawerPanel: VoidFunctionComponent<
             />
           </Tab>
           <Tab
-            eventKey={"CONNECTION"}
+            eventKey={"connections"}
             title={<TabTitleText>{t("drawer-tabs.connections")}</TabTitleText>}
             data-testid="drawerStreams-tabConnect"
           >

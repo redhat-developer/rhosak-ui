@@ -1,2 +1,2 @@
 export * from "./EmptyStateNoInstances";
-export * from "./InstancesTable";
+export * from "./EmptyStateNoResults";

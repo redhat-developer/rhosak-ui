@@ -18,7 +18,7 @@ export const MetricsLayout: FunctionComponent<MetricsLayoutProps> = ({
   topicMetrics,
 }) => {
   return (
-    <PageSection hasOverflowScroll={true}>
+    <PageSection hasOverflowScroll={true} aria-label={"TODO"}>
       <Grid hasGutter>
         <GridItem>{metricsLagAlert}</GridItem>
         <GridItem sm={4}>{topicsKpi}</GridItem>

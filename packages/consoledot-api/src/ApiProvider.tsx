@@ -24,9 +24,10 @@ export const ApiProvider: FunctionComponent<ApiContextProps> = ({
   children,
   ...context
 }) => {
+  const showDevTools = localStorage.getItem("mas.devtools") === "true";
   return (
     <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {showDevTools ? <ReactQueryDevtools initialIsOpen={false} /> : undefined}
       <ApiContext.Provider value={context}>{children}</ApiContext.Provider>
     </QueryClientProvider>
   );

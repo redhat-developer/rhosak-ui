@@ -8,6 +8,7 @@ import type {
 import type { KafkaRequest } from "@rhoas/kafka-management-sdk";
 // import type { AxiosCacheRequestConfig } from "axios-simple-cache-adapter";
 import { useCallback } from "react";
+import { useQuery } from "react-query";
 import { SimplifiedStatuses } from "ui";
 import { useKms } from "./useApi";
 import {
@@ -19,13 +20,18 @@ export type KafkaInstanceEnhanced = Required<KafkaInstance> & {
   request: KafkaRequest;
 };
 
-export function useKafkaInstances() {
+export function useKafkaInstances(
+  ...parameters: Parameters<
+    KafkaInstancesProps<KafkaInstanceEnhanced>["getInstances"]
+  >
+) {
+  const [page, perPage, query, sort, direction] = parameters;
   const getKms = useKms();
   const { kafkaRequestToKafkaInstance } = useEnrichedKafkaInstance();
-  return useCallback<
-    KafkaInstancesProps<KafkaInstanceEnhanced>["getInstances"]
-  >(
-    async (page, perPage, query, sort, direction) => {
+
+  return useQuery(
+    ["instances", page, perPage, query, sort, direction],
+    async function fetchKafkaInstances() {
       // const filterQuery = getFilterQuery();
       const apisService = getKms();
 
@@ -60,8 +66,8 @@ export function useKafkaInstances() {
           sort ? `${uiColumnMapping[sort]} ${direction}` : undefined,
           querystring
           /*{
-            cache: false,
-          } as AxiosCacheRequestConfig*/
+          cache: false,
+        } as AxiosCacheRequestConfig*/
         );
         const rawInstances = res.data.items;
         const count = res.data.total;
@@ -80,7 +86,9 @@ export function useKafkaInstances() {
         };
       }
     },
-    [getKms, kafkaRequestToKafkaInstance]
+    {
+      refetchInterval: 5000,
+    }
   );
 }
 

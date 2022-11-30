@@ -32,7 +32,7 @@
     "redux": "4.2.0",
     "redux-logger": "3.0.6",
     "redux-promise-middleware": "6.1.3",
-    "consoledot-containers": "*",
+    "consoledot-api": "*",
     "ui": "*"
   },
   "devDependencies": {

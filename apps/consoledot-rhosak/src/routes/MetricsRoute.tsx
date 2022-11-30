@@ -1,7 +1,7 @@
 import type { VoidFunctionComponent } from "react";
 import { Metrics } from "ui";
 
-export const MetricsConnected: VoidFunctionComponent = () => {
+export const MetricsRoute: VoidFunctionComponent = () => {
   return (
     <Metrics
       onCreateTopic={() => {}}

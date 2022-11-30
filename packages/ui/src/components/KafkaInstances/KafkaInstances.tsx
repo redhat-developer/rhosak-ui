@@ -18,12 +18,13 @@ import { useKafkaLabels } from "../../hooks";
 import type { KafkaInstance, SimplifiedStatus } from "../../types";
 import { DeletingStatuses } from "../../types";
 import { KafkaInstanceStatus } from "../KafkaInstanceStatus";
-import type { EmptyStateNoInstancesProps } from "./components/EmptyStateNoInstances";
-import { EmptyStateNoInstances } from "./components/EmptyStateNoInstances";
-import type { EmptyStateNoResultsProps } from "./components/EmptyStateNoResults";
-import { EmptyStateNoResults } from "./components/EmptyStateNoResults";
+import type {
+  EmptyStateNoInstancesProps,
+  EmptyStateNoResultsProps,
+} from "./components";
+import { EmptyStateNoInstances, EmptyStateNoResults } from "./components";
 
-export const Columns = [
+const Columns = [
   "name",
   "owner",
   "createdAt",
@@ -32,7 +33,7 @@ export const Columns = [
   "status",
 ] as const;
 
-export type InstancesTableProps<T extends KafkaInstance> = {
+export type KafkaInstancesProps<T extends KafkaInstance> = {
   instances: Array<T> | undefined | null;
   getUrlForInstance: (row: T) => string;
   names: string[];
@@ -70,7 +71,7 @@ export type InstancesTableProps<T extends KafkaInstance> = {
   EmptyStateNoInstancesProps &
   EmptyStateNoResultsProps;
 
-export const InstancesTable = <T extends KafkaInstance>({
+export const KafkaInstances = <T extends KafkaInstance>({
   instances,
   itemCount,
   page,
@@ -103,7 +104,7 @@ export const InstancesTable = <T extends KafkaInstance>({
   onRemoveStatusChip,
   onRemoveStatusChips,
   onClearAllFilters,
-}: InstancesTableProps<T>) => {
+}: KafkaInstancesProps<T>) => {
   const { t } = useTranslation("kafka");
   const labels = useKafkaLabels();
   const breakpoint = "lg";
@@ -128,6 +129,7 @@ export const InstancesTable = <T extends KafkaInstance>({
                   case "name":
                     return (
                       <Button
+                        isInline={true}
                         variant="link"
                         component={(props) => (
                           <Link to={getUrlForInstance(row)} {...props}>
