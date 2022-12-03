@@ -7,15 +7,16 @@ import { memo, useEffect } from "react";
 import type { Reducer } from "redux";
 import { KafkaInstanceDrawer } from "ui";
 import "./App.css";
-import { useAppProvider } from "./AppProvider";
 
 import { AppRoutes } from "./AppRoutes";
+import { useDrawer } from "./DrawerProvider";
 
 const App = memo(() => {
   // const history = useHistory();
   const chrome = useChrome();
+
   const { selectedInstance, activeTab, setActiveTab, deselectInstance } =
-    useAppProvider();
+    useDrawer();
 
   const { t } = useTranslation();
   const title = t("kafka:rhosakTitle");

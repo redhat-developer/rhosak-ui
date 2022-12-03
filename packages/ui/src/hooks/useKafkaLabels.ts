@@ -53,6 +53,9 @@ export function useKafkaLabels() {
     connectionRate: t("fields.connectionRate"),
     messageSize: t("fields.messageSize"),
     billing: t("fields.billing"),
+    adminUrl: t("field.adminUrl"),
+    bootstrapUrl: t("field.bootstrapUrl"),
+    version: t("field.version"),
   };
   return {
     fields,

@@ -12,12 +12,12 @@ module.exports = {
    */
   plugins: [],
   _unstableHotReload: process.env.HOT === "true",
-  resolve: {
-    fallback: {
-      http: false,
-      https: false,
-      "follow-redirects/http": "http",
-      "follow-redirects/https": "https",
-    },
-  },
+  // resolve: {
+  //   fallback: {
+  //     http: false,
+  //     https: false,
+  //     "follow-redirects/http": "http",
+  //     "follow-redirects/https": "https",
+  //   },
+  // },
 };

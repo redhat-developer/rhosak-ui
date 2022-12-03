@@ -3,20 +3,12 @@ import {
   useSortableSearchParams,
   useURLSearchParamsChips,
 } from "@rhoas/app-services-ui-components";
-import { useKafkaInstances } from "consoledot-api";
+import { SortableColumns, useKafkaInstances } from "consoledot-api";
 import type { FunctionComponent } from "react";
 import { useCallback } from "react";
 import type { KafkaInstance, KafkaInstancesProps, SimplifiedStatus } from "ui";
 import { ControlPlaneHeader, KafkaInstances, useKafkaLabels } from "ui";
-import { useAppProvider } from "../AppProvider";
-
-const SortableColumns = [
-  "name",
-  "owner",
-  "createdAt",
-  "provider",
-  "region",
-] as const;
+import { useDrawer } from "../DrawerProvider";
 
 export type KafkaInstancesContainerProps = Pick<
   KafkaInstancesProps<KafkaInstance>,
@@ -26,7 +18,7 @@ export type KafkaInstancesContainerProps = Pick<
 export const KafkaInstancesRoute: FunctionComponent<
   KafkaInstancesContainerProps
 > = ({ getUrlForInstance }) => {
-  const { selectedInstance, selectInstance, setActiveTab } = useAppProvider();
+  const { selectedInstance, selectInstance, setActiveTab } = useDrawer();
 
   const labels = useKafkaLabels();
 
@@ -51,17 +43,15 @@ export const KafkaInstancesRoute: FunctionComponent<
     "desc"
   );
 
-  const { data } = useKafkaInstances(
+  const { data } = useKafkaInstances({
     page,
     perPage,
-    {
-      name: namesChips.chips,
-      owner: ownersChips.chips,
-      status: statusesChips.chips,
-    },
-    sort,
-    sortDirection
-  );
+    name: namesChips.chips,
+    owner: ownersChips.chips,
+    status: statusesChips.chips,
+    sort: sort!,
+    direction: sortDirection,
+  });
 
   const onClearAllFilters = useCallback(() => {
     namesChips.clearChained(
@@ -75,7 +65,7 @@ export const KafkaInstancesRoute: FunctionComponent<
   const handleDetailsClick: KafkaInstancesProps<KafkaInstance>["onDetails"] =
     useCallback(
       (instance) => {
-        selectInstance(instance);
+        selectInstance(instance.id);
         setActiveTab("details");
       },
       [selectInstance, setActiveTab]
@@ -84,7 +74,7 @@ export const KafkaInstancesRoute: FunctionComponent<
   const handleConnectionsClick: KafkaInstancesProps<KafkaInstance>["onDetails"] =
     useCallback(
       (instance) => {
-        selectInstance(instance);
+        selectInstance(instance.id);
         setActiveTab("connections");
       },
       [selectInstance, setActiveTab]

@@ -52,12 +52,10 @@
     "wait-on": "6.0.1"
   },
   "dependencies": {
-    "@rhoas/account-management-sdk": "^0.48.0",
+    "@rhoas/account-management-sdk": "0.51.0",
     "@rhoas/app-services-ui-components": "2.14.3",
-    "@rhoas/kafka-management-sdk": "^0.48.0",
+    "@rhoas/kafka-management-sdk": "0.51.0",
     "@xstate/react": "3.0.0",
-    "axios": "^1.1.3",
-    "axios-simple-cache-adapter": "^1.2.1",
     "byte-size": "8.1.0",
     "convert": "4.7.0",
     "date-fns": "2.29.3",

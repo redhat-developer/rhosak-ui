@@ -1,194 +1,126 @@
-import type {
-  CloudProvider,
-  KafkaInstance,
-  KafkaInstancesProps,
-  Plan,
-  Status,
-} from "@rhoas/app-services-ui-components";
-import type { KafkaRequest } from "@rhoas/kafka-management-sdk";
-// import type { AxiosCacheRequestConfig } from "axios-simple-cache-adapter";
-import { useCallback } from "react";
-import { useQuery } from "react-query";
+import type { DefaultApi, KafkaRequest } from "@rhoas/kafka-management-sdk";
+import { useQuery, useQueryClient } from "react-query";
+import type { SimplifiedStatus } from "ui";
 import { SimplifiedStatuses } from "ui";
+import type { KafkaInstanceEnhanced } from "./kafkaRequestToKafkaInstanceEnhanched";
 import { useKms } from "./useApi";
-import {
-  useGetSizes,
-  useStandardQuota,
-} from "./useCreateKafkaInstanceServices";
-
-export type KafkaInstanceEnhanced = Required<KafkaInstance> & {
-  request: KafkaRequest;
-};
+import { useKafkaInstanceTransformer } from "./useKafkaInstance";
 
 export function useKafkaInstances(
-  ...parameters: Parameters<
-    KafkaInstancesProps<KafkaInstanceEnhanced>["getInstances"]
-  >
+  params: Omit<FetchKafkaInstancesParams, "dataMapper" | "getKafkas">
 ) {
-  const [page, perPage, query, sort, direction] = parameters;
+  const queryClient = useQueryClient();
+  const dataMapper = useKafkaInstanceTransformer();
   const getKms = useKms();
-  const { kafkaRequestToKafkaInstance } = useEnrichedKafkaInstance();
+  const api = getKms();
 
-  return useQuery(
-    ["instances", page, perPage, query, sort, direction],
-    async function fetchKafkaInstances() {
-      // const filterQuery = getFilterQuery();
-      const apisService = getKms();
-
-      type columns = NonNullable<typeof sort>;
-      const uiColumnMapping: { [key in columns]: string } = {
-        name: "name",
-        owner: "owner",
-        provider: "cloud_provider",
-        region: "region",
-        createdAt: "created_at",
-      };
-
-      try {
-        const { name, status, owner } = query;
-
-        const querystring = [
-          valuesToQuery("name", name, "%"),
-          valuesToQuery("owner", owner, "%"),
-          valuesToQuery(
-            "status",
-            status.flatMap((s) => SimplifiedStatuses[s]),
-            "="
-          ),
-        ]
-          .filter(Boolean)
-          .map((q) => `(${q!})`)
-          .join(" and ");
-
-        const res = await apisService.getKafkas(
-          page.toString(10),
-          perPage.toString(10),
-          sort ? `${uiColumnMapping[sort]} ${direction}` : undefined,
-          querystring
-          /*{
-          cache: false,
-        } as AxiosCacheRequestConfig*/
-        );
-        const rawInstances = res.data.items;
-        const count = res.data.total;
-        const instances = await Promise.all(
-          rawInstances.map(kafkaRequestToKafkaInstance)
-        );
-        return {
-          instances,
-          count,
-        };
-      } catch (error) {
-        // handleServerError(error);
-        return {
-          instances: [],
-          count: 0,
-        };
-      }
+  return useQuery({
+    queryKey: [{ scope: "instances", entity: "list", ...params }],
+    queryFn: async () => {
+      const res = await fetchKafkaInstances({
+        getKafkas: (...args) => api.getKafkas(...args),
+        dataMapper,
+        ...params,
+      });
+      res.instances.forEach((i) =>
+        queryClient.setQueryData(
+          [
+            {
+              scope: "kafka-instances",
+              entity: "details",
+              id: i.id,
+            },
+          ],
+          i
+        )
+      );
+      return res;
     },
-    {
-      refetchInterval: 5000,
-    }
-  );
+    refetchInterval: 5000,
+  });
 }
 
-export function useEnrichedKafkaInstance() {
-  const getQuota = useStandardQuota();
-  const getDeveloperSizes = useGetSizes("developer");
-  const getStandardSizes = useGetSizes("standard");
+export const SortableColumns = [
+  "name",
+  "owner",
+  "createdAt",
+  "provider",
+  "region",
+] as const;
+export type SortableColumn = typeof SortableColumns[number];
 
-  const kafkaRequestToKafkaInstance = useCallback(
-    async (data: KafkaRequest): Promise<KafkaInstanceEnhanced> => {
-      const d = data;
+const uiColumnMapping: { [key in SortableColumn]: keyof KafkaRequest } = {
+  name: "name",
+  owner: "owner",
+  provider: "cloud_provider",
+  region: "region",
+  createdAt: "created_at",
+};
 
-      const { marketplaceSubscriptions } = await getQuota();
+type FetchKafkaInstancesParams = {
+  getKafkas: DefaultApi["getKafkas"];
+  dataMapper: (data: KafkaRequest) => Promise<KafkaInstanceEnhanced>;
+  page: number;
+  perPage: number;
+  name: string[];
+  owner: string[];
+  status: SimplifiedStatus[];
+  sort: SortableColumn;
+  direction: "asc" | "desc";
+};
 
-      const enhancedInstance: KafkaInstanceEnhanced = {
-        billing: undefined,
-        connectionRate: 0,
-        connections: 0,
-        createdAt: d.created_at || new Date().toISOString(),
-        egress: 0,
-        expiryDate: d.expires_at as string | undefined,
-        id: d.id,
-        ingress: 0,
-        maxPartitions: 0,
-        messageSize: 0,
-        name: d.name || "",
-        owner: d.owner || "",
-        plan: d.billing_model as Plan,
-        provider: d.cloud_provider as CloudProvider,
-        region: d.region || "",
-        size: "1",
-        status: apiStatusToUIStatus(d.status || ""),
-        storage: 0,
-        updatedAt: d.updated_at || new Date().toISOString(),
-        request: d,
-      };
+export async function fetchKafkaInstances(
+  params: FetchKafkaInstancesParams
+): Promise<{
+  instances: KafkaInstanceEnhanced[];
+  count: number;
+}> {
+  const {
+    name,
+    status,
+    owner,
+    sort,
+    direction,
+    page,
+    perPage,
+    dataMapper,
+    getKafkas,
+  } = params;
+  const search = filtersToSearch(name, owner, status);
 
-      // update the billing info
-      try {
-        const marketplaceForBilling = marketplaceSubscriptions.find((ms) =>
-          ms.subscriptions.find((s) => s === d.billing_cloud_account_id)
-        )?.marketplace;
-
-        const billing: KafkaInstanceEnhanced["billing"] =
-          d.billing_model === "standard"
-            ? "prepaid"
-            : marketplaceForBilling && d.billing_cloud_account_id
-            ? {
-                marketplace: marketplaceForBilling,
-                subscription: d.billing_cloud_account_id,
-              }
-            : undefined;
-        enhancedInstance.billing = billing;
-      } catch (e) {
-        console.warn(
-          "kafkaRequestToKafkaInstance",
-          `couldn't retrieve the billing info for`,
-          d
-        );
-      }
-
-      // update the limits
-      try {
-        const limits =
-          d.instance_type === "developer"
-            ? await getDeveloperSizes(
-                d.cloud_provider as CloudProvider,
-                d.region!
-              )
-            : await getStandardSizes(
-                d.cloud_provider as CloudProvider,
-                d.region!
-              );
-        const thisInstanceLimits = limits.find((l) => l.id === d.size_id);
-        if (thisInstanceLimits) {
-          enhancedInstance.size = thisInstanceLimits.displayName;
-          enhancedInstance.ingress = thisInstanceLimits.ingress;
-          enhancedInstance.egress = thisInstanceLimits.egress;
-          enhancedInstance.storage = d.max_data_retention_size?.bytes;
-          enhancedInstance.connections = thisInstanceLimits.connections;
-          enhancedInstance.connectionRate = thisInstanceLimits.connectionRate;
-          enhancedInstance.maxPartitions = thisInstanceLimits.maxPartitions;
-          enhancedInstance.messageSize = thisInstanceLimits.messageSize;
-        }
-      } catch (e) {
-        console.warn(
-          "kafkaRequestToKafkaInstance",
-          `couldn't retrieve the limits info for`,
-          d
-        );
-      }
-
-      return enhancedInstance;
-    },
-    [getDeveloperSizes, getQuota, getStandardSizes]
+  const res = await getKafkas(
+    page.toString(10),
+    perPage.toString(10),
+    sort ? `${uiColumnMapping[sort]} ${direction}` : undefined,
+    search
   );
-
+  const rawInstances = res.data.items;
+  const count = res.data.total;
+  const instances = await Promise.all(rawInstances.map(dataMapper));
   return {
-    kafkaRequestToKafkaInstance,
+    instances,
+    count,
   };
+}
+
+export function filtersToSearch(
+  name: string[],
+  owner: string[],
+  status: SimplifiedStatus[]
+): string {
+  const querystring = [
+    valuesToQuery("name", name, "%"),
+    valuesToQuery("owner", owner, "%"),
+    valuesToQuery(
+      "status",
+      status.flatMap((s) => SimplifiedStatuses[s]),
+      "="
+    ),
+  ]
+    .filter(Boolean)
+    .map((q) => `(${q!})`)
+    .join(" and ");
+  return querystring;
 }
 
 function valuesToQuery(
@@ -203,17 +135,4 @@ function valuesToQuery(
         : `${field} = ${v.trim()}`
     )
     .join(" or ");
-}
-
-function apiStatusToUIStatus(status: string): Status {
-  const mapping: { [key: string]: Status } = {
-    accepted: "accepted",
-    preparing: "preparing",
-    provisioning: "provisioning",
-    ready: "ready",
-    failed: "degraded",
-    deprovision: "deprovision",
-    deleting: "deleting",
-  };
-  return mapping[status] || "degraded";
 }

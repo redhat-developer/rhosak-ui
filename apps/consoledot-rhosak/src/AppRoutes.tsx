@@ -1,47 +1,51 @@
 import type { VoidFunctionComponent } from "react";
 import { Suspense } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { Acls } from "./routes/Acls";
-import { ConsumerGroupsRoute } from "./routes/ConsumerGroupsRoute";
-import { DashboardRoute } from "./routes/DashboardRoute";
-import { KafkaInstancesRoute } from "./routes/KafkaInstancesRoute";
-import { SettingsRoute } from "./routes/SettingsRoute";
-import { TopicsRoute } from "./routes/TopicsRoute";
+import {
+  AclsRoute,
+  ConsumerGroupsRoute,
+  ControlPlaneRoutePath,
+  DashboardRoute,
+  DataPlaneRoutePath,
+  KafkaInstancesRoute,
+  SettingsRoute,
+  TopicsRoute,
+} from "./routes";
 
 export const AppRoutes: VoidFunctionComponent = () => {
   return (
     <Suspense fallback={Fallback}>
       <Switch>
-        <Route path="/streams" exact>
+        <Route path={ControlPlaneRoutePath} exact>
           <KafkaInstancesRoute
             getUrlForInstance={(instance) =>
-              `/streams/${instance.name}/${instance.id}`
+              `/streams/${instance.id}/details/${instance.name}`
             }
           />
         </Route>
-        <Route path={"/streams/:name/:id/dashboard"} exact>
+        <Route path={`${DataPlaneRoutePath}/dashboard`} exact>
           <DashboardRoute instancesHref={"/streams"} />
         </Route>
-        <Route path={"/streams/:name/:id/topics"} exact>
+        <Route path={`${DataPlaneRoutePath}/topics`} exact>
           <TopicsRoute instancesHref={"/streams"} />
         </Route>
 
-        <Route path="/streams/:name/:id/consumer-groups" exact>
+        <Route path={`${DataPlaneRoutePath}/consumer-groups`} exact>
           <ConsumerGroupsRoute instancesHref={"/streams"} />
         </Route>
-        <Route path="/streams/:name/:id/acls" exact>
-          <Acls instancesHref={"/streams"} />
+        <Route path={`${DataPlaneRoutePath}/acls`} exact>
+          <AclsRoute instancesHref={"/streams"} />
         </Route>
-        <Route path="/streams/:name/:id/settings" exact>
+        <Route path={`${DataPlaneRoutePath}/settings`} exact>
           <SettingsRoute instancesHref={"/streams"} />
         </Route>
-        <Route path="/streams/:name/:id/topics/:topicName" exact>
+        <Route path={`${DataPlaneRoutePath}/topics/:topicName`} exact>
           <TopicsRoute instancesHref={"/streams"} />
         </Route>
 
         <Redirect
-          from={"/streams/:name/:id"}
-          to={"/streams/:name/:id/dashboard"}
+          from={`${DataPlaneRoutePath}`}
+          to={`${DataPlaneRoutePath}/dashboard`}
           exact
         />
         <Route>404</Route>

@@ -6,7 +6,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import logger from "redux-logger";
 import { I18nProvider } from "ui";
 import App from "./App";
-import { AppProvider } from "./AppProvider";
+import { DrawerProvider } from "./DrawerProvider";
 import { init } from "./store";
 
 const AppEntry = memo(() => {
@@ -20,15 +20,15 @@ const AppEntry = memo(() => {
     >
       <ApiProvider
         accessToken={chrome.auth.getToken}
-        basePath={"https://api.stage.openshift.com"}
+        basePath={"https://api.openshift.com"}
       >
-        <AppProvider>
-          <Router basename={"/application-services"}>
+        <Router basename={"/application-services"}>
+          <DrawerProvider>
             <I18nProvider lng={"en"}>
               <App />
             </I18nProvider>
-          </Router>
-        </AppProvider>
+          </DrawerProvider>
+        </Router>
       </ApiProvider>
     </Provider>
   );

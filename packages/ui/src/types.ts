@@ -138,5 +138,10 @@ export type KafkaInstance = {
   connectionRate: number | undefined;
   messageSize: number | undefined;
   billing: "prepaid" | MarketplaceSubscription | undefined;
+
+  version: string;
+
+  bootstrapUrl: string | undefined;
+  adminUrl: string | undefined;
 };
 export type KafkaInstanceField = keyof KafkaInstance;
