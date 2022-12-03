@@ -14,6 +14,8 @@ import {
 import { useTranslation } from "@rhoas/app-services-ui-components";
 import type { VoidFunctionComponent } from "react";
 import { Link } from "react-router-dom";
+import type { KafkaInstanceActionsProps } from "./KafkaInstanceActions";
+import { KafkaInstanceActions } from "./KafkaInstanceActions";
 
 type Sections =
   | "dashboard"
@@ -26,47 +28,39 @@ export type DataPlaneHeaderProps = {
   instancesHref: string;
   instanceName: string;
   activeSection: Sections;
-  crumbs?: { label: string; href: string }[];
   sectionsHref: { [key in Sections]: string };
-};
+} & KafkaInstanceActionsProps;
 
 export const DataPlaneHeader: VoidFunctionComponent<DataPlaneHeaderProps> = ({
   instancesHref,
   instanceName,
   activeSection,
   sectionsHref,
-  crumbs = [],
+  ...actionsProps
 }) => {
   const { t } = useTranslation("kafka");
 
   return (
     <>
-      {crumbs.length > 0 ? (
-        <section className="pf-c-page__main-breadcrumb">
-          <Breadcrumb ouiaId={"breadcrumb"}>
-            <BreadcrumbItem
-              render={() => (
-                <Link to={instancesHref}>{t("common:kafka_instance")}</Link>
-              )}
-            />
-            {crumbs.map((c, idx, crumbs) => (
-              <BreadcrumbItem
-                key={idx}
-                to={c.href}
-                isActive={idx === crumbs.length - 1}
-              >
-                {c.label}
-              </BreadcrumbItem>
-            ))}
-          </Breadcrumb>
-        </section>
-      ) : undefined}
+      <section className="pf-c-page__main-breadcrumb">
+        <Breadcrumb ouiaId={"breadcrumb"}>
+          <BreadcrumbItem
+            render={() => (
+              <Link to={instancesHref}>{t("common:kafka_instance")}</Link>
+            )}
+          />
+          <BreadcrumbItem isActive={true}>{instanceName}</BreadcrumbItem>
+        </Breadcrumb>
+      </section>
       <PageSection variant={PageSectionVariants.light}>
         <Level>
           <LevelItem>
             <TextContent>
               <Text component="h1">{instanceName}</Text>
             </TextContent>
+          </LevelItem>
+          <LevelItem>
+            <KafkaInstanceActions {...actionsProps} />
           </LevelItem>
         </Level>
       </PageSection>

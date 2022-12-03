@@ -11,14 +11,7 @@ type ApiContextProps = {} & Pick<
 
 const ApiContext = createContext<ApiContextProps>(null!);
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      retry: false,
-    },
-  },
-});
+const queryClient = new QueryClient();
 
 export const ApiProvider: FunctionComponent<ApiContextProps> = ({
   children,

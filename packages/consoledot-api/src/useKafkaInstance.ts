@@ -22,7 +22,6 @@ export function useKafkaInstance(id: string | undefined) {
       const instance = await api.getKafkaById(id);
       return dataMapper(instance.data);
     },
-    refetchInterval: 5000,
   });
 }
 

@@ -13,7 +13,11 @@ export const ControlPlaneHeader: VoidFunctionComponent = () => {
   const { t } = useTranslation();
 
   return (
-    <PageSection variant={PageSectionVariants.light} hasShadowBottom={true}>
+    <PageSection
+      variant={PageSectionVariants.light}
+      hasShadowBottom={true}
+      stickyOnBreakpoint={{ default: "top" }}
+    >
       <Level>
         <LevelItem>
           <TextContent>

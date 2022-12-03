@@ -6,7 +6,13 @@ import {
 import { SortableColumns, useKafkaInstances } from "consoledot-api";
 import type { FunctionComponent } from "react";
 import { useCallback } from "react";
-import type { KafkaInstance, KafkaInstancesProps, SimplifiedStatus } from "ui";
+import { useHistory } from "react-router-dom";
+import type {
+  KafkaInstance,
+  KafkaInstanceDrawerTab,
+  KafkaInstancesProps,
+  SimplifiedStatus,
+} from "ui";
 import { ControlPlaneHeader, KafkaInstances, useKafkaLabels } from "ui";
 import { useDrawer } from "../DrawerProvider";
 
@@ -18,7 +24,10 @@ export type KafkaInstancesContainerProps = Pick<
 export const KafkaInstancesRoute: FunctionComponent<
   KafkaInstancesContainerProps
 > = ({ getUrlForInstance }) => {
-  const { selectedInstance, selectInstance, setActiveTab } = useDrawer();
+  const history = useHistory();
+
+  const { selectedInstance, toggleExpanded, setActiveTab, isExpanded } =
+    useDrawer(useCallback(() => history.replace(`/streams`), [history]));
 
   const labels = useKafkaLabels();
 
@@ -62,22 +71,33 @@ export const KafkaInstancesRoute: FunctionComponent<
     );
   }, [namesChips, ownersChips, perPage, setPaginationQuery, statusesChips]);
 
+  const openDrawer = useCallback(
+    (id: string, tab: KafkaInstanceDrawerTab) => {
+      if (selectedInstance === id && isExpanded) {
+        toggleExpanded(false);
+      } else {
+        history.replace(`/streams/${id}`);
+        toggleExpanded(true);
+        setActiveTab(tab);
+      }
+    },
+    [history, isExpanded, selectedInstance, setActiveTab, toggleExpanded]
+  );
+
   const handleDetailsClick: KafkaInstancesProps<KafkaInstance>["onDetails"] =
     useCallback(
       (instance) => {
-        selectInstance(instance.id);
-        setActiveTab("details");
+        openDrawer(instance.id, "details");
       },
-      [selectInstance, setActiveTab]
+      [openDrawer]
     );
 
   const handleConnectionsClick: KafkaInstancesProps<KafkaInstance>["onDetails"] =
     useCallback(
       (instance) => {
-        selectInstance(instance.id);
-        setActiveTab("connections");
+        openDrawer(instance.id, "connections");
       },
-      [selectInstance, setActiveTab]
+      [openDrawer]
     );
 
   return (
@@ -106,7 +126,7 @@ export const KafkaInstancesRoute: FunctionComponent<
         onChangeOwner={(row) => {}}
         onDelete={(row) => {}}
         onCreate={() => {}}
-        isRowSelected={({ row }) => row.id === selectedInstance?.id}
+        isRowSelected={({ row }) => row.id === selectedInstance}
         getUrlForInstance={getUrlForInstance}
         onDetails={handleDetailsClick}
         onConnection={handleConnectionsClick}

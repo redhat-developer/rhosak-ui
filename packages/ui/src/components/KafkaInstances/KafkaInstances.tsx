@@ -1,10 +1,4 @@
-import {
-  Button,
-  DropdownGroup,
-  PageSection,
-  Stack,
-  StackItem,
-} from "@patternfly/react-core";
+import { Button, PageSection, Stack, StackItem } from "@patternfly/react-core";
 import type { TableViewProps } from "@rhoas/app-services-ui-components";
 import {
   FormatDate,
@@ -17,6 +11,7 @@ import { Link } from "react-router-dom";
 import { useKafkaLabels } from "../../hooks";
 import type { KafkaInstance, SimplifiedStatus } from "../../types";
 import { DeletingStatuses } from "../../types";
+import { KafkaInstanceActions } from "../KafkaInstanceActions";
 import { KafkaInstanceStatus } from "../KafkaInstanceStatus";
 import type {
   EmptyStateNoInstancesProps,
@@ -187,70 +182,17 @@ export const KafkaInstances = <T extends KafkaInstance>({
             </Td>
           );
         }}
-        renderActions={({ row, ActionsColumn }) => {
+        renderActions={({ row }) => {
           const changeOwnerEnabled = canChangeOwner(row);
           const deleteEnabled = canDelete(row);
           return (
-            <ActionsColumn
-              items={[
-                {
-                  customChild: (
-                    <DropdownGroup
-                      label={t("table.actions.view-instance-information")}
-                    />
-                  ),
-                },
-                {
-                  title: t("table.actions.details"),
-                  onClick: () => onDetails(row),
-                },
-                {
-                  title: t("table.actions.connection"),
-                  onClick: () => onConnection(row),
-                },
-                {
-                  isSeparator: true,
-                },
-                {
-                  title: t("table.actions.change-owner"),
-                  ...(!changeOwnerEnabled
-                    ? {
-                        isDisabled: true,
-                        tooltipProps: {
-                          position: "left",
-                          content: t("kafka:no_permission_to_change_owner"),
-                        },
-                        tooltip: true,
-                        style: {
-                          pointerEvents: "auto",
-                          cursor: "default",
-                        },
-                      }
-                    : {
-                        onClick: () => onChangeOwner(row),
-                      }),
-                },
-                {
-                  title: t("table.actions.delete"),
-                  ...(!deleteEnabled
-                    ? {
-                        isDisabled: true,
-                        tooltipProps: {
-                          position: "left",
-                          content: t("kafka:no_permission_to_delete_kafka"),
-                        },
-                        tooltip: true,
-                        style: {
-                          pointerEvents: "auto",
-                          cursor: "default",
-                        },
-                      }
-                    : {
-                        onClick: () => onDelete(row),
-                      }),
-                  onClick: () => onDelete(row),
-                },
-              ]}
+            <KafkaInstanceActions
+              onDetails={() => onDetails(row)}
+              onConnection={() => onConnection(row)}
+              canChangeOwner={changeOwnerEnabled}
+              onChangeOwner={() => onChangeOwner(row)}
+              canDelete={deleteEnabled}
+              onDelete={() => onDelete(row)}
             />
           );
         }}

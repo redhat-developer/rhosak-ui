@@ -27,15 +27,16 @@ import { KafkaConnectionTabP2, KafkaDetailsTab } from "./components";
 
 export type KafkaInstanceDrawerProps = {
   instance?: KafkaInstance;
+  isExpanded: boolean;
   activeTab: KafkaInstanceDrawerTab;
   onTabChange: (tab: KafkaInstanceDrawerTab) => void;
+
   onClose: () => void;
 };
 
 export const KafkaInstanceDrawer: FunctionComponent<
   KafkaInstanceDrawerProps
-> = ({ instance, activeTab, onTabChange, onClose, children }) => {
-  const isDrawerOpen = instance !== undefined;
+> = ({ instance, activeTab, isExpanded, onTabChange, onClose, children }) => {
   const content = useMemo(() => {
     return (
       <DrawerPanelContent>
@@ -51,7 +52,7 @@ export const KafkaInstanceDrawer: FunctionComponent<
     );
   }, [activeTab, instance, onClose, onTabChange]);
   return (
-    <Drawer isExpanded={isDrawerOpen} isInline={true}>
+    <Drawer isExpanded={isExpanded} isInline={true}>
       <DrawerContent panelContent={content}>
         <DrawerContentBody
           className={"pf-u-display-flex pf-u-flex-direction-column"}
@@ -66,7 +67,9 @@ export const KafkaInstanceDrawer: FunctionComponent<
 export type KafkaInstanceDrawerTab = "details" | "connections";
 
 export const KafkaInstanceDrawerPanel: VoidFunctionComponent<
-  Required<KafkaInstanceDrawerProps> & { activeTab: KafkaInstanceDrawerTab }
+  Required<Omit<KafkaInstanceDrawerProps, "isExpanded">> & {
+    activeTab: KafkaInstanceDrawerTab;
+  }
 > = ({ instance, activeTab, onTabChange, onClose }) => {
   const { t } = useTranslation(["kafka"]);
 
@@ -160,6 +163,9 @@ export const KafkaInstanceDrawerPanel: VoidFunctionComponent<
 };
 
 const getExternalServer = (bootstrapUrl: string | undefined) => {
+  if (!bootstrapUrl) {
+    return undefined;
+  }
   return bootstrapUrl?.endsWith(":443") ? bootstrapUrl : `${bootstrapUrl}:443`;
 };
 

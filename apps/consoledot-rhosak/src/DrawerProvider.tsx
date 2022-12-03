@@ -1,51 +1,67 @@
-import { useKafkaInstance } from "consoledot-api";
-import type { FunctionComponent } from "react";
-import { createContext, useContext, useState } from "react";
-import { useHistory, useRouteMatch } from "react-router-dom";
-import type { KafkaInstance, KafkaInstanceDrawerTab } from "ui";
+import type { FunctionComponent, MutableRefObject } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { useRouteMatch } from "react-router-dom";
+import type { KafkaInstanceDrawerTab } from "ui";
 import type { ControlPlaneRouteParams } from "./routes";
 import { ControlPlaneRoutePath } from "./routes";
 
-const DrawerContext = createContext<{
-  selectedInstance: KafkaInstance | undefined;
-  selectInstance: (id: string) => void;
+type DrawerContextProps = {
+  selectedInstance: string | undefined;
   activeTab: KafkaInstanceDrawerTab;
   setActiveTab: (tab: KafkaInstanceDrawerTab) => void;
-  deselectInstance: () => void;
-}>(null!);
+  isExpanded: boolean;
+  toggleExpanded: (newState?: boolean) => void;
+  onClose: MutableRefObject<(() => void) | undefined>;
+};
+const DrawerContext = createContext<DrawerContextProps>(null!);
 
 export const DrawerProvider: FunctionComponent = ({ children }) => {
   const match = useRouteMatch<ControlPlaneRouteParams>(ControlPlaneRoutePath);
-  const history = useHistory();
   if (!match) {
-    throw Error("ConnectedHeader used outside the expected route");
+    throw Error("DrawerProvider used outside the expected route");
   }
-  const { data: selectedInstance } = useKafkaInstance(match.params.id);
-
-  const selectInstance = (id: string) => {
-    history.replace(`/streams/${id}`);
-  };
-  const deselectInstance = () => {
-    history.replace(`/streams`);
-  };
+  const selectedInstance = match.params.id;
+  const [isExpanded, setIsExpanded] = useState(selectedInstance !== undefined);
   const [activeTab, setActiveTab] = useState<KafkaInstanceDrawerTab>("details");
+  const onClose = useRef<() => void | undefined>();
+
+  const toggleExpanded = useCallback((newValue: boolean | undefined) => {
+    setIsExpanded((prev) => {
+      const isExpanded = newValue !== undefined ? newValue : !prev;
+      if (isExpanded === false && onClose.current) {
+        onClose.current();
+      }
+      return isExpanded;
+    });
+  }, []);
+
+  const value = useMemo(() => {
+    const shouldBeExpanded = selectedInstance !== undefined && isExpanded;
+
+    return {
+      selectedInstance: selectedInstance,
+      activeTab,
+      setActiveTab,
+      isExpanded: shouldBeExpanded,
+      toggleExpanded,
+      onClose,
+    };
+  }, [activeTab, isExpanded, selectedInstance, toggleExpanded]);
 
   return (
-    <DrawerContext.Provider
-      value={{
-        selectedInstance,
-        activeTab,
-        setActiveTab,
-        selectInstance,
-        deselectInstance,
-      }}
-    >
-      {children}
-    </DrawerContext.Provider>
+    <DrawerContext.Provider value={value}>{children}</DrawerContext.Provider>
   );
 };
 
-export function useDrawer() {
+export function useDrawer(onClose?: () => void) {
   const context = useContext(DrawerContext);
+  context.onClose.current = onClose;
   return context;
 }
