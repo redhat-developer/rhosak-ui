@@ -28,7 +28,6 @@ export const DrawerProvider: FunctionComponent = ({ children }) => {
     throw Error("DrawerProvider used outside the expected route");
   }
   const selectedInstance = match.params.id;
-  console.log("??", match.url, match.params);
   const [isExpanded, setIsExpanded] = useState(selectedInstance !== undefined);
   const [activeTab, setActiveTab] = useState<KafkaInstanceDrawerTab>("details");
   const onClose = useRef<() => void | undefined>();

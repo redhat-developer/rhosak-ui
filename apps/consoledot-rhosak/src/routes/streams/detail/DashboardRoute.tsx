@@ -1,23 +1,46 @@
 import {
+  useKafkaInstanceMetricsKpiQuery,
+  useKafkaInstanceQuery,
+} from "consoledot-api";
+import {
   metricsDismissLagAlerts,
   metricsIsLagAlertsDismissed,
 } from "local-storage-helpers";
 import type { VoidFunctionComponent } from "react";
 import { useCallback, useState } from "react";
+import type { MetricsProps } from "ui";
 import { Metrics } from "ui";
 import type { DataPlaneRouteProps } from "../routes";
 import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
+import { useDataPlaneRouteMatch } from "./UseDataPlaneRouteMatch";
 
 export const DashboardRoute: VoidFunctionComponent<DataPlaneRouteProps> = ({
   instancesHref,
 }) => {
+  const { params } = useDataPlaneRouteMatch();
   const [hasUserAlreadyClosedAlert, setHasUserAlreadyClosedAlert] = useState(
     metricsIsLagAlertsDismissed()
   );
+
   const onAlertClose = useCallback(() => {
     setHasUserAlreadyClosedAlert(true);
     metricsDismissLagAlerts();
   }, []);
+
+  const queryInstance = useKafkaInstanceQuery();
+  const queryKpis = useKafkaInstanceMetricsKpiQuery();
+
+  const getMetricsKpi: MetricsProps["getMetricsKpi"] = useCallback(async () => {
+    const [instance, kpis] = await Promise.all([
+      queryInstance(params.id),
+      queryKpis(params.id),
+    ]);
+    return {
+      ...kpis,
+      topicPartitionsLimit: instance.maxPartitions || 0,
+    };
+  }, [params.id, queryInstance, queryKpis]);
+
   return (
     <>
       <DataPlaneHeaderConnected
@@ -48,14 +71,7 @@ export const DashboardRoute: VoidFunctionComponent<DataPlaneRouteProps> = ({
             bytesPerPartition: {},
           });
         }}
-        getMetricsKpi={() => {
-          return Promise.resolve({
-            topics: 123,
-            topicPartitions: 123,
-            consumerGroups: 123,
-            topicPartitionsLimit: 123,
-          });
-        }}
+        getMetricsKpi={getMetricsKpi}
       />
     </>
   );

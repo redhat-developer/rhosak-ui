@@ -1,25 +1,16 @@
 import type { VoidFunctionComponent } from "react";
-import { useRouteMatch } from "react-router-dom";
 import type { DataPlaneHeaderProps } from "ui";
 import { DataPlaneHeader } from "ui";
 import { useDrawer } from "../../../DrawerProvider";
-import type { DataPlaneRouteParams, DataPlaneRouteProps } from "../routes";
-import { DataPlaneRoutePath } from "../routes";
+import type { DataPlaneRouteProps } from "../routes";
+import { useDataPlaneRouteMatch } from "./UseDataPlaneRouteMatch";
 
 export const DataPlaneHeaderConnected: VoidFunctionComponent<
   DataPlaneRouteProps & Pick<DataPlaneHeaderProps, "activeSection">
 > = ({ instancesHref, activeSection }) => {
-  const match = useRouteMatch<DataPlaneRouteParams>(DataPlaneRoutePath);
   const { setActiveTab, toggleExpanded } = useDrawer();
 
-  if (!match) {
-    throw Error("ConnectedHeader used outside the expected route");
-  }
-
-  const {
-    url,
-    params: { name },
-  } = match;
+  const { url, params } = useDataPlaneRouteMatch();
 
   const sectionsHref = {
     dashboard: `${url}/dashboard`,
@@ -32,7 +23,7 @@ export const DataPlaneHeaderConnected: VoidFunctionComponent<
   return (
     <DataPlaneHeader
       instancesHref={instancesHref}
-      instanceName={name}
+      instanceName={params.name}
       activeSection={activeSection}
       sectionsHref={sectionsHref}
       onDetails={() => {

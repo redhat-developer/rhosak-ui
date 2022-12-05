@@ -25,6 +25,22 @@ export function useKafkaInstance(id: string | undefined) {
   });
 }
 
+export function useKafkaInstanceQuery() {
+  const queryClient = useQueryClient();
+  const dataMapper = useKafkaInstanceTransformer();
+  const getKms = useKms();
+  return async (id: string) => {
+    const api = getKms();
+    return queryClient.fetchQuery({
+      queryKey: [{ scope: "kafka-instances", entity: "details", id }],
+      queryFn: async () => {
+        const instance = await api.getKafkaById(id);
+        return dataMapper(instance.data);
+      },
+    });
+  };
+}
+
 export function useKafkaInstanceTransformer() {
   const queryClient = useQueryClient();
   const getKms = useKms();
