@@ -4,13 +4,13 @@ import { Suspense } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { KafkaInstanceDrawer } from "ui";
 import { useDrawer } from "../DrawerProvider";
-import { ControlPlaneRoutePath, DataPlaneRoutePath } from "./routes";
 import { AclsRoute } from "./streams/detail/AclsRoute";
 import { ConsumerGroupsRoute } from "./streams/detail/ConsumerGroupsRoute";
 import { DashboardRoute } from "./streams/detail/DashboardRoute";
 import { SettingsRoute } from "./streams/detail/SettingsRoute";
 import { TopicsRoute } from "./streams/detail/TopicsRoute";
-import { StreamsRoute } from "./streams/StreamsRoute";
+import { KafkaInstancesRoute } from "./streams/kafka-instances/KafkaInstancesRoute";
+import { ControlPlaneRoutePath, DataPlaneRoutePath } from "./streams/routes";
 
 export const StreamsRoutes: VoidFunctionComponent = () => {
   const {
@@ -33,7 +33,7 @@ export const StreamsRoutes: VoidFunctionComponent = () => {
       <Suspense fallback={Fallback}>
         <Switch>
           <Route path={ControlPlaneRoutePath} exact>
-            <StreamsRoute
+            <KafkaInstancesRoute
               getUrlForInstance={(instance) =>
                 `/streams/${instance.id}/details/${instance.name}`
               }

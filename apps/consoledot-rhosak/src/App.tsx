@@ -9,6 +9,7 @@ import type { Reducer } from "redux";
 
 import "./App.scss";
 import { DrawerProvider } from "./DrawerProvider";
+import { OverviewRoute } from "./routes/overview/OverviewRoute";
 
 import { StreamsRoutes } from "./routes/StreamsRoutes";
 
@@ -44,7 +45,7 @@ const App = memo(() => {
       <NotificationsPortal />
       <Switch>
         <Route path={"/streams/overview"} exact>
-          HELLO
+          <OverviewRoute />
         </Route>
         <Route>
           <DrawerProvider>

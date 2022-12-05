@@ -14,14 +14,14 @@ import type {
   SimplifiedStatus,
 } from "ui";
 import { ControlPlaneHeader, KafkaInstances, useKafkaLabels } from "ui";
-import { useDrawer } from "../../DrawerProvider";
+import { useDrawer } from "../../../DrawerProvider";
 
 export type StreamsRouteProps = Pick<
   KafkaInstancesProps<KafkaInstance>,
   "getUrlForInstance"
 >;
 
-export const StreamsRoute: FunctionComponent<StreamsRouteProps> = ({
+export const KafkaInstancesRoute: FunctionComponent<StreamsRouteProps> = ({
   getUrlForInstance,
 }) => {
   const history = useHistory();

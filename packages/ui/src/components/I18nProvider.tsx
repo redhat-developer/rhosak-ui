@@ -15,6 +15,9 @@ export const I18nProvider: FunctionComponent<
           "create-kafka-instance": () =>
             import("locales/en/create-kafka-instance.json"),
           kafka: () => import("locales/en/kafka.json"),
+          kafkaoverview: () => import("locales/en/kafkaoverview.json"),
+          "kafkaoverview-v2": () => import("locales/en/kafkaoverview-v2.json"),
+          "kafkaoverview-v3": () => import("locales/en/kafkaoverview-v3.json"),
           metrics: () => import("locales/en/metrics.json"),
           topic: () => import("locales/en/topic.json"),
           "manage-kafka-permissions": () =>

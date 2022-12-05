@@ -9,8 +9,8 @@ import {
 } from "react";
 import { useRouteMatch } from "react-router-dom";
 import type { KafkaInstanceDrawerTab } from "ui";
-import type { ControlPlaneRouteParams } from "./routes/routes";
-import { ControlPlaneRoutePath } from "./routes/routes";
+import type { ControlPlaneRouteParams } from "./routes/streams/routes";
+import { ControlPlaneRoutePath } from "./routes/streams/routes";
 
 type DrawerContextProps = {
   selectedInstance: string | undefined;
