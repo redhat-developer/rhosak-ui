@@ -1,7 +1,7 @@
 import type { VoidFunctionComponent } from "react";
 import { Settings as SettingsComp } from "ui";
-import { DataPlaneHeaderConnected } from "./containers";
-import type { DataPlaneRouteProps } from "./routes";
+import type { DataPlaneRouteProps } from "../../routes";
+import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
 
 export const SettingsRoute: VoidFunctionComponent<DataPlaneRouteProps> = ({
   instancesHref,

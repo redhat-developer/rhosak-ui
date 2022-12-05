@@ -2,9 +2,9 @@ import type { VoidFunctionComponent } from "react";
 import { useRouteMatch } from "react-router-dom";
 import type { DataPlaneHeaderProps } from "ui";
 import { DataPlaneHeader } from "ui";
-import { useDrawer } from "../../DrawerProvider";
-import type { DataPlaneRouteParams, DataPlaneRouteProps } from "../routes";
-import { DataPlaneRoutePath } from "../routes";
+import { useDrawer } from "../../../DrawerProvider";
+import type { DataPlaneRouteParams, DataPlaneRouteProps } from "../../routes";
+import { DataPlaneRoutePath } from "../../routes";
 
 export const DataPlaneHeaderConnected: VoidFunctionComponent<
   DataPlaneRouteProps & Pick<DataPlaneHeaderProps, "activeSection">

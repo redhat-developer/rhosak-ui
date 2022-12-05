@@ -3,54 +3,55 @@ import { notificationsReducer } from "@redhat-cloud-services/frontend-components
 import { getRegistry } from "@redhat-cloud-services/frontend-components-utilities/Registry";
 import { useChrome } from "@redhat-cloud-services/frontend-components/useChrome";
 import { useTranslation } from "@rhoas/app-services-ui-components";
-import { useKafkaInstance } from "consoledot-api";
 import { memo, useEffect } from "react";
+import { Route, Switch, useHistory } from "react-router-dom";
 import type { Reducer } from "redux";
-import { KafkaInstanceDrawer } from "ui";
 
 import "./App.scss";
+import { DrawerProvider } from "./DrawerProvider";
 
-import { AppRoutes } from "./AppRoutes";
-import { useDrawer } from "./DrawerProvider";
+import { StreamsRoutes } from "./routes/StreamsRoutes";
 
 const App = memo(() => {
-  // const history = useHistory();
-  const chrome = useChrome();
-
-  const {
-    selectedInstance,
-    activeTab,
-    setActiveTab,
-    isExpanded,
-    toggleExpanded,
-  } = useDrawer();
+  const history = useHistory();
+  const { updateDocumentTitle, on } = useChrome();
 
   const { t } = useTranslation();
   const title = t("kafka:rhosakTitle");
-  const { data: drawerInstance } = useKafkaInstance(selectedInstance);
 
   useEffect(() => {
-    if (chrome) {
-      const registry = getRegistry();
-      registry.register({ notifications: notificationsReducer as Reducer });
-      const { updateDocumentTitle } = chrome.init();
+    const registry = getRegistry();
+    registry.register({ notifications: notificationsReducer as Reducer });
 
-      updateDocumentTitle(title);
-    }
-  }, [chrome, title]);
+    updateDocumentTitle(title);
+
+    const unregister = on("APP_NAVIGATION", (event) => {
+      console.dir(event);
+      event.navId &&
+        history.push(
+          `/streams/${event.navId === "streams" ? "" : event.navId}`
+        );
+    });
+    return () => {
+      if (unregister) {
+        unregister();
+      }
+    };
+  }, [history, on, title, updateDocumentTitle]);
 
   return (
     <>
       <NotificationsPortal />
-      <KafkaInstanceDrawer
-        instance={drawerInstance}
-        activeTab={activeTab}
-        onTabChange={setActiveTab}
-        isExpanded={isExpanded}
-        onClose={() => toggleExpanded(false)}
-      >
-        <AppRoutes />
-      </KafkaInstanceDrawer>
+      <Switch>
+        <Route path={"/streams/overview"} exact>
+          HELLO
+        </Route>
+        <Route>
+          <DrawerProvider>
+            <StreamsRoutes />
+          </DrawerProvider>
+        </Route>
+      </Switch>
     </>
   );
 });

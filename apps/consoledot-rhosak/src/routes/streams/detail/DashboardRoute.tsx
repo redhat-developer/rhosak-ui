@@ -5,8 +5,8 @@ import {
 import type { VoidFunctionComponent } from "react";
 import { useCallback, useState } from "react";
 import { Metrics } from "ui";
-import { DataPlaneHeaderConnected } from "./containers";
-import type { DataPlaneRouteProps } from "./routes";
+import type { DataPlaneRouteProps } from "../../routes";
+import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
 
 export const DashboardRoute: VoidFunctionComponent<DataPlaneRouteProps> = ({
   instancesHref,

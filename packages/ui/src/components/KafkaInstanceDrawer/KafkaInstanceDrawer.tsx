@@ -52,7 +52,7 @@ export const KafkaInstanceDrawer: FunctionComponent<
     );
   }, [activeTab, instance, onClose, onTabChange]);
   return (
-    <Drawer isExpanded={isExpanded} isInline={true}>
+    <Drawer isExpanded={isExpanded} isInline={true} className={"rhosak"}>
       <DrawerContent panelContent={content}>
         <DrawerContentBody
           className={"pf-u-display-flex pf-u-flex-direction-column"}

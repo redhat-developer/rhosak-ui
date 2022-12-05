@@ -1,7 +1,7 @@
 import { PageSection } from "@patternfly/react-core";
 import type { VoidFunctionComponent } from "react";
-import { DataPlaneHeaderConnected } from "./containers/DataPlaneHeaderConnected";
-import type { DataPlaneRouteProps } from "./routes";
+import type { DataPlaneRouteProps } from "../../routes";
+import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
 
 export const ConsumerGroupsRoute: VoidFunctionComponent<
   DataPlaneRouteProps
