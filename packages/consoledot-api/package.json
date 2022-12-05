@@ -55,6 +55,7 @@
   "dependencies": {
     "@rhoas/account-management-sdk": "0.51.0",
     "@rhoas/app-services-ui-components": "2.14.3",
+    "@rhoas/kafka-instance-sdk": "0.51.0",
     "@rhoas/kafka-management-sdk": "0.51.0",
     "@xstate/react": "3.0.0",
     "byte-size": "8.1.0",

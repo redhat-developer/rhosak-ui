@@ -80,58 +80,60 @@ export const DataPlaneHeader: VoidFunctionComponent<DataPlaneHeaderProps> = ({
               style={{ borderTop: 0 }}
               data-testid="pageKafka-tabDashboard"
               id="dashboard-tab-section"
-              aria-label={t("dashboard.dashboard")}
+              aria-label={t("dataPlaneNavigation.dashboard")}
               ouiaId={"tab-Dashboard"}
               isActive={activeSection === "dashboard"}
             >
               <Link to={sectionsHref["dashboard"]}>
-                {t("dashboard.dashboard")}
+                {t("dataPlaneNavigation.dashboard")}
               </Link>
             </NavItem>
             <NavItem
               style={{ borderTop: 0 }}
               data-testid="pageKafka-tabTopics"
               id="topics-tab-section"
-              aria-label={t("topic.topics")}
+              aria-label={t("dataPlaneNavigation.topics")}
               ouiaId={"tab-Topics"}
               isActive={activeSection === "topics"}
             >
-              <Link to={sectionsHref["topics"]}>{t("topic.topics")}</Link>
+              <Link to={sectionsHref["topics"]}>
+                {t("dataPlaneNavigation.topics")}
+              </Link>
             </NavItem>
             <NavItem
               style={{ borderTop: 0 }}
               data-testid="pageKafka-tabConsumers"
               id="consumer-groups-tab-section"
-              aria-label={t("consumerGroup.consumer_groups")}
+              aria-label={t("dataPlaneNavigation.consumer_groups")}
               ouiaId={"tab-Consumers"}
               isActive={activeSection === "consumer"}
             >
               <Link to={sectionsHref["consumer"]}>
-                {t("consumerGroup.consumer_groups")}
+                {t("dataPlaneNavigation.consumer_groups")}
               </Link>
             </NavItem>
             <NavItem
               style={{ borderTop: 0 }}
               data-testid="pageKafka-tabPermissions"
               id="permissions-tab-section"
-              aria-label={t("permission.tab.label")}
+              aria-label={t("dataPlaneNavigation.permissions")}
               ouiaId={"tab-Permissions"}
               isActive={activeSection === "permissions"}
             >
               <Link to={sectionsHref["permissions"]}>
-                {t("permission.tab.label")}
+                {t("dataPlaneNavigation.permissions")}
               </Link>
             </NavItem>
             <NavItem
               style={{ borderTop: 0 }}
               data-testid="pageKafka-tabSettings"
               id="settings-tab-section"
-              aria-label={t("settings.settings")}
+              aria-label={t("dataPlaneNavigation.settings")}
               ouiaId={"tab-Settings"}
               isActive={activeSection === "settings"}
             >
               <Link to={sectionsHref["settings"]}>
-                {t("settings.settings")}
+                {t("dataPlaneNavigation.settings")}
               </Link>
             </NavItem>
           </NavList>

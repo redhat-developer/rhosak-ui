@@ -1,6 +1,9 @@
 import {
-  useKafkaInstanceMetricsKpiQuery,
+  useKafkaInstanceKpiMetricsQuery,
+  useKafkaInstanceMetricsQuery,
   useKafkaInstanceQuery,
+  useKafkaInstanceTopicMetricsQuery,
+  useKafkaInstanceTopicsQuery,
 } from "consoledot-api";
 import {
   metricsDismissLagAlerts,
@@ -28,18 +31,60 @@ export const DashboardRoute: VoidFunctionComponent<DataPlaneRouteProps> = ({
   }, []);
 
   const queryInstance = useKafkaInstanceQuery();
-  const queryKpis = useKafkaInstanceMetricsKpiQuery();
+  const queryKpisMetrics = useKafkaInstanceKpiMetricsQuery();
+  const queryInstanceMetrics = useKafkaInstanceMetricsQuery();
+  const queryTopicMetrics = useKafkaInstanceTopicMetricsQuery();
+  const queryTopics = useKafkaInstanceTopicsQuery();
 
   const getMetricsKpi: MetricsProps["getMetricsKpi"] = useCallback(async () => {
     const [instance, kpis] = await Promise.all([
       queryInstance(params.id),
-      queryKpis(params.id),
+      queryKpisMetrics(params.id),
     ]);
     return {
       ...kpis,
       topicPartitionsLimit: instance.maxPartitions || 0,
     };
-  }, [params.id, queryInstance, queryKpis]);
+  }, [params.id, queryInstance, queryKpisMetrics]);
+
+  const getKafkaInstanceMetrics: MetricsProps["getKafkaInstanceMetrics"] =
+    useCallback(
+      async ({ interval, duration }) => {
+        const [instance, metrics] = await Promise.all([
+          queryInstance(params.id),
+          queryInstanceMetrics(params.id, duration, interval),
+        ]);
+        if (!instance) {
+          return Promise.reject("Can't retrieve instance");
+        }
+        return {
+          ...metrics,
+          diskSpaceLimit:
+            (instance.request.max_data_retention_size?.bytes || 0) / 1073741824,
+          connectionsLimit: instance.connections || 0,
+          connectionRateLimit: instance.connectionRate || 0,
+        };
+      },
+      [params.id, queryInstance, queryInstanceMetrics]
+    );
+
+  const getTopicsMetrics: MetricsProps["getTopicsMetrics"] = useCallback(
+    async ({ interval, duration, selectedTopic }) => {
+      const [instance, metrics] = await Promise.all([
+        queryInstance(params.id),
+        queryTopicMetrics(params.id, duration, interval, selectedTopic),
+      ]);
+      if (!instance || !instance.adminUrl) {
+        return Promise.reject("Can't retrieve instance");
+      }
+      const topics = await queryTopics(instance.adminUrl);
+      return {
+        ...metrics,
+        kafkaTopics: [],
+      };
+    },
+    [params.id, queryInstance, queryInstanceMetrics]
+  );
 
   return (
     <>
@@ -51,26 +96,8 @@ export const DashboardRoute: VoidFunctionComponent<DataPlaneRouteProps> = ({
         onCreateTopic={() => {}}
         onAlertClose={onAlertClose}
         hasUserAlreadyClosedAlert={hasUserAlreadyClosedAlert}
-        getKafkaInstanceMetrics={() => {
-          return Promise.resolve({
-            usedDiskSpaceMetrics: {},
-            clientConnectionsMetrics: {},
-            connectionAttemptRateMetrics: {},
-            connectionsLimit: 100,
-            diskSpaceLimit: 1000,
-            connectionRateLimit: 50,
-          });
-        }}
-        getTopicsMetrics={() => {
-          return Promise.resolve({
-            kafkaTopics: [],
-            metricsTopics: [],
-            bytesIncoming: {},
-            bytesOutgoing: {},
-            incomingMessageRate: {},
-            bytesPerPartition: {},
-          });
-        }}
+        getKafkaInstanceMetrics={getKafkaInstanceMetrics}
+        getTopicsMetrics={getTopicsMetrics}
         getMetricsKpi={getMetricsKpi}
       />
     </>

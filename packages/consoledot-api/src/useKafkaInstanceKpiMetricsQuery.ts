@@ -1,8 +1,8 @@
 import { useQueryClient } from "react-query";
-import { fetchKafkaMetricsKpi } from "./fetchKafkaMetricsKpi";
+import { fetchKafkaKpiMetrics } from "./fetchKafkaKpiMetrics";
 import { useKms } from "./useApi";
 
-export function useKafkaInstanceMetricsKpiQuery() {
+export function useKafkaInstanceKpiMetricsQuery() {
   const getKms = useKms();
   const queryClient = useQueryClient();
 
@@ -10,12 +10,9 @@ export function useKafkaInstanceMetricsKpiQuery() {
     const api = getKms();
 
     return queryClient.fetchQuery({
-      queryKey: [{ scope: "kafka-instance", entity: "kpi", id }],
+      queryKey: [{ scope: "kafka-instance", entity: "kpi-metrics", id }],
       queryFn: async () => {
-        if (!id) {
-          return Promise.reject("Invalid Kafka instance id");
-        }
-        return fetchKafkaMetricsKpi(
+        return fetchKafkaKpiMetrics(
           (...args) => api.getMetricsByInstantQuery(...args),
           id
         );
