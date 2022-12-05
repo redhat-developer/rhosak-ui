@@ -1,10 +1,11 @@
 import type { ConfigurationParameters } from "@rhoas/kafka-management-sdk";
+import { isReactQueryDevToolsEanbled } from "local-storage-helpers";
 import type { FunctionComponent } from "react";
 import { createContext, useContext } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 
-type ApiContextProps = {} & Pick<
+type ApiContextProps = Pick<
   ConfigurationParameters,
   "accessToken" | "basePath"
 >;
@@ -17,7 +18,7 @@ export const ApiProvider: FunctionComponent<ApiContextProps> = ({
   children,
   ...context
 }) => {
-  const showDevTools = localStorage.getItem("mas.devtools") === "true";
+  const showDevTools = isReactQueryDevToolsEanbled();
   return (
     <QueryClientProvider client={queryClient}>
       {showDevTools ? <ReactQueryDevtools initialIsOpen={false} /> : undefined}

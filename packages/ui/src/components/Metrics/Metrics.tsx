@@ -1,5 +1,5 @@
-import type { VoidFunctionComponent } from "react";
 import { useTranslation } from "@rhoas/app-services-ui-components";
+import type { VoidFunctionComponent } from "react";
 import {
   CardKafkaInstanceMetrics,
   CardTopicsMetrics,
@@ -8,6 +8,8 @@ import {
   MetricsLayout,
 } from "./components";
 import { CardKpi } from "./components/CardKpi";
+import { MetricsLagAlert } from "./components/MetricsLagAlert";
+import { PartitionCard } from "./components/PartitionCard";
 import type { KafkaInstanceMetricsProviderProps } from "./KafkaInstanceMetricsProvider";
 import { KafkaInstanceMetricsProvider } from "./KafkaInstanceMetricsProvider";
 import type { MetricsKpiProviderProps } from "./MetricsKpiProvider";
@@ -17,13 +19,11 @@ import { TopicsMetricsProvider } from "./TopicsMetricsProvider";
 import { useKafkaInstanceMetrics } from "./useKafkaInstanceMetrics";
 import { useMetricsKpi } from "./useMetricsKpi";
 import { useTopicsMetrics } from "./useTopicsMetrics";
-import { PartitionCard } from "./components/PartitionCard";
-import { MetricsLagAlert } from "./components/MetricsLagAlert";
 
 export type MetricsProps = {
   onCreateTopic: () => void;
-  onClickClose: () => void;
-  isClosed: boolean;
+  onAlertClose: () => void;
+  hasUserAlreadyClosedAlert: boolean;
 } & KafkaInstanceMetricsProviderProps &
   TopicsMetricsProviderProps &
   MetricsKpiProviderProps;
@@ -33,8 +33,8 @@ export const Metrics: VoidFunctionComponent<MetricsProps> = ({
   getTopicsMetrics,
   getMetricsKpi,
   onCreateTopic,
-  onClickClose,
-  isClosed,
+  onAlertClose,
+  hasUserAlreadyClosedAlert,
 }) => {
   return (
     <TopicsMetricsProvider getTopicsMetrics={getTopicsMetrics}>
@@ -44,8 +44,8 @@ export const Metrics: VoidFunctionComponent<MetricsProps> = ({
         <MetricsKpiProvider getMetricsKpi={getMetricsKpi}>
           <ConnectedMetrics
             onCreateTopic={onCreateTopic}
-            onClickClose={onClickClose}
-            isClosed={isClosed}
+            onClickClose={onAlertClose}
+            isClosed={hasUserAlreadyClosedAlert}
           />
         </MetricsKpiProvider>
       </KafkaInstanceMetricsProvider>

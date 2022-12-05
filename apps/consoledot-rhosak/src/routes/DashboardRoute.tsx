@@ -1,4 +1,9 @@
+import {
+  metricsDismissLagAlerts,
+  metricsIsLagAlertsDismissed,
+} from "local-storage-helpers";
 import type { VoidFunctionComponent } from "react";
+import { useCallback, useState } from "react";
 import { Metrics } from "ui";
 import { DataPlaneHeaderConnected } from "./containers";
 import type { DataPlaneRouteProps } from "./routes";
@@ -6,6 +11,13 @@ import type { DataPlaneRouteProps } from "./routes";
 export const DashboardRoute: VoidFunctionComponent<DataPlaneRouteProps> = ({
   instancesHref,
 }) => {
+  const [hasUserAlreadyClosedAlert, setHasUserAlreadyClosedAlert] = useState(
+    metricsIsLagAlertsDismissed()
+  );
+  const onAlertClose = useCallback(() => {
+    setHasUserAlreadyClosedAlert(true);
+    metricsDismissLagAlerts();
+  }, []);
   return (
     <>
       <DataPlaneHeaderConnected
@@ -14,8 +26,8 @@ export const DashboardRoute: VoidFunctionComponent<DataPlaneRouteProps> = ({
       />
       <Metrics
         onCreateTopic={() => {}}
-        onClickClose={() => {}}
-        isClosed={false}
+        onAlertClose={onAlertClose}
+        hasUserAlreadyClosedAlert={hasUserAlreadyClosedAlert}
         getKafkaInstanceMetrics={() => {
           return Promise.resolve({
             usedDiskSpaceMetrics: {},

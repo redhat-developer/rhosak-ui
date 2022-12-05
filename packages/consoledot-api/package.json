@@ -42,6 +42,7 @@
     "jest": "27.5.1",
     "jest-environment-jsdom": "27.5.1",
     "jest-fail-on-console": "3.0.2",
+    "local-storage-helpers": "*",
     "prando": "6.0.1",
     "prettier": "2.7.1",
     "regenerator-runtime": "0.13.10",

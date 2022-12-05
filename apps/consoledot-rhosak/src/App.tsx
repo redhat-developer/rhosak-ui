@@ -8,6 +8,8 @@ import { memo, useEffect } from "react";
 import type { Reducer } from "redux";
 import { KafkaInstanceDrawer } from "ui";
 
+import "./App.scss";
+
 import { AppRoutes } from "./AppRoutes";
 import { useDrawer } from "./DrawerProvider";
 
