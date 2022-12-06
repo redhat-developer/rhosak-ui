@@ -1,5 +1,5 @@
 import { useLayoutEffect, useState } from "react";
-import { useTranslation } from "@rhoas/app-services-ui-components";
+import { useTranslation } from "react-i18next";
 import type { SelectProps } from "@patternfly/react-core";
 import { Select, SelectOption, SelectVariant } from "@patternfly/react-core";
 
@@ -51,7 +51,7 @@ export const ResourcePermission: React.VFC<ResourcePermissionProps> = ({
       onToggle={onToggle}
       onSelect={onSelect}
       isOpen={isOpen}
-      width={200}
+      width={150}
       selections={value}
       menuAppendTo={"parent"}
     >

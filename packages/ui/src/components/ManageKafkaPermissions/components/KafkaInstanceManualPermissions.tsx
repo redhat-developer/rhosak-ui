@@ -1,11 +1,12 @@
 import { Tbody, Td, Tr } from "@patternfly/react-table";
-import { useTranslation } from "@rhoas/app-services-ui-components";
-import { ResourceType } from "./ResourceType";
-import type { ResourceTypeValue } from "./ResourceType";
-import { ResourcePermission } from "./ResourcePermission";
-import type { ResourcePermissionValue } from "./ResourcePermission";
-import { ResourceOperation } from "./ResourceOperation";
+import { RemoveButton } from "@rhoas/app-services-ui-components";
+import { useTranslation } from "react-i18next";
 import type { ResourceOperationValue } from "./ResourceOperation";
+import { ResourceOperation } from "./ResourceOperation";
+import type { ResourcePermissionValue } from "./ResourcePermission";
+import { ResourcePermission } from "./ResourcePermission";
+import type { ResourceTypeValue } from "./ResourceType";
+import { ResourceType } from "./ResourceType";
 
 export type KafkaInstanceManualPermissions = {
   resourceType: ResourceTypeValue | undefined;
@@ -17,6 +18,8 @@ export type KafkaInstanceManualPermissions = {
   onChangeResourceOperation: (
     value: ResourceOperationValue | undefined
   ) => void;
+  row: number;
+  onDelete: (row: number) => void;
 };
 
 export const KafkaInstanceManualPermissions: React.FC<
@@ -29,12 +32,14 @@ export const KafkaInstanceManualPermissions: React.FC<
   onChangeResourceOperation,
   onChangeResourcePermission,
   onChangeResourceType,
+  row,
+  onDelete,
 }) => {
   const { t } = useTranslation(["manage-kafka-permissions"]);
   return (
     <Tbody>
       <Tr>
-        <Td width={70}>
+        <Td width={60}>
           <ResourceType
             value={resourceType}
             onChangeValue={onChangeResourceType}
@@ -60,6 +65,13 @@ export const KafkaInstanceManualPermissions: React.FC<
               t("operations.describe"),
             ]}
             invalid={submitted && resourceOperation === undefined}
+          />
+        </Td>
+        <Td>
+          <RemoveButton
+            variant="link"
+            onClick={() => onDelete(row)}
+            tooltip={t("operations.delete")}
           />
         </Td>
       </Tr>

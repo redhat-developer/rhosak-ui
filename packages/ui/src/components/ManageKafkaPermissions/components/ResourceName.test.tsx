@@ -25,19 +25,17 @@ describe("Resource Name", () => {
     await waitForPopper();
     const inputValue = comp.getByDisplayValue("..");
     expect(inputValue).toBeInTheDocument();
-    const createText = await comp.findByText('Use ".."');
-    await waitForPopper();
-    expect(createText).toBeInTheDocument();
-    userEvent.click(await comp.findByText('Use ".."'));
-    await waitForPopper();
     const option = await comp.findByText(
       "A topic name must contain at least 3 periods (...) if periods are the only characters used."
     );
     expect(option).toBeInTheDocument();
-    expect(onChangeValue).toBeCalledTimes(1);
+    expect(onChangeValue).toHaveBeenCalledTimes(2);
   });
   it("should render a select with validation message for invalid consumer group characters", async () => {
-    const comp = render(<InvalidConsumerGroupCharacters />);
+    const onChange = jest.fn();
+    const comp = render(
+      <InvalidConsumerGroupCharacters onChangeValue={onChange} />
+    );
     await waitForI18n(comp);
     await waitForPopper();
     const placeHolderText = await comp.findByPlaceholderText("Enter name");
@@ -56,7 +54,8 @@ describe("Resource Name", () => {
     expect(option).toBeInTheDocument();
   });
   it("should render a select with validation message for invalid length of input value", async () => {
-    const comp = render(<InvalidLength />);
+    const onChange = jest.fn();
+    const comp = render(<InvalidLength onChangeValue={onChange} />);
     await waitForI18n(comp);
     await waitForPopper();
     const placeHolderText = await comp.findByPlaceholderText("Enter name");
@@ -78,13 +77,15 @@ describe("Resource Name", () => {
     expect(option).toBeInTheDocument();
   });
   it("should render a select with validation message 'Required' for a mandatory field submitted undefined", async () => {
-    const comp = render(<RequiredField />);
+    const onChange = jest.fn();
+    const comp = render(<RequiredField onChangeValue={onChange} />);
     await waitForI18n(comp);
     const option = await comp.findByText("Required");
     expect(option).toBeInTheDocument();
   });
   it("should render a select with validation message for invalid topic characters used", async () => {
-    const comp = render(<InvalidTopicCharacters />);
+    const onChange = jest.fn();
+    const comp = render(<InvalidTopicCharacters onChangeValue={onChange} />);
     await waitForI18n(comp);
     await waitForPopper();
     const placeHolderText = await comp.findByPlaceholderText("Enter name");

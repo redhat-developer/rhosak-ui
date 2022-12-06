@@ -1,5 +1,5 @@
 import { useLayoutEffect, useState } from "react";
-import { useTranslation } from "@rhoas/app-services-ui-components";
+import { useTranslation } from "react-i18next";
 import type { SelectProps } from "@patternfly/react-core";
 import {
   FormGroup,
@@ -64,7 +64,7 @@ export const ResourceType: React.VFC<ResourceTypeProps> = ({
         id={"resource-type-select"}
         aria-label={
           value != undefined
-            ? t("resourceTypes.resource_type_selected", { value })
+            ? t("resourceTypes.resource_type_selected", { value: value })
             : t("resourceTypes.resource_type")
         }
         data-testid="acls-resource-type-select"

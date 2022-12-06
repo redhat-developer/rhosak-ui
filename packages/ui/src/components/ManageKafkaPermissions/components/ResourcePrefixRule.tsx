@@ -1,7 +1,7 @@
 import type { SelectProps } from "@patternfly/react-core";
 import { Select, SelectOption, SelectVariant } from "@patternfly/react-core";
 import { useLayoutEffect, useState } from "react";
-import { useTranslation } from "@rhoas/app-services-ui-components";
+import { useTranslation } from "react-i18next";
 
 export type ResourcePrefixRuleValue = "Is" | "Starts with";
 
@@ -60,7 +60,7 @@ export const ResourcePrefixRule: React.VFC<ResourcePrefixRuleProps> = ({
       onToggle={onToggle}
       onSelect={onSelect}
       isOpen={isOpen}
-      width={200}
+      width={150}
       selections={value}
       menuAppendTo={"parent"}
     >

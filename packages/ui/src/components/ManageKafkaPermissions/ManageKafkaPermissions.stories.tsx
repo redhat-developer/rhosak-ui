@@ -1,10 +1,25 @@
 import { ManageKafkaPermissions } from "./ManageKafkaPermissions";
 import type { ComponentStory, ComponentMeta } from "@storybook/react";
 import { PrincipalType } from "./types";
-
+import { useState } from "react";
+import {
+  PermissionsForAllAccounts,
+  PermissionsForSelectedAccount,
+} from "./components/ReviewPermissionsTable.stories";
 export default {
   component: ManageKafkaPermissions,
   args: {
+    topicNameOptions: (filter: string) => {
+      return ["foo", "bar", "baz", `random ${Math.random()}`].filter((v) =>
+        v.includes(filter)
+      );
+    },
+    consumerGroupNameOptions: (filter: string) => {
+      return ["foo", "bar", "baz", `random ${Math.random()}`].filter((v) =>
+        v.includes(filter)
+      );
+    },
+
     accounts: [
       {
         id: "id",
@@ -43,18 +58,27 @@ export default {
       },
     ],
     kafkaName: "name-test",
+    selectedAcount: "",
   },
 } as ComponentMeta<typeof ManageKafkaPermissions>;
 
-const Template: ComponentStory<typeof ManageKafkaPermissions> = (args) => (
-  <ManageKafkaPermissions {...args} />
-);
-export const EmptyState = Template.bind({});
-EmptyState.args = {};
-EmptyState.parameters = {
-  docs: {
-    description: {
-      story: `A user can select any value he wishes and it will be logged into the onChangeAccount state`,
-    },
-  },
+export const InteractiveExample: ComponentStory<
+  typeof ManageKafkaPermissions
+> = (args) => {
+  const [selectedAccount, setSelectedAccount] = useState<string | undefined>(
+    undefined
+  );
+
+  return (
+    <ManageKafkaPermissions
+      {...args}
+      selectedAccount={selectedAccount}
+      onChangeSelectedAccount={setSelectedAccount}
+      existingAcls={
+        selectedAccount == "*"
+          ? PermissionsForAllAccounts
+          : PermissionsForSelectedAccount
+      }
+    />
+  );
 };

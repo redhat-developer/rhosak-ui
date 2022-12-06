@@ -1,24 +1,17 @@
-import { TableComposable } from "@patternfly/react-table";
 import type { ComponentMeta, ComponentStory } from "@storybook/react";
-import { fakeApi } from "../../storiesHelpers";
 import { ProduceTopicShortcut } from "./ProduceTopicShortcut";
+import { TableComposable } from "@patternfly/react-table";
 
 export default {
   component: ProduceTopicShortcut,
   args: {
     prefixRuleValue: "Starts with",
     submitted: false,
-    onFetchResourceNameOptions: (filter) =>
-      fakeApi<string[]>(
-        [
-          "foo-topic",
-          "test",
-          "my-test",
-          "random-topic-name",
-          "...topic",
-        ].filter((v) => v.includes(filter)),
-        100
-      ),
+    onFetchResourceNameOptions: (filter: string) => {
+      return ["foo-topic", "test", "my-test", "random-topic-name"].filter((v) =>
+        v.includes(filter)
+      );
+    },
   },
 } as ComponentMeta<typeof ProduceTopicShortcut>;
 

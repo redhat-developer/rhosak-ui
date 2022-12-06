@@ -83,7 +83,7 @@ export const DashboardRoute: VoidFunctionComponent<DataPlaneRouteProps> = ({
         kafkaTopics: [],
       };
     },
-    [params.id, queryInstance, queryInstanceMetrics]
+    [params.id, queryInstance, queryTopicMetrics, queryTopics]
   );
 
   return (

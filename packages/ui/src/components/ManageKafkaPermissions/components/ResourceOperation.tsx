@@ -1,5 +1,5 @@
 import { useLayoutEffect, useState } from "react";
-import { useTranslation } from "@rhoas/app-services-ui-components";
+import { useTranslation } from "react-i18next";
 import type { SelectProps } from "@patternfly/react-core";
 import {
   FormGroup,

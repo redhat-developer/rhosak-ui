@@ -1,5 +1,5 @@
 import type { VFC } from "react";
-import { useTranslation } from "@rhoas/app-services-ui-components";
+import { useTranslation } from "react-i18next";
 
 import {
   TableComposable,
@@ -28,7 +28,10 @@ export const ReviewPermissionsTable: VFC<ReviewPermissionsTableProps> = ({
   const { t } = useTranslation(["manage-kafka-permissions"]);
 
   return (
-    <TableComposable variant={TableVariant.compact}>
+    <TableComposable
+      variant={TableVariant.compact}
+      aria-label={t("review_permissions_table")}
+    >
       <Thead noWrap>
         <Tr>
           <Th width={60}>{t("table.resource_column_title")}</Th>
@@ -46,10 +49,10 @@ export const ReviewPermissionsTable: VFC<ReviewPermissionsTableProps> = ({
             permission,
             principal,
           } = acl;
-
           const isDeleteEnabled =
             selectedAccountId === "*" ||
-            principal === `User:${selectedAccountId}`;
+            principal === `User:${selectedAccountId}` ||
+            principal === `User:*`;
           const isAllAccounts = principal === "User:*";
 
           return (

@@ -1,20 +1,18 @@
-import { Form } from "@patternfly/react-core";
 import type { ComponentMeta, ComponentStory } from "@storybook/react";
-import { userEvent, within } from "@storybook/testing-library";
-import { fakeApi } from "../../storiesHelpers";
 import { ResourceName } from "./ResourceName";
+import { Form } from "@patternfly/react-core";
+import { userEvent, within } from "@storybook/testing-library";
 
 export default {
   component: ResourceName,
   args: {
     value: undefined,
-    onFetchOptions: (filter) =>
-      fakeApi<string[]>(
-        ["foo-topic", "test", "my-test", "random-topic-name"].filter((v) =>
-          v.includes(filter)
-        ),
-        100
-      ),
+    setIsNameValid: (value) => value,
+    onFetchOptions: (filter: string) => {
+      return ["foo-topic", "test", "my-test", "random-topic-name"].filter((v) =>
+        v.includes(filter)
+      );
+    },
     submitted: false,
     resourcePrefixRule: "Is",
     resourceType: "topic",
@@ -31,12 +29,6 @@ const Template: ComponentStory<typeof ResourceName> = (args) => (
 
 export const InvalidTopicName = Template.bind({});
 InvalidTopicName.args = { resourceType: "topic" };
-
-InvalidTopicName.play = async ({ canvasElement }) => {
-  const canvas = within(canvasElement);
-  await userEvent.type(await canvas.findByPlaceholderText("Enter name"), "..");
-  await userEvent.click(await canvas.findByText('Use ".."'));
-};
 
 InvalidTopicName.parameters = {
   docs: {

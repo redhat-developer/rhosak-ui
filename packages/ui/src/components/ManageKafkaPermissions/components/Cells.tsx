@@ -1,7 +1,7 @@
-import type { VFC } from "react";
-import { useTranslation } from "@rhoas/app-services-ui-components";
-
 import { Label, LabelGroup } from "@patternfly/react-core";
+import { RemoveButton } from "@rhoas/app-services-ui-components";
+import type { VFC } from "react";
+import { useTranslation } from "react-i18next";
 
 import type {
   AclOperation,
@@ -10,7 +10,6 @@ import type {
   AclResourceType,
 } from "../types";
 import { ResourceTypeLabel } from "./ResourceTypeLabel";
-import { RemoveButton } from "@rhoas/app-services-ui-components";
 
 export const DisplayResourceName: VFC<{ resourceType: AclResourceType }> = ({
   resourceType,
@@ -138,6 +137,7 @@ export const PrincipalCell: VFC<PrincipalCellProps> = ({
           variant="link"
           tooltip={t("remove_permission_tooltip")}
           onClick={onRemoveAcl}
+          ariaLabel={t("operations.delete")}
         />
       )}
     </div>

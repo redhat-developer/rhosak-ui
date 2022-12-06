@@ -1,8 +1,3 @@
-import type React from "react";
-import { useLayoutEffect, useState } from "react";
-import { useTranslation } from "@rhoas/app-services-ui-components";
-import type { Account } from "../types";
-import { PrincipalType } from "../types";
 import type { SelectProps } from "@patternfly/react-core";
 import {
   Divider,
@@ -13,6 +8,11 @@ import {
   ValidatedOptions,
 } from "@patternfly/react-core";
 import { FormGroupWithPopover } from "@rhoas/app-services-ui-components";
+import type React from "react";
+import { useLayoutEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import type { Account } from "../types";
+import { PrincipalType } from "../types";
 
 export type SelectAccountProps = {
   value: string | undefined;

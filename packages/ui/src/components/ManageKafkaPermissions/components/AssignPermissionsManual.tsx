@@ -1,16 +1,17 @@
-import { Tbody, Tr, Td } from "@patternfly/react-table";
-import { ResourceName } from "./ResourceName";
-import { ResourceOperation } from "./ResourceOperation";
-import type { ResourceOperationValue } from "./ResourceOperation";
-import { ResourcePermission } from "./ResourcePermission";
-import type { ResourcePermissionValue } from "./ResourcePermission";
-import { ResourcePrefixRule } from "./ResourcePrefixRule";
-import type { ResourcePrefixRuleValue } from "./ResourcePrefixRule";
-import { ResourceType } from "./ResourceType";
-import type { ResourceTypeValue } from "./ResourceType";
-import { ShortcutsTableHead } from "./ShortcutsTableHead";
-import { useTranslation } from "@rhoas/app-services-ui-components";
+import { Tbody, Td, Tr } from "@patternfly/react-table";
+import { RemoveButton } from "@rhoas/app-services-ui-components";
+import { useTranslation } from "react-i18next";
 import { KafkaInstanceManualPermissions } from "./KafkaInstanceManualPermissions";
+import { ResourceName } from "./ResourceName";
+import type { ResourceOperationValue } from "./ResourceOperation";
+import { ResourceOperation } from "./ResourceOperation";
+import type { ResourcePermissionValue } from "./ResourcePermission";
+import { ResourcePermission } from "./ResourcePermission";
+import type { ResourcePrefixRuleValue } from "./ResourcePrefixRule";
+import { ResourcePrefixRule } from "./ResourcePrefixRule";
+import type { ResourceTypeValue } from "./ResourceType";
+import { ResourceType } from "./ResourceType";
+import { ShortcutsTableHead } from "./ShortcutsTableHead";
 
 export type AssignPermissionsManualProps = {
   resourceType: ResourceTypeValue | undefined;
@@ -20,7 +21,7 @@ export type AssignPermissionsManualProps = {
   onChangeResourcePrefix: (value: ResourcePrefixRuleValue) => void;
   resourceName: string | undefined;
   onChangeResource: (value: string | undefined) => void;
-  onFetchResourceNameOptions: (filter: string) => Promise<string[]>;
+  onFetchResourceNameOptions: (filter: string) => string[];
   resourcePermission: ResourcePermissionValue;
   onChangeResourcePermission: (value: ResourcePermissionValue) => void;
   resourceOperation: ResourceOperationValue | undefined;
@@ -28,6 +29,9 @@ export type AssignPermissionsManualProps = {
     value: ResourceOperationValue | undefined
   ) => void;
   multipleShorctutPermissions?: boolean;
+  row: number;
+  onDelete: (row: number) => void;
+  setIsNameValid: (value: boolean) => void;
 };
 
 export const AssignPermissionsManual: React.FC<
@@ -45,7 +49,10 @@ export const AssignPermissionsManual: React.FC<
   resourceOperation,
   onChangeResourceOperation,
   onChangeResourcePermission,
-  multipleShorctutPermissions = false,
+  multipleShorctutPermissions = true,
+  row,
+  onDelete,
+  setIsNameValid,
 }) => {
   const { t } = useTranslation("manage-kafka-permissions");
   const resourceTypeOptions = () => {
@@ -79,6 +86,7 @@ export const AssignPermissionsManual: React.FC<
         ];
     }
   };
+
   return (
     <>
       {!multipleShorctutPermissions ? <ShortcutsTableHead /> : null}
@@ -91,6 +99,8 @@ export const AssignPermissionsManual: React.FC<
           onChangeResourceOperation={onChangeResourceOperation}
           onChangeResourcePermission={onChangeResourcePermission}
           onChangeResourceType={onChangeResourceType}
+          onDelete={onDelete}
+          row={row}
         />
       ) : (
         <Tbody>
@@ -116,6 +126,7 @@ export const AssignPermissionsManual: React.FC<
                 submitted={submitted}
                 resourceType={resourceType}
                 resourcePrefixRule={resourcePrefix}
+                setIsNameValid={setIsNameValid}
               />
             </Td>
             <Td>
@@ -132,6 +143,14 @@ export const AssignPermissionsManual: React.FC<
                 invalid={
                   submitted && resourceOperation === undefined ? true : false
                 }
+              />
+            </Td>
+            <Td>
+              <RemoveButton
+                variant="link"
+                onClick={() => onDelete(row)}
+                tooltip={t("remove_permission_tooltip")}
+                ariaLabel={t("manual_delete")}
               />
             </Td>
           </Tr>
