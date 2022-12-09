@@ -4,6 +4,7 @@ export * from "./KafkaInstanceStatus";
 export * from "./KafkaMessageBrowser";
 export * from "./KafkaInstances";
 export * from "./KafkaPageV3";
+export * from "./KafkaTopics";
 export * from "./DataPlaneHeader";
 export * from "./ControlPlaneHeader";
 export * from "./I18nProvider";

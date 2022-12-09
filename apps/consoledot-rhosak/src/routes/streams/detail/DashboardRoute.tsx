@@ -77,10 +77,16 @@ export const DashboardRoute: VoidFunctionComponent<DataPlaneRouteProps> = ({
       if (!instance || !instance.adminUrl) {
         return Promise.reject("Can't retrieve instance");
       }
-      const topics = await queryTopics(instance.adminUrl);
+      const kafkaTopics = (
+        await queryTopics({
+          adminUrl: instance.adminUrl,
+          page: 1,
+          perPage: 1000,
+        })
+      ).topics.map((t) => t.topic_name);
       return {
         ...metrics,
-        kafkaTopics: [],
+        kafkaTopics,
       };
     },
     [params.id, queryInstance, queryTopicMetrics, queryTopics]

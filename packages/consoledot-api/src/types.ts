@@ -1,3 +1,4 @@
+import { TopicOrderKey } from "@rhoas/kafka-instance-sdk";
 import type { RangeQuery } from "@rhoas/kafka-management-sdk";
 
 export type NoUndefinedField<T> = {
@@ -5,3 +6,21 @@ export type NoUndefinedField<T> = {
 };
 
 export type SafeRangeQuery = NoUndefinedField<RangeQuery>;
+
+export const KafkaInstancesSortableColumns = [
+  "name",
+  "owner",
+  "createdAt",
+  "provider",
+  "region",
+] as const;
+
+export type KafkaInstancesSortableColumn =
+  typeof KafkaInstancesSortableColumns[number];
+
+export const KafkaTopicsSortableColumns = [
+  ...Object.values(TopicOrderKey),
+] as const;
+
+export type KafkaTopicsSortableColumn =
+  typeof KafkaTopicsSortableColumns[number];

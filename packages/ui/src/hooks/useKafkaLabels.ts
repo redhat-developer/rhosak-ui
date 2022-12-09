@@ -1,4 +1,4 @@
-import { useTranslation } from "@rhoas/app-services-ui-components";
+import { useTranslation } from "react-i18next";
 import type {
   CloudProvider,
   KafkaInstanceField,
@@ -18,6 +18,8 @@ export function useKafkaLabels() {
     deprovision: t("statuses.deprovision"),
     deleting: t("statuses.deleting"),
     suspended: t("statuses.suspended"),
+    suspending: t("statuses.suspending"),
+    resuming: t("statuses.resuming"),
   };
   const statusesSimplified: { [status in SimplifiedStatus]: string } = {
     creating: t("statusesSimplified.creating"),
@@ -25,6 +27,8 @@ export function useKafkaLabels() {
     degraded: t("statusesSimplified.degraded"),
     deleting: t("statusesSimplified.deleting"),
     suspended: t("statusesSimplified.suspended"),
+    suspending: t("statusesSimplified.suspending"),
+    resuming: t("statusesSimplified.resuming"),
   };
   const providers: { [status in CloudProvider]: string } = {
     aws: t("common:cloudProviders.aws"),
@@ -53,9 +57,9 @@ export function useKafkaLabels() {
     connectionRate: t("fields.connectionRate"),
     messageSize: t("fields.messageSize"),
     billing: t("fields.billing"),
-    adminUrl: t("field.adminUrl"),
-    bootstrapUrl: t("field.bootstrapUrl"),
-    version: t("field.version"),
+    adminUrl: t("fields.adminUrl"),
+    bootstrapUrl: t("fields.bootstrapUrl"),
+    version: t("fields.version"),
   };
   return {
     fields,

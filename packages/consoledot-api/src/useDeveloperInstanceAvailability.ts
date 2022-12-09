@@ -1,10 +1,10 @@
 import { useCallback } from "react";
 import { useQuery } from "react-query";
+import { fetchKafkaInstances } from "./fetchKafkaInstances";
 import { fetchOrganization } from "./fetchOrganization";
 import { fetchStandardQuota } from "./fetchStandardQuota";
 import { kafkaRequestToKafkaInstanceEnhanched } from "./kafkaRequestToKafkaInstanceEnhanched";
 import { useKms } from "./useApi";
-import { fetchKafkaInstances } from "./useKafkaInstances";
 
 export const useDeveloperInstanceAvailability = (
   username: string | undefined

@@ -3,7 +3,10 @@ import {
   useSortableSearchParams,
   useURLSearchParamsChips,
 } from "@rhoas/app-services-ui-components";
-import { SortableColumns, useKafkaInstances } from "consoledot-api";
+import {
+  KafkaInstancesSortableColumns,
+  useKafkaInstances,
+} from "consoledot-api";
 import type { FunctionComponent } from "react";
 import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
@@ -13,7 +16,12 @@ import type {
   KafkaInstancesProps,
   SimplifiedStatus,
 } from "ui";
-import { ControlPlaneHeader, KafkaInstances, useKafkaLabels } from "ui";
+import {
+  ControlPlaneHeader,
+  KafkaInstances,
+  ReadyStatuses,
+  useKafkaLabels,
+} from "ui";
 import { useDrawer } from "../../../DrawerProvider";
 
 export type StreamsRouteProps = Pick<
@@ -46,7 +54,7 @@ export const KafkaInstancesRoute: FunctionComponent<StreamsRouteProps> = ({
   );
 
   const [isColumnSortable, sort, sortDirection] = useSortableSearchParams(
-    SortableColumns,
+    KafkaInstancesSortableColumns,
     labels.fields,
     "createdAt",
     "desc"
@@ -134,6 +142,8 @@ export const KafkaInstancesRoute: FunctionComponent<StreamsRouteProps> = ({
         onClickSupportLink={() => {}}
         onInstanceLinkClick={() => {}}
         onQuickstartGuide={() => {}}
+        canHaveInstanceLink={({ status }) => ReadyStatuses.includes(status)}
+        canOpenConnection={({ status }) => ReadyStatuses.includes(status)}
         canChangeOwner={() => true}
         canDelete={() => true}
       />

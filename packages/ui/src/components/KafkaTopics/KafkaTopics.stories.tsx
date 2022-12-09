@@ -1,6 +1,6 @@
 import type { ComponentMeta, ComponentStory } from "@storybook/react";
-import type { KafkaTopic } from "../types";
-import { TopicsTable } from "./TopicsTable";
+import type { KafkaTopic } from "../../types";
+import { KafkaTopics } from "./KafkaTopics";
 
 const topics: KafkaTopic[] = [
   {
@@ -15,23 +15,29 @@ const topics: KafkaTopic[] = [
     retention_size: "1099511600000 bytes",
     retention_time: "1500000",
   },
+  {
+    topic_name: "buzz",
+    partitions: 2,
+    retention_size: "80000 bytes",
+    retention_time: "-1",
+  },
 ];
 
 export default {
-  component: TopicsTable,
+  component: KafkaTopics,
   args: {
     getUrlFortopic: () => "",
     topics: topics,
     topicName: [],
   },
-} as ComponentMeta<typeof TopicsTable>;
+} as ComponentMeta<typeof KafkaTopics>;
 
-const Template: ComponentStory<typeof TopicsTable> = (args) => (
-  <TopicsTable {...args} />
+const Template: ComponentStory<typeof KafkaTopics> = (args) => (
+  <KafkaTopics {...args} />
 );
 
-export const KafkaTopicsTable = Template.bind({});
-KafkaTopicsTable.args = {};
+export const WithTopics = Template.bind({});
+WithTopics.args = {};
 
 export const NoTopics = Template.bind({});
 NoTopics.args = {

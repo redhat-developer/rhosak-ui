@@ -1,9 +1,8 @@
+import type { PopoverProps } from "@patternfly/react-core";
 import { Popover, TextContent } from "@patternfly/react-core";
-import type { RefObject, VoidFunctionComponent } from "react";
 import { ExclamationTriangleIcon } from "@patternfly/react-icons";
 import { useTranslation } from "@rhoas/app-services-ui-components";
-import { ExternalLink } from "@rhoas/app-services-ui-components";
-import type { PopoverProps } from "@patternfly/react-core";
+import type { RefObject, VoidFunctionComponent } from "react";
 
 export type SuspendedPopoverProps = {
   children?: PopoverProps["children"];
@@ -23,11 +22,6 @@ export const SuspendedPopover: VoidFunctionComponent<SuspendedPopoverProps> = ({
       bodyContent={
         <TextContent>
           <p>{t("suspend_popover_body_1")}</p>
-          <p>
-            <ExternalLink testId={"suspended-instance-button"} href={"#"}>
-              {t("suspend_popover_body_2")}
-            </ExternalLink>
-          </p>
         </TextContent>
       }
       position={"right"}

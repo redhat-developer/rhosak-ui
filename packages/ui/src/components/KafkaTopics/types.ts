@@ -1,14 +1,5 @@
 import { RetentionSizeUnits, RetentionTimeUnits } from "../../types";
 
-export type KafkaTopic = {
-  topic_name: string;
-  partitions: number;
-  retention_time: string;
-  retention_size: string;
-};
-
-export type KafkaTopicField = keyof KafkaTopic;
-
 export const unitsToBytes = {
   [RetentionSizeUnits.BYTE]: 1,
   [RetentionSizeUnits.KIBIBYTE]: 1024,

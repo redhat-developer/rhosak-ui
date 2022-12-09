@@ -6,6 +6,7 @@ import type { VoidFunctionComponent } from "react";
 export type KafkaInstanceActionsProps = {
   onDetails: () => void;
   onConnection: () => void;
+  canOpenConnection: boolean;
   canChangeOwner: boolean;
   onChangeOwner: () => void;
   canDelete: boolean;
@@ -17,6 +18,7 @@ export const KafkaInstanceActions: VoidFunctionComponent<
 > = ({
   onDetails,
   onConnection,
+  canOpenConnection,
   canChangeOwner,
   onChangeOwner,
   canDelete,
@@ -39,7 +41,22 @@ export const KafkaInstanceActions: VoidFunctionComponent<
         },
         {
           title: t("table.actions.connection"),
-          onClick: onConnection,
+          ...(!canOpenConnection
+            ? {
+                isDisabled: true,
+                tooltipProps: {
+                  position: "left",
+                  content: t("kafka:no_permission_to_see_connections"),
+                },
+                tooltip: true,
+                style: {
+                  pointerEvents: "auto",
+                  cursor: "default",
+                },
+              }
+            : {
+                onClick: onConnection,
+              }),
         },
         {
           isSeparator: true,

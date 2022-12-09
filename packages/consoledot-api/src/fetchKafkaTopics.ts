@@ -1,16 +1,45 @@
-import type { Topic, TopicsApi } from "@rhoas/kafka-instance-sdk";
+import type {
+  SortDirection,
+  Topic,
+  TopicsApi,
+} from "@rhoas/kafka-instance-sdk";
+import type { KafkaTopic } from "ui";
+import type { KafkaTopicsSortableColumn } from "./types";
 
-export async function fetchKafkaTopics(
-  getTopics: TopicsApi["getTopics"]
-): Promise<string[]> {
+export type FetchKafkaTopicsParams = {
+  getTopics: TopicsApi["getTopics"];
+  page?: number;
+  perPage?: number;
+  sort?: KafkaTopicsSortableColumn;
+  direction?: SortDirection;
+  filter?: string;
+};
+
+export async function fetchKafkaTopics({
+  getTopics,
+  page,
+  perPage,
+  filter,
+  sort,
+  direction,
+}: FetchKafkaTopicsParams): Promise<{ topics: KafkaTopic[]; count: number }> {
   const response = await getTopics(
     undefined,
-    100,
-    100,
     undefined,
-    undefined,
-    undefined,
-    undefined
+    perPage,
+    filter,
+    page,
+    direction,
+    sort
   );
-  return (response.data.items || []).map((t: Topic) => t.name as string);
+  const topics = (response.data.items || []).map((t: Topic) => ({
+    topic_name: t.name!,
+    partitions: t.partitions?.length || 0,
+    retention_size:
+      t.config?.find(({ key }) => key === "retention.bytes")?.value || "",
+    retention_time:
+      t.config?.find(({ key }) => key === "retention.ms")?.value || "",
+  }));
+  const count = response.data.total;
+  return { count, topics };
 }

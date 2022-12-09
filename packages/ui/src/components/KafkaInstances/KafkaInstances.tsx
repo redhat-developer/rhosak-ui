@@ -53,6 +53,8 @@ export type KafkaInstancesProps<T extends KafkaInstance> = {
   onClickConnectionTabLink: (row: T) => void;
   onClickSupportLink: () => void;
   onInstanceLinkClick: (row: T) => void;
+  canHaveInstanceLink: (row: T) => boolean;
+  canOpenConnection: (row: T) => boolean;
 } & Pick<
   TableViewProps<T, typeof Columns[number]>,
   | "itemCount"
@@ -99,6 +101,9 @@ export const KafkaInstances = <T extends KafkaInstance>({
   onRemoveStatusChip,
   onRemoveStatusChips,
   onClearAllFilters,
+
+  canHaveInstanceLink,
+  canOpenConnection,
 }: KafkaInstancesProps<T>) => {
   const { t } = useTranslation("kafka");
   const labels = useKafkaLabels();
@@ -117,6 +122,7 @@ export const KafkaInstances = <T extends KafkaInstance>({
         )}
         renderCell={({ column, row, Td, key }) => {
           const timeCreatedDate = parseISO(row.createdAt);
+          const instanceLinkEnable = canHaveInstanceLink(row);
           return (
             <Td key={key} dataLabel={labels.fields[column]}>
               {(() => {
@@ -124,14 +130,15 @@ export const KafkaInstances = <T extends KafkaInstance>({
                   case "name":
                     return (
                       <Button
-                        isInline={true}
                         variant="link"
                         component={(props) => (
                           <Link to={getUrlForInstance(row)} {...props}>
                             {row.name}
                           </Link>
                         )}
-                        isDisabled={DeletingStatuses.includes(row["status"])}
+                        isInline={true}
+                        isAriaDisabled={!instanceLinkEnable}
+                        isDisabled={!instanceLinkEnable}
                         onClick={() => onInstanceLinkClick(row)}
                       />
                     );
@@ -185,10 +192,12 @@ export const KafkaInstances = <T extends KafkaInstance>({
         renderActions={({ row }) => {
           const changeOwnerEnabled = canChangeOwner(row);
           const deleteEnabled = canDelete(row);
+          const openConnectionEnabled = canOpenConnection(row);
           return (
             <KafkaInstanceActions
               onDetails={() => onDetails(row)}
               onConnection={() => onConnection(row)}
+              canOpenConnection={openConnectionEnabled}
               canChangeOwner={changeOwnerEnabled}
               onChangeOwner={() => onChangeOwner(row)}
               canDelete={deleteEnabled}
