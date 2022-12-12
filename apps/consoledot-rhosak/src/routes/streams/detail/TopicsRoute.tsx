@@ -60,7 +60,7 @@ export const TopicsRoute: VoidFunctionComponent<DataPlaneRouteProps> = ({
         page={page}
         perPage={perPage}
         topicName={topicChips.chips}
-        getUrlFortopic={(row) => `/${row.topic_name}`}
+        getUrlFortopic={(row) => `./topic/${row.topic_name}`}
         isColumnSortable={isColumnSortable}
         onDelete={() => {}}
         onEdit={() => {}}
@@ -70,7 +70,7 @@ export const TopicsRoute: VoidFunctionComponent<DataPlaneRouteProps> = ({
         }}
         onClearAllFilters={topicChips.clear}
         onCreateTopic={() => {}}
-        onPageChange={() => {}}
+        onPageChange={setPagination}
         onRemoveTopicChip={topicChips.clear}
         onRemoveTopicChips={topicChips.clear}
         onTopicLinkClick={() => {}}

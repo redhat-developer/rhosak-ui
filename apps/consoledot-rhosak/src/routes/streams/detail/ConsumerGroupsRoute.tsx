@@ -1,10 +1,9 @@
-import { PageSection } from "@patternfly/react-core";
 import {
   usePaginationSearchParams,
   useSortableSearchParams,
   useURLSearchParamsChips
 } from "@rhoas/app-services-ui-components";
-import { useKafkaInstance } from "consoledot-api";
+import { KafkaConsumerGroupSortableColumns, useKafkaInstance, useKafkaInstanceConsumerGroups } from "consoledot-api";
 import { useCallback } from "react";
 import type { VoidFunctionComponent } from "react";
 import { ConsumerGroups } from "ui";
@@ -26,22 +25,22 @@ export const ConsumerGroupsRoute: VoidFunctionComponent<
 
   const consumerName = useURLSearchParamsChips("consumer", resetPaginationQuery);
   const [isColumnSortable, sort, sortDirection] = useSortableSearchParams(
-    ["id"] as const,
+    KafkaConsumerGroupSortableColumns,
     {
-      id: "TODO id",
+      name: "TODO name"
     },
-    "id",
+    "name",
     "desc"
   );
-  // const { data } = useKafkaInstanceTopics({
-  //   id: instance?.id,
-  //   adminUrl: instance?.adminUrl,
-  //   page,
-  //   perPage,
-  //   sort: sort!,
-  //   direction: sortDirection,
-  //   filter: consumerName.chips[0],
-  // });
+  const { data } = useKafkaInstanceConsumerGroups({
+    id: instance?.id,
+    adminUrl: instance?.adminUrl,
+    page,
+    perPage,
+    sort: sort!,
+    direction: sortDirection,
+    groupId: consumerName.chips[0],
+  });
   return (
     <>
       <DataPlaneHeaderConnected
@@ -49,8 +48,8 @@ export const ConsumerGroupsRoute: VoidFunctionComponent<
         activeSection={"consumer"}
       />
       <ConsumerGroups
-        consumers={[]}
-        itemCount={0}
+        consumers={data?.groups}
+        itemCount={data?.count}
         page={page}
         perPage={perPage}
         consumerName={consumerName.chips}
@@ -62,7 +61,7 @@ export const ConsumerGroupsRoute: VoidFunctionComponent<
           consumerName.toggle(value);
         }}
         onClearAllFilters={consumerName.clear}
-        onPageChange={() => {}}
+        onPageChange={setPagination}
         onRemoveConsumerChip={consumerName.clear}
         onRemoveConsumerChips={consumerName.clear}
         onViewPartition={() => {}}

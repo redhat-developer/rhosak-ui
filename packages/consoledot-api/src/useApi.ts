@@ -1,5 +1,5 @@
 import { AppServicesApi } from "@rhoas/account-management-sdk";
-import { TopicsApi } from "@rhoas/kafka-instance-sdk";
+import { GroupsApi, TopicsApi } from "@rhoas/kafka-instance-sdk";
 import { Configuration, DefaultApi } from "@rhoas/kafka-management-sdk";
 import { useCallback } from "react";
 import { useApi } from "./ApiProvider";
@@ -44,6 +44,23 @@ export const useTopics = () => {
       );
 
       return topicsApi;
+    },
+    [accessToken]
+  );
+};
+
+export const useConsumerGroups = () => {
+  const { accessToken } = useApi();
+  return useCallback(
+    (adminUrl: string) => {
+      const groupsApi = new GroupsApi(
+        new Configuration({
+          accessToken,
+          basePath: adminUrl,
+        })
+      );
+
+      return groupsApi;
     },
     [accessToken]
   );

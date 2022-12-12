@@ -181,3 +181,5 @@ export type KafkaTopic = {
 };
 
 export type KafkaTopicField = keyof KafkaTopic;
+
+export type {ConsumerGroup} from "./components/ConsumerGroups/types"

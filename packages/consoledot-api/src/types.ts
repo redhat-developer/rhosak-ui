@@ -1,4 +1,4 @@
-import { TopicOrderKey } from "@rhoas/kafka-instance-sdk";
+import { TopicOrderKey, ConsumerGroupOrderKey } from "@rhoas/kafka-instance-sdk";
 import type { RangeQuery } from "@rhoas/kafka-management-sdk";
 
 export type NoUndefinedField<T> = {
@@ -24,3 +24,10 @@ export const KafkaTopicsSortableColumns = [
 
 export type KafkaTopicsSortableColumn =
   typeof KafkaTopicsSortableColumns[number];
+
+export const KafkaConsumerGroupSortableColumns = [
+  ...Object.values(ConsumerGroupOrderKey),
+] as const;
+
+export type KafkaConsumerGroupSortableColumn =
+  typeof KafkaConsumerGroupSortableColumns[number];

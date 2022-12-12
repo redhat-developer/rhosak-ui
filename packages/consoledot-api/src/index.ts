@@ -6,6 +6,6 @@ export * from "./useKafkaInstanceMetricsQuery";
 export * from "./useKafkaInstanceTopicMetricsQuery";
 export * from "./useKafkaInstanceTopics";
 export * from "./useKafkaInstanceTopicsQuery";
+export * from "./useKafkaInstanceConsumerGroups";
 export * from "./useKafkaInstances";
 export * from "./types";
-export { useKafkaInstanceTransformer } from "./useKafkaInstanceTransformer";
