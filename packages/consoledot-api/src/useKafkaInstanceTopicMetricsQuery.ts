@@ -1,5 +1,7 @@
 import { useQueryClient } from "react-query";
+import type { FetchTopicsMetricsProps } from "./fetchKafkaTopicMetrics";
 import { fetchKafkaTopicMetrics } from "./fetchKafkaTopicMetrics";
+import { kafkaQueries } from "./queryKeys";
 import { useKms } from "./useApi";
 
 export function useKafkaInstanceTopicMetricsQuery() {
@@ -7,32 +9,17 @@ export function useKafkaInstanceTopicMetricsQuery() {
   const queryClient = useQueryClient();
 
   return (
-    id: string,
-    duration: number,
-    interval: number,
-    selectedTopic: string | undefined
+    params: Omit<FetchTopicsMetricsProps, 'getMetricsByRangeQuery'>
   ) => {
     const api = getKms();
 
     return queryClient.fetchQuery({
-      queryKey: [
-        {
-          scope: "kafka-instance",
-          entity: "topic-metrics",
-          id,
-          duration,
-          interval,
-          selectedTopic,
-        },
-      ],
+      queryKey: kafkaQueries.instance.metrics.topic(params),
       queryFn: async () => {
         return fetchKafkaTopicMetrics({
           getMetricsByRangeQuery: (...args) =>
             api.getMetricsByRangeQuery(...args),
-          kafkaId: id,
-          duration,
-          interval,
-          selectedTopic,
+          ...params
         });
       },
     });

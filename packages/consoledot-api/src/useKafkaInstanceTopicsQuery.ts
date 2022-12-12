@@ -1,31 +1,22 @@
 import { useQueryClient } from "react-query";
 import type { FetchKafkaTopicsParams } from "./fetchKafkaTopics";
 import { fetchKafkaTopics } from "./fetchKafkaTopics";
+import { kafkaQueries } from "./queryKeys";
 import { useTopics } from "./useApi";
 
 export function useKafkaInstanceTopicsQuery() {
   const getTopics = useTopics();
   const queryClient = useQueryClient();
 
-  return ({
-    adminUrl,
-    ...props
-  }: Omit<FetchKafkaTopicsParams, "getTopics"> & { adminUrl: string }) => {
-    const api = getTopics(adminUrl);
+  return (params: Omit<FetchKafkaTopicsParams, "getTopics"> & { id: string, adminUrl: string }) => {
+    const api = getTopics(params.adminUrl);
 
     return queryClient.fetchQuery({
-      queryKey: [
-        {
-          scope: "kafka-instance",
-          entity: "topics",
-          adminUrl,
-          ...props,
-        },
-      ],
+      queryKey: kafkaQueries.instance.topics(params),
       queryFn: async () => {
         return fetchKafkaTopics({
           getTopics: (...args) => api.getTopics(...args),
-          ...props,
+          ...params,
         });
       },
     });

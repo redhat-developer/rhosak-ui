@@ -1,5 +1,6 @@
 import { useQueryClient } from "react-query";
 import { fetchKafkaKpiMetrics } from "./fetchKafkaKpiMetrics";
+import { kafkaQueries } from "./queryKeys";
 import { useKms } from "./useApi";
 
 export function useKafkaInstanceKpiMetricsQuery() {
@@ -10,7 +11,7 @@ export function useKafkaInstanceKpiMetricsQuery() {
     const api = getKms();
 
     return queryClient.fetchQuery({
-      queryKey: [{ scope: "kafka-instance", entity: "kpi-metrics", id }],
+      queryKey: kafkaQueries.instance.metrics.kpi({ id }),
       queryFn: async () => {
         return fetchKafkaKpiMetrics(
           (...args) => api.getMetricsByInstantQuery(...args),

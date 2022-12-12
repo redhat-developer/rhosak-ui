@@ -52,7 +52,7 @@ export const DashboardRoute: VoidFunctionComponent<DataPlaneRouteProps> = ({
       async ({ interval, duration }) => {
         const [instance, metrics] = await Promise.all([
           queryInstance(params.id),
-          queryInstanceMetrics(params.id, duration, interval),
+          queryInstanceMetrics({id:params.id, duration, interval}),
         ]);
         if (!instance) {
           return Promise.reject("Can't retrieve instance");
@@ -72,13 +72,14 @@ export const DashboardRoute: VoidFunctionComponent<DataPlaneRouteProps> = ({
     async ({ interval, duration, selectedTopic }) => {
       const [instance, metrics] = await Promise.all([
         queryInstance(params.id),
-        queryTopicMetrics(params.id, duration, interval, selectedTopic),
+        queryTopicMetrics({id: params.id, duration, interval, selectedTopic}),
       ]);
       if (!instance || !instance.adminUrl) {
         return Promise.reject("Can't retrieve instance");
       }
       const kafkaTopics = (
         await queryTopics({
+          id: instance.id,
           adminUrl: instance.adminUrl,
           page: 1,
           perPage: 1000,

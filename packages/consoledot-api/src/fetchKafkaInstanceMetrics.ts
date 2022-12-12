@@ -2,20 +2,20 @@ import type { DefaultApi } from "@rhoas/kafka-management-sdk";
 import type { GetKafkaInstanceMetricsResponse, TimeSeriesMetrics } from "ui";
 import type { SafeRangeQuery } from "./types";
 
-type FetchKafkaInstanceMetricsProps = {
+export type FetchKafkaInstanceMetricsProps = {
   getMetricsByRangeQuery: DefaultApi["getMetricsByRangeQuery"];
-  kafkaId: string;
+  id: string;
   duration: number;
   interval: number;
 };
 
 export async function fetchKafkaInstanceMetrics({
   getMetricsByRangeQuery,
-  kafkaId,
+  id,
   duration,
   interval,
 }: FetchKafkaInstanceMetricsProps): Promise<GetKafkaInstanceMetricsResponse> {
-  const response = await getMetricsByRangeQuery(kafkaId, duration, interval, [
+  const response = await getMetricsByRangeQuery(id, duration, interval, [
     "kubelet_volume_stats_used_bytes",
     "kafka_namespace:kafka_server_socket_server_metrics_connection_creation_rate:sum",
     "kafka_namespace:kafka_server_socket_server_metrics_connection_count:sum",

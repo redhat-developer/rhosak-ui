@@ -40,6 +40,7 @@ export const TopicsRoute: VoidFunctionComponent<DataPlaneRouteProps> = ({
     "desc"
   );
   const { data } = useKafkaInstanceTopics({
+    id: instance?.id,
     adminUrl: instance?.adminUrl,
     page,
     perPage,

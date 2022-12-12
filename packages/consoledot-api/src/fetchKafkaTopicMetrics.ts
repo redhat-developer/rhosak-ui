@@ -8,7 +8,7 @@ import type { SafeRangeQuery } from "./types";
 
 export type FetchTopicsMetricsProps = {
   getMetricsByRangeQuery: DefaultApi["getMetricsByRangeQuery"];
-  kafkaId: string;
+  id: string;
   duration: number;
   interval: number;
   selectedTopic: string | undefined;
@@ -16,14 +16,14 @@ export type FetchTopicsMetricsProps = {
 
 export async function fetchKafkaTopicMetrics({
   getMetricsByRangeQuery,
-  kafkaId,
+  id,
   duration,
   interval,
   selectedTopic,
 }: FetchTopicsMetricsProps): Promise<
   Omit<GetTopicsMetricsResponse, "kafkaTopics">
 > {
-  const response = await getMetricsByRangeQuery(kafkaId, duration, interval, [
+  const response = await getMetricsByRangeQuery(id, duration, interval, [
     "kafka_topic:kafka_server_brokertopicmetrics_bytes_in_total:rate5m",
     "kafka_topic:kafka_server_brokertopicmetrics_bytes_out_total:rate5m",
     "kafka_topic:kafka_log_log_size:sum",

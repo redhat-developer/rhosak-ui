@@ -5,6 +5,7 @@ import { fetchProviderRegionSizes } from "./fetchProviderRegionSizes";
 import { fetchProvidersWithRegions } from "./fetchProvidersWithRegions";
 import { fetchStandardQuota } from "./fetchStandardQuota";
 import { kafkaRequestToKafkaInstanceEnhanched } from "./kafkaRequestToKafkaInstanceEnhanched";
+import { kafkaQueries, masQueries, providerQueries } from "./queryKeys";
 import { useAms, useKms } from "./useApi";
 
 export function useKafkaInstance(id: string | undefined) {
@@ -14,7 +15,7 @@ export function useKafkaInstance(id: string | undefined) {
 
   return useQuery({
     enabled: Boolean(id),
-    queryKey: [{ scope: "kafka-instances", entity: "details", id }],
+    queryKey: kafkaQueries.instance.details({ id }),
     queryFn: async () => {
       if (!id) {
         return Promise.reject("Invalid Kafka instance id");
@@ -32,7 +33,7 @@ export function useKafkaInstanceQuery() {
   return async (id: string) => {
     const api = getKms();
     return queryClient.fetchQuery({
-      queryKey: [{ scope: "kafka-instances", entity: "details", id }],
+      queryKey: kafkaQueries.instance.details({ id }),
       queryFn: async () => {
         const instance = await api.getKafkaById(id);
         return dataMapper(instance.data);
@@ -50,7 +51,7 @@ export function useKafkaInstanceTransformer() {
   const ams = getAms();
   return async function kafkaInstanceTransformer(instance: KafkaRequest) {
     const organization = await queryClient.fetchQuery({
-      queryKey: [{ scope: "organization" }],
+      queryKey: masQueries.organization(),
       queryFn: () =>
         fetchOrganization((...args) =>
           ams.apiAccountsMgmtV1CurrentAccountGet(...args)
@@ -61,7 +62,7 @@ export function useKafkaInstanceTransformer() {
       return Promise.reject("Missing organization id");
     }
     const standardQuota = await queryClient.fetchQuery({
-      queryKey: [{ scope: "standardQuota", organization }],
+      queryKey: masQueries.quota({organization}),
       queryFn: () =>
         fetchStandardQuota(
           (...args) =>
@@ -72,13 +73,7 @@ export function useKafkaInstanceTransformer() {
     });
 
     const providersInfo = await queryClient.fetchQuery({
-      queryKey: [
-        {
-          scope: "providers-info",
-          entity: "list",
-          plan: instance.billing_model,
-        },
-      ],
+      queryKey: providerQueries.list({ plan: instance.billing_model }),
       queryFn: () =>
         fetchProvidersWithRegions(
           (...args) => kms.getCloudProviders(...args),
@@ -94,14 +89,7 @@ export function useKafkaInstanceTransformer() {
       return Promise.reject("Invalid cloud provider");
     }
     const standardPlanLimitsQuery = queryClient.fetchQuery({
-      queryKey: [
-        {
-          scope: "providers-info",
-          entity: "details",
-          provider: providerInfo.id,
-          plan: "standard",
-        },
-      ],
+      queryKey: providerQueries.limits.standard({ provider: providerInfo.id }),
       queryFn: () =>
         fetchProviderRegionSizes(
           (...args) => kms.getInstanceTypesByCloudProviderAndRegion(...args),
@@ -112,15 +100,7 @@ export function useKafkaInstanceTransformer() {
       staleTime: Infinity,
     });
     const developerPlanLimitsQuery = queryClient.fetchQuery({
-      queryKey: [
-        {
-          scope: "providers-info",
-          entity: "details",
-
-          provider: providerInfo.id,
-          plan: "developer",
-        },
-      ],
+      queryKey: providerQueries.limits.developer({ provider: providerInfo.id }),
       queryFn: () =>
         fetchProviderRegionSizes(
           (...args) => kms.getInstanceTypesByCloudProviderAndRegion(...args),

@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from "react-query";
 import type { FetchKafkaInstancesParams } from "./fetchKafkaInstances";
 import { fetchKafkaInstances } from "./fetchKafkaInstances";
+import { kafkaQueries } from "./queryKeys";
 import { useKms } from "./useApi";
 import { useKafkaInstanceTransformer } from "./useKafkaInstance";
 
@@ -13,7 +14,7 @@ export function useKafkaInstances(
   const api = getKms();
 
   return useQuery({
-    queryKey: [{ scope: "instances", entity: "list", ...params }],
+    queryKey: kafkaQueries.list(params),
     queryFn: async () => {
       const res = await fetchKafkaInstances({
         getKafkas: (...args) => api.getKafkas(...args),
