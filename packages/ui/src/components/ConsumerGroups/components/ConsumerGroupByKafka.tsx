@@ -15,7 +15,7 @@ import {
   Tr,
 } from "@patternfly/react-table";
 import type { FunctionComponent } from "react";
-import { useTranslation } from "@rhoas/app-services-ui-components";
+import { useTranslation } from "react-i18next";
 import type { Consumer, ConsumerGroupState } from "../types";
 import { ConsumerGroupPopover } from "./ConsumerGroupPopover";
 import { ConsumerGroupStateLabel } from "./ConsumerGroupState";

@@ -11,7 +11,7 @@ import {
   TextInput,
 } from "@patternfly/react-core";
 import type { FunctionComponent } from "react";
-import { useTranslation } from "@rhoas/app-services-ui-components";
+import { useTranslation } from "react-i18next";
 import "../ConsumerGroup.css";
 import type { Consumer, OffsetValue } from "../types";
 import {

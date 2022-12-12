@@ -10,11 +10,11 @@ import {
   ToolbarToggleGroup,
 } from "@patternfly/react-core";
 import { FilterIcon, SearchIcon } from "@patternfly/react-icons";
+import { Pagination } from "@rhoas/app-services-ui-components";
+import type { PaginationProps } from "@rhoas/app-services-ui-components";
 import type { FunctionComponent } from "react";
 import { useCallback, useState } from "react";
-import { useTranslation } from "@rhoas/app-services-ui-components";
-import type { PaginationProps } from "@rhoas/app-services-ui-components";
-import { Pagination } from "@rhoas/app-services-ui-components";
+import { useTranslation } from "react-i18next";
 
 export type ConsumerGroupToolbarProps = {
   onSearch: (value: string) => void;

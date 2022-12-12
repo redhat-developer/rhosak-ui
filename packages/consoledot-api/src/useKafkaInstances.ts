@@ -1,13 +1,15 @@
 import { useQuery, useQueryClient } from "react-query";
+import { useApi } from "./ApiProvider";
 import type { FetchKafkaInstancesParams } from "./fetchKafkaInstances";
 import { fetchKafkaInstances } from "./fetchKafkaInstances";
 import { kafkaQueries } from "./queryKeys";
 import { useKms } from "./useApi";
-import { useKafkaInstanceTransformer } from "./useKafkaInstance";
+import { useKafkaInstanceTransformer } from "./useKafkaInstanceTransformer";
 
 export function useKafkaInstances(
   params: Omit<FetchKafkaInstancesParams, "dataMapper" | "getKafkas">
 ) {
+  const { refetchInterval } = useApi();
   const queryClient = useQueryClient();
   const dataMapper = useKafkaInstanceTransformer();
   const getKms = useKms();
@@ -23,19 +25,12 @@ export function useKafkaInstances(
       });
       res.instances.forEach((i) =>
         queryClient.setQueryData(
-          [
-            {
-              scope: "kafka-instances",
-              entity: "details",
-              id: i.id,
-            },
-          ],
+          kafkaQueries.instance.details({ id: i.id }),
           i
         )
       );
       return res;
     },
-    refetchInterval: 5000,
-    cacheTime: 1000 * 5,
+    refetchInterval
   });
 }

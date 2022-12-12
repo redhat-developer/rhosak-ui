@@ -19,7 +19,8 @@ const AppEntry = memo(() => {
     <Provider store={store}>
       <ApiProvider
         accessToken={chrome.auth.getToken}
-        basePath={"https://api.openshift.com"}
+        basePath={"https://api.stage.openshift.com"}
+        refetchInterval={5000}
       >
         <Router basename={"/application-services"}>
           <I18nProvider lng={"en"}>

@@ -1,18 +1,73 @@
 import { PageSection } from "@patternfly/react-core";
+import {
+  usePaginationSearchParams,
+  useSortableSearchParams,
+  useURLSearchParamsChips
+} from "@rhoas/app-services-ui-components";
+import { useKafkaInstance } from "consoledot-api";
+import { useCallback } from "react";
 import type { VoidFunctionComponent } from "react";
+import { ConsumerGroups } from "ui";
 import type { DataPlaneRouteProps } from "../routes";
 import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
+import { useDataPlaneRouteMatch } from "./UseDataPlaneRouteMatch";
 
 export const ConsumerGroupsRoute: VoidFunctionComponent<
   DataPlaneRouteProps
 > = ({ instancesHref }) => {
+  const { params } = useDataPlaneRouteMatch();
+  const { data: instance } = useKafkaInstance(params.id);
+  const { page, perPage, setPagination, setPaginationQuery } =
+    usePaginationSearchParams();
+  const resetPaginationQuery = useCallback(
+    () => setPaginationQuery(1, perPage),
+    [perPage, setPaginationQuery]
+  );
+
+  const consumerName = useURLSearchParamsChips("consumer", resetPaginationQuery);
+  const [isColumnSortable, sort, sortDirection] = useSortableSearchParams(
+    ["id"] as const,
+    {
+      id: "TODO id",
+    },
+    "id",
+    "desc"
+  );
+  // const { data } = useKafkaInstanceTopics({
+  //   id: instance?.id,
+  //   adminUrl: instance?.adminUrl,
+  //   page,
+  //   perPage,
+  //   sort: sort!,
+  //   direction: sortDirection,
+  //   filter: consumerName.chips[0],
+  // });
   return (
     <>
       <DataPlaneHeaderConnected
         instancesHref={instancesHref}
         activeSection={"consumer"}
       />
-      <PageSection>TODO</PageSection>
+      <ConsumerGroups
+        consumers={[]}
+        itemCount={0}
+        page={page}
+        perPage={perPage}
+        consumerName={consumerName.chips}
+        isRowSelected={() => false}
+        isColumnSortable={isColumnSortable}
+        onDelete={() => {}}
+        onSearchConsumer={(value) => {
+          consumerName.clear();
+          consumerName.toggle(value);
+        }}
+        onClearAllFilters={consumerName.clear}
+        onPageChange={() => {}}
+        onRemoveConsumerChip={consumerName.clear}
+        onRemoveConsumerChips={consumerName.clear}
+        onViewPartition={() => {}}
+        onViewResetOffset={()=>{}}
+      />
     </>
-  );
+  )
 };

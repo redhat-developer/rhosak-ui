@@ -27,7 +27,7 @@ export const TopicsRoute: VoidFunctionComponent<DataPlaneRouteProps> = ({
     [perPage, setPaginationQuery]
   );
 
-  const topicsChips = useURLSearchParamsChips("topics", resetPaginationQuery);
+  const topicChips = useURLSearchParamsChips("topic", resetPaginationQuery);
   const [isColumnSortable, sort, sortDirection] = useSortableSearchParams(
     KafkaTopicsSortableColumns,
     {
@@ -46,7 +46,7 @@ export const TopicsRoute: VoidFunctionComponent<DataPlaneRouteProps> = ({
     perPage,
     sort: sort!,
     direction: sortDirection,
-    filter: topicsChips.chips[0],
+    filter: topicChips.chips[0],
   });
   return (
     <>
@@ -59,20 +59,20 @@ export const TopicsRoute: VoidFunctionComponent<DataPlaneRouteProps> = ({
         itemCount={data?.count}
         page={page}
         perPage={perPage}
-        topicName={topicsChips.chips}
+        topicName={topicChips.chips}
         getUrlFortopic={(row) => `/${row.topic_name}`}
         isColumnSortable={isColumnSortable}
         onDelete={() => {}}
         onEdit={() => {}}
         onSearchTopic={(value) => {
-          topicsChips.clear();
-          topicsChips.toggle(value);
+          topicChips.clear();
+          topicChips.toggle(value);
         }}
-        onClearAllFilters={topicsChips.clear}
+        onClearAllFilters={topicChips.clear}
         onCreateTopic={() => {}}
         onPageChange={() => {}}
-        onRemoveTopicChip={topicsChips.clear}
-        onRemoveTopicChips={topicsChips.clear}
+        onRemoveTopicChip={topicChips.clear}
+        onRemoveTopicChips={topicChips.clear}
         onTopicLinkClick={() => {}}
       />
     </>

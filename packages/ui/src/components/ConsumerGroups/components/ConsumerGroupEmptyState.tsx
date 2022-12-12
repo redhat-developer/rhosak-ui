@@ -8,7 +8,7 @@ import {
 } from "@patternfly/react-core";
 import { CubesIcon } from "@patternfly/react-icons";
 import type { FunctionComponent } from "react";
-import { useTranslation } from "@rhoas/app-services-ui-components";
+import { useTranslation } from "react-i18next";
 
 export const ConsumerGroupEmptyState: FunctionComponent = () => {
   const { t } = useTranslation(["kafka"]);

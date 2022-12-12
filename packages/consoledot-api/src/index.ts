@@ -8,3 +8,4 @@ export * from "./useKafkaInstanceTopics";
 export * from "./useKafkaInstanceTopicsQuery";
 export * from "./useKafkaInstances";
 export * from "./types";
+export { useKafkaInstanceTransformer } from "./useKafkaInstanceTransformer";

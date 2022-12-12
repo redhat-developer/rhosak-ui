@@ -8,7 +8,9 @@ import { ReactQueryDevtools } from "react-query/devtools";
 type ApiContextProps = Pick<
   ConfigurationParameters,
   "accessToken" | "basePath"
->;
+> & {
+  refetchInterval: number
+};
 
 const ApiContext = createContext<ApiContextProps>(null!);
 

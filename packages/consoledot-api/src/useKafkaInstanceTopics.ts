@@ -1,10 +1,12 @@
 import { useQuery } from "react-query";
+import { useApi } from "./ApiProvider";
 import type { FetchKafkaTopicsParams } from "./fetchKafkaTopics";
 import { fetchKafkaTopics } from "./fetchKafkaTopics";
 import { kafkaQueries } from "./queryKeys";
 import { useTopics } from "./useApi";
 
 export function useKafkaInstanceTopics(params: {id?: string, adminUrl?: string}&Omit<FetchKafkaTopicsParams, "getTopics">) {
+  const { refetchInterval } = useApi();
   const getTopics = useTopics();
 
   return useQuery({
@@ -23,7 +25,6 @@ export function useKafkaInstanceTopics(params: {id?: string, adminUrl?: string}&
       });
     },
     enabled: Boolean(params.adminUrl) && Boolean(params.id),
-    refetchInterval: 5000,
-    cacheTime: 5000,
+    refetchInterval,
   });
 }

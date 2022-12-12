@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 import { useQuery } from "react-query";
+import { useApi } from "./ApiProvider";
 import { fetchKafkaInstances } from "./fetchKafkaInstances";
 import { fetchOrganization } from "./fetchOrganization";
 import { fetchStandardQuota } from "./fetchStandardQuota";
@@ -9,6 +10,7 @@ import { useKms } from "./useApi";
 export const useDeveloperInstanceAvailability = (
   username: string | undefined
 ) => {
+  const { refetchInterval } = useApi();
   const getKms = useKms();
   const organization = fetchOrganization();
   const quota = fetchStandardQuota(organization.data);
@@ -49,6 +51,6 @@ export const useDeveloperInstanceAvailability = (
       }),
       [quota.data.marketplaceSubscriptions]
     ),
-    refetchInterval: 5000,
+    refetchInterval,
   });
 };
