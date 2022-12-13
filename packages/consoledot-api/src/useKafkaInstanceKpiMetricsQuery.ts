@@ -1,4 +1,4 @@
-import { useQueryClient } from "react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { fetchKafkaKpiMetrics } from "./fetchKafkaKpiMetrics";
 import { kafkaQueries } from "./queryKeys";
 import { useKms } from "./useApi";

@@ -9,8 +9,13 @@ import { ConsumerGroupsRoute } from "./streams/detail/ConsumerGroupsRoute";
 import { DashboardRoute } from "./streams/detail/DashboardRoute";
 import { SettingsRoute } from "./streams/detail/SettingsRoute";
 import { TopicsRoute } from "./streams/detail/TopicsRoute";
+import { CreateKafkaInstanceRoute } from "./streams/kafka-instances/CreateKafkaInstanceRoute";
 import { KafkaInstancesRoute } from "./streams/kafka-instances/KafkaInstancesRoute";
-import { ControlPlaneRoutePath, DataPlaneRoutePath } from "./streams/routes";
+import {
+  ControlPlaneNewInstanceId,
+  ControlPlaneRoutePath,
+  DataPlaneRoutePath,
+} from "./streams/routes";
 
 export const StreamsRoutes: VoidFunctionComponent = () => {
   const {
@@ -32,13 +37,21 @@ export const StreamsRoutes: VoidFunctionComponent = () => {
     >
       <Suspense fallback={Fallback}>
         <Switch>
+          {/* CONTROL PLANE */}
           <Route path={ControlPlaneRoutePath} exact>
+            <Route
+              path={`${ControlPlaneRoutePath}/${ControlPlaneNewInstanceId}`}
+            >
+              <CreateKafkaInstanceRoute instancesHref={"/kafkas"} />
+            </Route>
             <KafkaInstancesRoute
               getUrlForInstance={(instance) =>
                 `/kafkas/${instance.id}/details/${instance.name}`
               }
             />
           </Route>
+
+          {/* DATA PLANE*/}
           <Route path={`${DataPlaneRoutePath}/dashboard`} exact>
             <DashboardRoute instancesHref={"/kafkas"} />
           </Route>

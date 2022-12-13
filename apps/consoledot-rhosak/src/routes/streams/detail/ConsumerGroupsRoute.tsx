@@ -1,19 +1,23 @@
 import {
   usePaginationSearchParams,
   useSortableSearchParams,
-  useURLSearchParamsChips
+  useURLSearchParamsChips,
 } from "@rhoas/app-services-ui-components";
-import { KafkaConsumerGroupSortableColumns, useKafkaInstance, useKafkaInstanceConsumerGroups } from "consoledot-api";
-import { useCallback } from "react";
+import {
+  KafkaConsumerGroupSortableColumns,
+  useKafkaInstance,
+  useKafkaInstanceConsumerGroups,
+} from "consoledot-api";
 import type { VoidFunctionComponent } from "react";
+import { useCallback } from "react";
 import { ConsumerGroups } from "ui";
-import type { DataPlaneRouteProps } from "../routes";
+import type { NavigationProps } from "../routes";
 import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
 import { useDataPlaneRouteMatch } from "./UseDataPlaneRouteMatch";
 
-export const ConsumerGroupsRoute: VoidFunctionComponent<
-  DataPlaneRouteProps
-> = ({ instancesHref }) => {
+export const ConsumerGroupsRoute: VoidFunctionComponent<NavigationProps> = ({
+  instancesHref,
+}) => {
   const { params } = useDataPlaneRouteMatch();
   const { data: instance } = useKafkaInstance(params.id);
   const { page, perPage, setPagination, setPaginationQuery } =
@@ -23,11 +27,14 @@ export const ConsumerGroupsRoute: VoidFunctionComponent<
     [perPage, setPaginationQuery]
   );
 
-  const consumerName = useURLSearchParamsChips("consumer", resetPaginationQuery);
+  const consumerName = useURLSearchParamsChips(
+    "consumer",
+    resetPaginationQuery
+  );
   const [isColumnSortable, sort, sortDirection] = useSortableSearchParams(
     KafkaConsumerGroupSortableColumns,
     {
-      name: "TODO name"
+      name: "TODO name",
     },
     "name",
     "desc"
@@ -65,8 +72,8 @@ export const ConsumerGroupsRoute: VoidFunctionComponent<
         onRemoveConsumerChip={consumerName.clear}
         onRemoveConsumerChips={consumerName.clear}
         onViewPartition={() => {}}
-        onViewResetOffset={()=>{}}
+        onViewResetOffset={() => {}}
       />
     </>
-  )
+  );
 };

@@ -1,4 +1,4 @@
-import { useQueryClient } from "react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import type { FetchKafkaTopicsParams } from "./fetchKafkaTopics";
 import { fetchKafkaTopics } from "./fetchKafkaTopics";
 import { kafkaQueries } from "./queryKeys";
@@ -8,7 +8,12 @@ export function useKafkaInstanceTopicsQuery() {
   const getTopics = useTopics();
   const queryClient = useQueryClient();
 
-  return (params: Omit<FetchKafkaTopicsParams, "getTopics"> & { id: string, adminUrl: string }) => {
+  return (
+    params: Omit<FetchKafkaTopicsParams, "getTopics"> & {
+      id: string;
+      adminUrl: string;
+    }
+  ) => {
     const api = getTopics(params.adminUrl);
 
     return queryClient.fetchQuery({

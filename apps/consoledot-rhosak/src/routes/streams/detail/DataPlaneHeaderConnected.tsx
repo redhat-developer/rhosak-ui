@@ -3,11 +3,11 @@ import type { VoidFunctionComponent } from "react";
 import type { DataPlaneHeaderProps } from "ui";
 import { DataPlaneHeader, ReadyStatuses } from "ui";
 import { useDrawer } from "../../../DrawerProvider";
-import type { DataPlaneRouteProps } from "../routes";
+import type { NavigationProps } from "../routes";
 import { useDataPlaneRouteMatch } from "./UseDataPlaneRouteMatch";
 
 export const DataPlaneHeaderConnected: VoidFunctionComponent<
-  DataPlaneRouteProps & Pick<DataPlaneHeaderProps, "activeSection">
+  NavigationProps & Pick<DataPlaneHeaderProps, "activeSection">
 > = ({ instancesHref, activeSection }) => {
   const { setActiveTab, toggleExpanded } = useDrawer();
 

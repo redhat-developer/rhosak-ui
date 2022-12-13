@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useApi } from "./ApiProvider";
 import type { FetchKafkaInstancesParams } from "./fetchKafkaInstances";
 import { fetchKafkaInstances } from "./fetchKafkaInstances";
@@ -24,13 +24,10 @@ export function useKafkaInstances(
         ...params,
       });
       res.instances.forEach((i) =>
-        queryClient.setQueryData(
-          kafkaQueries.instance.details({ id: i.id }),
-          i
-        )
+        queryClient.setQueryData(kafkaQueries.instance.details({ id: i.id }), i)
       );
       return res;
     },
-    refetchInterval
+    refetchInterval,
   });
 }

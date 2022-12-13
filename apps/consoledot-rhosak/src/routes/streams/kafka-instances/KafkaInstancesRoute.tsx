@@ -23,7 +23,7 @@ import {
   useKafkaLabels,
 } from "ui";
 import { useDrawer } from "../../../DrawerProvider";
-import { ControlPlaneRouteRoot } from "../routes";
+import { ControlPlaneNewInstanceId, ControlPlaneRouteRoot } from "../routes";
 
 export type StreamsRouteProps = Pick<
   KafkaInstancesProps<KafkaInstance>,
@@ -95,7 +95,7 @@ export const KafkaInstancesRoute: FunctionComponent<StreamsRouteProps> = ({
     [history, isExpanded, selectedInstance, setActiveTab, toggleExpanded]
   );
 
-  const handleDetailsClick: KafkaInstancesProps<KafkaInstance>["onDetails"] =
+  const onDetailsClick: KafkaInstancesProps<KafkaInstance>["onDetails"] =
     useCallback(
       (instance) => {
         openDrawer(instance.id, "details");
@@ -103,13 +103,17 @@ export const KafkaInstancesRoute: FunctionComponent<StreamsRouteProps> = ({
       [openDrawer]
     );
 
-  const handleConnectionsClick: KafkaInstancesProps<KafkaInstance>["onDetails"] =
+  const onConnectionsClick: KafkaInstancesProps<KafkaInstance>["onDetails"] =
     useCallback(
       (instance) => {
         openDrawer(instance.id, "connections");
       },
       [openDrawer]
     );
+
+  const onCreate = useCallback(() => {
+    history.push(`${ControlPlaneRouteRoot}/${ControlPlaneNewInstanceId}`);
+  }, [history]);
 
   return (
     <>
@@ -136,11 +140,11 @@ export const KafkaInstancesRoute: FunctionComponent<StreamsRouteProps> = ({
         onClearAllFilters={onClearAllFilters}
         onChangeOwner={(row) => {}}
         onDelete={(row) => {}}
-        onCreate={() => {}}
+        onCreate={onCreate}
         isRowSelected={({ row }) => row.id === selectedInstance}
         getUrlForInstance={getUrlForInstance}
-        onDetails={handleDetailsClick}
-        onConnection={handleConnectionsClick}
+        onDetails={onDetailsClick}
+        onConnection={onConnectionsClick}
         onClickConnectionTabLink={() => {}}
         onClickSupportLink={() => {}}
         onInstanceLinkClick={() => {}}

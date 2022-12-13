@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useApi } from "./ApiProvider";
 import { kafkaQueries } from "./queryKeys";
 import { useKms } from "./useApi";
@@ -20,7 +20,7 @@ export function useKafkaInstance(id: string | undefined) {
       const instance = await api.getKafkaById(id);
       return dataMapper(instance.data);
     },
-    refetchInterval
+    refetchInterval,
   });
 }
 
@@ -39,4 +39,3 @@ export function useKafkaInstanceQuery() {
     });
   };
 }
-

@@ -13,11 +13,11 @@ import type { VoidFunctionComponent } from "react";
 import { useCallback, useState } from "react";
 import type { MetricsProps } from "ui";
 import { Metrics } from "ui";
-import type { DataPlaneRouteProps } from "../routes";
+import type { NavigationProps } from "../routes";
 import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
 import { useDataPlaneRouteMatch } from "./UseDataPlaneRouteMatch";
 
-export const DashboardRoute: VoidFunctionComponent<DataPlaneRouteProps> = ({
+export const DashboardRoute: VoidFunctionComponent<NavigationProps> = ({
   instancesHref,
 }) => {
   const { params } = useDataPlaneRouteMatch();
@@ -52,7 +52,7 @@ export const DashboardRoute: VoidFunctionComponent<DataPlaneRouteProps> = ({
       async ({ interval, duration }) => {
         const [instance, metrics] = await Promise.all([
           queryInstance(params.id),
-          queryInstanceMetrics({id:params.id, duration, interval}),
+          queryInstanceMetrics({ id: params.id, duration, interval }),
         ]);
         if (!instance) {
           return Promise.reject("Can't retrieve instance");
@@ -72,7 +72,7 @@ export const DashboardRoute: VoidFunctionComponent<DataPlaneRouteProps> = ({
     async ({ interval, duration, selectedTopic }) => {
       const [instance, metrics] = await Promise.all([
         queryInstance(params.id),
-        queryTopicMetrics({id: params.id, duration, interval, selectedTopic}),
+        queryTopicMetrics({ id: params.id, duration, interval, selectedTopic }),
       ]);
       if (!instance || !instance.adminUrl) {
         return Promise.reject("Can't retrieve instance");

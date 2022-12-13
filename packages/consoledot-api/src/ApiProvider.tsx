@@ -1,15 +1,23 @@
 import type { ConfigurationParameters } from "@rhoas/kafka-management-sdk";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { isReactQueryDevToolsEanbled } from "local-storage-helpers";
 import type { FunctionComponent } from "react";
-import { createContext, useContext } from "react";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
+import { createContext, lazy, Suspense, useContext } from "react";
+
+const ReactQueryDevtoolsProduction = lazy(() =>
+  import("@tanstack/react-query-devtools/build/lib/index.prod.js").then(
+    (d) => ({
+      default: d.ReactQueryDevtools,
+    })
+  )
+);
 
 type ApiContextProps = Pick<
   ConfigurationParameters,
   "accessToken" | "basePath"
 > & {
-  refetchInterval: number
+  refetchInterval: number;
 };
 
 const ApiContext = createContext<ApiContextProps>(null!);
@@ -23,8 +31,15 @@ export const ApiProvider: FunctionComponent<ApiContextProps> = ({
   const showDevTools = isReactQueryDevToolsEanbled();
   return (
     <QueryClientProvider client={queryClient}>
-      {showDevTools ? <ReactQueryDevtools initialIsOpen={false} /> : undefined}
-      <ApiContext.Provider value={context}>{children}</ApiContext.Provider>
+      <ApiContext.Provider value={context}>
+        {children}
+        <ReactQueryDevtools initialIsOpen />
+        {showDevTools && (
+          <Suspense fallback={null}>
+            <ReactQueryDevtoolsProduction />
+          </Suspense>
+        )}
+      </ApiContext.Provider>
     </QueryClientProvider>
   );
 };

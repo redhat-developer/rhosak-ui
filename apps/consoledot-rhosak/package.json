@@ -19,6 +19,7 @@
     "verify": "npm-run-all build lint test"
   },
   "dependencies": {
+    "@patternfly/quickstarts": "^2.3.2",
     "@patternfly/react-core": "4.250.1",
     "@patternfly/react-table": "4.111.33",
     "@redhat-cloud-services/frontend-components": "3.9.25",
@@ -27,7 +28,9 @@
     "@xstate/react": "^3.0.1",
     "classnames": "2.3.2",
     "consoledot-api": "*",
+    "i": "^0.3.7",
     "local-storage-helpers": "*",
+    "npm": "^9.2.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-redux": "7.2.9",

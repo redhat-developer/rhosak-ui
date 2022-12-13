@@ -11,11 +11,11 @@ import {
 import type { VoidFunctionComponent } from "react";
 import { useCallback } from "react";
 import { KafkaTopics } from "ui";
-import type { DataPlaneRouteProps } from "../routes";
+import type { NavigationProps } from "../routes";
 import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
 import { useDataPlaneRouteMatch } from "./UseDataPlaneRouteMatch";
 
-export const TopicsRoute: VoidFunctionComponent<DataPlaneRouteProps> = ({
+export const TopicsRoute: VoidFunctionComponent<NavigationProps> = ({
   instancesHref,
 }) => {
   const { params } = useDataPlaneRouteMatch();

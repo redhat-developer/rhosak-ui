@@ -1,4 +1,4 @@
-import { FetchKafkaConsumerGroupsParams } from "./fetchKafkaConsumerGroups";
+import type { FetchKafkaConsumerGroupsParams } from "./fetchKafkaConsumerGroups";
 import type { FetchKafkaInstanceMetricsProps } from "./fetchKafkaInstanceMetrics";
 import type { FetchKafkaInstancesParams } from "./fetchKafkaInstances";
 import type { FetchTopicsMetricsProps } from "./fetchKafkaTopicMetrics";
@@ -9,7 +9,9 @@ export const masQueries = {
   organization: () =>
     [{ ...masQueries._root(), entity: "organization" }] as const,
   quota: (params: { organization?: string }) =>
-    [{ ...masQueries._root, entity: "quota", ...params }] as const,
+    [{ ...masQueries._root(), entity: "quota", ...params }] as const,
+  developerAvailability: () =>
+    [{ ...masQueries._root(), entity: "developerAvailability" }] as const,
 } as const;
 
 export const kafkaQueries = {

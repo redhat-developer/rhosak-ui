@@ -1,5 +1,5 @@
 import type { KafkaRequest } from "@rhoas/kafka-management-sdk";
-import { useQueryClient } from "react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { fetchOrganization } from "./fetchOrganization";
 import { fetchProviderRegionSizes } from "./fetchProviderRegionSizes";
 import { fetchProvidersWithRegions } from "./fetchProvidersWithRegions";
@@ -22,7 +22,7 @@ export function useKafkaInstanceTransformer() {
         fetchOrganization((...args) =>
           ams.apiAccountsMgmtV1CurrentAccountGet(...args)
         ),
-      staleTime: Infinity
+      staleTime: Infinity,
     });
     if (!organization) {
       return Promise.reject("Missing organization id");
@@ -35,7 +35,7 @@ export function useKafkaInstanceTransformer() {
             ams.apiAccountsMgmtV1OrganizationsOrgIdQuotaCostGet(...args),
           organization
         ),
-      staleTime: Infinity
+      staleTime: Infinity,
     });
 
     const providersInfo = await queryClient.fetchQuery({
@@ -46,7 +46,7 @@ export function useKafkaInstanceTransformer() {
           (...args) => kms.getCloudProviderRegions(...args),
           instance.billing_model !== "standard" ? "developer" : "standard"
         ),
-      staleTime: Infinity
+      staleTime: Infinity,
     });
     const providerInfo = providersInfo.providers.find(
       (p) => p.id === instance.cloud_provider
@@ -63,7 +63,7 @@ export function useKafkaInstanceTransformer() {
           instance.region!,
           "standard"
         ),
-      staleTime: Infinity
+      staleTime: Infinity,
     });
     const developerPlanLimitsQuery = queryClient.fetchQuery({
       queryKey: providerQueries.limits.developer({ provider: providerInfo.id }),
@@ -74,11 +74,11 @@ export function useKafkaInstanceTransformer() {
           instance.region!,
           "standard"
         ),
-      staleTime: Infinity
+      staleTime: Infinity,
     });
     const [standardPlanLimits, developerPlanLimits] = await Promise.all([
       standardPlanLimitsQuery,
-      developerPlanLimitsQuery
+      developerPlanLimitsQuery,
     ]);
     return kafkaRequestToKafkaInstanceEnhanched(
       instance,

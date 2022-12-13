@@ -1,4 +1,4 @@
-import { useQueryClient } from "react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import type { FetchKafkaInstanceMetricsProps } from "./fetchKafkaInstanceMetrics";
 import { fetchKafkaInstanceMetrics } from "./fetchKafkaInstanceMetrics";
 import { kafkaQueries } from "./queryKeys";
@@ -8,7 +8,9 @@ export function useKafkaInstanceMetricsQuery() {
   const getKms = useKms();
   const queryClient = useQueryClient();
 
-  return (params: Omit<FetchKafkaInstanceMetricsProps, 'getMetricsByRangeQuery'>) => {
+  return (
+    params: Omit<FetchKafkaInstanceMetricsProps, "getMetricsByRangeQuery">
+  ) => {
     const api = getKms();
 
     return queryClient.fetchQuery({
@@ -17,7 +19,7 @@ export function useKafkaInstanceMetricsQuery() {
         return fetchKafkaInstanceMetrics({
           getMetricsByRangeQuery: (...args) =>
             api.getMetricsByRangeQuery(...args),
-          ...params
+          ...params,
         });
       },
     });
