@@ -30,11 +30,16 @@ export function useKafkaLabels() {
     suspending: t("statusesSimplified.suspending"),
     resuming: t("statusesSimplified.resuming"),
   };
-  const providers: { [status in CloudProvider]: string } = {
+  const providers: { [provider in CloudProvider]: string } = {
     aws: t("common:cloudProviders.aws"),
     gcp: t("common:cloudProviders.gcp"),
     azure: t("common:cloudProviders.azure"),
   };
+  const providerRegions: { [provider in CloudProvider]: { [region: string]: string }} = {
+    aws: {},
+    gcp: {},
+    azure: {},
+  }
   const fields: {
     [field in KafkaInstanceField]: string;
   } = {
@@ -66,5 +71,6 @@ export function useKafkaLabels() {
     statuses,
     statusesSimplified,
     providers,
+    providerRegions
   };
 }

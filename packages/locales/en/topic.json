@@ -1,4 +1,18 @@
 {
   "create_topic": "Create topic",
-  "show_all_options": "Show all available options"
+  "empty_topics_body": "",
+  "empty_topics_title": "",
+  "input_field_invalid_message": "",
+  "partitions": "",
+  "retention_size": "",
+  "retention_time": "",
+  "show_all_options": "Show all available options",
+  "table": {
+    "actions": {
+      "delete": "",
+      "edit": ""
+    }
+  },
+  "topic_list_table": "",
+  "topic_name": ""
 }

@@ -68,6 +68,6 @@
     "webpack-bundle-analyzer": "4.7.0"
   },
   "insights": {
-    "appname": "application-services"
+    "appname": "rhosak-ui"
   }
 }

@@ -23,6 +23,7 @@ import {
   useKafkaLabels,
 } from "ui";
 import { useDrawer } from "../../../DrawerProvider";
+import { ControlPlaneRouteRoot } from "../routes";
 
 export type StreamsRouteProps = Pick<
   KafkaInstancesProps<KafkaInstance>,
@@ -35,7 +36,9 @@ export const KafkaInstancesRoute: FunctionComponent<StreamsRouteProps> = ({
   const history = useHistory();
 
   const { selectedInstance, toggleExpanded, setActiveTab, isExpanded } =
-    useDrawer(useCallback(() => history.replace(`/streams`), [history]));
+    useDrawer(
+      useCallback(() => history.replace(`${ControlPlaneRouteRoot}`), [history])
+    );
 
   const labels = useKafkaLabels();
 
@@ -84,7 +87,7 @@ export const KafkaInstancesRoute: FunctionComponent<StreamsRouteProps> = ({
       if (selectedInstance === id && isExpanded) {
         toggleExpanded(false);
       } else {
-        history.replace(`/streams/${id}`);
+        history.replace(`${ControlPlaneRouteRoot}/${id}`);
         toggleExpanded(true);
         setActiveTab(tab);
       }

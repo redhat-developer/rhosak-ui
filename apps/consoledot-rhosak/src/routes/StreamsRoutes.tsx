@@ -35,28 +35,28 @@ export const StreamsRoutes: VoidFunctionComponent = () => {
           <Route path={ControlPlaneRoutePath} exact>
             <KafkaInstancesRoute
               getUrlForInstance={(instance) =>
-                `/streams/${instance.id}/details/${instance.name}`
+                `/kafkas/${instance.id}/details/${instance.name}`
               }
             />
           </Route>
           <Route path={`${DataPlaneRoutePath}/dashboard`} exact>
-            <DashboardRoute instancesHref={"/streams"} />
+            <DashboardRoute instancesHref={"/kafkas"} />
           </Route>
           <Route path={`${DataPlaneRoutePath}/topics`} exact>
-            <TopicsRoute instancesHref={"/streams"} />
+            <TopicsRoute instancesHref={"/kafkas"} />
           </Route>
 
           <Route path={`${DataPlaneRoutePath}/consumer-groups`} exact>
-            <ConsumerGroupsRoute instancesHref={"/streams"} />
+            <ConsumerGroupsRoute instancesHref={"/kafkas"} />
           </Route>
           <Route path={`${DataPlaneRoutePath}/acls`} exact>
-            <AclsRoute instancesHref={"/streams"} />
+            <AclsRoute instancesHref={"/kafkas"} />
           </Route>
           <Route path={`${DataPlaneRoutePath}/settings`} exact>
-            <SettingsRoute instancesHref={"/streams"} />
+            <SettingsRoute instancesHref={"/kafkas"} />
           </Route>
           <Route path={`${DataPlaneRoutePath}/topics/:topicName`} exact>
-            <TopicsRoute instancesHref={"/streams"} />
+            <TopicsRoute instancesHref={"/kafkas"} />
           </Route>
 
           <Redirect

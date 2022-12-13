@@ -100,11 +100,11 @@
   },
   "create_instance": "Create Kafka instance",
   "dataPlaneNavigation": {
-    "dashboard": "Dashboard",
-    "topics": "Topics",
     "consumer_groups": "Consumer groups",
+    "dashboard": "Dashboard",
     "permissions": "Permissions",
-    "settings": "Settings"
+    "settings": "Settings",
+    "topics": "Topics"
   },
   "delete_instance_message": "The <0>{{instanceName}}</0> Kafka instance and all topics will be deleted. Applications will no longer have access to the topics in this instance.",
   "delete_instance_title": "Delete instance?",
@@ -126,7 +126,9 @@
   "empty_state_no_results_found_body": "Adjust your filters and try again, or <0>clear all filters</0>.",
   "empty_state_no_results_found_title": "No results found",
   "fields": {
+    "adminUrl": "",
     "billing": "Billing",
+    "bootstrapUrl": "",
     "connectionRate": "Connection rate",
     "connections": "Connections",
     "createdAt": "Created",
@@ -144,7 +146,8 @@
     "size": "Size",
     "status": "Status",
     "storage": "Storage",
-    "updatedAt": "Updated"
+    "updatedAt": "Updated",
+    "version": ""
   },
   "filter_by_client_id": "Filter by Client ID",
   "filter_by_owner": "Filter by owner",
@@ -159,6 +162,7 @@
   "message_size_value": "up to 1 MiB",
   "no_permission_to_change_owner": "Organization administrators and the Kafka instance owner can change the owner of an instance.",
   "no_permission_to_delete_kafka": "Organization administrators and the Kafka instance owner can delete this instance.",
+  "no_permission_to_see_connections": "",
   "owner": "Owner",
   "owner_field_invalid_message": "Red Hat Login ID cannot contain spaces, national characters or the following special characters \" $ ^ < > | + % / ; : , * = ~ # ( )",
   "partitions": "Partitions",
@@ -193,7 +197,9 @@
     "preparing": "Preparing",
     "provisioning": "Provisioning",
     "ready": "Ready",
-    "suspended": "Suspended"
+    "resuming": "",
+    "suspended": "Suspended",
+    "suspending": ""
   },
   "statuses-filter": {
     "creating": "Creation pending",
@@ -207,7 +213,9 @@
     "degraded": "Degraded",
     "deleting": "Deleting",
     "ready": "Ready",
-    "suspended": "Suspended"
+    "resuming": "",
+    "suspended": "Suspended",
+    "suspending": ""
   },
   "storage": "Storage",
   "storage_value": "up to 1000 GiB",

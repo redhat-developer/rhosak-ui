@@ -21,6 +21,7 @@ import { useTranslation } from "@rhoas/app-services-ui-components";
 import { parseISO } from "date-fns";
 import type { FunctionComponent, VoidFunctionComponent } from "react";
 import { useCallback, useMemo } from "react";
+import { useKafkaLabels } from "../../hooks";
 import type { KafkaInstance } from "../../types";
 import { CreatingStatuses } from "../../types";
 import { KafkaConnectionTabP2, KafkaDetailsTab } from "./components";
@@ -52,7 +53,7 @@ export const KafkaInstanceDrawer: FunctionComponent<
     );
   }, [activeTab, instance, onClose, onTabChange]);
   return (
-    <Drawer isExpanded={isExpanded} isInline={true} className={"rhosak"}>
+    <Drawer isExpanded={isExpanded} isInline={true}>
       <DrawerContent panelContent={content}>
         <DrawerContentBody
           className={"pf-u-display-flex pf-u-flex-direction-column"}
@@ -72,6 +73,7 @@ export const KafkaInstanceDrawerPanel: VoidFunctionComponent<
   }
 > = ({ instance, activeTab, onTabChange, onClose }) => {
   const { t } = useTranslation(["kafka"]);
+  const labels = useKafkaLabels();
 
   const handleSelect: TabsProps["onSelect"] = useCallback(
     (_, tab) => {
@@ -127,7 +129,10 @@ export const KafkaInstanceDrawerPanel: VoidFunctionComponent<
                 connections={instance.connections}
                 connectionRate={instance.connectionRate}
                 messageSize={instance.messageSize}
-                region={t(instance.region)}
+                region={
+                  labels.providerRegions[instance.provider][instance.region] ||
+                  instance.region
+                }
                 instanceType={instance.plan}
                 billing={instance.billing}
                 kafkaVersion={instance.version}

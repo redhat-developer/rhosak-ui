@@ -1,3 +1,4 @@
+import { getBaseName } from "@redhat-cloud-services/frontend-components-utilities/helpers";
 import { useChrome } from "@redhat-cloud-services/frontend-components/useChrome";
 import { ApiProvider } from "consoledot-api";
 import { memo } from "react";
@@ -13,16 +14,16 @@ const store = init(
 ).getStore();
 
 const AppEntry = memo(() => {
-  const chrome = useChrome();
+  const { auth } = useChrome();
 
   return (
     <Provider store={store}>
       <ApiProvider
-        accessToken={chrome.auth.getToken}
+        accessToken={auth.getToken}
         basePath={"https://api.openshift.com"}
         refetchInterval={5000}
       >
-        <Router basename={"/application-services"}>
+        <Router basename={getBaseName(window.location.pathname)}>
           <I18nProvider lng={"en"}>
             <App />
           </I18nProvider>

@@ -4,7 +4,7 @@ import { getRegistry } from "@redhat-cloud-services/frontend-components-utilitie
 import { useChrome } from "@redhat-cloud-services/frontend-components/useChrome";
 import { useTranslation } from "@rhoas/app-services-ui-components";
 import { memo, useEffect } from "react";
-import { Route, Switch, useHistory } from "react-router-dom";
+import { Redirect, Route, Switch, useHistory } from "react-router-dom";
 import type { Reducer } from "redux";
 
 import "./App.scss";
@@ -28,10 +28,7 @@ const App = memo(() => {
 
     const unregister = on("APP_NAVIGATION", (event) => {
       console.dir(event);
-      event.navId &&
-        history.push(
-          `/streams/${event.navId === "streams" ? "" : event.navId}`
-        );
+      event.navId && history.push("/" + event.navId === "/" ? "" : event.navId);
     });
     return () => {
       if (unregister) {
@@ -44,14 +41,16 @@ const App = memo(() => {
     <>
       <NotificationsPortal />
       <Switch>
-        <Route path={"/streams/overview"} exact>
+        <Route path={"/overview"} exact>
           <OverviewRoute />
         </Route>
-        <Route>
+        <Redirect from={"/"} to={"/kafkas"} exact />
+        <Route path={"/kafkas"}>
           <DrawerProvider>
             <StreamsRoutes />
           </DrawerProvider>
         </Route>
+        <Route path={""} exact></Route>
       </Switch>
     </>
   );
