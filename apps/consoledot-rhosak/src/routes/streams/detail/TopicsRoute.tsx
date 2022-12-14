@@ -58,7 +58,7 @@ export const TopicsRoute: VoidFunctionComponent<NavigationProps> = ({
         page={page}
         perPage={perPage}
         topicName={topicChips.chips}
-        getUrlFortopic={(row) => `./topic/${row.topic_name}`}
+        getUrlFortopic={(row) => `./topics/${row.topic_name}`}
         isColumnSortable={isColumnSortable}
         onDelete={() => {}}
         onEdit={() => {}}

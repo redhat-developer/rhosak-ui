@@ -1,9 +1,13 @@
+import { PageSection } from "@patternfly/react-core";
+import { TableVariant } from "@patternfly/react-table";
 import type { TableViewProps } from "@rhoas/app-services-ui-components";
-import { EmptyStateNoResults, TableView } from "@rhoas/app-services-ui-components";
+import {
+  EmptyStateNoResults,
+  TableView,
+} from "@rhoas/app-services-ui-components";
 import { useTranslation } from "react-i18next";
 
 import { ConsumerGroupEmptyState, ConsumerGroupStateLabel } from "./components";
-import { TableVariant } from "@patternfly/react-table";
 import type { ConsumerGroup, ConsumerGroupField } from "./types";
 
 const Columns: ConsumerGroupField[] = [
@@ -60,92 +64,96 @@ export const ConsumerGroups = <T extends ConsumerGroup>({
 
   const isFiltered = consumerName.length > 0;
   return (
-    <TableView
-      variant={TableVariant.compact}
-      tableOuiaId={"card-table"}
-      ariaLabel={t("consumerGroup.consumer_group_list")}
-      data={consumers}
-      columns={Columns}
-      renderHeader={({ column, Th, key }) => (
-        <Th
-          key={key}
-          info={
-            column === "partitionsWithLag"
-              ? {
-                  popover: (
-                    <div>
-                      {t("consumerGroup.partitions_with_lag_description")}
-                    </div>
-                  ),
-                  ariaLabel: "partitions with lag",
-                  popoverProps: {
-                    headerContent: t("consumerGroup.partitions_with_lag_name"),
-                  },
+    <PageSection isFilled={true}>
+      <TableView
+        variant={TableVariant.compact}
+        tableOuiaId={"card-table"}
+        ariaLabel={t("consumerGroup.consumer_group_list")}
+        data={consumers}
+        columns={Columns}
+        renderHeader={({ column, Th, key }) => (
+          <Th
+            key={key}
+            info={
+              column === "partitionsWithLag"
+                ? {
+                    popover: (
+                      <div>
+                        {t("consumerGroup.partitions_with_lag_description")}
+                      </div>
+                    ),
+                    ariaLabel: "partitions with lag",
+                    popoverProps: {
+                      headerContent: t(
+                        "consumerGroup.partitions_with_lag_name"
+                      ),
+                    },
+                  }
+                : undefined
+            }
+          >
+            {labels[column]}
+          </Th>
+        )}
+        renderCell={({ column, row, Td, key }) => {
+          return (
+            <Td key={key} dataLabel={labels[column]}>
+              {(() => {
+                switch (column) {
+                  case "consumerGroupId":
+                    return row.consumerGroupId;
+                  case "activeMembers":
+                    return row.activeMembers;
+                  case "partitionsWithLag":
+                    return row.partitionsWithLag;
+                  case "state":
+                    return <ConsumerGroupStateLabel state={row.state} />;
+                  default:
+                    return row[column];
                 }
-              : undefined
-          }
-        >
-          {labels[column]}
-        </Th>
-      )}
-      renderCell={({ column, row, Td, key }) => {
-        return (
-          <Td key={key} dataLabel={labels[column]}>
-            {(() => {
-              switch (column) {
-                case "consumerGroupId":
-                  return row.consumerGroupId;
-                case "activeMembers":
-                  return row.activeMembers;
-                case "partitionsWithLag":
-                  return row.partitionsWithLag;
-                case "state":
-                  return <ConsumerGroupStateLabel state={row.state} />;
-                default:
-                  return row[column];
-              }
-            })()}
-          </Td>
-        );
-      }}
-      renderActions={({ row, ActionsColumn }) => (
-        <ActionsColumn
-          items={[
-            {
-              title: t("consumerGroup.view_partitions_offsets"),
-              onClick: () => onViewPartition(row),
-            },
-            {
-              title: t("consumerGroup.reset_offset"),
-              onClick: () => onViewResetOffset(row),
-            },
-            {
-              title: t("common:delete"),
-              onClick: () => onDelete(row),
-            },
-          ]}
-        />
-      )}
-      isColumnSortable={isColumnSortable}
-      filters={{
-        [labels.consumerGroupId]: {
-          type: "search",
-          chips: consumerName,
-          onSearch: onSearchConsumer,
-          onRemoveChip: onRemoveConsumerChip,
-          onRemoveGroup: onRemoveConsumerChips,
-          validate: (value: string) => !/["$^<>|+%/;:,\s*=~#()]/.test(value),
-          errorMessage: t("input_field_invalid_message"),
-        },
-      }}
-      itemCount={itemCount}
-      page={page}
-      onPageChange={onPageChange}
-      perPage={perPage}
-      isFiltered={isFiltered}
-      onClearAllFilters={onClearAllFilters}
-      emptyStateNoData={<ConsumerGroupEmptyState />}
-      emptyStateNoResults={<EmptyStateNoResults />}
-    />
+              })()}
+            </Td>
+          );
+        }}
+        renderActions={({ row, ActionsColumn }) => (
+          <ActionsColumn
+            items={[
+              {
+                title: t("consumerGroup.view_partitions_offsets"),
+                onClick: () => onViewPartition(row),
+              },
+              {
+                title: t("consumerGroup.reset_offset"),
+                onClick: () => onViewResetOffset(row),
+              },
+              {
+                title: t("common:delete"),
+                onClick: () => onDelete(row),
+              },
+            ]}
+          />
+        )}
+        isColumnSortable={isColumnSortable}
+        filters={{
+          [labels.consumerGroupId]: {
+            type: "search",
+            chips: consumerName,
+            onSearch: onSearchConsumer,
+            onRemoveChip: onRemoveConsumerChip,
+            onRemoveGroup: onRemoveConsumerChips,
+            validate: (value: string) => !/["$^<>|+%/;:,\s*=~#()]/.test(value),
+            errorMessage: t("input_field_invalid_message"),
+          },
+        }}
+        itemCount={itemCount}
+        page={page}
+        onPageChange={onPageChange}
+        perPage={perPage}
+        isFiltered={isFiltered}
+        onClearAllFilters={onClearAllFilters}
+        emptyStateNoData={<ConsumerGroupEmptyState />}
+        emptyStateNoResults={<EmptyStateNoResults />}
+      />
+    </PageSection>
   );
 };
