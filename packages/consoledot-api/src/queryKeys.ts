@@ -1,8 +1,8 @@
-import type { FetchKafkaConsumerGroupsParams } from "./fetchKafkaConsumerGroups";
-import type { FetchKafkaInstanceMetricsProps } from "./fetchKafkaInstanceMetrics";
-import type { FetchKafkaInstancesParams } from "./fetchKafkaInstances";
-import type { FetchTopicsMetricsProps } from "./fetchKafkaTopicMetrics";
-import type { FetchKafkaTopicsParams } from "./fetchKafkaTopics";
+import type { FetchKafkaConsumerGroupsParams } from "./fetchers/fetchKafkaConsumerGroups";
+import type { FetchKafkaInstanceMetricsProps } from "./fetchers/fetchKafkaInstanceMetrics";
+import type { FetchKafkaInstancesParams } from "./fetchers/fetchKafkaInstances";
+import type { FetchTopicsMetricsProps } from "./fetchers/fetchKafkaTopicMetrics";
+import type { FetchKafkaTopicsParams } from "./fetchers/fetchKafkaTopics";
 
 export const masQueries = {
   _root: () => ({ scope: "mas" } as const),
@@ -12,6 +12,8 @@ export const masQueries = {
     [{ ...masQueries._root(), entity: "quota", ...params }] as const,
   developerAvailability: () =>
     [{ ...masQueries._root(), entity: "developerAvailability" }] as const,
+  standardAvailability: () =>
+    [{ ...masQueries._root(), entity: "standardAvailability" }] as const,
 } as const;
 
 export const kafkaQueries = {

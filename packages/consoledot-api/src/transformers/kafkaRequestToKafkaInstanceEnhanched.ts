@@ -6,7 +6,7 @@ import type {
   Plan,
   Status,
 } from "ui";
-import type { SizeWithLimits } from "./fetchProviderRegionSizes";
+import type { SizeWithLimits } from "../fetchers";
 
 export type KafkaInstanceEnhanced = Required<KafkaInstance> & {
   request: KafkaRequest;

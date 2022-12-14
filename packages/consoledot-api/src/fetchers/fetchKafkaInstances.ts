@@ -1,8 +1,8 @@
 import type { DefaultApi, KafkaRequest } from "@rhoas/kafka-management-sdk";
 import type { SimplifiedStatus } from "ui";
 import { SimplifiedStatuses } from "ui";
-import type { KafkaInstanceEnhanced } from "./kafkaRequestToKafkaInstanceEnhanched";
-import type { KafkaInstancesSortableColumn } from "./types";
+import type { KafkaInstanceEnhanced } from "../transformers/kafkaRequestToKafkaInstanceEnhanched";
+import type { KafkaInstancesSortableColumn } from "../types";
 import { valuesToQuery } from "./valuesToQuery";
 
 const uiColumnMapping: {

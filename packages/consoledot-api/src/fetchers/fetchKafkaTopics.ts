@@ -4,7 +4,7 @@ import type {
   TopicsApi,
 } from "@rhoas/kafka-instance-sdk";
 import type { KafkaTopic } from "ui";
-import type { KafkaTopicsSortableColumn } from "./types";
+import type { KafkaTopicsSortableColumn } from "../types";
 
 export type FetchKafkaTopicsParams = {
   getTopics: TopicsApi["getTopics"];

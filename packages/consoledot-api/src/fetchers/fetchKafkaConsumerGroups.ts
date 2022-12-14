@@ -1,7 +1,10 @@
-import type { ConsumerGroupState } from "@rhoas/kafka-instance-sdk";
-import type { SortDirection, GroupsApi } from "@rhoas/kafka-instance-sdk";
+import type {
+  ConsumerGroupState,
+  GroupsApi,
+  SortDirection,
+} from "@rhoas/kafka-instance-sdk";
 import type { ConsumerGroup } from "ui";
-import type { KafkaConsumerGroupSortableColumn } from "./types";
+import type { KafkaConsumerGroupSortableColumn } from "../types";
 
 export type FetchKafkaConsumerGroupsParams = {
   getConsumerGroups: GroupsApi["getConsumerGroups"];
@@ -45,11 +48,12 @@ export async function fetchKafkaConsumerGroups({
   return { count, groups };
 }
 
-const stateMapping: {[state in ConsumerGroupState]: ConsumerGroup['state']} = {
-  DEAD: "Dead",
-  EMPTY: "Empty",
-  STABLE: "Stable",
-  UNKNOWN: "Unknown",
-  COMPLETING_REBALANCE: "CompletingRebalance",
-  PREPARING_REBALANCE: "PreparingRebalance"
-}
+const stateMapping: { [state in ConsumerGroupState]: ConsumerGroup["state"] } =
+  {
+    DEAD: "Dead",
+    EMPTY: "Empty",
+    STABLE: "Stable",
+    UNKNOWN: "Unknown",
+    COMPLETING_REBALANCE: "CompletingRebalance",
+    PREPARING_REBALANCE: "PreparingRebalance",
+  };

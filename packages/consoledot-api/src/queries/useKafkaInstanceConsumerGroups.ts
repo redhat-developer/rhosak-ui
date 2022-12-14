@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { useApi } from "./ApiProvider";
-import type { FetchKafkaConsumerGroupsParams } from "./fetchKafkaConsumerGroups";
-import { fetchKafkaConsumerGroups } from "./fetchKafkaConsumerGroups";
-import { kafkaQueries } from "./queryKeys";
-import { useConsumerGroups } from "./useApi";
+import { useApiConfiguration } from "../ApiProvider";
+import type { FetchKafkaConsumerGroupsParams } from "../fetchers";
+import { fetchKafkaConsumerGroups } from "../fetchers";
+import { kafkaQueries } from "../queryKeys";
+import { useApi } from "../useApi";
 
 export function useKafkaInstanceConsumerGroups(
   params: { id?: string; adminUrl?: string } & Omit<
@@ -11,8 +11,8 @@ export function useKafkaInstanceConsumerGroups(
     "getConsumerGroups"
   >
 ) {
-  const { refetchInterval } = useApi();
-  const getConsumerGroups = useConsumerGroups();
+  const { refetchInterval } = useApiConfiguration();
+  const { consumerGroups } = useApi();
 
   return useQuery({
     queryKey: kafkaQueries.instance.consumerGroups(params),
@@ -23,7 +23,7 @@ export function useKafkaInstanceConsumerGroups(
       if (!params.adminUrl) {
         return Promise.reject("Invalid adminUrl");
       }
-      const api = getConsumerGroups(params.adminUrl);
+      const api = consumerGroups(params.adminUrl);
 
       return fetchKafkaConsumerGroups({
         getConsumerGroups: (...args) => api.getConsumerGroups(...args),

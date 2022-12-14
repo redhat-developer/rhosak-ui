@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { useApi } from "./ApiProvider";
-import type { FetchKafkaTopicsParams } from "./fetchKafkaTopics";
-import { fetchKafkaTopics } from "./fetchKafkaTopics";
-import { kafkaQueries } from "./queryKeys";
-import { useTopics } from "./useApi";
+import { useApiConfiguration } from "../ApiProvider";
+import type { FetchKafkaTopicsParams } from "../fetchers";
+import { fetchKafkaTopics } from "../fetchers";
+import { kafkaQueries } from "../queryKeys";
+import { useApi } from "../useApi";
 
 export function useKafkaInstanceTopics(
   params: { id?: string; adminUrl?: string } & Omit<
@@ -11,8 +11,8 @@ export function useKafkaInstanceTopics(
     "getTopics"
   >
 ) {
-  const { refetchInterval } = useApi();
-  const getTopics = useTopics();
+  const { refetchInterval } = useApiConfiguration();
+  const { topics } = useApi();
 
   return useQuery({
     queryKey: kafkaQueries.instance.topics(params),
@@ -23,7 +23,7 @@ export function useKafkaInstanceTopics(
       if (!params.adminUrl) {
         return Promise.reject("Invalid adminUrl");
       }
-      const api = getTopics(params.adminUrl);
+      const api = topics(params.adminUrl);
 
       return fetchKafkaTopics({
         getTopics: (...args) => api.getTopics(...args),

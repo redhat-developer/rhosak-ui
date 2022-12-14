@@ -1,14 +1,14 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { fetchKafkaKpiMetrics } from "./fetchKafkaKpiMetrics";
-import { kafkaQueries } from "./queryKeys";
-import { useKms } from "./useApi";
+import { fetchKafkaKpiMetrics } from "../fetchers";
+import { kafkaQueries } from "../queryKeys";
+import { useApi } from "../useApi";
 
-export function useKafkaInstanceKpiMetricsQuery() {
-  const getKms = useKms();
+export function useKafkaInstanceKpiMetricsFetchQuery() {
+  const { kafkasFleet } = useApi();
   const queryClient = useQueryClient();
 
   return (id: string) => {
-    const api = getKms();
+    const api = kafkasFleet();
 
     return queryClient.fetchQuery({
       queryKey: kafkaQueries.instance.metrics.kpi({ id }),

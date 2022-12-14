@@ -1,7 +1,7 @@
 import type { KafkaRequestPayload } from "@rhoas/kafka-management-sdk";
 import { APIErrorCodes, isServiceApiError } from "@rhoas/kafka-management-sdk";
 import type { CreateKafkaInstanceServices } from "ui";
-import { useKms } from "./useApi";
+import { useApi } from "../useApi";
 
 const ErrorCodes = {
   /** Forbidden to perform this action*/
@@ -27,10 +27,10 @@ const ErrorCodes = {
  */
 export const useCreateInstance =
   (): CreateKafkaInstanceServices["onCreate"] => {
-    const getApi = useKms();
+    const { kafkasFleet } = useApi();
 
     return async (data, onSuccess, onError) => {
-      const apisService = getApi();
+      const apisService = kafkasFleet();
 
       try {
         const kafkaRequest = {} as KafkaRequestPayload;

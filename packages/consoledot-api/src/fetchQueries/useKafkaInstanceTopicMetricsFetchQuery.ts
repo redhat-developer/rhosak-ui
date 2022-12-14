@@ -1,15 +1,15 @@
 import { useQueryClient } from "@tanstack/react-query";
-import type { FetchTopicsMetricsProps } from "./fetchKafkaTopicMetrics";
-import { fetchKafkaTopicMetrics } from "./fetchKafkaTopicMetrics";
-import { kafkaQueries } from "./queryKeys";
-import { useKms } from "./useApi";
+import type { FetchTopicsMetricsProps } from "../fetchers";
+import { fetchKafkaTopicMetrics } from "../fetchers";
+import { kafkaQueries } from "../queryKeys";
+import { useApi } from "../useApi";
 
-export function useKafkaInstanceTopicMetricsQuery() {
-  const getKms = useKms();
+export function useKafkaInstanceTopicMetricsFetchQuery() {
+  const { kafkasFleet } = useApi();
   const queryClient = useQueryClient();
 
   return (params: Omit<FetchTopicsMetricsProps, "getMetricsByRangeQuery">) => {
-    const api = getKms();
+    const api = kafkasFleet();
 
     return queryClient.fetchQuery({
       queryKey: kafkaQueries.instance.metrics.topic(params),

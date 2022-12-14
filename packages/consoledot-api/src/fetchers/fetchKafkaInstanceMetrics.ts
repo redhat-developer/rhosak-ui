@@ -1,6 +1,6 @@
 import type { DefaultApi } from "@rhoas/kafka-management-sdk";
 import type { GetKafkaInstanceMetricsResponse, TimeSeriesMetrics } from "ui";
-import type { SafeRangeQuery } from "./types";
+import type { SafeRangeQuery } from "../types";
 
 export type FetchKafkaInstanceMetricsProps = {
   getMetricsByRangeQuery: DefaultApi["getMetricsByRangeQuery"];

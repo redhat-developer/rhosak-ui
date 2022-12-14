@@ -2,66 +2,54 @@ import { AppServicesApi } from "@rhoas/account-management-sdk";
 import { GroupsApi, TopicsApi } from "@rhoas/kafka-instance-sdk";
 import { Configuration, DefaultApi } from "@rhoas/kafka-management-sdk";
 import { useCallback } from "react";
-import { useApi } from "./ApiProvider";
+import { useApiConfiguration } from "./ApiProvider";
 
-export const useKms = () => {
-  const { accessToken, basePath } = useApi();
-  return useCallback(() => {
-    const kmsApi = new DefaultApi(
-      new Configuration({
-        accessToken,
-        basePath,
-      })
-    );
-
-    return kmsApi;
-  }, [accessToken, basePath]);
-};
-
-export const useAms = () => {
-  const { accessToken, basePath } = useApi();
-  return useCallback(() => {
-    const amsApi = new AppServicesApi(
-      new Configuration({
-        accessToken,
-        basePath,
-      })
-    );
-
-    return amsApi;
-  }, [accessToken, basePath]);
-};
-
-export const useTopics = () => {
-  const { accessToken } = useApi();
-  return useCallback(
-    (adminUrl: string) => {
-      const topicsApi = new TopicsApi(
+export const useApi = () => {
+  const { accessToken, basePath } = useApiConfiguration();
+  const kafkasFleet = useCallback(
+    () =>
+      new DefaultApi(
+        new Configuration({
+          accessToken,
+          basePath,
+        })
+      ),
+    [accessToken, basePath]
+  );
+  const account = useCallback(
+    () =>
+      new AppServicesApi(
+        new Configuration({
+          accessToken,
+          basePath,
+        })
+      ),
+    [accessToken, basePath]
+  );
+  const topics = useCallback(
+    (adminUrl: string) =>
+      new TopicsApi(
         new Configuration({
           accessToken,
           basePath: adminUrl,
         })
-      );
-
-      return topicsApi;
-    },
+      ),
     [accessToken]
   );
-};
-
-export const useConsumerGroups = () => {
-  const { accessToken } = useApi();
-  return useCallback(
-    (adminUrl: string) => {
-      const groupsApi = new GroupsApi(
+  const consumerGroups = useCallback(
+    (adminUrl: string) =>
+      new GroupsApi(
         new Configuration({
           accessToken,
           basePath: adminUrl,
         })
-      );
-
-      return groupsApi;
-    },
+      ),
     [accessToken]
   );
+  return {
+    kafkasFleet,
+    account,
+    topics,
+    consumerGroups,
+  };
 };

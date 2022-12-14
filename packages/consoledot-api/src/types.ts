@@ -1,4 +1,7 @@
-import { TopicOrderKey, ConsumerGroupOrderKey } from "@rhoas/kafka-instance-sdk";
+import {
+  ConsumerGroupOrderKey,
+  TopicOrderKey,
+} from "@rhoas/kafka-instance-sdk";
 import type { RangeQuery } from "@rhoas/kafka-management-sdk";
 
 export type NoUndefinedField<T> = {

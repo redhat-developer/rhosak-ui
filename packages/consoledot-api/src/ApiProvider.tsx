@@ -44,6 +44,6 @@ export const ApiProvider: FunctionComponent<ApiContextProps> = ({
   );
 };
 
-export function useApi() {
+export function useApiConfiguration() {
   return useContext(ApiContext);
 }

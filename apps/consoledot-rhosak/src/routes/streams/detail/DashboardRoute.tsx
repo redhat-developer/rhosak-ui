@@ -1,9 +1,9 @@
 import {
-  useKafkaInstanceKpiMetricsQuery,
-  useKafkaInstanceMetricsQuery,
-  useKafkaInstanceQuery,
-  useKafkaInstanceTopicMetricsQuery,
-  useKafkaInstanceTopicsQuery,
+  useKafkaInstanceFetchQuery,
+  useKafkaInstanceKpiMetricsFetchQuery,
+  useKafkaInstanceMetricsFetchQuery,
+  useKafkaInstanceTopicMetricsFetchQuery,
+  useKafkaInstanceTopicsFetchQuery,
 } from "consoledot-api";
 import {
   metricsDismissLagAlerts,
@@ -30,11 +30,11 @@ export const DashboardRoute: VoidFunctionComponent<NavigationProps> = ({
     metricsDismissLagAlerts();
   }, []);
 
-  const queryInstance = useKafkaInstanceQuery();
-  const queryKpisMetrics = useKafkaInstanceKpiMetricsQuery();
-  const queryInstanceMetrics = useKafkaInstanceMetricsQuery();
-  const queryTopicMetrics = useKafkaInstanceTopicMetricsQuery();
-  const queryTopics = useKafkaInstanceTopicsQuery();
+  const queryInstance = useKafkaInstanceFetchQuery();
+  const queryKpisMetrics = useKafkaInstanceKpiMetricsFetchQuery();
+  const queryInstanceMetrics = useKafkaInstanceMetricsFetchQuery();
+  const queryTopicMetrics = useKafkaInstanceTopicMetricsFetchQuery();
+  const queryTopics = useKafkaInstanceTopicsFetchQuery();
 
   const getMetricsKpi: MetricsProps["getMetricsKpi"] = useCallback(async () => {
     const [instance, kpis] = await Promise.all([

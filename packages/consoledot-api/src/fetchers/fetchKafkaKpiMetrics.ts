@@ -1,5 +1,5 @@
 import type { DefaultApi, InstantQuery } from "@rhoas/kafka-management-sdk";
-import type { NoUndefinedField } from "./types";
+import type { NoUndefinedField } from "../types";
 
 export async function fetchKafkaKpiMetrics(
   getMetricsByInstantQuery: DefaultApi["getMetricsByInstantQuery"],

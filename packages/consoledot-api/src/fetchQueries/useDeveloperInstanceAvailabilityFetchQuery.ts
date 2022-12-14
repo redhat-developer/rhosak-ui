@@ -1,16 +1,16 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { fetchKafkaInstances } from "./fetchKafkaInstances";
-import { kafkaQueries, masQueries } from "./queryKeys";
-import { useKms } from "./useApi";
-import { useKafkaInstanceTransformer } from "./useKafkaInstanceTransformer";
+import { fetchKafkaInstances } from "../fetchers";
+import { useKafkaInstanceTransformer } from "../queries";
+import { kafkaQueries, masQueries } from "../queryKeys";
+import { useApi } from "../useApi";
 
-export const useDeveloperInstanceAvailabilityQuery = () => {
+export const useDeveloperInstanceAvailabilityFetchQuery = () => {
   const queryClient = useQueryClient();
-  const getKms = useKms();
+  const { kafkasFleet } = useApi();
   const dataMapper = useKafkaInstanceTransformer();
 
   return (getUsername: () => Promise<string>) => {
-    const api = getKms();
+    const api = kafkasFleet();
     return queryClient.fetchQuery({
       queryKey: masQueries.developerAvailability(),
       queryFn: async () => {

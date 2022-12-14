@@ -9,7 +9,7 @@ import {
   isStandardQuota,
   resourceName,
   standardId,
-} from "./utilsAndConstants";
+} from "../utilsAndConstants";
 
 export type StandardQuota = {
   hasTrialQuota: boolean;

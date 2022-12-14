@@ -4,7 +4,7 @@ import type {
   TimeSeriesMetrics,
 } from "@rhoas/app-services-ui-components";
 import type { DefaultApi } from "@rhoas/kafka-management-sdk";
-import type { SafeRangeQuery } from "./types";
+import type { SafeRangeQuery } from "../types";
 
 export type FetchTopicsMetricsProps = {
   getMetricsByRangeQuery: DefaultApi["getMetricsByRangeQuery"];
