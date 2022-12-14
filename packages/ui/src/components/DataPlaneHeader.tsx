@@ -73,7 +73,7 @@ export const DataPlaneHeader: VoidFunctionComponent<DataPlaneHeaderProps> = ({
         <Nav
           variant="tertiary"
           data-testid="pageKafka-tabProperties"
-          className="pf-m-page-insets"
+          className="pf-u-pl-sm-on-xl"
         >
           <NavList>
             <NavItem
