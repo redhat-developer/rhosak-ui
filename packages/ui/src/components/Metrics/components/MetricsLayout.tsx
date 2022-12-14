@@ -22,7 +22,9 @@ export const MetricsLayout: FunctionComponent<MetricsLayoutProps> = ({
       hasOverflowScroll={true}
       aria-label={"TODO"}
       padding={{ default: "noPadding" }}
-      className={"pf-u-px-lg pf-u-pt-sm pf-u-pb-lg"}
+      className={
+        "pf-u-px-lg-on-xl pf-u-pt-sm-on-xl pf-u-pb-lg-on-xl pf-u-px-md pf-u-pb-md"
+      }
     >
       <Grid hasGutter>
         <GridItem>{metricsLagAlert}</GridItem>
