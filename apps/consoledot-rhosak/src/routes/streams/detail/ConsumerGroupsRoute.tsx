@@ -13,7 +13,7 @@ import { useCallback } from "react";
 import { ConsumerGroups } from "ui";
 import type { NavigationProps } from "../routes";
 import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
-import { useDataPlaneRouteMatch } from "./UseDataPlaneRouteMatch";
+import { useDataPlaneRouteMatch } from "./useDataPlaneRouteMatch";
 
 export const ConsumerGroupsRoute: VoidFunctionComponent<NavigationProps> = ({
   instancesHref,

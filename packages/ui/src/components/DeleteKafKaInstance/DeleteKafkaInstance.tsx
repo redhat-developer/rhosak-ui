@@ -1,10 +1,13 @@
-import type { VoidFunctionComponent } from "react";
-import { Trans, useTranslation } from "@rhoas/app-services-ui-components";
 import type { DeleteModalProps } from "@rhoas/app-services-ui-components";
-import { DeleteModal } from "@rhoas/app-services-ui-components";
+import {
+  DeleteModal,
+  Trans,
+  useTranslation,
+} from "@rhoas/app-services-ui-components";
+import type { VoidFunctionComponent } from "react";
 
 export type DeleteKafkaInstanceProps = {
-  instanceName: string;
+  instanceName: string | undefined;
 } & Omit<
   DeleteModalProps,
   "title" | "variant" | "confirmationValue" | "children"

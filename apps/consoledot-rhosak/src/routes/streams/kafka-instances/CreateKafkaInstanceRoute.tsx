@@ -41,7 +41,7 @@ export const CreateKafkaInstanceRoute: FunctionComponent<NavigationProps> = ({
     [createKafkaInstance, history]
   );
 
-  const onOnCancel = useCallback(() => {
+  const onCancel = useCallback(() => {
     history.push(instancesHref);
   }, [history, instancesHref]);
 
@@ -49,7 +49,7 @@ export const CreateKafkaInstanceRoute: FunctionComponent<NavigationProps> = ({
     <CreateKafkaInstance
       {...callbacks}
       isModalOpen={true}
-      onCancel={onOnCancel}
+      onCancel={onCancel}
       onClickContactUs={onClickKafkaOverview}
       onClickKafkaOverview={onClickKafkaOverview}
       onClickQuickStart={onClickQuickStart}

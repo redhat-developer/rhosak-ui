@@ -10,9 +10,11 @@ import { DashboardRoute } from "./streams/detail/DashboardRoute";
 import { SettingsRoute } from "./streams/detail/SettingsRoute";
 import { TopicsRoute } from "./streams/detail/TopicsRoute";
 import { CreateKafkaInstanceRoute } from "./streams/kafka-instances/CreateKafkaInstanceRoute";
+import { DeleteKafkaInstanceRoute } from "./streams/kafka-instances/DeleteKafkaInstanceRoute";
 import { KafkaInstancesRoute } from "./streams/kafka-instances/KafkaInstancesRoute";
 import {
-  ControlPlaneNewInstanceId,
+  ControlPlaneDeleteInstancePath,
+  ControlPlaneNewInstancePath,
   ControlPlaneRoutePath,
   DataPlaneRoutePath,
 } from "./streams/routes";
@@ -39,10 +41,11 @@ export const StreamsRoutes: VoidFunctionComponent = () => {
         <Switch>
           {/* CONTROL PLANE */}
           <Route path={ControlPlaneRoutePath} exact>
-            <Route
-              path={`${ControlPlaneRoutePath}/${ControlPlaneNewInstanceId}`}
-            >
+            <Route path={ControlPlaneNewInstancePath}>
               <CreateKafkaInstanceRoute instancesHref={"/kafkas"} />
+            </Route>
+            <Route path={ControlPlaneDeleteInstancePath}>
+              <DeleteKafkaInstanceRoute instancesHref={"/kafkas"} />
             </Route>
             <KafkaInstancesRoute
               getUrlForInstance={(instance) =>

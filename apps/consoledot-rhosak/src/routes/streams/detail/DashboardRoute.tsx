@@ -15,7 +15,7 @@ import type { MetricsProps } from "ui";
 import { Metrics } from "ui";
 import type { NavigationProps } from "../routes";
 import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
-import { useDataPlaneRouteMatch } from "./UseDataPlaneRouteMatch";
+import { useDataPlaneRouteMatch } from "./useDataPlaneRouteMatch";
 
 export const DashboardRoute: VoidFunctionComponent<NavigationProps> = ({
   instancesHref,

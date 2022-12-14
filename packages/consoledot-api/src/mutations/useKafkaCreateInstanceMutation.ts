@@ -70,7 +70,7 @@ export function useKafkaCreateInstanceMutation() {
 
                 default:
                   console.error(
-                    "useAvailableProvidersAndDefault",
+                    "useKafkaCreateInstanceMutation",
                     "createKafka unknown error",
                     error
                   );
@@ -80,10 +80,11 @@ export function useKafkaCreateInstanceMutation() {
           }
         } else {
           console.error(
-            "useAvailableProvidersAndDefault",
+            "useKafkaCreateInstanceMutation",
             "createKafka unexpected error",
             error
           );
+          onError("unknown");
         }
       }
     },

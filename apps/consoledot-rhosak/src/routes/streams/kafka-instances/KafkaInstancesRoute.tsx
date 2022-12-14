@@ -23,7 +23,7 @@ import {
   useKafkaLabels,
 } from "ui";
 import { useDrawer } from "../../../DrawerProvider";
-import { ControlPlaneNewInstanceId, ControlPlaneRouteRoot } from "../routes";
+import { ControlPlaneNewInstancePath, ControlPlaneRouteRoot } from "../routes";
 
 export type StreamsRouteProps = Pick<
   KafkaInstancesProps<KafkaInstance>,
@@ -112,8 +112,15 @@ export const KafkaInstancesRoute: FunctionComponent<StreamsRouteProps> = ({
     );
 
   const onCreate = useCallback(() => {
-    history.push(`${ControlPlaneRouteRoot}/${ControlPlaneNewInstanceId}`);
+    history.push(`${ControlPlaneNewInstancePath}`);
   }, [history]);
+
+  const onDelete = useCallback(
+    ({ id }) => {
+      history.push(`${ControlPlaneRouteRoot}/${id}/delete`);
+    },
+    [history]
+  );
 
   return (
     <>
@@ -139,7 +146,7 @@ export const KafkaInstancesRoute: FunctionComponent<StreamsRouteProps> = ({
         onRemoveStatusChips={statusesChips.clear}
         onClearAllFilters={onClearAllFilters}
         onChangeOwner={(row) => {}}
-        onDelete={(row) => {}}
+        onDelete={onDelete}
         onCreate={onCreate}
         isRowSelected={({ row }) => row.id === selectedInstance}
         getUrlForInstance={getUrlForInstance}

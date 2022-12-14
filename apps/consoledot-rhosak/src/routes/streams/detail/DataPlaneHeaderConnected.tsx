@@ -4,7 +4,7 @@ import type { DataPlaneHeaderProps } from "ui";
 import { DataPlaneHeader, ReadyStatuses } from "ui";
 import { useDrawer } from "../../../DrawerProvider";
 import type { NavigationProps } from "../routes";
-import { useDataPlaneRouteMatch } from "./UseDataPlaneRouteMatch";
+import { useDataPlaneRouteMatch } from "./useDataPlaneRouteMatch";
 
 export const DataPlaneHeaderConnected: VoidFunctionComponent<
   NavigationProps & Pick<DataPlaneHeaderProps, "activeSection">

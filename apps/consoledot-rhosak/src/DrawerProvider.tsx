@@ -11,8 +11,8 @@ import { useRouteMatch } from "react-router-dom";
 import type { KafkaInstanceDrawerTab } from "ui";
 import type { ControlPlaneRouteParams } from "./routes/streams/routes";
 import {
-  ControlPlaneNewInstanceId,
   ControlPlaneRoutePath,
+  ControlPlaneSpecialSegments,
 } from "./routes/streams/routes";
 
 type DrawerContextProps = {
@@ -31,7 +31,11 @@ export const DrawerProvider: FunctionComponent = ({ children }) => {
     throw Error("DrawerProvider used outside the expected route");
   }
   const selectedInstance =
-    match.params.id !== ControlPlaneNewInstanceId ? match.params.id : undefined;
+    (match.params.id &&
+      ControlPlaneSpecialSegments.includes(match.params.id)) ||
+    match.params.section !== undefined
+      ? undefined
+      : match.params.id;
   const [isExpanded, setIsExpanded] = useState(selectedInstance !== undefined);
   const [activeTab, setActiveTab] = useState<KafkaInstanceDrawerTab>("details");
   const onClose = useRef<() => void | undefined>();
