@@ -21,6 +21,7 @@ export type KafkaDetailsTabProps = {
   updatedAt: Date;
   expiryDate: Date | undefined;
   owner: string;
+  provider: string;
   region: string;
   instanceType: Plan;
   size: string | undefined;
@@ -40,6 +41,7 @@ export const KafkaDetailsTab: VoidFunctionComponent<KafkaDetailsTabProps> = ({
   createdAt,
   updatedAt,
   owner,
+  provider,
   region,
   expiryDate,
   instanceType,
@@ -155,10 +157,7 @@ export const KafkaDetailsTab: VoidFunctionComponent<KafkaDetailsTabProps> = ({
             t("common:time_updated"),
             <FormatDate date={updatedAt} format={"long"} />
           )}
-          {renderTextListItem(
-            t("common:cloud_provider"),
-            t("common:cloudProviders.aws")
-          )}
+          {renderTextListItem(t("common:cloud_provider"), provider)}
           {renderTextListItem(t("common:region"), region)}
           {renderTextListItem(
             t("create-kafka-instance:billing.field_label"),

@@ -6,7 +6,7 @@ import type { FunctionComponent } from "react";
 import { useCallback, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import type { NavigationProps } from "../routes";
-import { ControlPlaneRoutePath } from "../routes";
+import { ControlPlaneRouteRoot } from "../routes";
 import { useCreateKafkaCallbacks } from "./useCreateKafkaCallbacks";
 
 export const CreateKafkaInstanceRoute: FunctionComponent<NavigationProps> = ({
@@ -30,7 +30,7 @@ export const CreateKafkaInstanceRoute: FunctionComponent<NavigationProps> = ({
     function (instance, onSuccess, onError) {
       const onOnSuccess = () => {
         onSuccess();
-        history.push(ControlPlaneRoutePath);
+        history.push(ControlPlaneRouteRoot);
       };
       void createKafkaInstance.mutateAsync({
         instance,

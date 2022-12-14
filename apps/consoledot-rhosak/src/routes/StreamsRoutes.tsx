@@ -1,3 +1,4 @@
+import { InvalidObject } from "@redhat-cloud-services/frontend-components";
 import { useKafkaInstance } from "consoledot-api";
 import type { VoidFunctionComponent } from "react";
 import { Suspense } from "react";
@@ -82,10 +83,16 @@ export const StreamsRoutes: VoidFunctionComponent = () => {
                   to={`${DataPlaneRoutePath}/dashboard`}
                   exact
                 />
+
+                <Route>
+                  <InvalidObject />
+                </Route>
               </Switch>
             </DataPlaneGate>
           </Route>
-          <Route>404</Route>
+          <Route>
+            <InvalidObject />
+          </Route>
         </Switch>
       </Suspense>
     </KafkaInstanceDrawer>

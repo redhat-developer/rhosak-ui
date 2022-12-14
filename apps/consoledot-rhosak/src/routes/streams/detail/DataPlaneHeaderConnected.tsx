@@ -1,4 +1,6 @@
 import type { VoidFunctionComponent } from "react";
+import { useCallback } from "react";
+import { useHistory } from "react-router-dom";
 import type { DataPlaneHeaderProps } from "ui";
 import { DataPlaneHeader, ReadyStatuses } from "ui";
 import { useDrawer } from "../../../DrawerProvider";
@@ -8,6 +10,7 @@ import { useDataPlaneInstance } from "./useDataPlaneInstance";
 export const DataPlaneHeaderConnected: VoidFunctionComponent<
   NavigationProps & Pick<DataPlaneHeaderProps, "activeSection">
 > = ({ instancesHref, activeSection }) => {
+  const history = useHistory();
   const { setActiveTab, toggleExpanded } = useDrawer();
 
   const {
@@ -22,6 +25,11 @@ export const DataPlaneHeaderConnected: VoidFunctionComponent<
     permissions: `${url}/acls`,
     settings: `${url}/settings`,
   };
+
+  const onDelete = useCallback(() => {
+    // TODO: unhardcode this url
+    history.push(`${instancesHref}/${instance!.id}/delete`);
+  }, [history, instance, instancesHref]);
 
   return (
     <DataPlaneHeader
@@ -43,7 +51,7 @@ export const DataPlaneHeaderConnected: VoidFunctionComponent<
       canChangeOwner={true /* TODO */}
       onChangeOwner={() => false /* TODO */}
       canDelete={true /* TODO */}
-      onDelete={() => false /* TODO */}
+      onDelete={onDelete}
     />
   );
 };

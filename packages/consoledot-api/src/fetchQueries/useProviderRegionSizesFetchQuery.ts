@@ -18,7 +18,7 @@ export function useProviderRegionSizesFetchQuery() {
     return queryClient.fetchQuery({
       queryKey: providerQueries.limits[
         plan === "standard" ? "standard" : "developer"
-      ]({ provider: provider.id }),
+      ]({ provider: provider.id, region }),
       queryFn: () =>
         fetchProviderRegionSizes(
           (...args) => kms.getInstanceTypesByCloudProviderAndRegion(...args),

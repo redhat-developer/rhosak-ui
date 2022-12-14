@@ -22,7 +22,7 @@ export function useCreateKafkaCallbacks() {
   const checkDeveloperAvailabilityQuery =
     useDeveloperInstanceAvailabilityFetchQuery();
 
-  const standardQuotaQuery = useStandardQuotaFetchQuery();
+  const standardQuotaQuery = useStandardQuotaFetchQuery(true);
   const providersWithRegionsQuery = useProvidersWithRegionsFetchQuery();
   const getProvidersInfo = useProvidersWithRegionsFetchQuery();
   const getProviderRegionsSizes = useProviderRegionSizesFetchQuery();

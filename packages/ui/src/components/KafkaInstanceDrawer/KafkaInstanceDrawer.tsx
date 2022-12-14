@@ -129,6 +129,9 @@ export const KafkaInstanceDrawerPanel: VoidFunctionComponent<
                 connections={instance.connections}
                 connectionRate={instance.connectionRate}
                 messageSize={instance.messageSize}
+                provider={
+                  labels.providers[instance.provider] || instance.provider
+                }
                 region={
                   labels.providerRegions[instance.provider][instance.region] ||
                   instance.region

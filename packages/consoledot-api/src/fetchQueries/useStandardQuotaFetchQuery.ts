@@ -3,7 +3,7 @@ import { fetchOrganization, fetchStandardQuota } from "../fetchers";
 import { masQueries } from "../queryKeys";
 import { useApi } from "../useApi";
 
-export function useStandardQuotaFetchQuery() {
+export function useStandardQuotaFetchQuery(skipCache = false) {
   const queryClient = useQueryClient();
   const { account } = useApi();
   const ams = account();
@@ -28,7 +28,7 @@ export function useStandardQuotaFetchQuery() {
             ams.apiAccountsMgmtV1OrganizationsOrgIdQuotaCostGet(...args),
           organization
         ),
-      staleTime: Infinity,
+      staleTime: skipCache ? undefined : Infinity,
     });
   };
 }

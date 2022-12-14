@@ -114,13 +114,24 @@ export const providerQueries = {
         entity: "limits",
         provider,
       } as const),
-    standard: (params: { provider?: string }) => [
-      { ...providerQueries.limits._root({ ...params }), plan: "standard" },
-    ],
-    developer: (params: { provider?: string }) => [
+    standard: ({ provider, region }: { provider?: string; region: string }) => [
       {
-        ...providerQueries.limits._root({ ...params }),
+        ...providerQueries.limits._root({ provider }),
+        plan: "standard",
+        region,
+      },
+    ],
+    developer: ({
+      provider,
+      region,
+    }: {
+      provider?: string;
+      region: string;
+    }) => [
+      {
+        ...providerQueries.limits._root({ provider }),
         plan: "developer",
+        region,
       },
     ],
   },
