@@ -15,12 +15,15 @@ import type { MetricsProps } from "ui";
 import { Metrics } from "ui";
 import type { NavigationProps } from "../routes";
 import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
-import { useDataPlaneRouteMatch } from "./useDataPlaneRouteMatch";
+import { useDataPlaneInstance } from "./useDataPlaneInstance";
 
 export const DashboardRoute: VoidFunctionComponent<NavigationProps> = ({
   instancesHref,
 }) => {
-  const { params } = useDataPlaneRouteMatch();
+  const {
+    instance,
+    match: { params },
+  } = useDataPlaneInstance(instancesHref);
   const [hasUserAlreadyClosedAlert, setHasUserAlreadyClosedAlert] = useState(
     metricsIsLagAlertsDismissed()
   );
@@ -37,15 +40,12 @@ export const DashboardRoute: VoidFunctionComponent<NavigationProps> = ({
   const queryTopics = useKafkaInstanceTopicsFetchQuery();
 
   const getMetricsKpi: MetricsProps["getMetricsKpi"] = useCallback(async () => {
-    const [instance, kpis] = await Promise.all([
-      queryInstance(params.id),
-      queryKpisMetrics(params.id),
-    ]);
+    const kpis = await queryKpisMetrics(params.id);
     return {
       ...kpis,
-      topicPartitionsLimit: instance.maxPartitions || 0,
+      topicPartitionsLimit: instance!.maxPartitions || 0,
     };
-  }, [params.id, queryInstance, queryKpisMetrics]);
+  }, [instance, params.id, queryKpisMetrics]);
 
   const getKafkaInstanceMetrics: MetricsProps["getKafkaInstanceMetrics"] =
     useCallback(

@@ -1,18 +1,19 @@
-import { useKafkaInstance } from "consoledot-api";
 import type { VoidFunctionComponent } from "react";
 import type { DataPlaneHeaderProps } from "ui";
 import { DataPlaneHeader, ReadyStatuses } from "ui";
 import { useDrawer } from "../../../DrawerProvider";
 import type { NavigationProps } from "../routes";
-import { useDataPlaneRouteMatch } from "./useDataPlaneRouteMatch";
+import { useDataPlaneInstance } from "./useDataPlaneInstance";
 
 export const DataPlaneHeaderConnected: VoidFunctionComponent<
   NavigationProps & Pick<DataPlaneHeaderProps, "activeSection">
 > = ({ instancesHref, activeSection }) => {
   const { setActiveTab, toggleExpanded } = useDrawer();
 
-  const { url, params } = useDataPlaneRouteMatch();
-  const { data: instance } = useKafkaInstance(params.id);
+  const {
+    instance,
+    match: { url },
+  } = useDataPlaneInstance(instancesHref);
 
   const sectionsHref = {
     dashboard: `${url}/dashboard`,
@@ -25,7 +26,7 @@ export const DataPlaneHeaderConnected: VoidFunctionComponent<
   return (
     <DataPlaneHeader
       instancesHref={instancesHref}
-      instanceName={params.name}
+      instanceName={instance?.name || ""}
       activeSection={activeSection}
       sectionsHref={sectionsHref}
       onDetails={() => {

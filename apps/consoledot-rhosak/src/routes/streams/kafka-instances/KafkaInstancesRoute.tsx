@@ -25,12 +25,12 @@ import {
 import { useDrawer } from "../../../DrawerProvider";
 import { ControlPlaneNewInstancePath, ControlPlaneRouteRoot } from "../routes";
 
-export type StreamsRouteProps = Pick<
+export type KafkaInstancesRoute = Pick<
   KafkaInstancesProps<KafkaInstance>,
   "getUrlForInstance"
 >;
 
-export const KafkaInstancesRoute: FunctionComponent<StreamsRouteProps> = ({
+export const KafkaInstancesRoute: FunctionComponent<KafkaInstancesRoute> = ({
   getUrlForInstance,
 }) => {
   const history = useHistory();

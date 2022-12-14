@@ -7,6 +7,7 @@ import { useDrawer } from "../DrawerProvider";
 import { AclsRoute } from "./streams/detail/AclsRoute";
 import { ConsumerGroupsRoute } from "./streams/detail/ConsumerGroupsRoute";
 import { DashboardRoute } from "./streams/detail/DashboardRoute";
+import { DataPlaneGate } from "./streams/detail/DataPlaneGate";
 import { SettingsRoute } from "./streams/detail/SettingsRoute";
 import { TopicsRoute } from "./streams/detail/TopicsRoute";
 import { CreateKafkaInstanceRoute } from "./streams/kafka-instances/CreateKafkaInstanceRoute";
@@ -48,38 +49,42 @@ export const StreamsRoutes: VoidFunctionComponent = () => {
               <DeleteKafkaInstanceRoute instancesHref={"/kafkas"} />
             </Route>
             <KafkaInstancesRoute
-              getUrlForInstance={(instance) =>
-                `/kafkas/${instance.id}/details/${instance.name}`
-              }
+              getUrlForInstance={(instance) => `/kafkas/${instance.id}/details`}
             />
           </Route>
 
           {/* DATA PLANE*/}
-          <Route path={`${DataPlaneRoutePath}/dashboard`} exact>
-            <DashboardRoute instancesHref={"/kafkas"} />
-          </Route>
-          <Route path={`${DataPlaneRoutePath}/topics`} exact>
-            <TopicsRoute instancesHref={"/kafkas"} />
-          </Route>
+          <Route path={DataPlaneRoutePath}>
+            <DataPlaneGate instancesHref={"/kafkas"}>
+              <Switch>
+                <Route path={`${DataPlaneRoutePath}/dashboard`} exact>
+                  <DashboardRoute instancesHref={"/kafkas"} />
+                </Route>
+                <Route path={`${DataPlaneRoutePath}/topics`} exact>
+                  <TopicsRoute instancesHref={"/kafkas"} />
+                </Route>
 
-          <Route path={`${DataPlaneRoutePath}/consumer-groups`} exact>
-            <ConsumerGroupsRoute instancesHref={"/kafkas"} />
-          </Route>
-          <Route path={`${DataPlaneRoutePath}/acls`} exact>
-            <AclsRoute instancesHref={"/kafkas"} />
-          </Route>
-          <Route path={`${DataPlaneRoutePath}/settings`} exact>
-            <SettingsRoute instancesHref={"/kafkas"} />
-          </Route>
-          <Route path={`${DataPlaneRoutePath}/topics/:topicName`} exact>
-            <TopicsRoute instancesHref={"/kafkas"} />
-          </Route>
+                <Route path={`${DataPlaneRoutePath}/consumer-groups`} exact>
+                  <ConsumerGroupsRoute instancesHref={"/kafkas"} />
+                </Route>
+                <Route path={`${DataPlaneRoutePath}/acls`} exact>
+                  <AclsRoute instancesHref={"/kafkas"} />
+                </Route>
+                <Route path={`${DataPlaneRoutePath}/settings`} exact>
+                  <SettingsRoute instancesHref={"/kafkas"} />
+                </Route>
+                <Route path={`${DataPlaneRoutePath}/topics/:topicName`} exact>
+                  <TopicsRoute instancesHref={"/kafkas"} />
+                </Route>
 
-          <Redirect
-            from={`${DataPlaneRoutePath}`}
-            to={`${DataPlaneRoutePath}/dashboard`}
-            exact
-          />
+                <Redirect
+                  from={`${DataPlaneRoutePath}`}
+                  to={`${DataPlaneRoutePath}/dashboard`}
+                  exact
+                />
+              </Switch>
+            </DataPlaneGate>
+          </Route>
           <Route>404</Route>
         </Switch>
       </Suspense>

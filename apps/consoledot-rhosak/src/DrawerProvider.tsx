@@ -36,7 +36,9 @@ export const DrawerProvider: FunctionComponent = ({ children }) => {
     match.params.section !== undefined
       ? undefined
       : match.params.id;
-  const [isExpanded, setIsExpanded] = useState(selectedInstance !== undefined);
+  const [isExpanded, setIsExpanded] = useState(
+    selectedInstance !== undefined && match.isExact
+  );
   const [activeTab, setActiveTab] = useState<KafkaInstanceDrawerTab>("details");
   const onClose = useRef<() => void | undefined>();
 

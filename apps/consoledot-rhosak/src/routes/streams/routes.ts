@@ -11,8 +11,8 @@ export const ControlPlaneDeleteInstancePath = `${ControlPlaneRouteRoot}/:id/dele
 export type ControlPlaneRouteParams = { id?: string; section?: "delete" };
 
 export const DataPlaneRoutePath =
-  `${ControlPlaneRouteRoot}/:id/details/:name` as const;
-export type DataPlaneRouteParams = { id: string; name: string };
+  `${ControlPlaneRouteRoot}/:id/details` as const;
+export type DataPlaneRouteParams = { id: string };
 export type NavigationProps = {
   instancesHref: DataPlaneHeaderProps["instancesHref"];
 };

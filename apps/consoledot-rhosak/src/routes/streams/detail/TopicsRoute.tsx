@@ -5,7 +5,6 @@ import {
 } from "@rhoas/app-services-ui-components";
 import {
   KafkaTopicsSortableColumns,
-  useKafkaInstance,
   useKafkaInstanceTopics,
 } from "consoledot-api";
 import type { VoidFunctionComponent } from "react";
@@ -13,13 +12,12 @@ import { useCallback } from "react";
 import { KafkaTopics } from "ui";
 import type { NavigationProps } from "../routes";
 import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
-import { useDataPlaneRouteMatch } from "./useDataPlaneRouteMatch";
+import { useDataPlaneInstance } from "./useDataPlaneInstance";
 
 export const TopicsRoute: VoidFunctionComponent<NavigationProps> = ({
   instancesHref,
 }) => {
-  const { params } = useDataPlaneRouteMatch();
-  const { data: instance } = useKafkaInstance(params.id);
+  const { instance } = useDataPlaneInstance(instancesHref);
   const { page, perPage, setPagination, setPaginationQuery } =
     usePaginationSearchParams();
   const resetPaginationQuery = useCallback(
