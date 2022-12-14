@@ -8,12 +8,21 @@ export const masQueries = {
   _root: () => ({ scope: "mas" } as const),
   organization: () =>
     [{ ...masQueries._root(), entity: "organization" }] as const,
-  quota: (params: { organization?: string }) =>
-    [{ ...masQueries._root(), entity: "quota", ...params }] as const,
-  developerAvailability: () =>
-    [{ ...masQueries._root(), entity: "developerAvailability" }] as const,
-  standardAvailability: () =>
-    [{ ...masQueries._root(), entity: "standardAvailability" }] as const,
+  quota: {
+    _root: () => ({ ...masQueries._root(), entity: "quota" } as const),
+    available: (params: { organization?: string }) =>
+      [
+        { ...masQueries.quota._root(), subentity: "available", ...params },
+      ] as const,
+    developerAvailability: () =>
+      [
+        { ...masQueries.quota._root(), subentity: "developerAvailability" },
+      ] as const,
+    standardAvailability: () =>
+      [
+        { ...masQueries.quota._root(), subentity: "standardAvailability" },
+      ] as const,
+  },
 } as const;
 
 export const kafkaQueries = {

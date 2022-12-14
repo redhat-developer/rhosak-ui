@@ -1,6 +1,7 @@
 import { QuickStartContext } from "@patternfly/quickstarts";
 import type { CreateKafkaInstanceServices } from "@rhoas/app-services-ui-components";
 import { CreateKafkaInstance } from "@rhoas/app-services-ui-components";
+import { useKafkaCreateInstanceMutation } from "consoledot-api";
 import type { FunctionComponent } from "react";
 import { useCallback, useContext } from "react";
 import { useHistory } from "react-router-dom";
@@ -13,7 +14,7 @@ export const CreateKafkaInstanceRoute: FunctionComponent<NavigationProps> = ({
 }) => {
   const history = useHistory();
   const callbacks = useCreateKafkaCallbacks();
-
+  const createKafkaInstance = useKafkaCreateInstanceMutation();
   const qsContext = useContext(QuickStartContext);
 
   const onClickKafkaOverview = () => {
@@ -26,13 +27,18 @@ export const CreateKafkaInstanceRoute: FunctionComponent<NavigationProps> = ({
   }, [qsContext]);
 
   const onCreate = useCallback<CreateKafkaInstanceServices["onCreate"]>(
-    function (data, onSuccess, onError) {
+    function (instance, onSuccess, onError) {
       const onOnSuccess = () => {
         onSuccess();
         history.push(ControlPlaneRoutePath);
       };
+      void createKafkaInstance.mutateAsync({
+        instance,
+        onSuccess: onOnSuccess,
+        onError,
+      });
     },
-    [history]
+    [createKafkaInstance, history]
   );
 
   const onOnCancel = useCallback(() => {

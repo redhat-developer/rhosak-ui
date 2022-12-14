@@ -12,7 +12,7 @@ export const useDeveloperInstanceAvailabilityFetchQuery = () => {
   return (getUsername: () => Promise<string>) => {
     const api = kafkasFleet();
     return queryClient.fetchQuery({
-      queryKey: masQueries.developerAvailability(),
+      queryKey: masQueries.quota.developerAvailability(),
       queryFn: async () => {
         const username = await getUsername();
         if (!username) {

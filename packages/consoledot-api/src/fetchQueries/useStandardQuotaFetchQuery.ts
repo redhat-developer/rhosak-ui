@@ -21,7 +21,7 @@ export function useStandardQuotaFetchQuery() {
       return Promise.reject("Missing organization id");
     }
     return queryClient.fetchQuery({
-      queryKey: masQueries.quota({ organization }),
+      queryKey: masQueries.quota.available({ organization }),
       queryFn: () =>
         fetchStandardQuota(
           (...args) =>
