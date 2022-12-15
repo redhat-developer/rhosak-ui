@@ -20,24 +20,29 @@ export async function fetchProvidersWithRegions(
   const res = await getCloudProviders();
   const allProviders = res?.data?.items || [];
 
-  const providers = await Promise.all(
-    allProviders
-      .filter((p) => p.enabled)
-      .map(async (provider) => {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const regions = await fetchProviderRegions(
-          getCloudProviderRegions,
-          provider.id!,
-          plan
-        );
-        const providerInfo: CloudProviderInfoWithRegionsCapacity = {
-          id: provider.id as CloudProvider,
-          displayName: provider.display_name!,
-          regions,
-        };
-        return providerInfo;
-      })
-  );
+  const providers = (
+    await Promise.all(
+      allProviders
+        .filter((p) => p.enabled)
+        .map(async (provider) => {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          const regions = await fetchProviderRegions(
+            getCloudProviderRegions,
+            provider.id!,
+            plan
+          );
+          const providerInfo: CloudProviderInfoWithRegionsCapacity = {
+            id: provider.id as CloudProvider,
+            displayName: provider.display_name!,
+            regions,
+          };
+          return regions.length > 0 ? providerInfo : null;
+        })
+    )
+  ).filter((p) => Boolean(p)) as CloudProviderInfoWithRegionsCapacity[];
+  if (providers.length === 0) {
+    throw new Error("No cloud providers with capacity found");
+  }
   const firstProvider = providers[0];
   return { providers, defaultProvider: firstProvider?.id };
 }

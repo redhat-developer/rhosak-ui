@@ -126,6 +126,9 @@ export function useCreateKafkaCallbacks() {
 
       try {
         standardSizes = await getStandardSizes(provider, region);
+        if (standardSizes.length === 0) {
+          throw new Error("No standard sizes found");
+        }
       } catch {
         // It can happen that the selected provider doesn't support standard instances.
         // In this case we provide a faux sample list of sizes just to make the slider happy.
