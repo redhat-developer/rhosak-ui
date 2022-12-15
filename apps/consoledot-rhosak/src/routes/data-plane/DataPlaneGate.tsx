@@ -1,7 +1,7 @@
 import { Loading } from "@rhoas/app-services-ui-components";
 import type { FunctionComponent } from "react";
-import type { NavigationProps } from "../routes";
-import { useDataPlaneInstance } from "./useDataPlaneInstance";
+import type { NavigationProps } from "../control-plane/routesConsts";
+import { useDataPlaneInstance } from "./routes/useDataPlaneInstance";
 
 export const DataPlaneGate: FunctionComponent<NavigationProps> = ({
   instancesHref,

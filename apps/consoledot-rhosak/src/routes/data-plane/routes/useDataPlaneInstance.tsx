@@ -1,8 +1,8 @@
 import { useKafkaInstance } from "consoledot-api";
 import { useEffect } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
-import type { DataPlaneRouteParams } from "../routes";
-import { DataPlaneRoutePath } from "../routes";
+import type { DataPlaneRouteParams } from "../../control-plane/routesConsts";
+import { DataPlaneRoutePath } from "../../control-plane/routesConsts";
 
 export function useDataPlaneInstance(instancesHref: string) {
   const history = useHistory();
@@ -20,5 +20,5 @@ export function useDataPlaneInstance(instancesHref: string) {
     }
   }, [history, instancesHref, isError]);
 
-  return { instance, match };
+  return { instance: instance as NonNullable<typeof instance>, match };
 }

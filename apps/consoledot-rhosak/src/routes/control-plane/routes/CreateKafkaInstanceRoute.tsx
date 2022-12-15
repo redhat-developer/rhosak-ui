@@ -5,8 +5,8 @@ import { useKafkaCreateInstanceMutation } from "consoledot-api";
 import type { FunctionComponent } from "react";
 import { useCallback, useContext } from "react";
 import { useHistory } from "react-router-dom";
-import type { NavigationProps } from "../routes";
-import { ControlPlaneRouteRoot } from "../routes";
+import type { NavigationProps } from "../routesConsts";
+import { ControlPlaneRouteRoot } from "../routesConsts";
 import { useCreateKafkaCallbacks } from "./useCreateKafkaCallbacks";
 
 export const CreateKafkaInstanceRoute: FunctionComponent<NavigationProps> = ({

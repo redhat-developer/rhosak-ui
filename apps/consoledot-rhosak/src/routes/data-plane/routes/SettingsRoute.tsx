@@ -3,7 +3,7 @@ import type { VoidFunctionComponent } from "react";
 import { useCallback } from "react";
 import type { SettingsProps } from "ui";
 import { Settings as SettingsComp } from "ui";
-import type { NavigationProps } from "../routes";
+import type { NavigationProps } from "../../control-plane/routesConsts";
 import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
 import { useDataPlaneInstance } from "./useDataPlaneInstance";
 
@@ -19,12 +19,12 @@ export const SettingsRoute: VoidFunctionComponent<NavigationProps> = ({
     async (reauthenticationEnabled) => {
       try {
         await updateInstance.mutateAsync({
-          id: instance!.id,
+          id: instance.id,
           updates: { reauthentication_enabled: reauthenticationEnabled },
         });
         return reauthenticationEnabled;
       } catch {
-        return instance!.request.reauthentication_enabled;
+        return instance.request.reauthentication_enabled;
       }
     },
     [instance, updateInstance]
@@ -37,7 +37,7 @@ export const SettingsRoute: VoidFunctionComponent<NavigationProps> = ({
       />
       <SettingsComp
         onSubmitReAuthentication={onSubmitReAuthentication}
-        reauthenticationEnabled={instance!.request.reauthentication_enabled}
+        reauthenticationEnabled={instance.request.reauthentication_enabled}
       />
     </>
   );

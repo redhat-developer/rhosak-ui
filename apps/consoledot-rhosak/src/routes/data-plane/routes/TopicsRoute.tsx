@@ -4,17 +4,17 @@ import {
   useURLSearchParamsChips,
 } from "@rhoas/app-services-ui-components";
 import {
-  KafkaConsumerGroupSortableColumns,
-  useKafkaInstanceConsumerGroups,
+  KafkaTopicsSortableColumns,
+  useKafkaInstanceTopics,
 } from "consoledot-api";
 import type { VoidFunctionComponent } from "react";
 import { useCallback } from "react";
-import { ConsumerGroups } from "ui";
-import type { NavigationProps } from "../routes";
+import { KafkaTopics } from "ui";
+import type { NavigationProps } from "../../control-plane/routesConsts";
 import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
 import { useDataPlaneInstance } from "./useDataPlaneInstance";
 
-export const ConsumerGroupsRoute: VoidFunctionComponent<NavigationProps> = ({
+export const TopicsRoute: VoidFunctionComponent<NavigationProps> = ({
   instancesHref,
 }) => {
   const { instance } = useDataPlaneInstance(instancesHref);
@@ -25,52 +25,53 @@ export const ConsumerGroupsRoute: VoidFunctionComponent<NavigationProps> = ({
     [perPage, setPaginationQuery]
   );
 
-  const consumerName = useURLSearchParamsChips(
-    "consumer",
-    resetPaginationQuery
-  );
+  const topicChips = useURLSearchParamsChips("topic", resetPaginationQuery);
   const [isColumnSortable, sort, sortDirection] = useSortableSearchParams(
-    KafkaConsumerGroupSortableColumns,
+    KafkaTopicsSortableColumns,
     {
       name: "TODO name",
+      partitions: "TODO partitions",
+      "retention.bytes": "TODO retention bytes",
+      "retention.ms": "TODO retention ms",
     },
     "name",
     "desc"
   );
-  const { data } = useKafkaInstanceConsumerGroups({
+  const { data } = useKafkaInstanceTopics({
     id: instance?.id,
     adminUrl: instance?.adminUrl,
     page,
     perPage,
     sort: sort!,
     direction: sortDirection,
-    groupId: consumerName.chips[0],
+    filter: topicChips.chips[0],
   });
   return (
     <>
       <DataPlaneHeaderConnected
         instancesHref={instancesHref}
-        activeSection={"consumer"}
+        activeSection={"topics"}
       />
-      <ConsumerGroups
-        consumers={data?.groups}
+      <KafkaTopics
+        topics={data?.topics}
         itemCount={data?.count}
         page={page}
         perPage={perPage}
-        consumerName={consumerName.chips}
-        isRowSelected={() => false}
+        topicName={topicChips.chips}
+        getUrlFortopic={(row) => `./topics/${row.topic_name}`}
         isColumnSortable={isColumnSortable}
         onDelete={() => {}}
-        onSearchConsumer={(value) => {
-          consumerName.clear();
-          consumerName.toggle(value);
+        onEdit={() => {}}
+        onSearchTopic={(value) => {
+          topicChips.clear();
+          topicChips.toggle(value);
         }}
-        onClearAllFilters={consumerName.clear}
+        onClearAllFilters={topicChips.clear}
+        onCreateTopic={() => {}}
         onPageChange={setPagination}
-        onRemoveConsumerChip={consumerName.clear}
-        onRemoveConsumerChips={consumerName.clear}
-        onViewPartition={() => {}}
-        onViewResetOffset={() => {}}
+        onRemoveTopicChip={topicChips.clear}
+        onRemoveTopicChips={topicChips.clear}
+        onTopicLinkClick={() => {}}
       />
     </>
   );

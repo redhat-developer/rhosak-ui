@@ -1,3 +1,4 @@
+import { useKafkaInstance } from "consoledot-api";
 import type { FunctionComponent, MutableRefObject } from "react";
 import {
   createContext,
@@ -9,11 +10,12 @@ import {
 } from "react";
 import { useRouteMatch } from "react-router-dom";
 import type { KafkaInstanceDrawerTab } from "ui";
-import type { ControlPlaneRouteParams } from "./routes/streams/routes";
+import { KafkaInstanceDrawer } from "ui";
+import type { ControlPlaneRouteParams } from "./routesConsts";
 import {
   ControlPlaneRoutePath,
   ControlPlaneSpecialSegments,
-} from "./routes/streams/routes";
+} from "./routesConsts";
 
 type DrawerContextProps = {
   selectedInstance: string | undefined;
@@ -36,6 +38,7 @@ export const DrawerProvider: FunctionComponent = ({ children }) => {
     match.params.section !== undefined
       ? undefined
       : match.params.id;
+  const { data: instance } = useKafkaInstance(selectedInstance);
   const [isExpanded, setIsExpanded] = useState(
     selectedInstance !== undefined && match.isExact
   );
@@ -56,7 +59,7 @@ export const DrawerProvider: FunctionComponent = ({ children }) => {
     const shouldBeExpanded = selectedInstance !== undefined && isExpanded;
 
     return {
-      selectedInstance: selectedInstance,
+      selectedInstance,
       activeTab,
       setActiveTab,
       isExpanded: shouldBeExpanded,
@@ -66,7 +69,17 @@ export const DrawerProvider: FunctionComponent = ({ children }) => {
   }, [activeTab, isExpanded, selectedInstance, toggleExpanded]);
 
   return (
-    <DrawerContext.Provider value={value}>{children}</DrawerContext.Provider>
+    <DrawerContext.Provider value={value}>
+      <KafkaInstanceDrawer
+        instance={instance}
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        isExpanded={isExpanded}
+        onClose={() => toggleExpanded(false)}
+      >
+        {children}
+      </KafkaInstanceDrawer>
+    </DrawerContext.Provider>
   );
 };
 

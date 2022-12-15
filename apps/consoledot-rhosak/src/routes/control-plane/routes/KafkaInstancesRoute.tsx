@@ -22,8 +22,11 @@ import {
   ReadyStatuses,
   useKafkaLabels,
 } from "ui";
-import { useDrawer } from "../../../DrawerProvider";
-import { ControlPlaneNewInstancePath, ControlPlaneRouteRoot } from "../routes";
+import { useDrawer } from "../DrawerProvider";
+import {
+  ControlPlaneNewInstancePath,
+  ControlPlaneRouteRoot,
+} from "../routesConsts";
 
 export type KafkaInstancesRoute = Pick<
   KafkaInstancesProps<KafkaInstance>,

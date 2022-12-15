@@ -13,7 +13,7 @@ import type { VoidFunctionComponent } from "react";
 import { useCallback, useState } from "react";
 import type { MetricsProps } from "ui";
 import { Metrics } from "ui";
-import type { NavigationProps } from "../routes";
+import type { NavigationProps } from "../../control-plane/routesConsts";
 import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
 import { useDataPlaneInstance } from "./useDataPlaneInstance";
 
@@ -43,7 +43,7 @@ export const DashboardRoute: VoidFunctionComponent<NavigationProps> = ({
     const kpis = await queryKpisMetrics(params.id);
     return {
       ...kpis,
-      topicPartitionsLimit: instance!.maxPartitions || 0,
+      topicPartitionsLimit: instance.maxPartitions || 0,
     };
   }, [instance, params.id, queryKpisMetrics]);
 

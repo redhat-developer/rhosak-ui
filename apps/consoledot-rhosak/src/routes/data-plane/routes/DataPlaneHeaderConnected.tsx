@@ -3,8 +3,8 @@ import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import type { DataPlaneHeaderProps } from "ui";
 import { DataPlaneHeader, ReadyStatuses } from "ui";
-import { useDrawer } from "../../../DrawerProvider";
-import type { NavigationProps } from "../routes";
+import { useDrawer } from "../../control-plane";
+import type { NavigationProps } from "../../control-plane/routesConsts";
 import { useDataPlaneInstance } from "./useDataPlaneInstance";
 
 export const DataPlaneHeaderConnected: VoidFunctionComponent<
@@ -28,7 +28,7 @@ export const DataPlaneHeaderConnected: VoidFunctionComponent<
 
   const onDelete = useCallback(() => {
     // TODO: unhardcode this url
-    history.push(`${instancesHref}/${instance!.id}/delete`);
+    history.push(`${instancesHref}/${instance.id}/delete`);
   }, [history, instance, instancesHref]);
 
   return (

@@ -4,14 +4,12 @@ import { getRegistry } from "@redhat-cloud-services/frontend-components-utilitie
 import { useChrome } from "@redhat-cloud-services/frontend-components/useChrome";
 import { useTranslation } from "@rhoas/app-services-ui-components";
 import { memo, useEffect } from "react";
-import { Redirect, Route, Switch, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import type { Reducer } from "redux";
 
 import "./App.scss";
-import { DrawerProvider } from "./DrawerProvider";
-import { OverviewRoute } from "./routes/overview/OverviewRoute";
 
-import { StreamsRoutes } from "./routes/StreamsRoutes";
+import { Routes } from "./routes/Routes";
 
 const App = memo(() => {
   const history = useHistory();
@@ -40,18 +38,7 @@ const App = memo(() => {
   return (
     <>
       <NotificationsPortal />
-      <Switch>
-        <Route path={"/overview"} exact>
-          <OverviewRoute />
-        </Route>
-        <Redirect from={"/"} to={"/kafkas"} exact />
-        <Route path={"/kafkas"}>
-          <DrawerProvider>
-            <StreamsRoutes />
-          </DrawerProvider>
-        </Route>
-        <Route path={""} exact></Route>
-      </Switch>
+      <Routes />
     </>
   );
 });

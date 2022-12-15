@@ -6,8 +6,8 @@ import type { FunctionComponent } from "react";
 import { useCallback, useEffect } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { DeleteKafkaInstance, ReadyStatuses } from "ui";
-import type { ControlPlaneRouteParams, NavigationProps } from "../routes";
-import { ControlPlaneRoutePath } from "../routes";
+import type { ControlPlaneRouteParams, NavigationProps } from "../routesConsts";
+import { ControlPlaneRoutePath } from "../routesConsts";
 
 export const DeleteKafkaInstanceRoute: FunctionComponent<NavigationProps> = ({
   instancesHref,
