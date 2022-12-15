@@ -2,6 +2,7 @@ import {
   Button,
   Drawer,
   DrawerContent,
+  PageSection,
   Toolbar,
   ToolbarContent,
   ToolbarGroup,
@@ -14,18 +15,18 @@ import {
   InnerScrollContainer,
   OuterScrollContainer,
 } from "@patternfly/react-table";
-import { useMachine } from "@xstate/react";
-import { parseISO } from "date-fns";
-import type { VoidFunctionComponent } from "react";
-import { useMemo, useState } from "react";
-import { useTranslation } from "@rhoas/app-services-ui-components";
 import {
   FormatDate,
   Loading,
   RefreshButton,
   ResponsiveTable,
+  useTranslation,
 } from "@rhoas/app-services-ui-components";
-import type { DateIsoString } from "../../types";
+import { useMachine } from "@xstate/react";
+import { parseISO } from "date-fns";
+import type { VoidFunctionComponent } from "react";
+import { useMemo, useState } from "react";
+import type { DateIsoString, Message } from "../../types";
 import type { MessageDetailsProps } from "./components";
 import {
   FilterGroup,
@@ -41,7 +42,6 @@ import {
 import "./KafkaMessageBrowser.css";
 import type { MessageApiResponse } from "./MessageBrowserMachine";
 import { MessageBrowserMachine } from "./MessageBrowserMachine";
-import type { Message } from "./types";
 import { beautifyUnknownValue, isSameMessage } from "./utils";
 
 const columns = [
@@ -203,179 +203,181 @@ export const KafkaMessageBrowserConnected: VoidFunctionComponent<
       return <NoDataEmptyState onRefresh={refresh} />;
     default:
       return (
-        <Drawer isInline={true} isExpanded={selectedMessage !== undefined}>
-          <DrawerContent
-            panelContent={
-              <MessageDetails
-                message={selectedMessage}
-                defaultTab={defaultTab}
-                onClose={deselectMessage}
-              />
-            }
-          >
-            <OuterScrollContainer>
-              <Toolbar
-                className={"mas-KafkaMessageBrowser-Toolbar"}
-                data-testid={"message-browser-toolbar"}
-              >
-                <ToolbarContent>
-                  <ToolbarToggleGroup
-                    toggleIcon={<FilterIcon />}
-                    breakpoint="2xl"
-                  >
-                    <ToolbarGroup variant="filter-group">
-                      <ToolbarItem>
-                        <PartitionSelector
-                          value={partition}
-                          partitions={response?.partitions || 0}
-                          onChange={setPartition}
+        <PageSection isFilled={true}>
+          <Drawer isInline={true} isExpanded={selectedMessage !== undefined}>
+            <DrawerContent
+              panelContent={
+                <MessageDetails
+                  message={selectedMessage}
+                  defaultTab={defaultTab}
+                  onClose={deselectMessage}
+                />
+              }
+            >
+              <OuterScrollContainer>
+                <Toolbar
+                  className={"mas-KafkaMessageBrowser-Toolbar"}
+                  data-testid={"message-browser-toolbar"}
+                >
+                  <ToolbarContent>
+                    <ToolbarToggleGroup
+                      toggleIcon={<FilterIcon />}
+                      breakpoint="2xl"
+                    >
+                      <ToolbarGroup variant="filter-group">
+                        <ToolbarItem>
+                          <PartitionSelector
+                            value={partition}
+                            partitions={response?.partitions || 0}
+                            onChange={setPartition}
+                            isDisabled={isRefreshing}
+                          />
+                        </ToolbarItem>
+                      </ToolbarGroup>
+                      <ToolbarGroup variant="filter-group">
+                        <FilterGroup
                           isDisabled={isRefreshing}
+                          offset={filterOffset}
+                          epoch={filterEpoch}
+                          timestamp={filterTimestamp}
+                          onOffsetChange={setOffset}
+                          onTimestampChange={setTimestamp}
+                          onEpochChange={setEpoch}
+                          onLatest={setLatest}
+                        />
+                      </ToolbarGroup>
+                      <ToolbarGroup>
+                        <LimitSelector
+                          value={limit}
+                          onChange={setLimit}
+                          isDisabled={isRefreshing}
+                        />
+                      </ToolbarGroup>
+                    </ToolbarToggleGroup>
+                    <ToolbarGroup>
+                      <ToolbarItem>
+                        <Button
+                          variant={"plain"}
+                          isDisabled={!requiresSearch || isRefreshing}
+                          aria-label={t("common:search_button_label")}
+                          onClick={refresh}
+                        >
+                          <SearchIcon />
+                        </Button>
+                      </ToolbarItem>
+                      <ToolbarItem>
+                        <RefreshButton
+                          onClick={refresh}
+                          isRefreshing={isRefreshing}
+                          isDisabled={requiresSearch}
                         />
                       </ToolbarItem>
                     </ToolbarGroup>
-                    <ToolbarGroup variant="filter-group">
-                      <FilterGroup
-                        isDisabled={isRefreshing}
-                        offset={filterOffset}
-                        epoch={filterEpoch}
-                        timestamp={filterTimestamp}
-                        onOffsetChange={setOffset}
-                        onTimestampChange={setTimestamp}
-                        onEpochChange={setEpoch}
-                        onLatest={setLatest}
-                      />
+                    <ToolbarGroup alignment={{ default: "alignRight" }}>
+                      {response?.filter.partition !== undefined &&
+                        response?.messages.length > 0 && (
+                          <OffsetRange
+                            min={response?.offsetMin || 0}
+                            max={response?.offsetMax || 0}
+                          />
+                        )}
                     </ToolbarGroup>
-                    <ToolbarGroup>
-                      <LimitSelector
-                        value={limit}
-                        onChange={setLimit}
-                        isDisabled={isRefreshing}
-                      />
-                    </ToolbarGroup>
-                  </ToolbarToggleGroup>
-                  <ToolbarGroup>
-                    <ToolbarItem>
-                      <Button
-                        variant={"plain"}
-                        isDisabled={!requiresSearch || isRefreshing}
-                        aria-label={t("common:search_button_label")}
-                        onClick={refresh}
+                  </ToolbarContent>
+                </Toolbar>
+                <InnerScrollContainer>
+                  <ResponsiveTable
+                    ariaLabel={t("table_aria_label")}
+                    columns={columns}
+                    data={response?.messages}
+                    expectedLength={response?.messages?.length}
+                    renderHeader={({ column, Th, key }) => (
+                      <Th key={key}>{columnLabels[column]}</Th>
+                    )}
+                    renderCell={({ column, row, colIndex, Td, key }) => (
+                      <Td
+                        key={key}
+                        dataLabel={columnLabels[column]}
+                        width={columnWidths[colIndex]}
                       >
-                        <SearchIcon />
-                      </Button>
-                    </ToolbarItem>
-                    <ToolbarItem>
-                      <RefreshButton
-                        onClick={refresh}
-                        isRefreshing={isRefreshing}
-                        isDisabled={requiresSearch}
-                      />
-                    </ToolbarItem>
-                  </ToolbarGroup>
-                  <ToolbarGroup alignment={{ default: "alignRight" }}>
-                    {response?.filter.partition !== undefined &&
-                      response?.messages.length > 0 && (
-                        <OffsetRange
-                          min={response?.offsetMin || 0}
-                          max={response?.offsetMax || 0}
-                        />
-                      )}
-                  </ToolbarGroup>
-                </ToolbarContent>
-              </Toolbar>
-              <InnerScrollContainer>
-                <ResponsiveTable
-                  ariaLabel={t("table_aria_label")}
-                  columns={columns}
-                  data={response?.messages}
-                  expectedLength={response?.messages?.length}
-                  renderHeader={({ column, Th, key }) => (
-                    <Th key={key}>{columnLabels[column]}</Th>
-                  )}
-                  renderCell={({ column, row, colIndex, Td, key }) => (
-                    <Td
-                      key={key}
-                      dataLabel={columnLabels[column]}
-                      width={columnWidths[colIndex]}
-                    >
-                      {(() => {
-                        const empty = (
-                          <NoDataCell columnLabel={columnLabels[column]} />
-                        );
-                        switch (column) {
-                          case "partition":
-                            return row.partition;
-                          case "offset":
-                            return row.offset;
-                          case "timestamp":
-                            return row.timestamp ? (
-                              <FormatDate
-                                date={parseISO(row.timestamp)}
-                                format={"longWithMilliseconds"}
-                              />
-                            ) : (
-                              empty
-                            );
-                          case "key":
-                            return row.key ? (
-                              <UnknownValuePreview
-                                value={row.key}
-                                truncateAt={40}
-                              />
-                            ) : (
-                              empty
-                            );
-                          case "headers":
-                            return Object.keys(row.headers).length > 0 ? (
-                              <UnknownValuePreview
-                                value={beautifyUnknownValue(
-                                  JSON.stringify(row.headers)
-                                )}
-                                onClick={() => {
-                                  setDefaultTab("headers");
-                                  selectMessage(row);
-                                }}
-                              />
-                            ) : (
-                              empty
-                            );
-                          case "value":
-                            return row.value ? (
-                              <UnknownValuePreview
-                                value={beautifyUnknownValue(row.value || "")}
-                                onClick={() => {
-                                  setDefaultTab("value");
-                                  selectMessage(row);
-                                }}
-                              />
-                            ) : (
-                              empty
-                            );
-                        }
-                      })()}
-                    </Td>
-                  )}
-                  isRowSelected={({ row }) =>
-                    selectedMessage !== undefined &&
-                    isSameMessage(row, selectedMessage)
-                  }
-                  onRowClick={({ row }) => {
-                    setDefaultTab("value");
-                    selectMessage(row);
-                  }}
-                >
-                  <NoResultsEmptyState
-                    onReset={() => {
-                      setLatest();
-                      setPartition(undefined);
-                      refresh();
+                        {(() => {
+                          const empty = (
+                            <NoDataCell columnLabel={columnLabels[column]} />
+                          );
+                          switch (column) {
+                            case "partition":
+                              return row.partition;
+                            case "offset":
+                              return row.offset;
+                            case "timestamp":
+                              return row.timestamp ? (
+                                <FormatDate
+                                  date={parseISO(row.timestamp)}
+                                  format={"longWithMilliseconds"}
+                                />
+                              ) : (
+                                empty
+                              );
+                            case "key":
+                              return row.key ? (
+                                <UnknownValuePreview
+                                  value={row.key}
+                                  truncateAt={40}
+                                />
+                              ) : (
+                                empty
+                              );
+                            case "headers":
+                              return Object.keys(row.headers).length > 0 ? (
+                                <UnknownValuePreview
+                                  value={beautifyUnknownValue(
+                                    JSON.stringify(row.headers)
+                                  )}
+                                  onClick={() => {
+                                    setDefaultTab("headers");
+                                    selectMessage(row);
+                                  }}
+                                />
+                              ) : (
+                                empty
+                              );
+                            case "value":
+                              return row.value ? (
+                                <UnknownValuePreview
+                                  value={beautifyUnknownValue(row.value || "")}
+                                  onClick={() => {
+                                    setDefaultTab("value");
+                                    selectMessage(row);
+                                  }}
+                                />
+                              ) : (
+                                empty
+                              );
+                          }
+                        })()}
+                      </Td>
+                    )}
+                    isRowSelected={({ row }) =>
+                      selectedMessage !== undefined &&
+                      isSameMessage(row, selectedMessage)
+                    }
+                    onRowClick={({ row }) => {
+                      setDefaultTab("value");
+                      selectMessage(row);
                     }}
-                  />
-                </ResponsiveTable>
-              </InnerScrollContainer>
-            </OuterScrollContainer>
-          </DrawerContent>
-        </Drawer>
+                  >
+                    <NoResultsEmptyState
+                      onReset={() => {
+                        setLatest();
+                        setPartition(undefined);
+                        refresh();
+                      }}
+                    />
+                  </ResponsiveTable>
+                </InnerScrollContainer>
+              </OuterScrollContainer>
+            </DrawerContent>
+          </Drawer>
+        </PageSection>
       );
   }
 };

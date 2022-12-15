@@ -18,11 +18,10 @@ import {
   TextContent,
   TextVariants,
 } from "@patternfly/react-core";
+import { FormatDate, useTranslation } from "@rhoas/app-services-ui-components";
 import { parseISO } from "date-fns";
 import type { VoidFunctionComponent } from "react";
-import { useTranslation } from "@rhoas/app-services-ui-components";
-import { FormatDate } from "@rhoas/app-services-ui-components";
-import type { Message } from "../types";
+import type { Message } from "../../../types";
 import { beautifyUnknownValue } from "../utils";
 import { NoDataCell } from "./NoDataCell";
 

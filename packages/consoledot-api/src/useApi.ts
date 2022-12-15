@@ -1,5 +1,5 @@
 import { AppServicesApi } from "@rhoas/account-management-sdk";
-import { GroupsApi, TopicsApi } from "@rhoas/kafka-instance-sdk";
+import { GroupsApi, RecordsApi, TopicsApi } from "@rhoas/kafka-instance-sdk";
 import { Configuration, DefaultApi } from "@rhoas/kafka-management-sdk";
 import { useCallback } from "react";
 import { useApiConfiguration } from "./ApiProvider";
@@ -46,10 +46,21 @@ export const useApi = () => {
       ),
     [accessToken]
   );
+  const records = useCallback(
+    (adminUrl: string) =>
+      new RecordsApi(
+        new Configuration({
+          accessToken,
+          basePath: adminUrl,
+        })
+      ),
+    [accessToken]
+  );
   return {
     kafkasFleet,
     account,
     topics,
     consumerGroups,
+    records,
   };
 };

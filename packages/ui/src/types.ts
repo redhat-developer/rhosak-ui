@@ -182,4 +182,13 @@ export type KafkaTopic = {
 
 export type KafkaTopicField = keyof KafkaTopic;
 
-export type {ConsumerGroup} from "./components/ConsumerGroups/types"
+export type { ConsumerGroup } from "./components/ConsumerGroups/types";
+
+export type Message = {
+  partition?: number;
+  offset?: number;
+  timestamp?: DateIsoString;
+  key?: string;
+  value?: string;
+  headers: Record<string, string>;
+};

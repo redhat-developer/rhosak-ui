@@ -9,10 +9,12 @@ export const TopicSchemasRoute: VoidFunctionComponent<
   const { topic } = useTopicGate(instancesHref, instanceDetailsHref);
 
   return (
-    <DataPlaneTopicHeaderConnected
-      instancesHref={instancesHref}
-      instanceDetailsHref={instanceDetailsHref}
-      activeSection={"schemas"}
-    />
+    <>
+      <DataPlaneTopicHeaderConnected
+        instancesHref={instancesHref}
+        instanceDetailsHref={instanceDetailsHref}
+        activeSection={"schemas"}
+      />
+    </>
   );
 };

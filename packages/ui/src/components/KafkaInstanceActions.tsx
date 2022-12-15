@@ -27,6 +27,7 @@ export const KafkaInstanceActions: VoidFunctionComponent<
   const { t } = useTranslation("kafka");
   return (
     <ActionsColumn
+      rowData={hackZIndex}
       items={[
         {
           customChild: (
@@ -102,4 +103,10 @@ export const KafkaInstanceActions: VoidFunctionComponent<
       ]}
     />
   );
+};
+
+const hackZIndex = {
+  actionProps: {
+    style: { zIndex: 9999 },
+  },
 };

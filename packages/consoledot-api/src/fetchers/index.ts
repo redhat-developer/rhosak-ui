@@ -3,6 +3,7 @@ export * from "./fetchKafkaInstanceMetrics";
 export * from "./fetchKafkaInstances";
 export * from "./fetchKafkaKpiMetrics";
 export * from "./fetchKafkaTopic";
+export * from "./fetchKafkaTopicMessages";
 export * from "./fetchKafkaTopicMetrics";
 export * from "./fetchKafkaTopics";
 export * from "./fetchOrganization";
