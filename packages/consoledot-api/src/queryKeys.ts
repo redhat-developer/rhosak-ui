@@ -1,3 +1,4 @@
+import type { FetchKafkaTopicParams } from "./fetchers";
 import type { FetchKafkaConsumerGroupsParams } from "./fetchers/fetchKafkaConsumerGroups";
 import type { FetchKafkaInstanceMetricsProps } from "./fetchers/fetchKafkaInstanceMetrics";
 import type { FetchKafkaInstancesParams } from "./fetchers/fetchKafkaInstances";
@@ -36,24 +37,39 @@ export const kafkaQueries = {
       params,
     ] as const,
   instance: {
-    _root: ({ id }: { id?: string }) =>
-      ({ ...kafkaQueries._root(), entity: "instance", id } as const),
+    _root: ({ id, adminUrl }: { id?: string; adminUrl?: string }) =>
+      ({ ...kafkaQueries._root(), entity: "instance", id, adminUrl } as const),
     details: (params: { id?: string }) =>
       [
         { ...kafkaQueries.instance._root(params), subentity: "details" },
       ] as const,
-    topics: (
-      params: { id?: string; adminUrl?: string } & Omit<
-        FetchKafkaTopicsParams,
-        "getTopics"
-      >
-    ) =>
+    topics: ({
+      id,
+      adminUrl,
+    }: { id?: string; adminUrl?: string } & Omit<
+      FetchKafkaTopicsParams,
+      "getTopics"
+    >) =>
       [
         {
-          ...kafkaQueries.instance._root(params),
+          ...kafkaQueries.instance._root({ id, adminUrl }),
           subentity: "topics",
         },
-        params,
+      ] as const,
+    topic: ({
+      id,
+      adminUrl,
+      topicName,
+    }: { id?: string; adminUrl?: string } & Omit<
+      FetchKafkaTopicParams,
+      "getTopic"
+    >) =>
+      [
+        {
+          ...kafkaQueries.instance._root({ id, adminUrl }),
+          subentity: "topic",
+        },
+        { topicName },
       ] as const,
     consumerGroups: (
       params: { id?: string; adminUrl?: string } & Omit<

@@ -1,13 +1,22 @@
 import { InvalidObject } from "@redhat-cloud-services/frontend-components";
 import type { VoidFunctionComponent } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { DataPlaneRoutePath } from "../control-plane/routesConsts";
+import { ControlPlaneRouteRoot } from "../control-plane/routesConsts";
 import { DataPlaneGate } from "./DataPlaneGate";
-import { AclsRoute } from "./routes/AclsRoute";
-import { ConsumerGroupsRoute } from "./routes/ConsumerGroupsRoute";
-import { DashboardRoute } from "./routes/DashboardRoute";
-import { SettingsRoute } from "./routes/SettingsRoute";
-import { TopicsRoute } from "./routes/TopicsRoute";
+import {
+  AclsRoute,
+  ConsumerGroupsRoute,
+  DashboardRoute,
+  SettingsRoute,
+  TopicConsumerGroupsRoute,
+  TopicMessagesGroupsRoute,
+  TopicPropertiesRoute,
+  TopicSchemasRoute,
+  TopicsRoute,
+} from "./routes";
+
+import { DataPlaneRoutePath } from "./routesConsts";
+import { TopicGate } from "./TopicGate";
 
 export const DataPlaneRoutes: VoidFunctionComponent = () => {
   return (
@@ -39,11 +48,65 @@ export const DataPlaneRoutes: VoidFunctionComponent = () => {
           </Route>
 
           <Route path={`${DataPlaneRoutePath}/topics`}>
-            <Switch>
-              <Route path={`${DataPlaneRoutePath}/topics/:topicName`} exact>
-                what
-              </Route>
-            </Switch>
+            <TopicGate
+              instancesHref={"/kafkas"}
+              instanceDetailsHref={(id) =>
+                `${ControlPlaneRouteRoot}/${id}/details`
+              }
+            >
+              <Switch>
+                <Route
+                  path={`${DataPlaneRoutePath}/topics/:topicName/consumer-groups`}
+                  exact
+                >
+                  <TopicConsumerGroupsRoute
+                    instancesHref={"/kafkas"}
+                    instanceDetailsHref={(id) =>
+                      `${ControlPlaneRouteRoot}/${id}/details`
+                    }
+                  />
+                </Route>
+                <Route
+                  path={`${DataPlaneRoutePath}/topics/:topicName/messages`}
+                  exact
+                >
+                  <TopicMessagesGroupsRoute
+                    instancesHref={"/kafkas"}
+                    instanceDetailsHref={(id) =>
+                      `${ControlPlaneRouteRoot}/${id}/details`
+                    }
+                  />
+                </Route>
+                <Route
+                  path={`${DataPlaneRoutePath}/topics/:topicName/properties`}
+                  exact
+                >
+                  <TopicPropertiesRoute
+                    instancesHref={"/kafkas"}
+                    instanceDetailsHref={(id) =>
+                      `${ControlPlaneRouteRoot}/${id}/details`
+                    }
+                  />
+                </Route>
+                <Route
+                  path={`${DataPlaneRoutePath}/topics/:topicName/schemas`}
+                  exact
+                >
+                  <TopicSchemasRoute
+                    instancesHref={"/kafkas"}
+                    instanceDetailsHref={(id) =>
+                      `${ControlPlaneRouteRoot}/${id}/details`
+                    }
+                  />
+                </Route>
+
+                <Redirect
+                  from={`${DataPlaneRoutePath}/topics/:topicName/`}
+                  to={`${DataPlaneRoutePath}/topics/:topicName/consumer-groups`}
+                  exact
+                />
+              </Switch>
+            </TopicGate>
           </Route>
 
           <Redirect

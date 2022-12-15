@@ -2,6 +2,7 @@ export * from "./ConsumerGroups";
 export * from "./ControlPlaneHeader";
 export * from "./CreateKafkaInstance";
 export * from "./DataPlaneHeader";
+export * from "./DataPlaneTopicHeader";
 export * from "./DeleteKafKaInstance";
 export * from "./I18nProvider";
 export * from "./KafkaInstanceDrawer";

@@ -3,14 +3,14 @@ import type { VoidFunctionComponent } from "react";
 import { useCallback } from "react";
 import type { SettingsProps } from "ui";
 import { Settings as SettingsComp } from "ui";
-import type { NavigationProps } from "../../control-plane/routesConsts";
+import type { ControlPlaneNavigationProps } from "../../control-plane/routesConsts";
+import { useDataPlaneGate } from "../useDataPlaneGate";
 import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
-import { useDataPlaneInstance } from "./useDataPlaneInstance";
 
-export const SettingsRoute: VoidFunctionComponent<NavigationProps> = ({
-  instancesHref,
-}) => {
-  const { instance } = useDataPlaneInstance(instancesHref);
+export const SettingsRoute: VoidFunctionComponent<
+  ControlPlaneNavigationProps
+> = ({ instancesHref }) => {
+  const { instance } = useDataPlaneGate(instancesHref);
   const updateInstance = useKafkaUpdateInstanceMutation();
 
   const onSubmitReAuthentication = useCallback<

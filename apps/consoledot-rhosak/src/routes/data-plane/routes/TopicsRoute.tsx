@@ -3,21 +3,18 @@ import {
   useSortableSearchParams,
   useURLSearchParamsChips,
 } from "@rhoas/app-services-ui-components";
-import {
-  KafkaTopicsSortableColumns,
-  useKafkaInstanceTopics,
-} from "consoledot-api";
+import { KafkaTopicsSortableColumns, useKafkaTopics } from "consoledot-api";
 import type { VoidFunctionComponent } from "react";
 import { useCallback } from "react";
 import { KafkaTopics } from "ui";
-import type { NavigationProps } from "../../control-plane/routesConsts";
+import type { ControlPlaneNavigationProps } from "../../control-plane/routesConsts";
+import { useDataPlaneGate } from "../useDataPlaneGate";
 import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
-import { useDataPlaneInstance } from "./useDataPlaneInstance";
 
-export const TopicsRoute: VoidFunctionComponent<NavigationProps> = ({
-  instancesHref,
-}) => {
-  const { instance } = useDataPlaneInstance(instancesHref);
+export const TopicsRoute: VoidFunctionComponent<
+  ControlPlaneNavigationProps
+> = ({ instancesHref }) => {
+  const { instance } = useDataPlaneGate(instancesHref);
   const { page, perPage, setPagination, setPaginationQuery } =
     usePaginationSearchParams();
   const resetPaginationQuery = useCallback(
@@ -37,7 +34,7 @@ export const TopicsRoute: VoidFunctionComponent<NavigationProps> = ({
     "name",
     "desc"
   );
-  const { data } = useKafkaInstanceTopics({
+  const { data } = useKafkaTopics({
     id: instance?.id,
     adminUrl: instance?.adminUrl,
     page,

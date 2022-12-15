@@ -1,29 +1,28 @@
 import type { VoidFunctionComponent } from "react";
 import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
-import type { DataPlaneHeaderProps } from "ui";
-import { DataPlaneHeader, ReadyStatuses } from "ui";
+import type { DataPlaneTopicHeaderProps } from "ui";
+import { DataPlaneTopicHeader, ReadyStatuses } from "ui";
 import { useDrawer } from "../../control-plane";
-import type { ControlPlaneNavigationProps } from "../../control-plane/routesConsts";
-import { useDataPlaneGate } from "../useDataPlaneGate";
+import type { DataPlaneNavigationProps } from "../routesConsts";
+import { useTopicGate } from "../useTopicGate";
 
-export const DataPlaneHeaderConnected: VoidFunctionComponent<
-  ControlPlaneNavigationProps & Pick<DataPlaneHeaderProps, "activeSection">
-> = ({ instancesHref, activeSection }) => {
+export const DataPlaneTopicHeaderConnected: VoidFunctionComponent<
+  DataPlaneNavigationProps & Pick<DataPlaneTopicHeaderProps, "activeSection">
+> = ({ instanceDetailsHref, instancesHref, activeSection }) => {
   const history = useHistory();
   const { setActiveTab, toggleExpanded } = useDrawer();
-
   const {
     instance,
+    topic,
     match: { url },
-  } = useDataPlaneGate(instancesHref);
+  } = useTopicGate(instancesHref, instanceDetailsHref);
 
   const sectionsHref = {
-    dashboard: `${url}/dashboard`,
-    topics: `${url}/topics`,
     consumer: `${url}/consumer-groups`,
-    permissions: `${url}/acls`,
-    settings: `${url}/settings`,
+    messages: `${url}/messages`,
+    properties: `${url}/properties`,
+    schemas: `${url}/schemas`,
   };
 
   const onDelete = useCallback(() => {
@@ -32,10 +31,12 @@ export const DataPlaneHeaderConnected: VoidFunctionComponent<
   }, [history, instance, instancesHref]);
 
   return (
-    <DataPlaneHeader
+    <DataPlaneTopicHeader
       instancesHref={instancesHref}
-      instanceName={instance?.name || ""}
+      instanceName={instance.name}
+      instanceDetailHref={instanceDetailsHref(instance.id)}
       activeSection={activeSection}
+      topicName={topic.name}
       sectionsHref={sectionsHref}
       onDetails={() => {
         setActiveTab("details");

@@ -1,21 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
 import { useApiConfiguration } from "../ApiProvider";
-import type { FetchKafkaTopicsParams } from "../fetchers";
-import { fetchKafkaTopics } from "../fetchers";
+import type { FetchKafkaTopicParams } from "../fetchers";
+import { fetchKafkaTopic } from "../fetchers";
 import { kafkaQueries } from "../queryKeys";
 import { useApi } from "../useApi";
 
-export function useKafkaInstanceTopics(
+export function useKafkaTopic(
   params: { id?: string; adminUrl?: string } & Omit<
-    FetchKafkaTopicsParams,
-    "getTopics"
+    FetchKafkaTopicParams,
+    "getTopic"
   >
 ) {
   const { refetchInterval } = useApiConfiguration();
   const { topics } = useApi();
 
   return useQuery({
-    queryKey: kafkaQueries.instance.topics(params),
+    queryKey: kafkaQueries.instance.topic(params),
     queryFn: () => {
       if (!params.id) {
         return Promise.reject("Invalid id");
@@ -25,12 +25,15 @@ export function useKafkaInstanceTopics(
       }
       const api = topics(params.adminUrl);
 
-      return fetchKafkaTopics({
-        getTopics: (...args) => api.getTopics(...args),
+      return fetchKafkaTopic({
+        getTopic: (...args) => api.getTopic(...args),
         ...params,
       });
     },
-    enabled: Boolean(params.adminUrl) && Boolean(params.id),
+    enabled:
+      Boolean(params.adminUrl) &&
+      Boolean(params.id) &&
+      Boolean(params.topicName),
     refetchInterval,
   });
 }

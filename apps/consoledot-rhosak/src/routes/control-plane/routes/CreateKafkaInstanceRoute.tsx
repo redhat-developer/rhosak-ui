@@ -5,13 +5,13 @@ import { useKafkaCreateInstanceMutation } from "consoledot-api";
 import type { FunctionComponent } from "react";
 import { useCallback, useContext } from "react";
 import { useHistory } from "react-router-dom";
-import type { NavigationProps } from "../routesConsts";
+import type { ControlPlaneNavigationProps } from "../routesConsts";
 import { ControlPlaneRouteRoot } from "../routesConsts";
 import { useCreateKafkaCallbacks } from "./useCreateKafkaCallbacks";
 
-export const CreateKafkaInstanceRoute: FunctionComponent<NavigationProps> = ({
-  instancesHref,
-}) => {
+export const CreateKafkaInstanceRoute: FunctionComponent<
+  ControlPlaneNavigationProps
+> = ({ instancesHref }) => {
   const history = useHistory();
   const callbacks = useCreateKafkaCallbacks();
   const createKafkaInstance = useKafkaCreateInstanceMutation();

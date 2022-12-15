@@ -10,14 +10,14 @@ import {
 import type { VoidFunctionComponent } from "react";
 import { useCallback } from "react";
 import { ConsumerGroups } from "ui";
-import type { NavigationProps } from "../../control-plane/routesConsts";
+import type { ControlPlaneNavigationProps } from "../../control-plane/routesConsts";
+import { useDataPlaneGate } from "../useDataPlaneGate";
 import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
-import { useDataPlaneInstance } from "./useDataPlaneInstance";
 
-export const ConsumerGroupsRoute: VoidFunctionComponent<NavigationProps> = ({
-  instancesHref,
-}) => {
-  const { instance } = useDataPlaneInstance(instancesHref);
+export const ConsumerGroupsRoute: VoidFunctionComponent<
+  ControlPlaneNavigationProps
+> = ({ instancesHref }) => {
+  const { instance } = useDataPlaneGate(instancesHref);
   const { page, perPage, setPagination, setPaginationQuery } =
     usePaginationSearchParams();
   const resetPaginationQuery = useCallback(

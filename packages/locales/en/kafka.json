@@ -106,6 +106,12 @@
     "settings": "Settings",
     "topics": "Topics"
   },
+  "dataPlaneTopicNavigation": {
+    "consumer_groups": "Consumer groups",
+    "messages": "Messages",
+    "properties": "Properties",
+    "schemas": "Schemas"
+  },
   "delete_instance_message": "The <0>{{instanceName}}</0> Kafka instance and all topics will be deleted. Applications will no longer have access to the topics in this instance.",
   "delete_instance_title": "Delete instance?",
   "delete_topic_active_message": "One or more consumers are currently active in this topic, and will be removed at the time of deletion. ",

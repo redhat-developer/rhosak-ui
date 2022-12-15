@@ -1,5 +1,3 @@
-import type { DataPlaneHeaderProps } from "ui";
-
 export const ControlPlaneRouteRoot = "/kafkas" as const;
 const NewInstanceSegment = "create";
 export const ControlPlaneSpecialSegments = [NewInstanceSegment];
@@ -10,9 +8,6 @@ export const ControlPlaneNewInstancePath = `${ControlPlaneRouteRoot}/${NewInstan
 export const ControlPlaneDeleteInstancePath = `${ControlPlaneRouteRoot}/:id/delete`;
 export type ControlPlaneRouteParams = { id?: string; section?: "delete" };
 
-export const DataPlaneRoutePath =
-  `${ControlPlaneRouteRoot}/:id/details` as const;
-export type DataPlaneRouteParams = { id: string };
-export type NavigationProps = {
-  instancesHref: DataPlaneHeaderProps["instancesHref"];
+export type ControlPlaneNavigationProps = {
+  instancesHref: string;
 };

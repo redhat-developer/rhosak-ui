@@ -13,17 +13,17 @@ import type { VoidFunctionComponent } from "react";
 import { useCallback, useState } from "react";
 import type { MetricsProps } from "ui";
 import { Metrics } from "ui";
-import type { NavigationProps } from "../../control-plane/routesConsts";
+import type { ControlPlaneNavigationProps } from "../../control-plane/routesConsts";
+import { useDataPlaneGate } from "../useDataPlaneGate";
 import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
-import { useDataPlaneInstance } from "./useDataPlaneInstance";
 
-export const DashboardRoute: VoidFunctionComponent<NavigationProps> = ({
-  instancesHref,
-}) => {
+export const DashboardRoute: VoidFunctionComponent<
+  ControlPlaneNavigationProps
+> = ({ instancesHref }) => {
   const {
     instance,
     match: { params },
-  } = useDataPlaneInstance(instancesHref);
+  } = useDataPlaneGate(instancesHref);
   const [hasUserAlreadyClosedAlert, setHasUserAlreadyClosedAlert] = useState(
     metricsIsLagAlertsDismissed()
   );
