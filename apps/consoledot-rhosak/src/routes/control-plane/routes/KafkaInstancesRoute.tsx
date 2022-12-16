@@ -1,3 +1,4 @@
+import { QuickStartContext } from "@patternfly/quickstarts";
 import {
   usePaginationSearchParams,
   useSortableSearchParams,
@@ -8,7 +9,7 @@ import {
   useKafkaInstances,
 } from "consoledot-api";
 import type { FunctionComponent } from "react";
-import { useCallback } from "react";
+import { useCallback, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import type {
   KafkaInstance,
@@ -37,6 +38,7 @@ export const KafkaInstancesRoute: FunctionComponent<KafkaInstancesRoute> = ({
   getUrlForInstance,
 }) => {
   const history = useHistory();
+  const { setActiveQuickStart } = useContext(QuickStartContext);
 
   const { selectedInstance, toggleExpanded, setActiveTab, isExpanded } =
     useDrawer(
@@ -125,6 +127,11 @@ export const KafkaInstancesRoute: FunctionComponent<KafkaInstancesRoute> = ({
     [history]
   );
 
+  const onQuickstartGuide = useCallback(
+    () => setActiveQuickStart && setActiveQuickStart("getting-started"),
+    [setActiveQuickStart]
+  );
+
   return (
     <>
       <ControlPlaneHeader />
@@ -158,7 +165,7 @@ export const KafkaInstancesRoute: FunctionComponent<KafkaInstancesRoute> = ({
         onClickConnectionTabLink={() => {}}
         onClickSupportLink={() => {}}
         onInstanceLinkClick={() => {}}
-        onQuickstartGuide={() => {}}
+        onQuickstartGuide={onQuickstartGuide}
         canHaveInstanceLink={({ status }) => ReadyStatuses.includes(status)}
         canOpenConnection={({ status }) => ReadyStatuses.includes(status)}
         canChangeOwner={() => true}

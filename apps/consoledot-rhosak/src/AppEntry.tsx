@@ -7,6 +7,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import logger from "redux-logger";
 import { I18nProvider } from "ui";
 import App from "./App";
+import { QuickstartLoader } from "./QuickstartLoader";
 import { init } from "./store";
 
 const store = init(
@@ -20,7 +21,7 @@ const AppEntry = memo(() => {
     <Provider store={store}>
       <ApiProvider
         accessToken={auth.getToken}
-        basePath={"https://api.openshift.com"}
+        basePath={process.env.API_URL}
         refetchInterval={5000}
       >
         <Router basename={getBaseName(window.location.pathname)}>
@@ -28,6 +29,7 @@ const AppEntry = memo(() => {
             <App />
           </I18nProvider>
         </Router>
+        <QuickstartLoader />
       </ApiProvider>
     </Provider>
   );

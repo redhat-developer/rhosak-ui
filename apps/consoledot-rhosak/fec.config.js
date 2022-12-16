@@ -1,3 +1,5 @@
+const webpack = require("webpack");
+
 module.exports = {
   appUrl: "/application-services/streams",
   debug: true,
@@ -10,7 +12,11 @@ module.exports = {
   /**
    * Add additional webpack plugins
    */
-  plugins: [],
+  plugins: [
+    new webpack.EnvironmentPlugin({
+      API_URL: process.env.API_URL || "https://api.openshift.com",
+    }),
+  ],
   _unstableHotReload: process.env.HOT === "true",
   sassPrefix: ".rhosakUi",
   __localChrome:
@@ -22,5 +28,19 @@ module.exports = {
     "/beta/config": {
       host: "http://localhost:8889",
     },
+  },
+  moduleFederation: {
+    shared: [
+      {
+        "@rhoas/app-services-ui-shared": {
+          singleton: true,
+          requiredVersion: "*",
+        },
+        "react-i18next": {
+          singleton: true,
+          requiredVersion: "*",
+        },
+      },
+    ],
   },
 };
