@@ -37,7 +37,7 @@
     "@types/react-dom": "17.0.18",
     "@types/react-router-dom": "5.3.3",
     "@types/jest": "27.5.2",
-    "eslint": "8.20.0",
+    "eslint": "8.30.0",
     "jest": "27.5.1",
     "jest-environment-jsdom": "27.5.1",
     "jest-fail-on-console": "3.0.2",
