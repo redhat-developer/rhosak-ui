@@ -1,7 +1,7 @@
 import { Alert, Text } from "@patternfly/react-core";
 import type { FunctionComponent } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { DeleteModal } from "../../../shared";
+import { DeleteModal } from "@rhoas/app-services-ui-components";
 import type { ConsumerGroupState } from "../types";
 
 export type DeleteConsumerGroupProps = {
