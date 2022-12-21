@@ -25,6 +25,12 @@ import {
   formattedRetentionSize,
   formattedRetentionTime,
 } from "../../KafkaTopics/types";
+import "../CreateTopicPage.css";
+import { Message } from "./Message";
+import { Replication } from "./Replication";
+import { Cleanup } from "./Cleanup";
+import { TopicAdvanceIndex } from "./TopicAdvanceIndex";
+import { Flush } from "./Flush";
 
 export type TopicViewDetailProps = {
   topic: NewTopic;
@@ -163,71 +169,17 @@ export const TopicDetailView: React.FunctionComponent<TopicViewDetailProps> = ({
                         showUnlimited={true}
                       />
                     </FormSection>
-                    <FormSection
-                      title={t("messages")}
-                      id="messages"
-                      titleElement={"h2"}
-                    >
-                      <TextContent>
-                        <Text
-                          component={TextVariants.p}
-                          className="section-info"
-                        >
-                          {t("message_section_info")}
-                        </Text>
-                      </TextContent>
-
-                      <TextWithLabelPopover
-                        fieldId="max-message-size"
-                        btnAriaLabel={t("max_message_size")}
-                        fieldLabel={t("max_message_size")}
-                        fieldValue={constantValues.DEFAULT_MAXIMUM_MESSAGE_BYTES.toString()}
-                        popoverBody={t("max_message_size_description")}
-                        popoverHeader={t("max_message_size")}
-                      />
-
-                      <TextWithLabelPopover
-                        fieldId="message-timestamp-type"
-                        btnAriaLabel={t("message_timestamp_type")}
-                        fieldLabel={t("message_timestamp_type")}
-                        fieldValue={
-                          constantValues.DEFAULT_MESSAGE_TIMESTAMP_TYPE
-                        }
-                        popoverBody={t("message_timestamp_type_description")}
-                        popoverHeader={t("message_timestamp_type")}
-                      />
-
-                      <TextWithLabelPopover
-                        fieldId="max-message-timestamp-diff"
-                        btnAriaLabel={t("max_message_timestamp_diff")}
-                        fieldLabel={t("max_message_timestamp_diff")}
-                        fieldValue={
-                          constantValues.DEFAULT_MAX_MESSAGE_TIMESTAMP_DIFF_MILLISECONDS
-                        }
-                        popoverBody={t(
-                          "max_message_timestamp_diff_description"
-                        )}
-                        popoverHeader={t("max_message_timestamp_diff")}
-                      />
-
-                      <TextWithLabelPopover
-                        fieldId="compression-type"
-                        btnAriaLabel={t("compression_type")}
-                        fieldLabel={t("compression_type")}
-                        fieldValue="Producer"
-                        popoverBody={t("compression_type_description")}
-                        popoverHeader={t("compression_type")}
-                      />
-
-                      <TextWithLabelPopover
-                        fieldId="message-format"
-                        btnAriaLabel={t("message_format")}
-                        fieldLabel={t("message_format")}
-                        fieldValue="2.7-IV2"
-                        popoverBody={t("message_format_description")}
-                        popoverHeader={t("message_format")}
-                      />
-                    </FormSection>
+                    <Message
+                      defaultMaximumMessageBytes={
+                        constantValues.DEFAULT_MAXIMUM_MESSAGE_BYTES
+                      }
+                      defaultMessageTimestampType={
+                        constantValues.DEFAULT_MESSAGE_TIMESTAMP_TYPE
+                      }
+                      defaultMaxMessageTimestampDiff={
+                        constantValues.DEFAULT_MAX_MESSAGE_TIMESTAMP_DIFF_MILLISECONDS
+                      }
+                    />
                     <FormSection title={t("log")} id="log" titleElement={"h2"}>
                       <TextContent>
                         <Text component={TextVariants.p}>
@@ -277,164 +229,40 @@ export const TopicDetailView: React.FunctionComponent<TopicViewDetailProps> = ({
                         popoverHeader={t("min_compaction_lag_time")}
                       />
                     </FormSection>
-                    <FormSection
-                      title={t("replication")}
-                      id="replication"
-                      titleElement={"h2"}
-                    >
-                      <TextContent>
-                        <Text component={TextVariants.p}>
-                          {t("replication_section_info")}
-                          <Text component={TextVariants.small}>
-                            {t("replication_section_info_note")}
-                          </Text>
-                        </Text>
-                      </TextContent>
-
-                      <TextWithLabelPopover
-                        fieldId="unclean-leader-election"
-                        btnAriaLabel={t("unclean_leader_election")}
-                        fieldLabel={t("unclean_leader_election")}
-                        fieldValue={t("disabled")}
-                        popoverBody={t("unclean_leader_election_description")}
-                        popoverHeader={t("unclean_leader_election")}
-                      />
-                    </FormSection>
-
-                    <FormSection
-                      title={t("cleanup")}
-                      id="cleanup"
-                      titleElement={"h2"}
-                    >
-                      <TextContent>
-                        <Text
-                          component={TextVariants.p}
-                          className="section-info"
-                        >
-                          {t("cleanup_section_info")}
-                        </Text>
-                      </TextContent>
-
-                      <TextWithLabelPopover
-                        fieldId="log-segment-size"
-                        btnAriaLabel={t("log_segment_size")}
-                        fieldLabel={t("log_segment_size")}
-                        fieldValue={constantValues.DEFAULT_LOG_SEGMENT_SIZE_BYTES.toString()}
-                        popoverBody={t("log_segment_size_description")}
-                        popoverHeader={t("log_segment_size")}
-                      />
-
-                      <TextWithLabelPopover
-                        fieldId="segement-time"
-                        btnAriaLabel={t("segement_time")}
-                        fieldLabel={t("segement_time")}
-                        fieldValue={constantValues.DEFAULT_SEGMENT_TIME_MILLISECONDS.toString()}
-                        popoverBody={t("segement_time_description")}
-                        popoverHeader={t("segement_time")}
-                      />
-
-                      <TextWithLabelPopover
-                        fieldId="segment-jitter-time"
-                        btnAriaLabel={t("segment_jitter_time")}
-                        fieldLabel={t("segment_jitter_time")}
-                        fieldValue={constantValues.DEFAULT_SEGMENT_JITTER_TIME_MILLISECONDS.toString()}
-                        popoverBody={t("segment_jitter_time_description")}
-                        popoverHeader={t("segment_jitter_time")}
-                      />
-
-                      <TextWithLabelPopover
-                        fieldId="file-delete-delay"
-                        btnAriaLabel={t("file_delete_delay")}
-                        fieldLabel={t("file_delete_delay")}
-                        fieldValue={constantValues.DEFAULT_FILE_DELETE_DELAY_MILLISECONDS.toString()}
-                        popoverBody={t("file_delete_delay_description")}
-                        popoverHeader={t("file_delete_delay")}
-                      />
-
-                      <TextWithLabelPopover
-                        fieldId="preallocate-log-segment-files"
-                        btnAriaLabel={t("preallocate_log_segment_files")}
-                        fieldLabel={t("preallocate_log_segment_files")}
-                        fieldValue={t("common.disabled")}
-                        popoverBody={t(
-                          "topic.preallocate_log_segment_files_description"
-                        )}
-                        popoverHeader={t("preallocate_log_segment_files")}
-                      />
-                    </FormSection>
-                    <FormSection
-                      title={t("index")}
-                      id="index"
-                      titleElement={"h2"}
-                    >
-                      <TextContent>
-                        <Text
-                          component={TextVariants.p}
-                          className="section-info"
-                        >
-                          {t("index_section_info")}
-                        </Text>
-                      </TextContent>
-
-                      <TextWithLabelPopover
-                        fieldId="index-interval-size"
-                        btnAriaLabel={t("index_interval_size")}
-                        fieldLabel={t("index_interval_size")}
-                        fieldValue={constantValues.DEFAULT_INDEX_INTERVAL_SIZE_BYTES.toString()}
-                        popoverBody={t("index_interval_size_description")}
-                        popoverHeader={t("index_interval_size")}
-                      />
-
-                      <TextWithLabelPopover
-                        fieldId="segment-index-size"
-                        btnAriaLabel={t("segment_index_size")}
-                        fieldLabel={t("segment_index_size")}
-                        fieldValue={constantValues.DEFAULT_SEGMENT_INDEX_SIZE_BYTES.toString()}
-                        popoverBody={t("segment_index_size_description")}
-                        popoverHeader={t("segment_index_size")}
-                      />
-                    </FormSection>
-                    <FormSection
-                      title={t("flush")}
-                      id="flush"
-                      titleElement={"h2"}
-                    >
-                      <TextContent>
-                        <Text
-                          component={TextVariants.p}
-                          className="section-info"
-                        >
-                          {t("flush_section_info")}
-                        </Text>
-                      </TextContent>
-
-                      <TextWithLabelPopover
-                        fieldId="flush-interval-messages"
-                        btnAriaLabel={t("flush_interval_messages")}
-                        fieldLabel={t("flush_interval_messages")}
-                        fieldValue={
-                          constantValues.DEFAULT_FLUSH_INTERVAL_MESSAGES
-                        }
-                        popoverBody={t(
-                          "topic.flush_interval_messages_description"
-                        )}
-                        popoverHeader={t("flush_interval_messages")}
-                      />
-
-                      <TextWithLabelPopover
-                        fieldId="flush-interval-time"
-                        btnAriaLabel={t("flush_interval_time")}
-                        fieldLabel={t("flush_interval_time")}
-                        fieldValue={
-                          constantValues.DEFAULT_FLUSH_INTERVAL_TIME_MILLISECONDS
-                        }
-                        popoverBody={t("flush_interval_time_description")}
-                        popoverHeader={t("flush_interval_time")}
-                      />
-                    </FormSection>
+                    <Replication />
+                    <Cleanup
+                      defaultLogSegmentSize={
+                        constantValues.DEFAULT_LOG_SEGMENT_SIZE_BYTES
+                      }
+                      defaultSegmentTime={
+                        constantValues.DEFAULT_SEGMENT_TIME_MILLISECONDS
+                      }
+                      defaultSegmentJitterTime={
+                        constantValues.DEFAULT_SEGMENT_JITTER_TIME_MILLISECONDS
+                      }
+                      defaultFileDeleteDelay={
+                        constantValues.DEFAULT_FILE_DELETE_DELAY_MILLISECONDS
+                      }
+                    />
+                    <TopicAdvanceIndex
+                      defaultIndexIntervalSize={
+                        constantValues.DEFAULT_INDEX_INTERVAL_SIZE_BYTES
+                      }
+                      defaultSegmentIndexSize={
+                        constantValues.DEFAULT_SEGMENT_INDEX_SIZE_BYTES
+                      }
+                    />
+                    <Flush
+                      defaultFlushIntervalMessages={
+                        constantValues.DEFAULT_FLUSH_INTERVAL_MESSAGES
+                      }
+                      defaultFlushIntervalTime={
+                        constantValues.DEFAULT_FLUSH_INTERVAL_TIME_MILLISECONDS
+                      }
+                    />
                   </Form>
 
-                  <Divider className="kafka-ui-divider__Margin" />
+                  <Divider className="delete-topic-divider__Margin" />
 
                   <TextContent>
                     <Text component={TextVariants.h2} id="delete">

@@ -8,7 +8,8 @@ import {
   SelectVariant,
 } from "@patternfly/react-core";
 import type { NumberInputProps, SelectProps } from "@patternfly/react-core";
-import type { NewTopic, RetentionSizeUnits, SelectOptions } from "../types";
+import type { NewTopic, SelectOptions } from "../types";
+import type { RetentionSizeUnits } from "@rhoas/app-services-ui-components";
 
 export type CustomRetentionSizeProps = NumberInputProps &
   SelectProps & {

@@ -1,6 +1,9 @@
 import type React from "react";
 import { useState, useCallback } from "react";
-import { useTranslation } from "@rhoas/app-services-ui-components";
+import {
+  RetentionTimeUnits,
+  useTranslation,
+} from "@rhoas/app-services-ui-components";
 import type { NumberInputProps } from "@patternfly/react-core";
 import {
   FormSection,
@@ -22,9 +25,8 @@ import { CustomRetentionSize } from "./CustomRetentionSize";
 import {
   retentionTimeSelectOptions,
   retentionSizeSelectOptions,
-  RetentionTimeUnits,
-  RetentionSizeUnits,
 } from "../types";
+import { RetentionSizeUnits } from "@rhoas/app-services-ui-components";
 import { useValidateTopic } from "../types";
 import type { NewTopic } from "../types";
 
