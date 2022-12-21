@@ -2,7 +2,12 @@ import type React from "react";
 import { useTranslation } from "@rhoas/app-services-ui-components";
 import { SidebarPanel, JumpLinks, JumpLinksItem } from "@patternfly/react-core";
 
-const TopicAdvanceJumpLinks: React.FC = () => {
+export type TopicAdvanceJumpLinksProps = {
+  canHaveDelete?: boolean;
+};
+const TopicAdvanceJumpLinks: React.FC<TopicAdvanceJumpLinksProps> = ({
+  canHaveDelete,
+}) => {
   const { t } = useTranslation(["create-topic"]);
 
   return (
@@ -35,6 +40,13 @@ const TopicAdvanceJumpLinks: React.FC = () => {
         <JumpLinksItem key={6} href="#flush">
           {t("flush")}
         </JumpLinksItem>
+        {canHaveDelete ? (
+          <JumpLinksItem key={7} href="#delete">
+            {t("delete")}
+          </JumpLinksItem>
+        ) : (
+          <></>
+        )}
       </JumpLinks>
     </SidebarPanel>
   );

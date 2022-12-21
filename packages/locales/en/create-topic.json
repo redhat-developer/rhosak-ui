@@ -18,6 +18,7 @@
   "day": " day",
   "delete_retention_time": "Delete retention time",
   "delete_retention_time_description": "Delete retention milliseconds is the amount of time that deletion tombstone markers are retained if the topic is compacted. (delete.retention.ms)",
+  "delete": "Delete",
   "delete_topic": "Delete topic",
   "delete_topic_info": "This permanently removes this topic from this instance. Applications will no longer have access to this topic.",
   "delete_topic_irreversible": "Delete topic (irreversible)",
