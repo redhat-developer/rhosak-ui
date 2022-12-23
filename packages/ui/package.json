@@ -59,7 +59,7 @@
     "@patternfly/react-table": "4.111.33",
     "@patternfly/react-tokens": "4.93.10",
     "@rhoas/app-services-ui-components": "2.15.0",
-    "@xstate/react": "3.0.0",
+    "@xstate/react": "3.0.1",
     "byte-size": "8.1.0",
     "classnames": "2.3.2",
     "convert": "4.7.0",

@@ -59,7 +59,7 @@
     "@rhoas/kafka-management-sdk": "0.51.0",
     "@tanstack/react-query": "4.19.1",
     "@tanstack/react-query-devtools": "4.19.1",
-    "@xstate/react": "3.0.0",
+    "@xstate/react": "3.0.1",
     "byte-size": "8.1.0",
     "convert": "4.7.0",
     "date-fns": "2.29.3",
