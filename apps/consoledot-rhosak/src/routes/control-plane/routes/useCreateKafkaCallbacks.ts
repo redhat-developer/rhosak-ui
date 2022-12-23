@@ -133,8 +133,8 @@ export function useCreateKafkaCallbacks() {
         // It can happen that the selected provider doesn't support standard instances.
         // In this case we provide a faux sample list of sizes just to make the slider happy.
         standardSizes = [
-          { id: "1", displayName: "1" },
-          { id: "2", displayName: "2" },
+          { id: "1", displayName: "1", quota: 1 },
+          { id: "2", displayName: "2", quota: 2 },
         ] as StandardSizes;
       }
       const providersInfo = await getProvidersInfo("developer");
