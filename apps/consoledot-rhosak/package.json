@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@patternfly/quickstarts": "^2.3.2",
-    "@patternfly/react-core": "4.250.1",
+    "@patternfly/react-core": "4.267.6",
     "@patternfly/react-table": "4.111.33",
     "@redhat-cloud-services/frontend-components": "3.9.25",
     "@redhat-cloud-services/frontend-components-notifications": "3.2.12",
