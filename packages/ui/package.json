@@ -52,7 +52,7 @@
     "tsconfig": "*"
   },
   "dependencies": {
-    "@patternfly/patternfly": "4.219.2",
+    "@patternfly/patternfly": "4.222.4",
     "@patternfly/react-charts": "6.94.15",
     "@patternfly/react-core": "4.250.1",
     "@patternfly/react-icons": "4.92.10",
