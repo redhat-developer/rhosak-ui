@@ -9,10 +9,12 @@ export const TopicPropertiesRoute: VoidFunctionComponent<
   const { topic } = useTopicGate(instancesHref, instanceDetailsHref);
 
   return (
-    <DataPlaneTopicHeaderConnected
-      instancesHref={instancesHref}
-      instanceDetailsHref={instanceDetailsHref}
-      activeSection={"properties"}
-    />
+    <>
+      <DataPlaneTopicHeaderConnected
+        instancesHref={instancesHref}
+        instanceDetailsHref={instanceDetailsHref}
+        activeSection={"properties"}
+      />
+    </>
   );
 };

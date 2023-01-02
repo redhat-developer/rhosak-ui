@@ -42,6 +42,7 @@ export const TopicsRoute: VoidFunctionComponent<
     sort: sort!,
     direction: sortDirection,
     filter: topicChips.chips[0],
+    plan: instance.plan,
   });
   return (
     <>
@@ -55,7 +56,7 @@ export const TopicsRoute: VoidFunctionComponent<
         page={page}
         perPage={perPage}
         topicName={topicChips.chips}
-        getUrlFortopic={(row) => `./topics/${row.topic_name}`}
+        getUrlFortopic={(row) => `./topics/${row.name}`}
         isColumnSortable={isColumnSortable}
         onDelete={() => {}}
         onEdit={() => {}}

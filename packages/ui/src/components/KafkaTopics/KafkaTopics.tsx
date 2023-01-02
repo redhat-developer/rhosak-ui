@@ -12,11 +12,16 @@ import type { EmptyStateNoTopicProps } from "./components";
 import { EmptyStateNoTopic } from "./components";
 import { formattedRetentionSize, formattedRetentionTime } from "./types";
 
-const Columns: KafkaTopicField[] = [
-  "topic_name",
-  "partitions",
-  "retention_time",
-  "retention_size",
+type SubUnion<T, U extends T> = U;
+
+const Columns: SubUnion<
+  KafkaTopicField,
+  "name" | "partitionsCount" | "config:retention.ms" | "config:retention.bytes"
+>[] = [
+  "name",
+  "partitionsCount",
+  "config:retention.ms",
+  "config:retention.bytes",
 ];
 
 export type KafkaTopicsProps<T extends KafkaTopic> = {
@@ -61,11 +66,11 @@ export const KafkaTopics = <T extends KafkaTopic>({
 }: KafkaTopicsProps<T>) => {
   const { t } = useTranslation("topic");
 
-  const labels: { [field in KafkaTopicField]: string } = {
-    topic_name: t("topic_name"),
-    partitions: t("partitions"),
-    retention_time: t("retention_time"),
-    retention_size: t("retention_size"),
+  const labels: { [field in typeof Columns[number]]: string } = {
+    name: t("topic_name"),
+    partitionsCount: t("partitions_count"),
+    "config:retention.bytes": t("TODO config:retention.bytes"),
+    "config:retention.ms": t("TODO config:retention.ms"),
   };
 
   const isFiltered = topicName.length > 0;
@@ -85,7 +90,7 @@ export const KafkaTopics = <T extends KafkaTopic>({
             <Td key={key} dataLabel={labels[column]}>
               {(() => {
                 switch (column) {
-                  case "topic_name":
+                  case "name":
                     return (
                       <Button
                         variant="link"
@@ -96,25 +101,23 @@ export const KafkaTopics = <T extends KafkaTopic>({
                             data-testid="tableTopics-linkTopic"
                             data-ouia-component-id="table-link"
                           >
-                            {row.topic_name}
+                            {row.name}
                           </Link>
                         )}
                         onClick={() => onTopicLinkClick(row)}
                         isInline
                       />
                     );
-                  case "partitions":
-                    return row.partitions;
-                  case "retention_time":
+                  case "partitionsCount":
+                    return row.partitionsCount;
+                  case "config:retention.ms":
                     return formattedRetentionTime(
-                      row.retention_time ? parseInt(row.retention_time, 10) : 0
+                      row.config["retention.ms"].value
                     );
-                  case "retention_size":
+                  case "config:retention.bytes":
                     return formattedRetentionSize(
-                      row.retention_size ? parseInt(row.retention_size, 10) : 0
+                      row.config["retention.bytes"].value
                     );
-                  default:
-                    return row[column];
                 }
               })()}
             </Td>
@@ -136,7 +139,7 @@ export const KafkaTopics = <T extends KafkaTopic>({
         )}
         isColumnSortable={isColumnSortable}
         filters={{
-          [labels.topic_name]: {
+          [labels.name]: {
             type: "search",
             chips: topicName,
             onSearch: onSearchTopic,

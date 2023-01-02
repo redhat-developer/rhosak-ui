@@ -1,39 +1,37 @@
-import type React from "react";
-import { useState, useCallback } from "react";
-import {
-  RetentionTimeUnits,
-  useTranslation,
-} from "@rhoas/app-services-ui-components";
 import type { NumberInputProps } from "@patternfly/react-core";
 import {
   FormSection,
-  TextContent,
+  NumberInput,
+  Radio,
+  Stack,
   Text,
+  TextContent,
+  TextInput,
   TextVariants,
   ValidatedOptions,
-  TextInput,
-  NumberInput,
-  Stack,
-  Radio,
 } from "@patternfly/react-core";
 import {
   FormGroupWithPopover,
+  RetentionSizeUnits,
+  RetentionTimeUnits,
   TextWithLabelPopover,
+  useTranslation,
 } from "@rhoas/app-services-ui-components";
+import type React from "react";
+import { useCallback, useState } from "react";
+import type { KafkaTopic } from "../../../types";
+import {
+  retentionSizeSelectOptions,
+  retentionTimeSelectOptions,
+  useValidateTopic,
+} from "../types";
 import { CustomRetentionMessage } from "./CustomRetentionMessage";
 import { CustomRetentionSize } from "./CustomRetentionSize";
-import {
-  retentionTimeSelectOptions,
-  retentionSizeSelectOptions,
-} from "../types";
-import { RetentionSizeUnits } from "@rhoas/app-services-ui-components";
-import { useValidateTopic } from "../types";
-import type { NewTopic } from "../types";
 
 export type CoreConfigurationProps = {
   isCreate?: boolean;
-  topicData: NewTopic;
-  setTopicData: (data: NewTopic) => void;
+  topicData: KafkaTopic;
+  setTopicData: (data: KafkaTopic) => void;
   checkTopicName: (value: string) => Promise<boolean>;
   //initialPartition: number | undefined;
   invalidText: string;
@@ -125,20 +123,20 @@ const CoreConfiguration: React.FC<CoreConfigurationProps> = ({
   const onPartitionsChange: NumberInputProps["onChange"] = (event) => {
     setTopicData({
       ...topicData,
-      numPartitions: Number((event.target as HTMLInputElement).value),
+      partitionsCount: Number((event.target as HTMLInputElement).value),
     });
   };
   const handleOnPlus = () => {
     setTopicData({
       ...topicData,
-      numPartitions: topicData.numPartitions + 1,
+      partitionsCount: topicData.partitionsCount + 1,
     });
   };
 
   const handleOnMinus = () => {
     setTopicData({
       ...topicData,
-      numPartitions: topicData.numPartitions - 1,
+      partitionsCount: topicData.partitionsCount - 1,
     });
   };
 
@@ -219,12 +217,12 @@ const CoreConfiguration: React.FC<CoreConfigurationProps> = ({
         labelBody={t("partitions_description")}
         buttonAriaLabel="More info for partitions field"
         helperText={
-          topicData.numPartitions >= availablePartitionLimit
+          topicData.partitionsCount >= availablePartitionLimit
             ? t("partitions_warning")
             : t("partition_helper_text")
         }
         validated={
-          topicData.numPartitions >= availablePartitionLimit
+          topicData.partitionsCount >= availablePartitionLimit
             ? "warning"
             : "default"
         }
@@ -236,7 +234,7 @@ const CoreConfiguration: React.FC<CoreConfigurationProps> = ({
           data-testid={t("partitions")}
           onPlus={handleOnPlus}
           onMinus={handleOnMinus}
-          value={topicData.numPartitions}
+          value={topicData.partitionsCount}
           plusBtnProps={{ name: "num-partitions" }}
           minusBtnProps={{ name: "num-partitions" }}
           min={0}

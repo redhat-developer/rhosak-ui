@@ -1,6 +1,3 @@
-import type React from "react";
-import { useState } from "react";
-import { useTranslation } from "@rhoas/app-services-ui-components";
 import {
   Form,
   FormGroup,
@@ -11,19 +8,22 @@ import {
   TextContent,
   TextVariants,
 } from "@patternfly/react-core";
+import { useTranslation } from "@rhoas/app-services-ui-components";
+import type React from "react";
+import { useState } from "react";
+import type { KafkaTopic } from "../../../types";
 import {
   retentionSizeSelectOptions,
   RetentionSizeUnits,
   retentionTimeSelectOptions,
   RetentionTimeUnits,
 } from "../types";
-import type { NewTopic } from "../types";
 import { CustomRetentionMessage } from "./CustomRetentionMessage";
 import { CustomRetentionSize } from "./CustomRetentionSize";
 
 export type StepMessageRetentionProps = {
-  newTopicData: NewTopic;
-  onChangeMessageRetention: (topic: NewTopic) => void;
+  newTopicData: KafkaTopic;
+  onChangeMessageRetention: (topic: KafkaTopic) => void;
 };
 
 export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({

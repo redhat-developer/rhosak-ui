@@ -1,17 +1,17 @@
-import type { ComponentMeta, ComponentStory } from "@storybook/react";
-import { constantValues } from "../components/storiesHelpers";
-import { TopicDetailView } from "./TopicDetailView";
 import {
   RetentionSizeUnits,
   RetentionTimeUnits,
 } from "@rhoas/app-services-ui-components";
+import type { ComponentMeta, ComponentStory } from "@storybook/react";
+import { constantValues } from "../CreateKafkaTopic/components/storiesHelpers";
+import { TopicDetailView } from "./TopicDetailView";
 
 export default {
   component: TopicDetailView,
   args: {
     topic: {
       name: "test-topic",
-      numPartitions: 1,
+      partitionsCount: 1,
       replicationFactor: 1,
       retentionTime: 1,
       retentionTimeUnit: RetentionTimeUnits.WEEK,

@@ -6,9 +6,9 @@ import {
   TableView,
 } from "@rhoas/app-services-ui-components";
 import { useTranslation } from "react-i18next";
+import type { ConsumerGroup, ConsumerGroupField } from "../../types";
 
 import { ConsumerGroupEmptyState, ConsumerGroupStateLabel } from "./components";
-import type { ConsumerGroup, ConsumerGroupField } from "./types";
 
 const Columns: ConsumerGroupField[] = [
   "consumerGroupId",

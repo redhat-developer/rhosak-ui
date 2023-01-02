@@ -1,40 +1,37 @@
-import React from "react";
-import { useTranslation } from "react-i18next";
 import {
-  PageSection,
-  PageGroup,
-  JumpLinks,
-  JumpLinksItem,
-  TextContent,
-  Text,
-  TextVariants,
   Button,
   Divider,
-  Sidebar,
-  SidebarContent,
-  SidebarPanel,
-  SplitItem,
-  Split,
   Form,
   FormSection,
+  PageGroup,
+  PageSection,
+  Sidebar,
+  SidebarContent,
+  Split,
+  SplitItem,
+  Text,
+  TextContent,
+  TextVariants,
 } from "@patternfly/react-core";
 import { TextWithLabelPopover } from "@rhoas/app-services-ui-components";
-import { NewTopic } from "../types";
-import { ConstantValues } from "../types";
+import type React from "react";
+import { useTranslation } from "react-i18next";
+import type { KafkaTopic } from "../../types";
+import { Cleanup } from "../CreateKafkaTopic/components/Cleanup";
+import { Flush } from "../CreateKafkaTopic/components/Flush";
+import { Message } from "../CreateKafkaTopic/components/Message";
+import { Replication } from "../CreateKafkaTopic/components/Replication";
+import { TopicAdvanceIndex } from "../CreateKafkaTopic/components/TopicAdvanceIndex";
+import { TopicAdvanceJumpLinks } from "../CreateKafkaTopic/components/TopicAdvanceJumpLinks";
+import "../CreateKafkaTopic/CreateTopicPage.css";
+import type { ConstantValues } from "../CreateKafkaTopic/types";
 import {
   formattedRetentionSize,
   formattedRetentionTime,
-} from "../../KafkaTopics/types";
-import "../CreateTopicPage.css";
-import { Message } from "./Message";
-import { Replication } from "./Replication";
-import { Cleanup } from "./Cleanup";
-import { TopicAdvanceIndex } from "./TopicAdvanceIndex";
-import { Flush } from "./Flush";
-import { TopicAdvanceJumpLinks } from "./TopicAdvanceJumpLinks";
+} from "../KafkaTopics/types";
 
 export type TopicViewDetailProps = {
-  topic: NewTopic;
+  topic: KafkaTopic;
   deleteTopic: () => void;
   constantValues: ConstantValues;
   updateTopic: () => void;
@@ -88,7 +85,7 @@ export const TopicDetailView: React.FunctionComponent<TopicViewDetailProps> = ({
                         fieldId="partitions"
                         btnAriaLabel={t("partitions")}
                         fieldLabel={t("partitions")}
-                        fieldValue={topic.numPartitions.toString()}
+                        fieldValue={topic.partitionsCount.toString()}
                         popoverBody={t("partitions_description")}
                         popoverHeader={t("partitions")}
                       />

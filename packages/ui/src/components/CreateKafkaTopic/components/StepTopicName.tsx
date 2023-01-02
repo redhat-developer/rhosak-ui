@@ -1,6 +1,3 @@
-import type React from "react";
-import { useCallback, useEffect } from "react";
-import { useTranslation } from "@rhoas/app-services-ui-components";
 import {
   Form,
   FormGroup,
@@ -11,12 +8,15 @@ import {
   TextVariants,
   ValidatedOptions,
 } from "@patternfly/react-core";
+import { useTranslation } from "@rhoas/app-services-ui-components";
+import type React from "react";
+import { useCallback, useEffect } from "react";
+import type { KafkaTopic } from "../../../types";
 import { useValidateTopic } from "../types";
-import type { NewTopic } from "../types";
 
 export type StepTopicNameProps = {
-  newTopicData: NewTopic;
-  onTopicNameChange: (value: NewTopic) => void;
+  newTopicData: KafkaTopic;
+  onTopicNameChange: (value: KafkaTopic) => void;
   topicNameValidated: ValidatedOptions;
   onValidationCheck: (value: ValidatedOptions) => void;
   invalidText: string;

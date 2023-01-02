@@ -83,8 +83,9 @@ export const DashboardRoute: VoidFunctionComponent<
           adminUrl: instance.adminUrl,
           page: 1,
           perPage: 1000,
+          plan: instance.plan,
         })
-      ).topics.map((t) => t.topic_name);
+      ).topics.map((t) => t.name);
       return {
         ...metrics,
         kafkaTopics,

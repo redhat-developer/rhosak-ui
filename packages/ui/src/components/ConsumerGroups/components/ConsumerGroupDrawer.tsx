@@ -3,25 +3,25 @@ import {
   DrawerActions,
   DrawerCloseButton,
   DrawerContent,
+  DrawerContentBody,
   DrawerHead,
   DrawerPanelBody,
   DrawerPanelContent,
-  TextContent,
-  Title,
-  Text,
-  TextVariants,
   Dropdown,
-  KebabToggle,
-  DropdownPosition,
   DropdownItem,
-  DrawerContentBody,
+  DropdownPosition,
+  KebabToggle,
+  Text,
+  TextContent,
+  TextVariants,
+  Title,
 } from "@patternfly/react-core";
 import type { FunctionComponent, ReactNode } from "react";
 import { useState } from "react";
-import type { ConsumerGroupState, Consumer } from "../types";
-import { ConsumerGroupDetails } from "./ConsumerGroupDetails";
 import { useTranslation } from "react-i18next";
+import type { Consumer, ConsumerGroupState } from "../../../types";
 import "./ConsumerGroup.css";
+import { ConsumerGroupDetails } from "./ConsumerGroupDetails";
 
 export type ConsumerGroupDrawerProps = {
   children: ReactNode;

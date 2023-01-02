@@ -4,22 +4,22 @@ import { KafkaTopics } from "./KafkaTopics";
 
 const topics: KafkaTopic[] = [
   {
-    topic_name: "foo",
-    partitions: 1,
-    retention_size: "-1",
-    retention_time: "	86400000 ms",
+    name: "foo",
+    partitionsCount: 1,
+    retentionBytes: "-1",
+    retentionTime: "	86400000 ms",
   },
   {
-    topic_name: "bar",
-    partitions: 3,
-    retention_size: "1099511600000 bytes",
-    retention_time: "1500000",
+    name: "bar",
+    partitionsCount: 3,
+    retentionBytes: "1099511600000 bytes",
+    retentionTime: "1500000",
   },
   {
-    topic_name: "buzz",
-    partitions: 2,
-    retention_size: "80000 bytes",
-    retention_time: "-1",
+    name: "buzz",
+    partitionsCount: 2,
+    retentionBytes: "80000 bytes",
+    retentionTime: "-1",
   },
 ];
 

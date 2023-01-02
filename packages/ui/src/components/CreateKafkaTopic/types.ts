@@ -1,30 +1,5 @@
 import { useTranslation } from "@rhoas/app-services-ui-components";
 import { useCallback } from "react";
-import type { RetentionSizeUnits, RetentionTimeUnits } from "../types";
-
-export type NewTopic = {
-  name: string;
-  numPartitions: number;
-  replicationFactor: number;
-  retentionTime: number;
-  retentionTimeUnit: RetentionTimeUnits;
-  retentionBytes: number;
-  retentionBytesUnit: RetentionSizeUnits;
-  cleanupPolicy: string;
-  customRetentionTimeUnit: RetentionTimeUnits;
-  customRetentionSizeUnit: RetentionSizeUnits;
-  minInSyncReplica: number;
-  isMultiAZ: boolean;
-};
-
-export enum CustomRetentionTimeUnits {
-  MILLISECOND = "milliseconds",
-  SECOND = "seconds",
-  MINUTE = "minutes",
-  HOUR = "hours",
-  DAY = "days",
-  WEEK = "weeks",
-}
 
 export type SelectOptions = {
   key: string;
@@ -32,6 +7,7 @@ export type SelectOptions = {
   isPlaceholder?: boolean;
   isDisabled?: boolean;
 };
+
 export type ConstantValues = {
   DEFAULT_REPLICAS: number;
   DEFAULT_MIN_CLEANBLE_RATIO: number;

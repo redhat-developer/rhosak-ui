@@ -1,20 +1,20 @@
-import type React from "react";
-import { useTranslation } from "@rhoas/app-services-ui-components";
-import {
-  TextContent,
-  Text,
-  TextVariants,
-  NumberInput,
-  FormGroup,
-  Form,
-  FormSection,
-} from "@patternfly/react-core";
 import type { NumberInputProps } from "@patternfly/react-core";
-import type { NewTopic } from "../types";
+import {
+  Form,
+  FormGroup,
+  FormSection,
+  NumberInput,
+  Text,
+  TextContent,
+  TextVariants,
+} from "@patternfly/react-core";
+import { useTranslation } from "@rhoas/app-services-ui-components";
+import type React from "react";
+import type { KafkaTopic } from "../../../types";
 
 export type StepPartitionsProps = {
-  newTopicData: NewTopic;
-  onPartitionsChange: (value: NewTopic) => void;
+  newTopicData: KafkaTopic;
+  onPartitionsChange: (value: KafkaTopic) => void;
   availablePartitionLimit: number;
 };
 
@@ -28,14 +28,14 @@ export const StepPartitions: React.FC<StepPartitionsProps> = ({
   const handleOnPlus = () => {
     onPartitionsChange({
       ...newTopicData,
-      numPartitions: newTopicData.numPartitions + 1,
+      partitionsCount: newTopicData.partitionsCount + 1,
     });
   };
 
   const handleOnMinus = () => {
     onPartitionsChange({
       ...newTopicData,
-      numPartitions: newTopicData.numPartitions - 1,
+      partitionsCount: newTopicData.partitionsCount - 1,
     });
   };
 
@@ -44,12 +44,12 @@ export const StepPartitions: React.FC<StepPartitionsProps> = ({
   ) => {
     onPartitionsChange({
       ...newTopicData,
-      numPartitions: Number((event.target as HTMLInputElement).value),
+      partitionsCount: Number((event.target as HTMLInputElement).value),
     });
   };
   const onBlur = () => {
-    if (newTopicData.numPartitions < 1)
-      onPartitionsChange({ ...newTopicData, numPartitions: 1 });
+    if (newTopicData.partitionsCount < 1)
+      onPartitionsChange({ ...newTopicData, partitionsCount: 1 });
   };
 
   return (
@@ -64,12 +64,12 @@ export const StepPartitions: React.FC<StepPartitionsProps> = ({
           label="Partitions"
           fieldId="step-topic-name-form"
           helperText={
-            newTopicData.numPartitions >= availablePartitionLimit
+            newTopicData.partitionsCount >= availablePartitionLimit
               ? t("partitions_warning")
               : t("partition_helper_text")
           }
           validated={
-            newTopicData.numPartitions >= availablePartitionLimit
+            newTopicData.partitionsCount >= availablePartitionLimit
               ? "warning"
               : "default"
           }
@@ -78,7 +78,7 @@ export const StepPartitions: React.FC<StepPartitionsProps> = ({
           <NumberInput
             onPlus={handleOnPlus}
             onMinus={handleOnMinus}
-            value={Number(newTopicData.numPartitions)}
+            value={Number(newTopicData.partitionsCount)}
             inputName="input"
             onChange={handlePartitionTouchspinChange}
             widthChars={20}

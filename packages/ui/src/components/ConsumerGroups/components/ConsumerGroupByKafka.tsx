@@ -1,9 +1,9 @@
 import {
-  Stack,
   DescriptionList,
+  DescriptionListDescription,
   DescriptionListGroup,
   DescriptionListTerm,
-  DescriptionListDescription,
+  Stack,
 } from "@patternfly/react-core";
 import {
   TableComposable,
@@ -16,7 +16,7 @@ import {
 } from "@patternfly/react-table";
 import type { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
-import type { Consumer, ConsumerGroupState } from "../types";
+import type { Consumer, ConsumerGroupState } from "../../../types";
 import { ConsumerGroupPopover } from "./ConsumerGroupPopover";
 import { ConsumerGroupStateLabel } from "./ConsumerGroupState";
 

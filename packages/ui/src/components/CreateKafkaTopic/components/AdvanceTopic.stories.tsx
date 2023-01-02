@@ -1,4 +1,4 @@
-import type { ComponentStory, ComponentMeta } from "@storybook/react";
+import type { ComponentMeta, ComponentStory } from "@storybook/react";
 import { CreateTopicWizard } from "./CreateTopicWizard";
 import { constantValues } from "./storiesHelpers";
 
@@ -8,7 +8,7 @@ export default {
     isSwitchChecked: true,
     initialFieldsValue: {
       name: "",
-      numPartitions: 1,
+      partitionsCount: 1,
       replicationFactor: 1,
       retentionTime: 1,
       retentionTimeUnit: "weeks",

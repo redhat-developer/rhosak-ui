@@ -10,10 +10,6 @@ import {
   StackItem,
   TextInput,
 } from "@patternfly/react-core";
-import type { FunctionComponent } from "react";
-import { useTranslation } from "react-i18next";
-import "../ConsumerGroup.css";
-import type { Consumer, OffsetValue } from "../types";
 import {
   TableComposable,
   Tbody,
@@ -22,8 +18,13 @@ import {
   Thead,
   Tr,
 } from "@patternfly/react-table";
-import { TopicSelect } from "./TopicSelect";
+import type { FunctionComponent } from "react";
+import { useTranslation } from "react-i18next";
+import type { Consumer } from "../../../types";
+import "../ConsumerGroup.css";
+import type { OffsetValue } from "../types";
 import { OffsetSelect } from "./OffsetSelect";
+import { TopicSelect } from "./TopicSelect";
 
 export type ConsumerRow = Consumer & {
   selected?: boolean;

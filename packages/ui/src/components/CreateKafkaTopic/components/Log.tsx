@@ -1,22 +1,23 @@
-import type React from "react";
-import { useTranslation } from "@rhoas/app-services-ui-components";
 import {
   FormSection,
-  TextContent,
   Text,
+  TextContent,
   TextVariants,
 } from "@patternfly/react-core";
-import type { IDropdownOption, NewTopic } from "../types";
 import {
   DropdownWithToggle,
   FormGroupWithPopover,
   TextWithLabelPopover,
+  useTranslation,
 } from "@rhoas/app-services-ui-components";
 import convert from "convert";
+import type React from "react";
+import type { KafkaTopic } from "../../../types";
+import type { IDropdownOption } from "../types";
 
 export type LogProps = {
-  topicData: NewTopic;
-  setTopicData: (data: NewTopic) => void;
+  topicData: KafkaTopic;
+  setTopicData: (data: KafkaTopic) => void;
   defaultDeleteRetentionTime: number;
   defaultMinCleanbleRatio: number;
   defaultMinimumCompactionLagTime: number;

@@ -7,10 +7,11 @@ import {
   ValidatedOptions,
   Wizard,
 } from "@patternfly/react-core";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import type React from "react";
 import { useState } from "react";
-import { useTranslation } from "@rhoas/app-services-ui-components";
-import type { ConstantValues, NewTopic } from "../types";
+import type { KafkaTopic } from "../../../types";
+import type { ConstantValues } from "../types";
 import type { IWizardFooter } from "./index";
 import {
   StepMessageRetention,
@@ -26,8 +27,8 @@ export type CreateTopicWizardProps = {
   isSwitchChecked: boolean;
   setIsCreateTopic?: (value: boolean) => void;
   onCloseCreateTopic: () => void;
-  onSave: (topicData: NewTopic) => void;
-  initialFieldsValue: NewTopic;
+  onSave: (topicData: KafkaTopic) => void;
+  initialFieldsValue: KafkaTopic;
   checkTopicName: (value: string) => Promise<boolean>;
   availablePartitionLimit: number;
   constantValues: ConstantValues;
@@ -48,7 +49,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
     useState<ValidatedOptions>(ValidatedOptions.default);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [invalidText, setInvalidText] = useState<string>("");
-  const [topicData, setTopicData] = useState<NewTopic>(initialFieldsValue);
+  const [topicData, setTopicData] = useState<KafkaTopic>(initialFieldsValue);
   const [warningModalOpen, setWarningModalOpen] = useState<boolean>(false);
 
   const closeWizard = () => {
@@ -127,7 +128,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
     }
   };
   const onSaveTopic = () => {
-    if (topicData.numPartitions >= availablePartitionLimit)
+    if (topicData.partitionsCount >= availablePartitionLimit)
       setWarningModalOpen(true);
     else onSave(topicData);
   };

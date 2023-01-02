@@ -1,22 +1,23 @@
-import type React from "react";
+import type { NumberInputProps, SelectProps } from "@patternfly/react-core";
 import {
   Flex,
   FlexItem,
+  NumberInput,
   Select,
   SelectOption,
-  NumberInput,
   SelectVariant,
 } from "@patternfly/react-core";
-import type { SelectProps, NumberInputProps } from "@patternfly/react-core";
-import type { NewTopic, SelectOptions } from "../types";
 import type { RetentionTimeUnits } from "@rhoas/app-services-ui-components";
+import type React from "react";
+import type { KafkaTopic } from "../../../types";
+import type { SelectOptions } from "../types";
 
 export type CustomRetentionMessageProps = NumberInputProps &
   SelectProps & {
     id?: string;
     selectOptions: SelectOptions[];
-    topicData: NewTopic;
-    setTopicData: (data: NewTopic) => void;
+    topicData: KafkaTopic;
+    setTopicData: (data: KafkaTopic) => void;
   };
 
 const CustomRetentionMessage: React.FC<CustomRetentionMessageProps> = ({
