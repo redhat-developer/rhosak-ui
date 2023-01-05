@@ -6,12 +6,12 @@ import type { Meta, Story } from "@storybook/react";
 import type { ReactFramework } from "@storybook/react/types-6-0";
 import { userEvent, waitFor, within } from "@storybook/testing-library";
 import { useState } from "react";
-import { apiError, fakeApi } from "../../storiesHelpers";
 import type {
   CloudProvider,
   MarketPlace,
   MarketPlaceSubscriptions,
-} from "../../../types";
+} from "ui-models/src/models/kafka";
+import { apiError, fakeApi } from "../../storiesHelpers";
 import type { CreateKafkaInstanceProps } from "../CreateKafkaInstance";
 import { CreateKafkaInstance } from "../CreateKafkaInstance";
 import type { CreateKafkaInstanceServices } from "../machines";

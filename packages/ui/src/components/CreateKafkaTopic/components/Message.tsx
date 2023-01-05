@@ -1,17 +1,19 @@
-import type React from "react";
-import { useTranslation } from "@rhoas/app-services-ui-components";
 import {
   FormSection,
-  TextContent,
   Text,
+  TextContent,
   TextVariants,
 } from "@patternfly/react-core";
-import { TextWithLabelPopover } from "@rhoas/app-services-ui-components";
+import {
+  TextWithLabelPopover,
+  useTranslation,
+} from "@rhoas/app-services-ui-components";
+import type React from "react";
 
 type MessageProps = {
-  defaultMaximumMessageBytes: number;
+  defaultMaximumMessageBytes: bigint;
   defaultMessageTimestampType: string;
-  defaultMaxMessageTimestampDiff: string;
+  defaultMaxMessageTimestampDiff: bigint;
 };
 
 const Message: React.FC<MessageProps> = ({

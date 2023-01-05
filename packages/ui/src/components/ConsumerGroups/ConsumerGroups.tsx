@@ -6,16 +6,19 @@ import {
   TableView,
 } from "@rhoas/app-services-ui-components";
 import { useTranslation } from "react-i18next";
-import type { ConsumerGroup, ConsumerGroupField } from "../../types";
+import type {
+  ConsumerGroup,
+  ConsumerGroupField,
+} from "ui-models/src/models/consumer-group";
 
 import { ConsumerGroupEmptyState, ConsumerGroupStateLabel } from "./components";
 
-const Columns: ConsumerGroupField[] = [
-  "consumerGroupId",
-  "activeMembers",
-  "partitionsWithLag",
-  "state",
-];
+type SubUnion<T, U extends T> = U;
+
+const Columns: SubUnion<
+  ConsumerGroupField,
+  "groupId" | "activeConsumers" | "laggingPartitions" | "state"
+>[] = ["groupId", "activeConsumers", "laggingPartitions", "state"];
 
 export type ConsumerGroupsProps<T extends ConsumerGroup> = {
   consumers: Array<T> | undefined;
@@ -55,10 +58,10 @@ export const ConsumerGroups = <T extends ConsumerGroup>({
 }: ConsumerGroupsProps<T>) => {
   const { t } = useTranslation("kafka");
 
-  const labels: { [field in ConsumerGroupField]: string } = {
-    consumerGroupId: t("consumerGroup.consumer_group_id"),
-    activeMembers: t("consumerGroup.active_members"),
-    partitionsWithLag: t("consumerGroup.partitions_with_lag"),
+  const labels: { [field in typeof Columns[number]]: string } = {
+    groupId: t("consumerGroup.consumer_group_id"),
+    activeConsumers: t("consumerGroup.active_members"),
+    laggingPartitions: t("consumerGroup.partitions_with_lag"),
     state: t("consumerGroup.state_header"),
   };
 
@@ -75,7 +78,7 @@ export const ConsumerGroups = <T extends ConsumerGroup>({
           <Th
             key={key}
             info={
-              column === "partitionsWithLag"
+              column === "laggingPartitions"
                 ? {
                     popover: (
                       <div>
@@ -100,16 +103,14 @@ export const ConsumerGroups = <T extends ConsumerGroup>({
             <Td key={key} dataLabel={labels[column]}>
               {(() => {
                 switch (column) {
-                  case "consumerGroupId":
-                    return row.consumerGroupId;
-                  case "activeMembers":
-                    return row.activeMembers;
-                  case "partitionsWithLag":
-                    return row.partitionsWithLag;
+                  case "groupId":
+                    return row.groupId;
+                  case "activeConsumers":
+                    return row.activeConsumers;
+                  case "laggingPartitions":
+                    return row.laggingPartitions;
                   case "state":
                     return <ConsumerGroupStateLabel state={row.state} />;
-                  default:
-                    return row[column];
                 }
               })()}
             </Td>
@@ -135,7 +136,7 @@ export const ConsumerGroups = <T extends ConsumerGroup>({
         )}
         isColumnSortable={isColumnSortable}
         filters={{
-          [labels.consumerGroupId]: {
+          [labels.groupId]: {
             type: "search",
             chips: consumerName,
             onSearch: onSearchConsumer,

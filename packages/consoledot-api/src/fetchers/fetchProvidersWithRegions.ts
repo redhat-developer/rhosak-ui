@@ -3,7 +3,7 @@ import type {
   CloudProviderInfo,
 } from "@rhoas/app-services-ui-components";
 import type { DefaultApi } from "@rhoas/kafka-management-sdk";
-import type { Plan } from "ui";
+import type { Plan } from "ui-models/src/models/kafka";
 
 export type CloudProviderInfoWithRegionsCapacity = Omit<
   CloudProviderInfo,

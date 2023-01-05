@@ -1,5 +1,5 @@
+import { CloudProvider, CloudRegion } from "ui-models/src/models/kafka";
 import { assign, createMachine, send, sendParent } from "xstate";
-import { CloudProvider, CloudRegion } from "../../../types";
 import {
   CreateKafkaFormData,
   CreateKafkaInstanceError,

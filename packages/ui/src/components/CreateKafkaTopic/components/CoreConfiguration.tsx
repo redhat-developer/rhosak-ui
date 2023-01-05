@@ -19,7 +19,7 @@ import {
 } from "@rhoas/app-services-ui-components";
 import type React from "react";
 import { useCallback, useState } from "react";
-import type { KafkaTopic } from "../../../types";
+import type { Topic } from "ui-models/src/models/topic";
 import {
   retentionSizeSelectOptions,
   retentionTimeSelectOptions,
@@ -30,8 +30,8 @@ import { CustomRetentionSize } from "./CustomRetentionSize";
 
 export type CoreConfigurationProps = {
   isCreate?: boolean;
-  topicData: KafkaTopic;
-  setTopicData: (data: KafkaTopic) => void;
+  topicData: Topic;
+  setTopicData: (data: Topic) => void;
   checkTopicName: (value: string) => Promise<boolean>;
   //initialPartition: number | undefined;
   invalidText: string;

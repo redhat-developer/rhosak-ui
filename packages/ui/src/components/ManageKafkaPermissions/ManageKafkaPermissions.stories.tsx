@@ -1,11 +1,12 @@
-import { ManageKafkaPermissions } from "./ManageKafkaPermissions";
-import type { ComponentStory, ComponentMeta } from "@storybook/react";
-import { PrincipalType } from "./types";
+import type { ComponentMeta, ComponentStory } from "@storybook/react";
 import { useState } from "react";
 import {
   PermissionsForAllAccounts,
   PermissionsForSelectedAccount,
 } from "./components/ReviewPermissionsTable.stories";
+import { ManageKafkaPermissions } from "./ManageKafkaPermissions";
+import { PrincipalType } from "./types";
+
 export default {
   component: ManageKafkaPermissions,
   args: {

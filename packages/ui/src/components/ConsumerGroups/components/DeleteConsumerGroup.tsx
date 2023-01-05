@@ -2,13 +2,13 @@ import { Alert, Text } from "@patternfly/react-core";
 import { DeleteModal } from "@rhoas/app-services-ui-components";
 import type { FunctionComponent } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import type { ConsumerGroupState } from "../../../types";
+import type { State } from "ui-models/src/models/consumer-group";
 
 export type DeleteConsumerGroupProps = {
   isModalOpen: boolean;
   onClose: () => void;
   onDeleteConsumer: () => void;
-  state: ConsumerGroupState;
+  state: State;
   consumerName: string;
   appendTo: () => HTMLElement;
   disableFocusTrap?: boolean;

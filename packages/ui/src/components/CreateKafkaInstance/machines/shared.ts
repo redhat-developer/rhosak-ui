@@ -1,4 +1,4 @@
-import type { CloudProvider, CloudRegion } from "../../../types";
+import type { CloudProvider, CloudRegion } from "ui-models/src/models/kafka";
 import type { CloudProviderInfo } from "../types";
 
 export function onProviderChange(

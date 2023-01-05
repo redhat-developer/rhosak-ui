@@ -1,25 +1,32 @@
 import type { ComponentMeta, ComponentStory } from "@storybook/react";
-import type { KafkaTopic } from "../../types";
+import type { Topic } from "ui-models/src/models/topic";
+import type { TopicConfig } from "ui-models/src/models/topic-config";
 import { KafkaTopics } from "./KafkaTopics";
 
-const topics: KafkaTopic[] = [
+const topics: Topic[] = [
   {
     name: "foo",
     partitionsCount: 1,
-    retentionBytes: "-1",
-    retentionTime: "	86400000 ms",
+    config: {
+      "retention.bytes": { type: "bytes", value: BigInt("-1") },
+      "retention.ms": { type: "ms", value: BigInt("86400000") },
+    } as TopicConfig,
   },
   {
     name: "bar",
     partitionsCount: 3,
-    retentionBytes: "1099511600000 bytes",
-    retentionTime: "1500000",
+    config: {
+      "retention.bytes": { type: "bytes", value: BigInt("1099511600000") },
+      "retention.ms": { type: "ms", value: BigInt("1500000") },
+    } as TopicConfig,
   },
   {
     name: "buzz",
     partitionsCount: 2,
-    retentionBytes: "80000 bytes",
-    retentionTime: "-1",
+    config: {
+      "retention.bytes": { type: "bytes", value: BigInt("80000") },
+      "retention.ms": { type: "ms", value: BigInt("-1") },
+    } as TopicConfig,
   },
 ];
 

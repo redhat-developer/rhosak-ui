@@ -3,7 +3,7 @@ import {
   useSortableSearchParams,
   useURLSearchParamsChips,
 } from "@rhoas/app-services-ui-components";
-import { KafkaTopicsSortableColumns, useKafkaTopics } from "consoledot-api";
+import { KafkaTopicsSortableColumns, useTopics } from "consoledot-api";
 import type { VoidFunctionComponent } from "react";
 import { useCallback } from "react";
 import { KafkaTopics } from "ui";
@@ -34,7 +34,7 @@ export const TopicsRoute: VoidFunctionComponent<
     "name",
     "desc"
   );
-  const { data } = useKafkaTopics({
+  const { data } = useTopics({
     id: instance?.id,
     adminUrl: instance?.adminUrl,
     page,

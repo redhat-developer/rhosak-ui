@@ -8,9 +8,9 @@ import {
 } from "@rhoas/app-services-ui-components";
 import { parseISO } from "date-fns";
 import { Link } from "react-router-dom";
+import type { Kafka, SimplifiedStatus } from "ui-models/src/models/kafka";
+import { DeletingStatuses } from "ui-models/src/models/kafka";
 import { useKafkaLabels } from "../../hooks";
-import type { KafkaInstance, SimplifiedStatus } from "../../types";
-import { DeletingStatuses } from "../../types";
 import { KafkaInstanceActions } from "../KafkaInstanceActions";
 import { KafkaInstanceStatus } from "../KafkaInstanceStatus";
 import type {
@@ -28,7 +28,7 @@ const Columns = [
   "status",
 ] as const;
 
-export type KafkaInstancesProps<T extends KafkaInstance> = {
+export type KafkaInstancesProps<T extends Kafka = Kafka> = {
   instances: Array<T> | undefined | null;
   getUrlForInstance: (row: T) => string;
   names: string[];
@@ -68,7 +68,7 @@ export type KafkaInstancesProps<T extends KafkaInstance> = {
   EmptyStateNoInstancesProps &
   EmptyStateNoResultsProps;
 
-export const KafkaInstances = <T extends KafkaInstance>({
+export const KafkaInstances = <T extends Kafka>({
   instances,
   itemCount,
   page,

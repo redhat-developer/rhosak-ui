@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { fetchKafkaInstances } from "../fetchers";
+import { fetchKafkas } from "../fetchers";
 import { useKafkaInstanceTransformer } from "../queries";
 import { kafkaQueries, masQueries } from "../queryKeys";
 import { useApi } from "../useApi";
@@ -30,7 +30,7 @@ export const useDeveloperInstanceAvailabilityFetchQuery = () => {
             page: 1,
           }),
           queryFn: () =>
-            fetchKafkaInstances({
+            fetchKafkas({
               getKafkas: (...args) => api.getKafkas(...args),
               dataMapper,
               direction: "desc",

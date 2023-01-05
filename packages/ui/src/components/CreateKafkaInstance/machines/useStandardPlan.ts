@@ -6,7 +6,7 @@ import type {
   MarketPlace,
   MarketplaceSubscription,
   Size,
-} from "../../../types";
+} from "ui-models/src/models/kafka";
 import type { CloudProviderInfo, CreateKafkaInstanceError } from "../types";
 import type { StandardPlanMachineContext } from "./StandardPlanMachine";
 import { useCreateKafkaInstance } from "./useCreateKafkaInstance";

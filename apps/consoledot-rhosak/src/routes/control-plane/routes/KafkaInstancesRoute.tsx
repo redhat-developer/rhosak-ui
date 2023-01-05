@@ -4,25 +4,14 @@ import {
   useSortableSearchParams,
   useURLSearchParamsChips,
 } from "@rhoas/app-services-ui-components";
-import {
-  KafkaInstancesSortableColumns,
-  useKafkaInstances,
-} from "consoledot-api";
+import { KafkaInstancesSortableColumns, useKafkas } from "consoledot-api";
 import type { FunctionComponent } from "react";
 import { useCallback, useContext } from "react";
 import { useHistory } from "react-router-dom";
-import type {
-  KafkaInstance,
-  KafkaInstanceDrawerTab,
-  KafkaInstancesProps,
-  SimplifiedStatus,
-} from "ui";
-import {
-  ControlPlaneHeader,
-  KafkaInstances,
-  ReadyStatuses,
-  useKafkaLabels,
-} from "ui";
+import type { KafkaInstanceDrawerTab, KafkaInstancesProps } from "ui";
+import { ControlPlaneHeader, KafkaInstances, useKafkaLabels } from "ui";
+import type { Kafka, SimplifiedStatus } from "ui-models/src/models/kafka";
+import { ReadyStatuses } from "ui-models/src/models/kafka";
 import { useDrawer } from "../DrawerProvider";
 import {
   ControlPlaneNewInstancePath,
@@ -30,7 +19,7 @@ import {
 } from "../routesConsts";
 
 export type KafkaInstancesRoute = Pick<
-  KafkaInstancesProps<KafkaInstance>,
+  KafkaInstancesProps<Kafka>,
   "getUrlForInstance"
 >;
 
@@ -68,7 +57,7 @@ export const KafkaInstancesRoute: FunctionComponent<KafkaInstancesRoute> = ({
     "desc"
   );
 
-  const { data } = useKafkaInstances({
+  const { data } = useKafkas({
     page,
     perPage,
     name: namesChips.chips,
@@ -100,21 +89,19 @@ export const KafkaInstancesRoute: FunctionComponent<KafkaInstancesRoute> = ({
     [history, isExpanded, selectedInstance, setActiveTab, toggleExpanded]
   );
 
-  const onDetailsClick: KafkaInstancesProps<KafkaInstance>["onDetails"] =
-    useCallback(
-      (instance) => {
-        openDrawer(instance.id, "details");
-      },
-      [openDrawer]
-    );
+  const onDetailsClick: KafkaInstancesProps["onDetails"] = useCallback(
+    (instance) => {
+      openDrawer(instance.id, "details");
+    },
+    [openDrawer]
+  );
 
-  const onConnectionsClick: KafkaInstancesProps<KafkaInstance>["onDetails"] =
-    useCallback(
-      (instance) => {
-        openDrawer(instance.id, "connections");
-      },
-      [openDrawer]
-    );
+  const onConnectionsClick: KafkaInstancesProps["onDetails"] = useCallback(
+    (instance) => {
+      openDrawer(instance.id, "connections");
+    },
+    [openDrawer]
+  );
 
   const onCreate = useCallback(() => {
     history.push(`${ControlPlaneNewInstancePath}`);

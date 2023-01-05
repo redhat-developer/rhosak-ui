@@ -1,11 +1,11 @@
 import type { FunctionComponent } from "react";
-import type { Consumer, ConsumerGroupState } from "../../../types";
+import type { Consumer, State } from "ui-models/src/models/consumer-group";
 import { ConsumerGroupByKafka } from "./ConsumerGroupByKafka";
 import { ConsumerGroupByTopic } from "./ConsumerGroupByTopic";
 
 export type ConsumerGroupDetailsProps = {
   consumerGroupByTopic: boolean;
-  state: ConsumerGroupState;
+  state: State;
   activeMembers: number;
   partitionsWithLag: number;
   consumers: Consumer[];

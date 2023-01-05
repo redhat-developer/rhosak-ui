@@ -3,11 +3,14 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "module": "esnext",
-    "lib": ["dom", "esnext"],
+    "lib": [
+      "dom",
+      "esnext"
+    ],
     "importHelpers": true,
     "emitDeclarationOnly": true,
     "declaration": true,
-    "declarationDir": "types",
+    "declarationDir": ".declarations",
     "sourceMap": true,
     "strict": true,
     "noUnusedLocals": true,
@@ -22,8 +25,11 @@
     "skipLibCheck": true
   },
   "include": [
+    "index.ts",
     "src",
     "setupJest.js"
   ],
-  "exclude": [ "node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

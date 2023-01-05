@@ -1,21 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
 import { useApiConfiguration } from "../ApiProvider";
-import type { FetchKafkaTopicsParams } from "../fetchers";
-import { fetchKafkaTopics } from "../fetchers";
+import type { FetchConsumerGroupsParams } from "../fetchers";
+import { fetchConsumerGroups } from "../fetchers";
 import { kafkaQueries } from "../queryKeys";
 import { useApi } from "../useApi";
 
-export function useKafkaTopics(
+export function useConsumerGroups(
   params: { id?: string; adminUrl?: string } & Omit<
-    FetchKafkaTopicsParams,
-    "getTopics"
+    FetchConsumerGroupsParams,
+    "getConsumerGroups"
   >
 ) {
   const { refetchInterval } = useApiConfiguration();
-  const { topics } = useApi();
+  const { consumerGroups } = useApi();
 
   return useQuery({
-    queryKey: kafkaQueries.instance.topics(params),
+    queryKey: kafkaQueries.instance.consumerGroups(params),
     queryFn: () => {
       if (!params.id) {
         return Promise.reject("Invalid id");
@@ -23,10 +23,10 @@ export function useKafkaTopics(
       if (!params.adminUrl) {
         return Promise.reject("Invalid adminUrl");
       }
-      const api = topics(params.adminUrl);
+      const api = consumerGroups(params.adminUrl);
 
-      return fetchKafkaTopics({
-        getTopics: (...args) => api.getTopics(...args),
+      return fetchConsumerGroups({
+        getConsumerGroups: (...args) => api.getConsumerGroups(...args),
         ...params,
       });
     },

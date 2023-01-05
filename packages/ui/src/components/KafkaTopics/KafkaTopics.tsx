@@ -7,7 +7,7 @@ import {
 } from "@rhoas/app-services-ui-components";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import type { KafkaTopic, KafkaTopicField } from "../../types";
+import type { Topic, TopicField } from "ui-models/src/models/topic";
 import type { EmptyStateNoTopicProps } from "./components";
 import { EmptyStateNoTopic } from "./components";
 import { formattedRetentionSize, formattedRetentionTime } from "./types";
@@ -15,7 +15,7 @@ import { formattedRetentionSize, formattedRetentionTime } from "./types";
 type SubUnion<T, U extends T> = U;
 
 const Columns: SubUnion<
-  KafkaTopicField,
+  TopicField,
   "name" | "partitionsCount" | "config:retention.ms" | "config:retention.bytes"
 >[] = [
   "name",
@@ -24,7 +24,7 @@ const Columns: SubUnion<
   "config:retention.bytes",
 ];
 
-export type KafkaTopicsProps<T extends KafkaTopic> = {
+export type KafkaTopicsProps<T extends Topic> = {
   topics: Array<T> | undefined;
   getUrlFortopic: (row: T) => string;
   onDelete: (row: T) => void;
@@ -46,7 +46,7 @@ export type KafkaTopicsProps<T extends KafkaTopic> = {
 > &
   EmptyStateNoTopicProps;
 
-export const KafkaTopics = <T extends KafkaTopic>({
+export const KafkaTopics = <T extends Topic>({
   topics,
   onDelete,
   onEdit,

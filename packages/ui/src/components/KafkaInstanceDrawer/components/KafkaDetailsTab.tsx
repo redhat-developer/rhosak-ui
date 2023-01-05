@@ -8,7 +8,8 @@ import {
 } from "@patternfly/react-core";
 import { FormatDate, useTranslation } from "@rhoas/app-services-ui-components";
 import type { ReactChild, VoidFunctionComponent } from "react";
-import type { MarketplaceSubscription, Plan } from "../../../types";
+import type { MarketplaceSubscription, Plan } from "ui-models/src/models/kafka";
+import type { Bytes } from "../../../../../ui-models/src/types";
 import { DetailsTabAlert } from "./DetailsTabAlert";
 
 /**
@@ -27,11 +28,11 @@ export type KafkaDetailsTabProps = {
   size: string | undefined;
   ingress: number | undefined;
   egress: number | undefined;
-  storage: number | undefined;
+  storage: Bytes | undefined;
   maxPartitions: number | undefined;
   connections: number | undefined;
   connectionRate: number | undefined;
-  messageSize: number | undefined;
+  messageSize: Bytes | undefined;
   billing: "prepaid" | MarketplaceSubscription | undefined;
   kafkaVersion: string;
 };
@@ -109,7 +110,7 @@ export const KafkaDetailsTab: VoidFunctionComponent<KafkaDetailsTabProps> = ({
             t("storage"),
             storage
               ? t("create-kafka-instance:storage_value", {
-                  value: storage,
+                  value: storage.value,
                 })
               : undefined
           )}
@@ -141,7 +142,7 @@ export const KafkaDetailsTab: VoidFunctionComponent<KafkaDetailsTabProps> = ({
             t("message_size"),
             messageSize
               ? t("create-kafka-instance:message_size_value", {
-                  value: messageSize,
+                  value: messageSize.value,
                 })
               : undefined
           )}

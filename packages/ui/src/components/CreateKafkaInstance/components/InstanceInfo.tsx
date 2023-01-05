@@ -15,9 +15,9 @@ import {
 } from "@patternfly/react-core";
 
 import { ClockIcon } from "@patternfly/react-icons";
-import type { VoidFunctionComponent } from "react";
 import { useTranslation } from "@rhoas/app-services-ui-components";
-import type { MarketplaceSubscription } from "../../../types";
+import type { VoidFunctionComponent } from "react";
+import type { MarketplaceSubscription } from "ui-models/src/models/kafka";
 import type { BillingHelpProps } from "./BillingHelp";
 import { BillingHelp } from "./BillingHelp";
 

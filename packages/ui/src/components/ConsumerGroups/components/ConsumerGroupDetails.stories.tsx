@@ -1,5 +1,5 @@
 import type { ComponentMeta, ComponentStory } from "@storybook/react";
-import type { Consumer } from "../../../types";
+import type { Consumer } from "ui-models/src/models/consumer-group";
 import { ConsumerGroupDetails } from "./ConsumerGroupDetails";
 
 const consumer: Consumer[] = [

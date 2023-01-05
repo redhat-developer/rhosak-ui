@@ -14,7 +14,7 @@ export type FetchTopicsMetricsProps = {
   selectedTopic: string | undefined;
 };
 
-export async function fetchKafkaTopicMetrics({
+export async function fetchTopicsMetrics({
   getMetricsByRangeQuery,
   id,
   duration,

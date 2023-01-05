@@ -1,10 +1,10 @@
-import { assign, createMachine, send, sendParent } from "xstate";
 import {
   CloudProvider,
   CloudRegion,
   MarketplaceSubscription,
   Size,
-} from "../../../types";
+} from "ui-models/src/models/kafka";
+import { assign, createMachine, send, sendParent } from "xstate";
 import {
   CreateKafkaFormData,
   CreateKafkaInstanceError,

@@ -1,4 +1,4 @@
-import { useKafkaUpdateInstanceMutation } from "consoledot-api";
+import { useUpdateKafkaMutation } from "consoledot-api";
 import type { VoidFunctionComponent } from "react";
 import { useCallback } from "react";
 import type { SettingsProps } from "ui";
@@ -11,7 +11,7 @@ export const SettingsRoute: VoidFunctionComponent<
   ControlPlaneNavigationProps
 > = ({ instancesHref }) => {
   const { instance } = useDataPlaneGate(instancesHref);
-  const updateInstance = useKafkaUpdateInstanceMutation();
+  const updateInstance = useUpdateKafkaMutation();
 
   const onSubmitReAuthentication = useCallback<
     SettingsProps["onSubmitReAuthentication"]

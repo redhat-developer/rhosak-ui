@@ -15,7 +15,7 @@ import {
 } from "@patternfly/react-icons";
 import { useTranslation } from "@rhoas/app-services-ui-components";
 import { forwardRef } from "react";
-import type { Status } from "../../../types";
+import type { Status } from "ui-models/src/models/kafka";
 import {
   CreatingStatuses,
   DegradedStatuses,
@@ -24,7 +24,7 @@ import {
   ResumingStatuses,
   SuspendedStatuses,
   SuspendingStatuses,
-} from "../../../types";
+} from "ui-models/src/models/kafka";
 import "./StatusLabel.css";
 
 type StatusLabelProps = {

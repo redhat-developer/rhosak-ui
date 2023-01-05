@@ -4,9 +4,9 @@ import {
   ToggleGroupItem,
   Tooltip,
 } from "@patternfly/react-core";
-import type { VoidFunctionComponent } from "react";
 import { useTranslation } from "@rhoas/app-services-ui-components";
-import type { AZ } from "../../../types";
+import type { VoidFunctionComponent } from "react";
+import type { AZ } from "ui-models/src/models/kafka";
 
 export type FieldAZProps = {
   value: AZ | undefined;

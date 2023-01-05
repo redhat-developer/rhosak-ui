@@ -3,7 +3,7 @@ import type {
   DefaultApi,
   SupportedKafkaSize,
 } from "@rhoas/kafka-management-sdk";
-import type { Plan } from "ui";
+import type { Plan } from "ui-models/src/models/kafka";
 import type { CloudProviderInfoWithRegionsCapacity } from "./fetchProvidersWithRegions";
 
 export type SizeWithLimits = Size & { trialDurationHours: number };

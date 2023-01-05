@@ -10,11 +10,11 @@ import {
 } from "@patternfly/react-core";
 import { useTranslation } from "@rhoas/app-services-ui-components";
 import type React from "react";
-import type { KafkaTopic } from "../../../types";
+import type { Topic } from "ui-models/src/models/topic";
 
 export type StepPartitionsProps = {
-  newTopicData: KafkaTopic;
-  onPartitionsChange: (value: KafkaTopic) => void;
+  newTopicData: Topic;
+  onPartitionsChange: (value: Topic) => void;
   availablePartitionLimit: number;
 };
 

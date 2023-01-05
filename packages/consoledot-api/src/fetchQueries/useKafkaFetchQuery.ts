@@ -3,7 +3,7 @@ import { useKafkaInstanceTransformer } from "../queries";
 import { kafkaQueries } from "../queryKeys";
 import { useApi } from "../useApi";
 
-export function useKafkaInstanceFetchQuery() {
+export function useKafkaFetchQuery() {
   const queryClient = useQueryClient();
   const dataMapper = useKafkaInstanceTransformer();
   const { kafkasFleet } = useApi();

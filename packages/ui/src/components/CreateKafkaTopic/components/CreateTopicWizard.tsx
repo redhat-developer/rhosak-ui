@@ -10,7 +10,7 @@ import {
 import { useTranslation } from "@rhoas/app-services-ui-components";
 import type React from "react";
 import { useState } from "react";
-import type { KafkaTopic } from "../../../types";
+import type { Topic } from "ui-models/src/models/topic";
 import type { ConstantValues } from "../types";
 import type { IWizardFooter } from "./index";
 import {
@@ -27,8 +27,8 @@ export type CreateTopicWizardProps = {
   isSwitchChecked: boolean;
   setIsCreateTopic?: (value: boolean) => void;
   onCloseCreateTopic: () => void;
-  onSave: (topicData: KafkaTopic) => void;
-  initialFieldsValue: KafkaTopic;
+  onSave: (topicData: Topic) => void;
+  initialFieldsValue: Topic;
   checkTopicName: (value: string) => Promise<boolean>;
   availablePartitionLimit: number;
   constantValues: ConstantValues;
@@ -49,7 +49,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
     useState<ValidatedOptions>(ValidatedOptions.default);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [invalidText, setInvalidText] = useState<string>("");
-  const [topicData, setTopicData] = useState<KafkaTopic>(initialFieldsValue);
+  const [topicData, setTopicData] = useState<Topic>(initialFieldsValue);
   const [warningModalOpen, setWarningModalOpen] = useState<boolean>(false);
 
   const closeWizard = () => {

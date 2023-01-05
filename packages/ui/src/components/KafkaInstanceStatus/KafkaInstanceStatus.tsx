@@ -1,8 +1,8 @@
+import { useInterval } from "@rhoas/app-services-ui-components";
 import { differenceInMinutes } from "date-fns";
 import type { VoidFunctionComponent } from "react";
 import { useCallback, useRef, useState } from "react";
-import { useInterval } from "@rhoas/app-services-ui-components";
-import type { Status } from "../../types";
+import type { Status } from "ui-models/src/models/kafka";
 import type { StatusPopoverProps } from "./components";
 import { StatusLabel, StatusPopover, SuspendedPopover } from "./components";
 import { KafkaToPopoverMapping } from "./types";

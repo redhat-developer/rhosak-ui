@@ -1,14 +1,14 @@
 import type { TopicAllOf, TopicsApi } from "@rhoas/kafka-instance-sdk";
 
-export type FetchKafkaTopicParams = {
+export type FetchTopicParams = {
   getTopic: TopicsApi["getTopic"];
   topicName: string;
 };
 
-export async function fetchKafkaTopic({
+export async function fetchTopic({
   getTopic,
   topicName,
-}: FetchKafkaTopicParams): Promise<Required<TopicAllOf>> {
+}: FetchTopicParams): Promise<Required<TopicAllOf>> {
   const response = await getTopic(topicName);
   return response.data as Required<TopicAllOf>;
 }

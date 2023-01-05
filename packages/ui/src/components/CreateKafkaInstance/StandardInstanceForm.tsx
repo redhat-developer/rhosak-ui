@@ -1,7 +1,7 @@
 import { Flex, FlexItem, Form } from "@patternfly/react-core";
 import type { FormEvent, VoidFunctionComponent } from "react";
 import { useCallback } from "react";
-import type { CloudProvider, MarketPlace } from "../../types";
+import type { CloudProvider, MarketPlace } from "ui-models/src/models/kafka";
 import type {
   FieldInstanceNameProps,
   FieldSizeProps,

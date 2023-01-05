@@ -1,17 +1,19 @@
-import type React from "react";
-import { useTranslation } from "@rhoas/app-services-ui-components";
 import {
   FormSection,
-  TextContent,
   Text,
+  TextContent,
   TextVariants,
 } from "@patternfly/react-core";
-import { TextWithLabelPopover } from "@rhoas/app-services-ui-components";
+import {
+  TextWithLabelPopover,
+  useTranslation,
+} from "@rhoas/app-services-ui-components";
 import convert from "convert";
+import type React from "react";
 
 type TopicAdavanceIndexProps = {
-  defaultIndexIntervalSize: number;
-  defaultSegmentIndexSize: number;
+  defaultIndexIntervalSize: bigint;
+  defaultSegmentIndexSize: bigint;
 };
 
 const TopicAdvanceIndex: React.FC<TopicAdavanceIndexProps> = ({

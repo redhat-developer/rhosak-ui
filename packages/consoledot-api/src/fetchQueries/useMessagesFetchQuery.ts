@@ -1,16 +1,16 @@
 import { useQueryClient } from "@tanstack/react-query";
-import type { FetchKafkaTopicMessagesParams } from "../fetchers";
-import { fetchKafkaTopicMessages } from "../fetchers";
+import type { FetchMessagesParams } from "../fetchers";
+import { fetchMessages } from "../fetchers";
 import { kafkaQueries } from "../queryKeys";
 import { useApi } from "../useApi";
 
-export function useKafkaTopicMessagesFetchQuery() {
+export function useMessagesFetchQuery() {
   const { records } = useApi();
   const queryClient = useQueryClient();
 
   return (
     params: { id: string; adminUrl: string } & Omit<
-      FetchKafkaTopicMessagesParams,
+      FetchMessagesParams,
       "consumeRecords"
     >
   ) => {
@@ -26,7 +26,7 @@ export function useKafkaTopicMessagesFetchQuery() {
           return Promise.reject("Invalid adminUrl");
         }
 
-        return fetchKafkaTopicMessages({
+        return fetchMessages({
           consumeRecords: (...args) => api.consumeRecords(...args),
           ...params,
         });

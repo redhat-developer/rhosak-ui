@@ -1,12 +1,12 @@
 import type {
-  FetchKafkaTopicMessagesParams,
-  FetchKafkaTopicParams,
+  FetchConsumerGroupsParams,
+  FetchKafkaMetricsProps,
+  FetchKafkasParams,
+  FetchMessagesParams,
+  FetchTopicParams,
+  FetchTopicsMetricsProps,
+  FetchTopicsParams,
 } from "./fetchers";
-import type { FetchKafkaConsumerGroupsParams } from "./fetchers/fetchKafkaConsumerGroups";
-import type { FetchKafkaInstanceMetricsProps } from "./fetchers/fetchKafkaInstanceMetrics";
-import type { FetchKafkaInstancesParams } from "./fetchers/fetchKafkaInstances";
-import type { FetchTopicsMetricsProps } from "./fetchers/fetchKafkaTopicMetrics";
-import type { FetchKafkaTopicsParams } from "./fetchers/fetchKafkaTopics";
 
 export const masQueries = {
   _root: () => ({ scope: "mas" } as const),
@@ -31,7 +31,7 @@ export const masQueries = {
 
 export const kafkaQueries = {
   _root: () => ({ scope: "kafka" } as const),
-  list: (params: Omit<FetchKafkaInstancesParams, "dataMapper" | "getKafkas">) =>
+  list: (params: Omit<FetchKafkasParams, "dataMapper" | "getKafkas">) =>
     [
       {
         ...kafkaQueries._root(),
@@ -50,7 +50,7 @@ export const kafkaQueries = {
       id,
       adminUrl,
     }: { id?: string; adminUrl?: string } & Omit<
-      FetchKafkaTopicsParams,
+      FetchTopicsParams,
       "getTopics"
     >) =>
       [
@@ -64,7 +64,7 @@ export const kafkaQueries = {
       adminUrl,
       topicName,
     }: { id?: string; adminUrl?: string } & Omit<
-      FetchKafkaTopicParams,
+      FetchTopicParams,
       "getTopic"
     >) =>
       [
@@ -80,7 +80,7 @@ export const kafkaQueries = {
       topicName,
       ...params
     }: { id?: string; adminUrl?: string } & Omit<
-      FetchKafkaTopicMessagesParams,
+      FetchMessagesParams,
       "consumeRecords"
     >) =>
       [
@@ -92,7 +92,7 @@ export const kafkaQueries = {
       ] as const,
     consumerGroups: (
       params: { id?: string; adminUrl?: string } & Omit<
-        FetchKafkaConsumerGroupsParams,
+        FetchConsumerGroupsParams,
         "getConsumerGroups"
       >
     ) =>
@@ -115,7 +115,7 @@ export const kafkaQueries = {
       instance: ({
         id,
         ...params
-      }: Omit<FetchKafkaInstanceMetricsProps, "getMetricsByRangeQuery">) =>
+      }: Omit<FetchKafkaMetricsProps, "getMetricsByRangeQuery">) =>
         [
           {
             ...kafkaQueries.instance._root({ id }),

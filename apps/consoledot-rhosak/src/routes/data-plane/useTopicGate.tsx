@@ -1,4 +1,4 @@
-import { useKafkaTopic } from "consoledot-api";
+import { useTopic } from "consoledot-api";
 import { useEffect } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import type { DataPlaneTopicRouteParams } from "./routesConsts";
@@ -19,7 +19,7 @@ export function useTopicGate(
     throw Error("useDataPlaneGate used outside the expected route");
   }
 
-  const { data: topic, isError } = useKafkaTopic({
+  const { data: topic, isError } = useTopic({
     id: instance.id,
     adminUrl: instance.adminUrl,
     topicName: match.params.topicName,

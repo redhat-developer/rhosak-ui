@@ -21,13 +21,13 @@ import { useTranslation } from "@rhoas/app-services-ui-components";
 import { parseISO } from "date-fns";
 import type { FunctionComponent, VoidFunctionComponent } from "react";
 import { useCallback, useMemo } from "react";
+import type { Kafka } from "ui-models/src/models/kafka";
+import { CreatingStatuses } from "ui-models/src/models/kafka";
 import { useKafkaLabels } from "../../hooks";
-import type { KafkaInstance } from "../../types";
-import { CreatingStatuses } from "../../types";
 import { KafkaConnectionTabP2, KafkaDetailsTab } from "./components";
 
 export type KafkaInstanceDrawerProps = {
-  instance?: KafkaInstance;
+  instance?: Kafka;
   isExpanded: boolean;
   activeTab: KafkaInstanceDrawerTab;
   onTabChange: (tab: KafkaInstanceDrawerTab) => void;

@@ -1,10 +1,10 @@
 import { useTranslation } from "react-i18next";
 import type {
   CloudProvider,
-  KafkaInstanceField,
+  KafkaField,
   SimplifiedStatus,
   Status,
-} from "../types";
+} from "ui-models/src/models/kafka";
 
 export function useKafkaLabels() {
   const { t } = useTranslation("kafka");
@@ -35,13 +35,15 @@ export function useKafkaLabels() {
     gcp: t("common:cloudProviders.gcp"),
     azure: t("common:cloudProviders.azure"),
   };
-  const providerRegions: { [provider in CloudProvider]: { [region: string]: string }} = {
+  const providerRegions: {
+    [provider in CloudProvider]: { [region: string]: string };
+  } = {
     aws: {},
     gcp: {},
     azure: {},
-  }
+  };
   const fields: {
-    [field in KafkaInstanceField]: string;
+    [field in KafkaField]: string;
   } = {
     id: t("fields.id"),
     name: t("fields.name"),
@@ -71,6 +73,6 @@ export function useKafkaLabels() {
     statuses,
     statusesSimplified,
     providers,
-    providerRegions
+    providerRegions,
   };
 }

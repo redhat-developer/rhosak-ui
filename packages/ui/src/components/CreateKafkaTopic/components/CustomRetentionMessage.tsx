@@ -9,15 +9,15 @@ import {
 } from "@patternfly/react-core";
 import type { RetentionTimeUnits } from "@rhoas/app-services-ui-components";
 import type React from "react";
-import type { KafkaTopic } from "../../../types";
+import type { Topic } from "ui-models/src/models/topic";
 import type { SelectOptions } from "../types";
 
 export type CustomRetentionMessageProps = NumberInputProps &
   SelectProps & {
     id?: string;
     selectOptions: SelectOptions[];
-    topicData: KafkaTopic;
-    setTopicData: (data: KafkaTopic) => void;
+    topicData: Topic;
+    setTopicData: (data: Topic) => void;
   };
 
 const CustomRetentionMessage: React.FC<CustomRetentionMessageProps> = ({

@@ -26,7 +26,8 @@ import { useMachine } from "@xstate/react";
 import { parseISO } from "date-fns";
 import type { VoidFunctionComponent } from "react";
 import { useMemo, useState } from "react";
-import type { DateIsoString, Message } from "../../types";
+import type { Message } from "ui-models/src/models/message";
+import type { DateIsoString } from "../../../../ui-models/src/types";
 import type { MessageDetailsProps } from "./components";
 import {
   FilterGroup,

@@ -11,19 +11,21 @@ import {
 import { useTranslation } from "@rhoas/app-services-ui-components";
 import type React from "react";
 import { useState } from "react";
-import type { KafkaTopic } from "../../../types";
+import type { Topic } from "ui-models/src/models/topic";
+import {
+  RetentionSizeUnits,
+  RetentionTimeUnits,
+} from "../../KafkaTopics/types";
 import {
   retentionSizeSelectOptions,
-  RetentionSizeUnits,
   retentionTimeSelectOptions,
-  RetentionTimeUnits,
 } from "../types";
 import { CustomRetentionMessage } from "./CustomRetentionMessage";
 import { CustomRetentionSize } from "./CustomRetentionSize";
 
 export type StepMessageRetentionProps = {
-  newTopicData: KafkaTopic;
-  onChangeMessageRetention: (topic: KafkaTopic) => void;
+  newTopicData: Topic;
+  onChangeMessageRetention: (topic: Topic) => void;
 };
 
 export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({

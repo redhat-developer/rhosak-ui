@@ -1,4 +1,4 @@
-import { useKafkaInstance } from "consoledot-api";
+import { useKafka } from "consoledot-api";
 import { useEffect } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import type { DataPlaneRouteParams } from "./routesConsts";
@@ -12,7 +12,7 @@ export function useDataPlaneGate(instancesHref: string) {
   if (!match) {
     throw Error("useDataPlaneGate used outside the expected route");
   }
-  const { data: instance, isError } = useKafkaInstance(match.params.id);
+  const { data: instance, isError } = useKafka(match.params.id);
 
   useEffect(() => {
     if (isError) {

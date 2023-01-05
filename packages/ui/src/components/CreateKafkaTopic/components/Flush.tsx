@@ -1,16 +1,18 @@
-import type React from "react";
-import { useTranslation } from "@rhoas/app-services-ui-components";
 import {
   FormSection,
-  TextVariants,
-  TextContent,
   Text,
+  TextContent,
+  TextVariants,
 } from "@patternfly/react-core";
-import { TextWithLabelPopover } from "@rhoas/app-services-ui-components";
+import {
+  TextWithLabelPopover,
+  useTranslation,
+} from "@rhoas/app-services-ui-components";
+import type React from "react";
 
 type FlushProps = {
-  defaultFlushIntervalMessages: string;
-  defaultFlushIntervalTime: string;
+  defaultFlushIntervalMessages: bigint;
+  defaultFlushIntervalTime: bigint;
 };
 
 const Flush: React.FC<FlushProps> = ({

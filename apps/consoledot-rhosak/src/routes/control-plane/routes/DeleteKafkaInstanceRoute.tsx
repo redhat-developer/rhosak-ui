@@ -1,11 +1,9 @@
-import {
-  useKafkaDeleteInstanceMutation,
-  useKafkaInstance,
-} from "consoledot-api";
+import { useDeleteKafkaMutation, useKafka } from "consoledot-api";
 import type { FunctionComponent } from "react";
 import { useCallback, useEffect } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
-import { DeleteKafkaInstance, ReadyStatuses } from "ui";
+import { DeleteKafkaInstance } from "ui";
+import { ReadyStatuses } from "ui-models/src/models/kafka";
 import type {
   ControlPlaneNavigationProps,
   ControlPlaneRouteParams,
@@ -18,9 +16,8 @@ export const DeleteKafkaInstanceRoute: FunctionComponent<
   const history = useHistory();
   const match = useRouteMatch<ControlPlaneRouteParams>(ControlPlaneRoutePath);
 
-  const { data: instance, isError } = useKafkaInstance(match?.params.id);
-  const { mutateAsync, isLoading: isDeleting } =
-    useKafkaDeleteInstanceMutation();
+  const { data: instance, isError } = useKafka(match?.params.id);
+  const { mutateAsync, isLoading: isDeleting } = useDeleteKafkaMutation();
 
   const onCancel = useCallback(() => {
     history.push(instancesHref);

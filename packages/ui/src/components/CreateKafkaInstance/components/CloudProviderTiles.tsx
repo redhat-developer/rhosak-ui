@@ -7,10 +7,10 @@ import {
   Skeleton,
   Tile,
 } from "@patternfly/react-core";
-import type { VoidFunctionComponent } from "react";
 import { useTranslation } from "@rhoas/app-services-ui-components";
+import type { VoidFunctionComponent } from "react";
+import type { CloudProvider } from "ui-models/src/models/kafka";
 import { AWSLogo, AzureLogo, GCPLogo } from "../../Logos";
-import type { CloudProvider } from "../../../types";
 import type { CloudProviderInfo } from "../types";
 
 export type CloudProvidersTilesProps = {

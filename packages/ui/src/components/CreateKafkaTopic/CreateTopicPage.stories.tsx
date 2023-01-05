@@ -1,9 +1,9 @@
 import type { ComponentMeta, ComponentStory } from "@storybook/react";
 import { userEvent, within } from "@storybook/testing-library";
+import { RetentionSizeUnits, RetentionTimeUnits } from "../KafkaTopics";
 import { fakeApi } from "../storiesHelpers";
 import { constantValues } from "./components/storiesHelpers";
 import { CreateTopicPage } from "./CreateTopicPage";
-import { RetentionSizeUnits, RetentionTimeUnits } from "./types";
 
 export default {
   component: CreateTopicPage,

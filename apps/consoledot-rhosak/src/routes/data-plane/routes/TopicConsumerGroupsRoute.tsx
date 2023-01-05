@@ -5,7 +5,7 @@ import {
 } from "@rhoas/app-services-ui-components";
 import {
   KafkaConsumerGroupSortableColumns,
-  useKafkaInstanceConsumerGroups,
+  useConsumerGroups,
 } from "consoledot-api";
 import type { VoidFunctionComponent } from "react";
 import { useCallback } from "react";
@@ -40,7 +40,7 @@ export const TopicConsumerGroupsRoute: VoidFunctionComponent<
     "desc"
   );
 
-  const { data } = useKafkaInstanceConsumerGroups({
+  const { data } = useConsumerGroups({
     id: instance?.id,
     adminUrl: instance?.adminUrl,
     page,

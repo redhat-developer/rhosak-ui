@@ -20,7 +20,7 @@ import {
 } from "@patternfly/react-table";
 import type { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
-import type { Consumer } from "../../../types";
+import type { Consumer } from "ui-models/src/models/consumer-group";
 import "../ConsumerGroup.css";
 import type { OffsetValue } from "../types";
 import { OffsetSelect } from "./OffsetSelect";

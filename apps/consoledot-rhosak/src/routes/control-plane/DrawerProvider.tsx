@@ -1,4 +1,4 @@
-import { useKafkaInstance } from "consoledot-api";
+import { useKafka } from "consoledot-api";
 import type { FunctionComponent, MutableRefObject } from "react";
 import {
   createContext,
@@ -38,7 +38,7 @@ export const DrawerProvider: FunctionComponent = ({ children }) => {
     match.params.section !== undefined
       ? undefined
       : match.params.id;
-  const { data: instance } = useKafkaInstance(selectedInstance);
+  const { data: instance } = useKafka(selectedInstance);
   const [isExpanded, setIsExpanded] = useState(
     selectedInstance !== undefined && match.isExact
   );

@@ -1,3 +1,3 @@
-export * from "./useKafkaCreateInstanceMutation";
-export * from "./useKafkaDeleteInstanceMutation";
-export * from "./useKafkaUpdateInstanceMutation";
+export * from "./useCreateKafkaMutation";
+export * from "./useDeleteKafkaMutation";
+export * from "./useUpdateKafkaMutation";

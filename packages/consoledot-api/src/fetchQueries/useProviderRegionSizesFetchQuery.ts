@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import type { Plan } from "ui";
+import type { Plan } from "ui-models/src/models/kafka";
 import type { CloudProviderInfoWithRegionsCapacity } from "../fetchers";
 import { fetchProviderRegionSizes } from "../fetchers";
 import { providerQueries } from "../queryKeys";

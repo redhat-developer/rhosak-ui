@@ -1,6 +1,6 @@
 import type React from "react";
 import { useState } from "react";
-import type { KafkaTopic } from "../../types";
+import type { Topic } from "ui-models/src/models/topic";
 import { CreateTopicHead, CreateTopicWizard } from "./components";
 import type { ConstantValues } from "./types";
 
@@ -8,8 +8,8 @@ export type CreateTopicPageProps = {
   kafkaName: string;
   kafkaPageLink: string;
   kafkaInstanceLink: string;
-  onSave: (topicData: KafkaTopic) => void;
-  initialTopicValues: KafkaTopic;
+  onSave: (topicData: Topic) => void;
+  initialTopicValues: Topic;
   onCloseCreateTopic: () => void;
   checkTopicName: (value: string) => Promise<boolean>;
   availablePartitionLimit: number;

@@ -4,7 +4,7 @@ import { formatISO, parseISO, setHours, setMinutes } from "date-fns";
 import { formatInTimeZone } from "date-fns-tz";
 import type { VoidFunctionComponent } from "react";
 import { useState } from "react";
-import type { DateIsoString } from "../../../types";
+import type { DateIsoString } from "../../../../../ui-models/src/types";
 
 export type DateTimePickerProps = {
   isDisabled: boolean;
@@ -21,7 +21,7 @@ export const DateTimePicker: VoidFunctionComponent<DateTimePickerProps> = ({
 
   const onSelectCalendar: DatePickerProps["onChange"] = (_, newDate) => {
     if (newDate) {
-      onChange(formatISO(newDate));
+      onChange(formatISO(newDate) as DateIsoString);
     }
   };
 
@@ -47,7 +47,7 @@ export const DateTimePicker: VoidFunctionComponent<DateTimePickerProps> = ({
         newDate = setMinutes(newDate, minute);
       }
 
-      onChange(formatISO(newDate));
+      onChange(formatISO(newDate) as DateIsoString);
       setIsTimeSelected(true);
     }
   };

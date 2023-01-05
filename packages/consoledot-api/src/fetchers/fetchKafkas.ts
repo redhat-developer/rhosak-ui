@@ -1,6 +1,6 @@
 import type { DefaultApi, KafkaRequest } from "@rhoas/kafka-management-sdk";
-import type { SimplifiedStatus } from "ui";
-import { SimplifiedStatuses } from "ui";
+import type { SimplifiedStatus } from "ui-models/src/models/kafka";
+import { SimplifiedStatuses } from "ui-models/src/models/kafka";
 import type { KafkaInstanceEnhanced } from "../transformers/kafkaRequestToKafkaInstanceEnhanched";
 import type { KafkaInstancesSortableColumn } from "../types";
 import { valuesToQuery } from "./valuesToQuery";
@@ -14,7 +14,7 @@ const uiColumnMapping: {
   region: "region",
   createdAt: "created_at",
 };
-export type FetchKafkaInstancesParams = {
+export type FetchKafkasParams = {
   getKafkas: DefaultApi["getKafkas"];
   dataMapper: (data: KafkaRequest) => Promise<KafkaInstanceEnhanced>;
   page: number;
@@ -26,9 +26,7 @@ export type FetchKafkaInstancesParams = {
   direction: "asc" | "desc";
 };
 
-export async function fetchKafkaInstances(
-  params: FetchKafkaInstancesParams
-): Promise<{
+export async function fetchKafkas(params: FetchKafkasParams): Promise<{
   instances: KafkaInstanceEnhanced[];
   count: number;
 }> {

@@ -1,13 +1,13 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useApiConfiguration } from "../ApiProvider";
-import type { FetchKafkaInstancesParams } from "../fetchers";
-import { fetchKafkaInstances } from "../fetchers";
+import type { FetchKafkasParams } from "../fetchers";
+import { fetchKafkas } from "../fetchers";
 import { kafkaQueries } from "../queryKeys";
 import { useApi } from "../useApi";
 import { useKafkaInstanceTransformer } from "./useKafkaInstanceTransformer";
 
-export function useKafkaInstances(
-  params: Omit<FetchKafkaInstancesParams, "dataMapper" | "getKafkas">
+export function useKafkas(
+  params: Omit<FetchKafkasParams, "dataMapper" | "getKafkas">
 ) {
   const { refetchInterval } = useApiConfiguration();
   const queryClient = useQueryClient();
@@ -18,7 +18,7 @@ export function useKafkaInstances(
   return useQuery({
     queryKey: kafkaQueries.list(params),
     queryFn: async () => {
-      const res = await fetchKafkaInstances({
+      const res = await fetchKafkas({
         getKafkas: (...args) => api.getKafkas(...args),
         dataMapper,
         ...params,

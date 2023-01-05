@@ -1,4 +1,4 @@
-import { useKafkaTopicMessagesFetchQuery } from "consoledot-api";
+import { useMessagesFetchQuery } from "consoledot-api";
 import type { VoidFunctionComponent } from "react";
 import { useCallback } from "react";
 import type { KafkaMessageBrowserProps } from "ui";
@@ -11,7 +11,7 @@ export const TopicMessagesGroupsRoute: VoidFunctionComponent<
   DataPlaneNavigationProps
 > = ({ instanceDetailsHref, instancesHref }) => {
   const { instance, topic } = useTopicGate(instancesHref, instanceDetailsHref);
-  const kafkaTopicMessagesFetchQuery = useKafkaTopicMessagesFetchQuery();
+  const kafkaTopicMessagesFetchQuery = useMessagesFetchQuery();
 
   const getMessages = useCallback<KafkaMessageBrowserProps["getMessages"]>(
     async (params) => {

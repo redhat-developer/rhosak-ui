@@ -1,10 +1,10 @@
 import { Button, Modal } from "@patternfly/react-core";
 import { useTranslation } from "@rhoas/app-services-ui-components";
-import type { KafkaTopic } from "../../../types";
+import type { Topic } from "ui-models/src/models/topic";
 
 export type PartitionLimitWarningProps = {
-  topicData: KafkaTopic;
-  onSave: (topicData: KafkaTopic) => void;
+  topicData: Topic;
+  onSave: (topicData: Topic) => void;
   isModalOpen: boolean;
   setIsModalOpen: (value: boolean) => void;
 };

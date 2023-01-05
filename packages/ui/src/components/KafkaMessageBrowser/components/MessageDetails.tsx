@@ -21,7 +21,7 @@ import {
 import { FormatDate, useTranslation } from "@rhoas/app-services-ui-components";
 import { parseISO } from "date-fns";
 import type { VoidFunctionComponent } from "react";
-import type { Message } from "../../../types";
+import type { Message } from "ui-models/src/models/message";
 import { beautifyUnknownValue } from "../utils";
 import { NoDataCell } from "./NoDataCell";
 

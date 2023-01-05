@@ -1,7 +1,7 @@
 import { action } from "@storybook/addon-actions";
 import type { ComponentMeta, ComponentStory } from "@storybook/react";
+import { SimplifiedStatuses } from "ui-models/src/models/kafka";
 import { fakeApi } from "../storiesHelpers";
-import { SimplifiedStatuses } from "../../types";
 import { KafkaInstances as KafkaInstancesComp } from "./KafkaInstances";
 import { instances } from "./storiesHelper";
 

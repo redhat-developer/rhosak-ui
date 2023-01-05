@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { useApiConfiguration } from "../ApiProvider";
-import type { FetchKafkaTopicParams } from "../fetchers";
-import { fetchKafkaTopic } from "../fetchers";
+import type { FetchTopicParams } from "../fetchers";
+import { fetchTopic } from "../fetchers";
 import { kafkaQueries } from "../queryKeys";
 import { useApi } from "../useApi";
 
-export function useKafkaTopic(
+export function useTopic(
   params: { id?: string; adminUrl?: string } & Omit<
-    FetchKafkaTopicParams,
+    FetchTopicParams,
     "getTopic"
   >
 ) {
@@ -25,7 +25,7 @@ export function useKafkaTopic(
       }
       const api = topics(params.adminUrl);
 
-      return fetchKafkaTopic({
+      return fetchTopic({
         getTopic: (...args) => api.getTopic(...args),
         ...params,
       });

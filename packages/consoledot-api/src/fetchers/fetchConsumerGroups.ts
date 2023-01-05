@@ -3,10 +3,10 @@ import type {
   GroupsApi,
   SortDirection,
 } from "@rhoas/kafka-instance-sdk";
-import type { ConsumerGroup } from "ui";
+import type { ConsumerGroup } from "ui-models/src/models/consumer-group";
 import type { KafkaConsumerGroupSortableColumn } from "../types";
 
-export type FetchKafkaConsumerGroupsParams = {
+export type FetchConsumerGroupsParams = {
   getConsumerGroups: GroupsApi["getConsumerGroups"];
   page?: number;
   perPage?: number;
@@ -16,7 +16,7 @@ export type FetchKafkaConsumerGroupsParams = {
   groupId?: string;
 };
 
-export async function fetchKafkaConsumerGroups({
+export async function fetchConsumerGroups({
   getConsumerGroups,
   page,
   perPage,
@@ -24,7 +24,7 @@ export async function fetchKafkaConsumerGroups({
   groupId,
   sort,
   direction,
-}: FetchKafkaConsumerGroupsParams): Promise<{
+}: FetchConsumerGroupsParams): Promise<{
   groups: ConsumerGroup[];
   count: number;
 }> {
@@ -39,10 +39,12 @@ export async function fetchKafkaConsumerGroups({
     sort
   );
   const groups = (response.data.items || []).map<ConsumerGroup>((t) => ({
-    consumerGroupId: t.groupId || "",
-    activeMembers: t.metrics?.activeConsumers || 0,
-    partitionsWithLag: t.metrics?.laggingPartitions || 0,
+    groupId: t.groupId || "",
     state: stateMapping[t.state as ConsumerGroupState],
+    consumers: t.consumers,
+    activeConsumers: t.metrics?.activeConsumers,
+    laggingPartitions: t.metrics?.laggingPartitions,
+    unassignedPartitions: t.metrics?.unassignedPartitions,
   }));
   const count = response.data.total;
   return { count, groups };

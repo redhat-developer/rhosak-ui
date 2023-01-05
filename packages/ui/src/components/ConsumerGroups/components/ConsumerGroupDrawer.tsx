@@ -19,14 +19,14 @@ import {
 import type { FunctionComponent, ReactNode } from "react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import type { Consumer, ConsumerGroupState } from "../../../types";
+import type { Consumer, State } from "ui-models/src/models/consumer-group";
 import "./ConsumerGroup.css";
 import { ConsumerGroupDetails } from "./ConsumerGroupDetails";
 
 export type ConsumerGroupDrawerProps = {
   children: ReactNode;
   consumerGroupByTopic: boolean;
-  state: ConsumerGroupState;
+  state: State;
   activeMembers: number;
   partitionsWithLag: number;
   consumers: Consumer[];

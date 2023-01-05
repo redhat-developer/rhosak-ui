@@ -1,4 +1,4 @@
-import type { Message } from "../../types";
+import type { Message } from "ui-models/src/models/message";
 
 export function isSameMessage(m1: Message, m2: Message) {
   return JSON.stringify(m1) === JSON.stringify(m2);

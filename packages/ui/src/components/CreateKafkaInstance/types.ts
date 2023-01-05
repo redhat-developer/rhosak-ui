@@ -6,7 +6,7 @@ import type {
   Plan,
   Quota,
   Size,
-} from "../../types";
+} from "ui-models/src/models/kafka";
 
 export type CreateKafkaInstanceError =
   | "insufficient-quota"
@@ -31,10 +31,10 @@ export type CloudProviderInfo = {
   regions: Array<RegionInfo>;
   defaultRegion?: CloudRegion;
 };
-export type CloudProviders = Array<CloudProviderInfo>;
+export type CloudProvidersInfo = Array<CloudProviderInfo>;
 export type StandardPlanInitializationData = {
   defaultProvider: CloudProvider | undefined;
-  availableProviders: CloudProviders;
+  availableProviders: CloudProvidersInfo;
   instanceAvailability: StandardPlanAvailability;
   remainingPrepaidQuota: Quota | undefined;
   remainingMarketplaceQuota: Quota | undefined;
@@ -43,7 +43,7 @@ export type StandardPlanInitializationData = {
 };
 export type TrialPlanInitializationData = {
   defaultProvider: CloudProvider | undefined;
-  availableProviders: CloudProviders;
+  availableProviders: CloudProvidersInfo;
   instanceAvailability: TrialPlanAvailability;
   plan: "developer";
 };

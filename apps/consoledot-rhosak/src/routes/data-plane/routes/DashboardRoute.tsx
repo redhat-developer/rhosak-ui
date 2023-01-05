@@ -1,9 +1,9 @@
 import {
-  useKafkaInstanceFetchQuery,
-  useKafkaInstanceKpiMetricsFetchQuery,
-  useKafkaInstanceMetricsFetchQuery,
-  useKafkaInstanceTopicMetricsFetchQuery,
-  useKafkaInstanceTopicsFetchQuery,
+  useKafkaFetchQuery,
+  useKafkaKpisFetchQuery,
+  useKafkaMetricsFetchQuery,
+  useTopicsFetchQuery,
+  useTopicsMetricsFetchQuery,
 } from "consoledot-api";
 import {
   metricsDismissLagAlerts,
@@ -33,11 +33,11 @@ export const DashboardRoute: VoidFunctionComponent<
     metricsDismissLagAlerts();
   }, []);
 
-  const queryInstance = useKafkaInstanceFetchQuery();
-  const queryKpisMetrics = useKafkaInstanceKpiMetricsFetchQuery();
-  const queryInstanceMetrics = useKafkaInstanceMetricsFetchQuery();
-  const queryTopicMetrics = useKafkaInstanceTopicMetricsFetchQuery();
-  const queryTopics = useKafkaInstanceTopicsFetchQuery();
+  const queryInstance = useKafkaFetchQuery();
+  const queryKpisMetrics = useKafkaKpisFetchQuery();
+  const queryInstanceMetrics = useKafkaMetricsFetchQuery();
+  const queryTopicMetrics = useTopicsMetricsFetchQuery();
+  const queryTopics = useTopicsFetchQuery();
 
   const getMetricsKpi: MetricsProps["getMetricsKpi"] = useCallback(async () => {
     const kpis = await queryKpisMetrics(params.id);

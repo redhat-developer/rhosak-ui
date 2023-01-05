@@ -1,6 +1,6 @@
 import { useSelector } from "@xstate/react";
 import { useCallback } from "react";
-import type { CloudProvider, CloudRegion } from "../../../types";
+import type { CloudProvider, CloudRegion } from "ui-models/src/models/kafka";
 import type { CloudProviderInfo, CreateKafkaInstanceError } from "../types";
 import type { TrialPlanMachineContext } from "./TrialPlanMachine";
 import { useCreateKafkaInstance } from "./useCreateKafkaInstance";

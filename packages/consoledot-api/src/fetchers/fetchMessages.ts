@@ -1,7 +1,8 @@
 import type { Record, RecordsApi } from "@rhoas/kafka-instance-sdk";
-import type { DateIsoString, Message } from "ui";
+import type { Message } from "ui-models/src/models/message";
+import type { DateIsoString } from "../../../ui-models/src/types";
 
-export type FetchKafkaTopicMessagesParams = {
+export type FetchMessagesParams = {
   consumeRecords: RecordsApi["consumeRecords"];
   topicName: string;
   partition?: number;
@@ -10,14 +11,14 @@ export type FetchKafkaTopicMessagesParams = {
   limit: number;
 };
 
-export async function fetchKafkaTopicMessages({
+export async function fetchMessages({
   topicName,
   consumeRecords,
   partition,
   offset,
   timestamp,
   limit,
-}: FetchKafkaTopicMessagesParams): Promise<Message[]> {
+}: FetchMessagesParams): Promise<Message[]> {
   const response = await consumeRecords(
     topicName,
     undefined,
@@ -30,7 +31,7 @@ export async function fetchKafkaTopicMessages({
   return response.data.items.map((m: Record) => ({
     partition: m.partition,
     offset: m.offset,
-    timestamp: m.timestamp,
+    timestamp: m.timestamp as DateIsoString,
     key: m.key,
     value: m.value,
     headers: m.headers || {},

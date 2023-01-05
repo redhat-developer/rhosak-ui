@@ -8,11 +8,10 @@ import {
   TextInput,
   ToolbarItem,
 } from "@patternfly/react-core";
-
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import type { VoidFunctionComponent } from "react";
 import { useState } from "react";
-import { useTranslation } from "@rhoas/app-services-ui-components";
-import type { DateIsoString } from "../../../types";
+import type { DateIsoString } from "../../../../../ui-models/src/types";
 import { DateTimePicker } from "./DateTimePicker";
 
 type Category = "offset" | "timestamp" | "epoch" | "latest";

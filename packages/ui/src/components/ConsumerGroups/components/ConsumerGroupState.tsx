@@ -1,9 +1,9 @@
 import type { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
-import type { ConsumerGroupState } from "../../../types";
+import type { State } from "ui-models/src/models/consumer-group";
 
 export type ConsumerGroupStateLabelProps = {
-  state: ConsumerGroupState;
+  state: State;
 };
 
 export const ConsumerGroupStateLabel: FunctionComponent<

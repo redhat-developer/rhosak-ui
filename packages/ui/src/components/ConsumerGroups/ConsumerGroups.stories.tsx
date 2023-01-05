@@ -1,19 +1,21 @@
 import type { ComponentMeta, ComponentStory } from "@storybook/react";
-import type { ConsumerGroup } from "../../types";
+import type { ConsumerGroup } from "ui-models/src/models/consumer-group";
 import { ConsumerGroups } from "./ConsumerGroups";
 
 const consumers: ConsumerGroup[] = [
   {
-    consumerGroupId: "consumer-123",
+    groupId: "consumer-123",
     activeMembers: 1,
     partitionsWithLag: 2,
     state: "CompletingRebalance",
+    consumers: [],
   },
   {
-    consumerGroupId: "consumer-233",
+    groupId: "consumer-233",
     activeMembers: 2,
     partitionsWithLag: 3,
     state: "Stable",
+    consumers: [],
   },
 ];
 

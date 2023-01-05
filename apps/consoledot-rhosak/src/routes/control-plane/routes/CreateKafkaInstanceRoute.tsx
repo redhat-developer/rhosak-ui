@@ -1,7 +1,7 @@
 import { QuickStartContext } from "@patternfly/quickstarts";
 import type { CreateKafkaInstanceServices } from "@rhoas/app-services-ui-components";
 import { CreateKafkaInstance } from "@rhoas/app-services-ui-components";
-import { useKafkaCreateInstanceMutation } from "consoledot-api";
+import { useCreateKafkaMutation } from "consoledot-api";
 import type { FunctionComponent } from "react";
 import { useCallback, useContext } from "react";
 import { useHistory } from "react-router-dom";
@@ -14,7 +14,7 @@ export const CreateKafkaInstanceRoute: FunctionComponent<
 > = ({ instancesHref }) => {
   const history = useHistory();
   const callbacks = useCreateKafkaCallbacks();
-  const createKafkaInstance = useKafkaCreateInstanceMutation();
+  const createKafkaInstance = useCreateKafkaMutation();
   const qsContext = useContext(QuickStartContext);
 
   const onClickKafkaOverview = () => {

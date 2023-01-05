@@ -5,7 +5,7 @@ import type { CreateKafkaFormData, CreateKafkaInstanceError } from "ui";
 import { kafkaQueries, masQueries } from "../queryKeys";
 import { useApi } from "../useApi";
 
-export function useKafkaCreateInstanceMutation() {
+export function useCreateKafkaMutation() {
   const { kafkasFleet } = useApi();
   const queryClient = useQueryClient();
 

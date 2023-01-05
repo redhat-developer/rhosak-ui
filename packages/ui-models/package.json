@@ -1,0 +1,15 @@
+{
+  "name": "ui-models",
+  "version": "0.0.0",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "license": "MIT",
+  "scripts": {
+    "lint": "TIMING=1 eslint \"**/*.ts*\""
+  },
+  "devDependencies": {
+    "typescript": "4.9.4",
+    "eslint-config-custom": "*",
+    "tsconfig": "*"
+  }
+}

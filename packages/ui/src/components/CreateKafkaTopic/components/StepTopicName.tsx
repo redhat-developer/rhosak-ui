@@ -11,12 +11,12 @@ import {
 import { useTranslation } from "@rhoas/app-services-ui-components";
 import type React from "react";
 import { useCallback, useEffect } from "react";
-import type { KafkaTopic } from "../../../types";
+import type { Topic } from "ui-models/src/models/topic";
 import { useValidateTopic } from "../types";
 
 export type StepTopicNameProps = {
-  newTopicData: KafkaTopic;
-  onTopicNameChange: (value: KafkaTopic) => void;
+  newTopicData: Topic;
+  onTopicNameChange: (value: Topic) => void;
   topicNameValidated: ValidatedOptions;
   onValidationCheck: (value: ValidatedOptions) => void;
   invalidText: string;

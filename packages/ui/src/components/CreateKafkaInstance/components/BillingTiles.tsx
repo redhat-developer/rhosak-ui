@@ -10,10 +10,10 @@ import {
   HelperTextItem,
   Tile,
 } from "@patternfly/react-core";
-import type { VoidFunctionComponent } from "react";
 import { useTranslation } from "@rhoas/app-services-ui-components";
+import type { VoidFunctionComponent } from "react";
+import type { MarketPlace } from "ui-models/src/models/kafka";
 import { AWSLogo, AzureLogo, GCPLogo, RedhatLogo } from "../../Logos";
-import type { MarketPlace } from "../../../types";
 
 export type BillingTilesProps = {
   value: "prepaid" | string | undefined;

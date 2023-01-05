@@ -1,19 +1,18 @@
 import type {
   SortDirection,
-  Topic,
+  Topic as ApiTopic,
   TopicsApi,
 } from "@rhoas/kafka-instance-sdk";
+import type { Plan } from "ui-models/src/models/kafka";
+import type { Topic } from "ui-models/src/models/topic";
 import type {
-  Bytes,
-  KafkaTopic,
-  KafkaTopicConfig,
-  KafkaTopicConfigField,
-  Milliseconds,
-  Plan,
-} from "ui";
+  TopicConfig,
+  TopicConfigField,
+} from "ui-models/src/models/topic-config";
+import type { Bytes, Milliseconds } from "../../../ui-models/src/types";
 import type { KafkaTopicsSortableColumn } from "../types";
 
-export type FetchKafkaTopicsParams = {
+export type FetchTopicsParams = {
   getTopics: TopicsApi["getTopics"];
   page?: number;
   perPage?: number;
@@ -23,7 +22,7 @@ export type FetchKafkaTopicsParams = {
   plan: Plan;
 };
 
-export async function fetchKafkaTopics({
+export async function fetchTopics({
   getTopics,
   page,
   perPage,
@@ -31,7 +30,7 @@ export async function fetchKafkaTopics({
   sort,
   direction,
   plan,
-}: FetchKafkaTopicsParams): Promise<{ topics: KafkaTopic[]; count: number }> {
+}: FetchTopicsParams): Promise<{ topics: Topic[]; count: number }> {
   const d = plan === "developer" ? developerDefaults : standardDefaults;
   const response = await getTopics(
     undefined,
@@ -42,14 +41,12 @@ export async function fetchKafkaTopics({
     direction,
     sort
   );
-  const topics = (response.data.items || []).map<KafkaTopic>((t: Topic) => {
+  const topics = (response.data.items || []).map<Topic>((t: ApiTopic) => {
     const cm = Object.fromEntries<string>(
-      t.config?.map((c) => [c.key as KafkaTopicConfigField, c.value]) || []
+      t.config?.map((c) => [c.key as TopicConfigField, c.value]) || []
     );
-    const config: KafkaTopicConfig = {
-      "cleanup.policy": cm[
-        "cleanup.policy"
-      ] as KafkaTopicConfig["cleanup.policy"],
+    const config: TopicConfig = {
+      "cleanup.policy": cm["cleanup.policy"] as TopicConfig["cleanup.policy"],
       "delete.retention.ms": configValueToMilliseconds(
         cm["delete.retention.ms"],
         d["delete.retention.ms"]
@@ -72,7 +69,7 @@ export async function fetchKafkaTopics({
       ),
       "message.timestamp.type": cm[
         "message.timestamp.type"
-      ] as KafkaTopicConfig["message.timestamp.type"],
+      ] as TopicConfig["message.timestamp.type"],
       "min.compaction.lag.ms": configValueToMilliseconds(
         cm["min.compaction.lag.ms"],
         d["min.compaction.lag.ms"]
@@ -95,7 +92,7 @@ export async function fetchKafkaTopics({
       ),
       "compression.type": cm[
         "compression.type"
-      ] as KafkaTopicConfig["compression.type"],
+      ] as TopicConfig["compression.type"],
       "file.delete.delay.ms": configValueToMilliseconds(
         cm["file.delete.delay.ms"],
         d["file.delete.delay.ms"]
@@ -177,7 +174,7 @@ function configValueToBoolean(value: string, defaultIfError: boolean): boolean {
   }
 }
 
-export const developerDefaults: KafkaTopicConfig = {
+export const developerDefaults: TopicConfig = {
   "cleanup.policy": "delete",
   "delete.retention.ms": { type: "ms", value: BigInt("86400000") },
   "max.compaction.lag.ms": { type: "ms", value: BigInt("9223372036854775807") },
@@ -207,7 +204,7 @@ export const developerDefaults: KafkaTopicConfig = {
   preallocate: false,
 } as const;
 
-export const standardDefaults: KafkaTopicConfig = {
+export const standardDefaults: TopicConfig = {
   "cleanup.policy": "delete",
   "delete.retention.ms": { type: "ms", value: BigInt("86400000") },
   "max.compaction.lag.ms": { type: "ms", value: BigInt("9223372036854775807") },

@@ -1,9 +1,11 @@
 import type { SliderProps } from "@patternfly/react-core";
 import { Grid, GridItem, Skeleton, Slider } from "@patternfly/react-core";
+import {
+  FormGroupWithPopover,
+  useTranslation,
+} from "@rhoas/app-services-ui-components";
 import type { VoidFunctionComponent } from "react";
-import { useTranslation } from "@rhoas/app-services-ui-components";
-import { FormGroupWithPopover } from "@rhoas/app-services-ui-components";
-import type { Size } from "../../../types";
+import type { Size } from "ui-models/src/models/kafka";
 import { FieldSizeHelperText } from "./FieldSizeHelperText";
 import { FieldSizeHelperTextOverQuota } from "./FieldSizeHelperTextOverQuota";
 import { FieldSizeHelperTextTrial } from "./FieldSizeHelperTextTrial";

@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { kafkaQueries, masQueries } from "../queryKeys";
 import { useApi } from "../useApi";
 
-export function useKafkaDeleteInstanceMutation() {
+export function useDeleteKafkaMutation() {
   const { kafkasFleet } = useApi();
   const queryClient = useQueryClient();
 

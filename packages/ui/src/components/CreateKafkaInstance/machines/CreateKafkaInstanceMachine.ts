@@ -1,7 +1,7 @@
+import type { CloudProvider, CloudRegion } from "ui-models/src/models/kafka";
 import { assign, createMachine, EventFrom, forwardTo, send } from "xstate";
-import { CloudProvider, CloudRegion } from "../../../types";
 import type {
-  CloudProviders,
+  CloudProvidersInfo,
   CreateKafkaFormData,
   CreateKafkaInitializationData,
   CreateKafkaInstanceError,
@@ -29,7 +29,7 @@ type Quota =
 
 export type CreateKafkaInstanceMachineContext = {
   quota: Quota | undefined;
-  providers: CloudProviders | undefined;
+  providers: CloudProvidersInfo | undefined;
   defaultProvider: CloudProvider | undefined;
   capabilities: CreateKafkaInitializationData | undefined;
 };
@@ -78,7 +78,7 @@ const CreateKafkaInstanceMachine =
           | { type: "developer unavailable" }
           | {
               type: "providers and regions available";
-              providers: CloudProviders;
+              providers: CloudProvidersInfo;
               defaultProvider: CloudProvider | undefined;
             }
           | { type: "providers or regions unavailable" }

@@ -1,5 +1,6 @@
+import type { Message } from "ui-models/src/models/message";
 import { assign, createMachine } from "xstate";
-import { DateIsoString, Message } from "../../types";
+import type { DateIsoString } from "../../../../ui-models/src/types";
 import { isSameMessage } from "./utils";
 
 export type MessageApiResponse = {

@@ -16,12 +16,12 @@ import {
 } from "@patternfly/react-table";
 import type { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
-import type { Consumer, ConsumerGroupState } from "../../../types";
+import type { Consumer, State } from "ui-models/src/models/consumer-group";
 import { ConsumerGroupPopover } from "./ConsumerGroupPopover";
 import { ConsumerGroupStateLabel } from "./ConsumerGroupState";
 
 export type ConsumerGroupByTopicProps = {
-  state: ConsumerGroupState;
+  state: State;
   consumers: Consumer[];
   activeMembers: number;
   partitionsWithLag: number;
@@ -99,25 +99,25 @@ export const ConsumerGroupByTopic: FunctionComponent<
           </Tr>
         </Thead>
         <Tbody>
-          {consumers.map((consumer) => {
-            const { groupId, partition, memberId, offset, logEndOffset, lag } =
-              consumer;
-            return (
-              <Tr key={groupId}>
-                <Td dataLabel={columnNames.partition}>{partition}</Td>
-                <Td dataLabel={columnNames.consumer_id}>
-                  {memberId ? (
-                    groupId + "\n" + memberId
-                  ) : (
-                    <i>{t("consumerGroup.unassigned")}</i>
-                  )}{" "}
-                </Td>
-                <Td dataLabel={columnNames.current_offset}>{offset}</Td>
-                <Td dataLabel={columnNames.log_end_offset}>{logEndOffset}</Td>
-                <Td dataLabel={columnNames.offset_lag}>{lag}</Td>
-              </Tr>
-            );
-          })}
+          {consumers.map(
+            ({ groupId, partition, memberId, offset, logEndOffset, lag }) => {
+              return (
+                <Tr key={groupId}>
+                  <Td dataLabel={columnNames.partition}>{partition}</Td>
+                  <Td dataLabel={columnNames.consumer_id}>
+                    {memberId ? (
+                      `${groupId}\n${memberId}`
+                    ) : (
+                      <i>{t("consumerGroup.unassigned")}</i>
+                    )}{" "}
+                  </Td>
+                  <Td dataLabel={columnNames.current_offset}>{offset}</Td>
+                  <Td dataLabel={columnNames.log_end_offset}>{logEndOffset}</Td>
+                  <Td dataLabel={columnNames.offset_lag}>{lag}</Td>
+                </Tr>
+              );
+            }
+          )}
         </Tbody>
       </TableComposable>
     </Stack>

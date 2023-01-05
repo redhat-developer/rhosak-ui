@@ -1,14 +1,16 @@
 import type { KafkaRequest } from "@rhoas/kafka-management-sdk";
 import type {
   CloudProvider,
-  KafkaInstance,
+  Kafka,
   MarketPlaceSubscriptions,
   Plan,
   Status,
-} from "ui";
+} from "ui-models/src/models/kafka";
+import type { DateIsoString } from "../../../ui-models/src/types";
+
 import type { SizeWithLimits } from "../fetchers";
 
-export type KafkaInstanceEnhanced = Required<KafkaInstance> & {
+export type KafkaInstanceEnhanced = Required<Kafka> & {
   request: KafkaRequest;
 };
 
@@ -22,13 +24,14 @@ export function kafkaRequestToKafkaInstanceEnhanched(
     billing: undefined,
     connectionRate: 0,
     connections: 0,
-    createdAt: instance.created_at || new Date().toISOString(),
+    createdAt: (instance.created_at ||
+      new Date().toISOString()) as DateIsoString,
     egress: 0,
-    expiryDate: instance.expires_at as string | undefined,
+    expiryDate: instance.expires_at as DateIsoString | undefined,
     id: instance.id,
     ingress: 0,
     maxPartitions: 0,
-    messageSize: 0,
+    messageSize: { type: "bytes", value: BigInt(0) },
     name: instance.name || "",
     owner: instance.owner || "",
     plan: instance.billing_model as Plan,
@@ -36,8 +39,9 @@ export function kafkaRequestToKafkaInstanceEnhanched(
     region: instance.region || "",
     size: "1",
     status: apiStatusToUIStatus(instance.status || ""),
-    storage: 0,
-    updatedAt: instance.updated_at || new Date().toISOString(),
+    storage: { type: "bytes", value: BigInt(0) },
+    updatedAt: (instance.updated_at ||
+      new Date().toISOString()) as DateIsoString,
     request: instance,
     version: instance.version || "",
     bootstrapUrl: instance.bootstrap_server_host,
@@ -79,11 +83,17 @@ export function kafkaRequestToKafkaInstanceEnhanched(
       enhancedInstance.size = thisInstanceLimits.displayName;
       enhancedInstance.ingress = thisInstanceLimits.ingress;
       enhancedInstance.egress = thisInstanceLimits.egress;
-      enhancedInstance.storage = instance.max_data_retention_size?.bytes;
+      enhancedInstance.storage = {
+        type: "bytes",
+        value: BigInt(instance.max_data_retention_size?.bytes || 0),
+      };
       enhancedInstance.connections = thisInstanceLimits.connections;
       enhancedInstance.connectionRate = thisInstanceLimits.connectionRate;
       enhancedInstance.maxPartitions = thisInstanceLimits.maxPartitions;
-      enhancedInstance.messageSize = thisInstanceLimits.messageSize;
+      enhancedInstance.messageSize = {
+        type: "bytes",
+        value: BigInt(thisInstanceLimits.messageSize),
+      };
     }
   } catch (e) {
     console.warn(

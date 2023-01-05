@@ -12,12 +12,12 @@ import {
 } from "@rhoas/app-services-ui-components";
 import convert from "convert";
 import type React from "react";
-import type { KafkaTopic } from "../../../types";
+import type { Topic } from "ui-models/src/models/topic";
 import type { IDropdownOption } from "../types";
 
 export type LogProps = {
-  topicData: KafkaTopic;
-  setTopicData: (data: KafkaTopic) => void;
+  topicData: Topic;
+  setTopicData: (data: Topic) => void;
   defaultDeleteRetentionTime: number;
   defaultMinCleanbleRatio: number;
   defaultMinimumCompactionLagTime: number;

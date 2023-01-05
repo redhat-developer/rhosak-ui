@@ -1,19 +1,21 @@
-import type React from "react";
-import { useTranslation } from "@rhoas/app-services-ui-components";
 import {
   FormSection,
-  TextContent,
   Text,
+  TextContent,
   TextVariants,
 } from "@patternfly/react-core";
-import { TextWithLabelPopover } from "@rhoas/app-services-ui-components";
+import {
+  TextWithLabelPopover,
+  useTranslation,
+} from "@rhoas/app-services-ui-components";
 import convert from "convert";
+import type React from "react";
 
 type CleanupProps = {
-  defaultLogSegmentSize: number;
-  defaultSegmentTime: number;
-  defaultSegmentJitterTime: number;
-  defaultFileDeleteDelay: number;
+  defaultLogSegmentSize: bigint;
+  defaultSegmentTime: bigint;
+  defaultSegmentJitterTime: bigint;
+  defaultFileDeleteDelay: bigint;
 };
 
 const Cleanup: React.FC<CleanupProps> = ({

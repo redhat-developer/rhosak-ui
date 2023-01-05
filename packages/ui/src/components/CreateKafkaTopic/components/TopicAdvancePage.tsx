@@ -12,7 +12,7 @@ import {
 import { useTranslation } from "@rhoas/app-services-ui-components";
 import type React from "react";
 import { useState } from "react";
-import type { KafkaTopic } from "../../../types";
+import type { Topic } from "ui-models/src/models/topic";
 import type { ConstantValues } from "../types";
 import { Cleanup } from "./Cleanup";
 import { CoreConfiguration } from "./CoreConfiguration";
@@ -27,8 +27,8 @@ export type TopicAdvancePageProps = {
   isCreate: boolean;
   onConfirm: () => void;
   handleCancel?: () => void;
-  topicData: KafkaTopic;
-  setTopicData: (val: KafkaTopic) => void;
+  topicData: Topic;
+  setTopicData: (val: Topic) => void;
   checkTopicName: (value: string) => Promise<boolean>;
   availablePartitionLimit: number;
   constantValues: ConstantValues;
