@@ -4,6 +4,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -54,6 +55,12 @@ export const DrawerProvider: FunctionComponent = ({ children }) => {
       return isExpanded;
     });
   }, []);
+
+  useEffect(() => {
+    if (!instance) {
+      setIsExpanded(false);
+    }
+  }, [instance]);
 
   const value = useMemo(() => {
     const shouldBeExpanded = selectedInstance !== undefined && isExpanded;
