@@ -1,7 +1,7 @@
 import { getBaseName } from "@redhat-cloud-services/frontend-components-utilities/helpers";
 import { useChrome } from "@redhat-cloud-services/frontend-components/useChrome";
 import { ApiProvider } from "consoledot-api";
-import { memo } from "react";
+import { memo, useLayoutEffect } from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router } from "react-router-dom";
 import logger from "redux-logger";
@@ -16,6 +16,15 @@ const store = init(
 
 const AppEntry = memo(() => {
   const { auth } = useChrome();
+
+  useLayoutEffect(() => {
+    const el = document.querySelector<HTMLDivElement>(
+      ".chr-scope__default-layout"
+    );
+    if (el) {
+      el.style["overflow"] = "auto";
+    }
+  }, []);
 
   return (
     <Provider store={store}>

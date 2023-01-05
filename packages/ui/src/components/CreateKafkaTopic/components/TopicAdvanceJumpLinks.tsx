@@ -1,6 +1,6 @@
-import type React from "react";
+import { JumpLinks, JumpLinksItem, SidebarPanel } from "@patternfly/react-core";
 import { useTranslation } from "@rhoas/app-services-ui-components";
-import { SidebarPanel, JumpLinks, JumpLinksItem } from "@patternfly/react-core";
+import type React from "react";
 
 export type TopicAdvanceJumpLinksProps = {
   canHaveDelete?: boolean;
@@ -15,7 +15,7 @@ const TopicAdvanceJumpLinks: React.FC<TopicAdvanceJumpLinksProps> = ({
       <JumpLinks
         isVertical
         label={t("jump_to_section")}
-        scrollableSelector=".pf-c-page__main-section.pf-m-overflow-scroll"
+        scrollableSelector=".topic-properties"
         style={{ position: "sticky" }}
         // offset={-164} // for header
       >

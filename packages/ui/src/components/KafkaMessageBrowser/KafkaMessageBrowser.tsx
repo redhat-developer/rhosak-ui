@@ -204,7 +204,7 @@ export const KafkaMessageBrowserConnected: VoidFunctionComponent<
       return <NoDataEmptyState onRefresh={refresh} />;
     default:
       return (
-        <PageSection isFilled={true}>
+        <PageSection isFilled={true} hasOverflowScroll={true}>
           <Drawer isInline={true} isExpanded={selectedMessage !== undefined}>
             <DrawerContent
               panelContent={

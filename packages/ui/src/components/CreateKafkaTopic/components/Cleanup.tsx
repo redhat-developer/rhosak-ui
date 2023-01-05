@@ -40,7 +40,9 @@ const Cleanup: React.FC<CleanupProps> = ({
         fieldLabel={t("log_segment_size")}
         fieldValue={t("bytes_to_gibibyte", {
           bytes: defaultLogSegmentSize,
-          gibibyte: convert(defaultLogSegmentSize, "bytes").to("gibibytes"),
+          gibibyte: convert(Number(defaultLogSegmentSize), "bytes").to(
+            "gibibytes"
+          ),
         })}
         popoverBody={t("log_segment_size")}
         popoverHeader={t("log_segment_size_description")}
@@ -52,7 +54,7 @@ const Cleanup: React.FC<CleanupProps> = ({
         fieldLabel={t("segement_time")}
         fieldValue={t("milliseconds_to_days", {
           milliseconds: defaultSegmentTime,
-          days: convert(defaultSegmentTime, "milliseconds").to("days"),
+          days: convert(Number(defaultSegmentTime), "milliseconds").to("days"),
         })}
         popoverBody={t("segement_time_description")}
         popoverHeader={t("segement_time")}
@@ -73,7 +75,9 @@ const Cleanup: React.FC<CleanupProps> = ({
         fieldLabel={t("file_delete_delay")}
         fieldValue={t("milliseconds_to_minute", {
           milliseconds: defaultFileDeleteDelay,
-          minute: convert(defaultFileDeleteDelay, "milliseconds").to("minutes"),
+          minute: convert(Number(defaultFileDeleteDelay), "milliseconds").to(
+            "minutes"
+          ),
         })}
         popoverBody={t("file_delete_delay_description")}
         popoverHeader={t("file_delete_delay")}

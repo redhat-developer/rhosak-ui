@@ -23,6 +23,7 @@ export function useTopicGate(
     id: instance.id,
     adminUrl: instance.adminUrl,
     topicName: match.params.topicName,
+    plan: instance.plan,
   });
 
   useEffect(() => {

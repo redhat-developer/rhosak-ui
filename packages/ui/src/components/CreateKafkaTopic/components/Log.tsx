@@ -89,7 +89,9 @@ const Log: React.FC<LogProps> = ({
         fieldLabel={t("delete_retention_time")}
         fieldValue={t("milliseconds_time_to_day", {
           value: defaultDeleteRetentionTime,
-          days: convert(defaultDeleteRetentionTime, "milliseconds").to("days"),
+          days: convert(Number(defaultDeleteRetentionTime), "milliseconds").to(
+            "days"
+          ),
         })}
         popoverBody={t("delete_retention_time_description")}
         popoverHeader={t("delete_retention_time")}

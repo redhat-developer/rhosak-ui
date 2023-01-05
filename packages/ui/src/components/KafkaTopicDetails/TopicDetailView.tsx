@@ -42,7 +42,11 @@ export const TopicDetailView: React.FunctionComponent<TopicViewDetailProps> = ({
 }) => {
   const { t } = useTranslation(["create-topic"]);
   return (
-    <PageSection padding={{ default: "noPadding" }}>
+    <PageSection
+      variant={"light"}
+      className={"topic-properties"}
+      hasOverflowScroll={true}
+    >
       <Sidebar hasGutter>
         <TopicAdvanceJumpLinks canHaveDelete={true} />
         <SidebarContent>

@@ -36,7 +36,9 @@ const TopicAdvanceIndex: React.FC<TopicAdavanceIndexProps> = ({
         fieldLabel={t("index_interval_size")}
         fieldValue={t("bytes_to_kibibytes", {
           bytes: defaultIndexIntervalSize,
-          kibibytes: convert(defaultIndexIntervalSize, "bytes").to("kibibytes"),
+          kibibytes: convert(Number(defaultIndexIntervalSize), "bytes").to(
+            "kibibytes"
+          ),
         })}
         popoverBody={t("index_interval_size_description")}
         popoverHeader={t("index_interval_size")}
@@ -48,7 +50,9 @@ const TopicAdvanceIndex: React.FC<TopicAdavanceIndexProps> = ({
         fieldLabel={t("segment_index_size")}
         fieldValue={t("bytes_to_mebibytes", {
           bytes: defaultSegmentIndexSize,
-          mebibytes: convert(defaultSegmentIndexSize, "bytes").to("mebibytes"),
+          mebibytes: convert(Number(defaultIndexIntervalSize), "bytes").to(
+            "mebibytes"
+          ),
         })}
         popoverBody={t("segment_index_size_description")}
         popoverHeader={t("segment_index_size")}
