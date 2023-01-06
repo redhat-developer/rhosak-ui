@@ -19,8 +19,8 @@ module.exports = {
   ],
   _unstableHotReload: process.env.HOT === "true",
   sassPrefix: ".rhosakUi",
-  __localChrome:
-    "/Users/riccardoforina/Code/bf2fc6cc711aee1a0c2a/insights-chrome/build",
+  // localChrome:
+  //   "/Users/riccardoforina/Code/bf2fc6cc711aee1a0c2a/insights-chrome/build",
   routes: {
     "/config": {
       host: "http://localhost:8889",

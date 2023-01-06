@@ -23,7 +23,7 @@ export const TopicMessagesGroupsRoute: VoidFunctionComponent<
       });
       return {
         messages,
-        partitions: topic.partitionsCount,
+        partitions: topic.partitions.length,
       };
     },
     [
@@ -31,7 +31,7 @@ export const TopicMessagesGroupsRoute: VoidFunctionComponent<
       instance.id,
       kafkaTopicMessagesFetchQuery,
       topic.name,
-      topic.partitionsCount,
+      topic.partitions.length,
     ]
   );
 

@@ -28,14 +28,14 @@ export const StepPartitions: React.FC<StepPartitionsProps> = ({
   const handleOnPlus = () => {
     onPartitionsChange({
       ...newTopicData,
-      partitionsCount: newTopicData.partitionsCount + 1,
+      partitions.length: newTopicData.partitions.length + 1,
     });
   };
 
   const handleOnMinus = () => {
     onPartitionsChange({
       ...newTopicData,
-      partitionsCount: newTopicData.partitionsCount - 1,
+      partitions.length: newTopicData.partitions.length - 1,
     });
   };
 
@@ -44,12 +44,12 @@ export const StepPartitions: React.FC<StepPartitionsProps> = ({
   ) => {
     onPartitionsChange({
       ...newTopicData,
-      partitionsCount: Number((event.target as HTMLInputElement).value),
+      partitions.length: Number((event.target as HTMLInputElement).value),
     });
   };
   const onBlur = () => {
-    if (newTopicData.partitionsCount < 1)
-      onPartitionsChange({ ...newTopicData, partitionsCount: 1 });
+    if (newTopicData.partitions.length < 1)
+      onPartitionsChange({ ...newTopicData, partitions.length: 1 });
   };
 
   return (
@@ -64,12 +64,12 @@ export const StepPartitions: React.FC<StepPartitionsProps> = ({
           label="Partitions"
           fieldId="step-topic-name-form"
           helperText={
-            newTopicData.partitionsCount >= availablePartitionLimit
+            newTopicData.partitions.length >= availablePartitionLimit
               ? t("partitions_warning")
               : t("partition_helper_text")
           }
           validated={
-            newTopicData.partitionsCount >= availablePartitionLimit
+            newTopicData.partitions.length >= availablePartitionLimit
               ? "warning"
               : "default"
           }
@@ -78,7 +78,7 @@ export const StepPartitions: React.FC<StepPartitionsProps> = ({
           <NumberInput
             onPlus={handleOnPlus}
             onMinus={handleOnMinus}
-            value={Number(newTopicData.partitionsCount)}
+            value={Number(newTopicData.partitions.length)}
             inputName="input"
             onChange={handlePartitionTouchspinChange}
             widthChars={20}

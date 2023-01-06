@@ -1,11 +1,9 @@
-import type { TopicConfig, TopicConfigField } from "./topic-config";
+import type { TopicConfig } from "./topic-config";
+import type { TopicPartition } from "./topic-partition";
 
 export type Topic = {
   name: string;
-  partitionsCount: number;
-  config: TopicConfig;
-};
+  partitions: TopicPartition[];
+} & TopicConfig;
 
-export type TopicField =
-  | keyof Omit<Topic, "config">
-  | `config:${TopicConfigField}`;
+export type TopicField = keyof Topic;

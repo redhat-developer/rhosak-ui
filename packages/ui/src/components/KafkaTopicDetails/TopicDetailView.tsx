@@ -86,7 +86,7 @@ export const TopicDetailView: React.FunctionComponent<TopicViewDetailProps> = ({
                         fieldId="partitions"
                         btnAriaLabel={t("partitions")}
                         fieldLabel={t("partitions")}
-                        fieldValue={topic.partitionsCount.toString()}
+                        fieldValue={topic.partitions.length.toString()}
                         popoverBody={t("partitions_description")}
                         popoverHeader={t("partitions")}
                       />
@@ -106,9 +106,7 @@ export const TopicDetailView: React.FunctionComponent<TopicViewDetailProps> = ({
                         fieldId="min-insync-replicas"
                         btnAriaLabel={t("min_insync_replicas")}
                         fieldLabel={t("min_insync_replicas")}
-                        fieldValue={topic.config[
-                          "min.insync.replicas"
-                        ].toString()}
+                        fieldValue={topic["min.insync.replicas"].toString()}
                         popoverBody={t("min_insync_replicas_description")}
                         popoverHeader={t("min_insync_replicas")}
                       />
@@ -118,7 +116,7 @@ export const TopicDetailView: React.FunctionComponent<TopicViewDetailProps> = ({
                         btnAriaLabel={t("retention_time")}
                         fieldLabel={t("retention_time")}
                         fieldValue={formattedRetentionTime(
-                          topic.config["retention.ms"].value
+                          topic["retention.ms"].value
                         )}
                         popoverBody={t("retention_time_description")}
                         popoverHeader={t("retention_time")}
@@ -130,7 +128,7 @@ export const TopicDetailView: React.FunctionComponent<TopicViewDetailProps> = ({
                         btnAriaLabel={t("retention_size")}
                         fieldLabel={t("retention_size")}
                         fieldValue={formattedRetentionSize(
-                          topic.config["retention.bytes"].value
+                          topic["retention.bytes"].value
                         )}
                         popoverHeader={t("retention_size")}
                         popoverBody={t("retention_size_description")}
@@ -139,14 +137,13 @@ export const TopicDetailView: React.FunctionComponent<TopicViewDetailProps> = ({
                     </FormSection>
                     <Message
                       defaultMaximumMessageBytes={
-                        topic.config["max.message.bytes"].value
+                        topic["max.message.bytes"].value
                       }
                       defaultMessageTimestampType={
-                        topic.config["message.timestamp.type"]
+                        topic["message.timestamp.type"]
                       }
                       defaultMaxMessageTimestampDiff={
-                        topic.config["message.timestamp.difference.max.ms"]
-                          .value
+                        topic["message.timestamp.difference.max.ms"].value
                       }
                     />
                     <FormSection title={t("log")} id="log" titleElement={"h2"}>
@@ -166,7 +163,7 @@ export const TopicDetailView: React.FunctionComponent<TopicViewDetailProps> = ({
                         fieldId="cleanup-policy"
                         btnAriaLabel={t("cleanup_policy")}
                         fieldLabel={t("cleanup_policy")}
-                        fieldValue={topic.config["cleanup.policy"]}
+                        fieldValue={topic["cleanup.policy"]}
                         popoverBody={t("cleanup_policy_description")}
                         popoverHeader={t("cleanup_policy")}
                       />
@@ -175,7 +172,7 @@ export const TopicDetailView: React.FunctionComponent<TopicViewDetailProps> = ({
                         fieldId="delete-retention-time"
                         btnAriaLabel={t("delete_retention_time")}
                         fieldLabel={t("delete_retention_time")}
-                        fieldValue={topic.config[
+                        fieldValue={topic[
                           "delete.retention.ms"
                         ].value.toString()}
                         popoverBody={t("delete_retention_time_description")}
@@ -186,7 +183,7 @@ export const TopicDetailView: React.FunctionComponent<TopicViewDetailProps> = ({
                         fieldId="min-cleanable-ratio"
                         btnAriaLabel={t("min_cleanable_ratio")}
                         fieldLabel={t("min_cleanable_ratio")}
-                        fieldValue={topic.config[
+                        fieldValue={topic[
                           "min.cleanable.dirty.ratio"
                         ].toString()}
                         popoverBody={t("min_cleanable_ratio_description")}
@@ -197,7 +194,7 @@ export const TopicDetailView: React.FunctionComponent<TopicViewDetailProps> = ({
                         fieldId="min-compaction-lag-time"
                         btnAriaLabel={t("min_compaction_lag_time")}
                         fieldLabel={t("min_compaction_lag_time")}
-                        fieldValue={topic.config[
+                        fieldValue={topic[
                           "min.compaction.lag.ms"
                         ].value.toString()}
                         popoverBody={t("min_compaction_lag_time_description")}
@@ -206,30 +203,28 @@ export const TopicDetailView: React.FunctionComponent<TopicViewDetailProps> = ({
                     </FormSection>
                     <Replication />
                     <Cleanup
-                      defaultLogSegmentSize={
-                        topic.config["segment.bytes"].value
-                      }
-                      defaultSegmentTime={topic.config["segment.ms"].value}
+                      defaultLogSegmentSize={topic["segment.bytes"].value}
+                      defaultSegmentTime={topic["segment.ms"].value}
                       defaultSegmentJitterTime={
-                        topic.config["segment.jitter.ms"].value
+                        topic["segment.jitter.ms"].value
                       }
                       defaultFileDeleteDelay={
-                        topic.config["file.delete.delay.ms"].value
+                        topic["file.delete.delay.ms"].value
                       }
                     />
                     <TopicAdvanceIndex
                       defaultIndexIntervalSize={
-                        topic.config["index.interval.bytes"].value
+                        topic["index.interval.bytes"].value
                       }
                       defaultSegmentIndexSize={
-                        topic.config["segment.index.bytes"].value
+                        topic["segment.index.bytes"].value
                       }
                     />
                     <Flush
                       defaultFlushIntervalMessages={
-                        topic.config["flush.messages"].value
+                        topic["flush.messages"].value
                       }
-                      defaultFlushIntervalTime={topic.config["flush.ms"].value}
+                      defaultFlushIntervalTime={topic["flush.ms"].value}
                     />
                   </Form>
 

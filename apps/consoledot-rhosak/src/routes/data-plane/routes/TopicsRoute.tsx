@@ -6,7 +6,7 @@ import {
 import { KafkaTopicsSortableColumns, useTopics } from "consoledot-api";
 import type { VoidFunctionComponent } from "react";
 import { useCallback } from "react";
-import { KafkaTopics } from "ui";
+import { KafkaTopics, useTopicLabels } from "ui";
 import type { ControlPlaneNavigationProps } from "../../control-plane/routesConsts";
 import { useDataPlaneGate } from "../useDataPlaneGate";
 import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
@@ -14,6 +14,8 @@ import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
 export const TopicsRoute: VoidFunctionComponent<
   ControlPlaneNavigationProps
 > = ({ instancesHref }) => {
+  const labels = useTopicLabels();
+
   const { instance } = useDataPlaneGate(instancesHref);
   const { page, perPage, setPagination, setPaginationQuery } =
     usePaginationSearchParams();
@@ -25,14 +27,7 @@ export const TopicsRoute: VoidFunctionComponent<
   const topicChips = useURLSearchParamsChips("topic", resetPaginationQuery);
   const [isColumnSortable, sort, sortDirection] = useSortableSearchParams(
     KafkaTopicsSortableColumns,
-    {
-      name: "TODO name",
-      partitions: "TODO partitions",
-      "retention.bytes": "TODO retention bytes",
-      "retention.ms": "TODO retention ms",
-    },
-    "name",
-    "desc"
+    labels.fields
   );
   const { data } = useTopics({
     id: instance?.id,

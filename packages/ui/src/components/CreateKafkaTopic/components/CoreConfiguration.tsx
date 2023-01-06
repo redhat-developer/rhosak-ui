@@ -123,20 +123,20 @@ const CoreConfiguration: React.FC<CoreConfigurationProps> = ({
   const onPartitionsChange: NumberInputProps["onChange"] = (event) => {
     setTopicData({
       ...topicData,
-      partitionsCount: Number((event.target as HTMLInputElement).value),
+      partitions.length: Number((event.target as HTMLInputElement).value),
     });
   };
   const handleOnPlus = () => {
     setTopicData({
       ...topicData,
-      partitionsCount: topicData.partitionsCount + 1,
+      partitions.length: topicData.partitions.length + 1,
     });
   };
 
   const handleOnMinus = () => {
     setTopicData({
       ...topicData,
-      partitionsCount: topicData.partitionsCount - 1,
+      partitions.length: topicData.partitions.length - 1,
     });
   };
 
@@ -217,12 +217,12 @@ const CoreConfiguration: React.FC<CoreConfigurationProps> = ({
         labelBody={t("partitions_description")}
         buttonAriaLabel="More info for partitions field"
         helperText={
-          topicData.partitionsCount >= availablePartitionLimit
+          topicData.partitions.length >= availablePartitionLimit
             ? t("partitions_warning")
             : t("partition_helper_text")
         }
         validated={
-          topicData.partitionsCount >= availablePartitionLimit
+          topicData.partitions.length >= availablePartitionLimit
             ? "warning"
             : "default"
         }
@@ -234,7 +234,7 @@ const CoreConfiguration: React.FC<CoreConfigurationProps> = ({
           data-testid={t("partitions")}
           onPlus={handleOnPlus}
           onMinus={handleOnMinus}
-          value={topicData.partitionsCount}
+          value={topicData.partitions.length}
           plusBtnProps={{ name: "num-partitions" }}
           minusBtnProps={{ name: "num-partitions" }}
           min={0}

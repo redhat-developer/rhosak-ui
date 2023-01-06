@@ -1,1 +1,2 @@
-export * from './useKafkaLabels';
+export * from "./useKafkaLabels";
+export * from "./useTopicLabels";

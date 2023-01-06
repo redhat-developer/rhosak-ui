@@ -6,7 +6,7 @@ export default {
   args: {
     topic: {
       name: "test-topic",
-      partitionsCount: 1,
+      partitions: 1,
       config: {
         "cleanup.policy": "delete",
         "delete.retention.ms": { type: "ms", value: BigInt("1") },

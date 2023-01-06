@@ -8,7 +8,7 @@ export default {
     isSwitchChecked: true,
     initialFieldsValue: {
       name: "",
-      partitionsCount: 1,
+      partitions: 1,
       replicationFactor: 1,
       retentionTime: 1,
       retentionTimeUnit: "weeks",

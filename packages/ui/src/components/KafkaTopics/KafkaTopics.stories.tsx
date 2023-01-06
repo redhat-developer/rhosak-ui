@@ -6,7 +6,7 @@ import { KafkaTopics } from "./KafkaTopics";
 const topics: Topic[] = [
   {
     name: "foo",
-    partitionsCount: 1,
+    partitions: 1,
     config: {
       "retention.bytes": { type: "bytes", value: BigInt("-1") },
       "retention.ms": { type: "ms", value: BigInt("86400000") },
@@ -14,7 +14,7 @@ const topics: Topic[] = [
   },
   {
     name: "bar",
-    partitionsCount: 3,
+    partitions: 3,
     config: {
       "retention.bytes": { type: "bytes", value: BigInt("1099511600000") },
       "retention.ms": { type: "ms", value: BigInt("1500000") },
@@ -22,7 +22,7 @@ const topics: Topic[] = [
   },
   {
     name: "buzz",
-    partitionsCount: 2,
+    partitions: 2,
     config: {
       "retention.bytes": { type: "bytes", value: BigInt("80000") },
       "retention.ms": { type: "ms", value: BigInt("-1") },

@@ -18,7 +18,7 @@ export default {
       ),
     initialTopicValues: {
       name: "",
-      partitionsCount: 1,
+      partitions: 1,
       replicationFactor: 1,
       retentionTime: 1,
       retentionTimeUnit: "weeks",

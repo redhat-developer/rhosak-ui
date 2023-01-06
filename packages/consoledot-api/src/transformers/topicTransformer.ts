@@ -1,10 +1,11 @@
 import { Topic as ApiTopic } from "@rhoas/kafka-instance-sdk/dist/generated/model/topic";
 import type { Plan } from "ui-models/src/models/kafka";
-import {
+import type { Topic } from "ui-models/src/models/topic";
+import type {
   TopicConfig,
   TopicConfigField,
 } from "ui-models/src/models/topic-config";
-import { Bytes, Milliseconds } from "ui-models/src/types";
+import type { Bytes, Milliseconds } from "ui-models/src/types";
 
 export const developerDefaults: TopicConfig = {
   "cleanup.policy": "delete",
@@ -69,7 +70,7 @@ export const standardDefaults: TopicConfig = {
 export function topicTransformerFactory(plan: Plan) {
   const d = plan === "developer" ? developerDefaults : standardDefaults;
 
-  return function topicTransformer(t: ApiTopic) {
+  return function topicTransformer(t: ApiTopic): Topic {
     const cm = Object.fromEntries<string>(
       t.config?.map((c) => [c.key as TopicConfigField, c.value]) || []
     );
@@ -163,8 +164,8 @@ export function topicTransformerFactory(plan: Plan) {
     };
     return {
       name: t.name!,
-      partitionsCount: t.partitions?.length || 0,
-      config,
+      partitions: t.partitions || [],
+      ...config,
     };
   };
 }

@@ -49,6 +49,7 @@ export const kafkaQueries = {
     topics: ({
       id,
       adminUrl,
+      ...params
     }: { id?: string; adminUrl?: string } & Omit<
       FetchTopicsParams,
       "getTopics"
@@ -58,6 +59,7 @@ export const kafkaQueries = {
           ...kafkaQueries.instance._root({ id, adminUrl }),
           subentity: "topics",
         },
+        params,
       ] as const,
     topic: ({
       id,
