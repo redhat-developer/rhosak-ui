@@ -16,6 +16,7 @@ import {
 import { TextWithLabelPopover } from "@rhoas/app-services-ui-components";
 import type React from "react";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import type { Topic } from "ui-models/src/models/topic";
 import { Cleanup } from "../CreateKafkaTopic/components/Cleanup";
 import { Flush } from "../CreateKafkaTopic/components/Flush";
@@ -31,14 +32,14 @@ import {
 
 export type TopicViewDetailProps = {
   topic: Topic;
-  deleteTopic: () => void;
-  updateTopic: () => void;
+  deleteTopicHref: string;
+  updateTopicHref: string;
 };
 
 export const TopicDetailView: React.FunctionComponent<TopicViewDetailProps> = ({
   topic,
-  deleteTopic,
-  updateTopic,
+  deleteTopicHref,
+  updateTopicHref,
 }) => {
   const { t } = useTranslation(["create-topic"]);
   return (
@@ -239,21 +240,25 @@ export const TopicDetailView: React.FunctionComponent<TopicViewDetailProps> = ({
                     </Text>
                     <Button
                       variant="danger"
-                      onClick={deleteTopic}
                       data-testid="tabProperties-actionDelete"
-                    >
-                      {t("delete_topic")}
-                    </Button>
+                      component={(props) => (
+                        <Link {...props} to={deleteTopicHref}>
+                          {t("delete_topic")}
+                        </Link>
+                      )}
+                    />
                   </TextContent>
                 </SplitItem>
                 <SplitItem>
                   <Button
                     variant="primary"
-                    onClick={updateTopic}
                     data-testid="tabProperties-actionEdit"
-                  >
-                    {t("edit_props")}
-                  </Button>
+                    component={(props) => (
+                      <Link {...props} to={updateTopicHref}>
+                        {t("edit_props")}
+                      </Link>
+                    )}
+                  />
                 </SplitItem>
               </Split>
             </PageSection>

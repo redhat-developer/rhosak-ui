@@ -17,8 +17,7 @@ import {
   TextWithLabelPopover,
   useTranslation,
 } from "@rhoas/app-services-ui-components";
-import type React from "react";
-import { useCallback, useState } from "react";
+import { FunctionComponent, useCallback, useState } from "react";
 import type { Topic } from "ui-models/src/models/topic";
 import {
   retentionSizeSelectOptions,
@@ -43,7 +42,7 @@ export type CoreConfigurationProps = {
   availablePartitionLimit: number;
 };
 
-const CoreConfiguration: React.FC<CoreConfigurationProps> = ({
+const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
   isCreate,
   topicData,
   setTopicData,

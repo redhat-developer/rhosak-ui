@@ -13,7 +13,6 @@ import { useTranslation } from "@rhoas/app-services-ui-components";
 import type React from "react";
 import { useState } from "react";
 import type { Topic } from "ui-models/src/models/topic";
-import type { ConstantValues } from "../types";
 import { Cleanup } from "./Cleanup";
 import { CoreConfiguration } from "./CoreConfiguration";
 import { Flush } from "./Flush";
@@ -31,7 +30,6 @@ export type TopicAdvancePageProps = {
   setTopicData: (val: Topic) => void;
   checkTopicName: (value: string) => Promise<boolean>;
   availablePartitionLimit: number;
-  constantValues: ConstantValues;
 };
 
 export const TopicAdvancePage: React.FunctionComponent<
@@ -44,7 +42,6 @@ export const TopicAdvancePage: React.FunctionComponent<
   setTopicData,
   checkTopicName,
   availablePartitionLimit,
-  constantValues,
 }) => {
   const { t } = useTranslation(["create-topic", "common"]);
   const actionText = isCreate ? t("create_topic") : t("common:save");

@@ -11,4 +11,13 @@ export const DataPlaneTopicRoutePath =
 
 export type DataPlaneNavigationProps = {
   instanceDetailsHref: (instanceId: string) => string;
+  instanceTopicsHref: (instanceId: string) => string;
+} & ControlPlaneNavigationProps;
+
+export type DataPlaneTopicNavigationProps = {
+  instanceDetailsHref: (instanceId: string) => string;
+  instanceTopicsHref: (instanceId: string) => string;
+  topicHref: (instanceId: string, topicName: string) => string;
+  deleteTopicHref: (instanceId: string, topicName: string) => string;
+  updateTopicHref: (instanceId: string, topicName: string) => string;
 } & ControlPlaneNavigationProps;

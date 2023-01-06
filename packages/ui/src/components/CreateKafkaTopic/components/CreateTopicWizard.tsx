@@ -11,7 +11,6 @@ import { useTranslation } from "@rhoas/app-services-ui-components";
 import type React from "react";
 import { useState } from "react";
 import type { Topic } from "ui-models/src/models/topic";
-import type { ConstantValues } from "../types";
 import type { IWizardFooter } from "./index";
 import {
   StepMessageRetention,
@@ -31,7 +30,6 @@ export type CreateTopicWizardProps = {
   initialFieldsValue: Topic;
   checkTopicName: (value: string) => Promise<boolean>;
   availablePartitionLimit: number;
-  constantValues: ConstantValues;
 };
 
 export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
@@ -41,7 +39,6 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
   initialFieldsValue,
   checkTopicName,
   availablePartitionLimit,
-  constantValues,
 }) => {
   const { t } = useTranslation(["create-topic", "common"]);
 
@@ -99,9 +96,9 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
       canJumpTo: topicData?.name.trim() !== "",
       component: (
         <StepReplicas
-          replicationFactor={topicData.replicationFactor}
-          minInSyncReplica={topicData.minInSyncReplica}
-          isMultiAZ={topicData.isMultiAZ}
+          replicationFactor={3 /* TODO */}
+          minInSyncReplica={topicData["min.insync.replicas"]}
+          isMultiAZ={false /* TODO */}
         />
       ),
       nextButtonText: t("finish"),
@@ -150,7 +147,6 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
                 setTopicData={setTopicData}
                 checkTopicName={checkTopicName}
                 availablePartitionLimit={availablePartitionLimit}
-                constantValues={constantValues}
               />
             }
             {warningModalOpen && (

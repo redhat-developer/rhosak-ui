@@ -23,9 +23,10 @@ export type DataPlaneTopicHeaderProps = {
   instancesHref: string;
   instanceName: string;
   instanceDetailHref: string;
+  instanceTopicsHref: string;
   topicName: string;
   activeSection: Sections;
-  sectionsHref: { [key in Sections]: string };
+  tabsHref: { [key in Sections]: string };
 } & KafkaInstanceActionsProps;
 
 export const DataPlaneTopicHeader: VoidFunctionComponent<
@@ -34,9 +35,10 @@ export const DataPlaneTopicHeader: VoidFunctionComponent<
   instancesHref,
   instanceName,
   instanceDetailHref,
+  instanceTopicsHref,
   topicName,
   activeSection,
-  sectionsHref,
+  tabsHref,
   ...actionsProps
 }) => {
   const { t } = useTranslation("kafka");
@@ -49,9 +51,16 @@ export const DataPlaneTopicHeader: VoidFunctionComponent<
             render={() => (
               <Link to={instancesHref}>{t("common:kafka_instance")}</Link>
             )}
-          />{" "}
+          />
           <BreadcrumbItem
             render={() => <Link to={instanceDetailHref}>{instanceName}</Link>}
+          />
+          <BreadcrumbItem
+            render={() => (
+              <Link to={instanceTopicsHref}>
+                {t("dataPlaneNavigation.topics")}
+              </Link>
+            )}
           />
           <BreadcrumbItem isActive={true}>{topicName}</BreadcrumbItem>
         </Breadcrumb>
@@ -82,7 +91,7 @@ export const DataPlaneTopicHeader: VoidFunctionComponent<
               ouiaId={"tab-Dashboard"}
               isActive={activeSection === "consumer"}
             >
-              <Link to={sectionsHref["consumer"]}>
+              <Link to={tabsHref["consumer"]}>
                 {t("dataPlaneTopicNavigation.consumer_groups")}
               </Link>
             </NavItem>
@@ -92,7 +101,7 @@ export const DataPlaneTopicHeader: VoidFunctionComponent<
               ouiaId={"tab-Topics"}
               isActive={activeSection === "messages"}
             >
-              <Link to={sectionsHref["messages"]}>
+              <Link to={tabsHref["messages"]}>
                 {t("dataPlaneTopicNavigation.messages")}
               </Link>
             </NavItem>
@@ -102,7 +111,7 @@ export const DataPlaneTopicHeader: VoidFunctionComponent<
               ouiaId={"tab-Permissions"}
               isActive={activeSection === "properties"}
             >
-              <Link to={sectionsHref["properties"]}>
+              <Link to={tabsHref["properties"]}>
                 {t("dataPlaneTopicNavigation.properties")}
               </Link>
             </NavItem>
@@ -112,7 +121,7 @@ export const DataPlaneTopicHeader: VoidFunctionComponent<
               ouiaId={"tab-Settings"}
               isActive={activeSection === "schemas"}
             >
-              <Link to={sectionsHref["schemas"]}>
+              <Link to={tabsHref["schemas"]}>
                 {t("dataPlaneTopicNavigation.schemas")}
               </Link>
             </NavItem>

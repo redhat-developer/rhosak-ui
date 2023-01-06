@@ -10,7 +10,12 @@ import { useTopicGate } from "../useTopicGate";
 
 export const DataPlaneTopicHeaderConnected: VoidFunctionComponent<
   DataPlaneNavigationProps & Pick<DataPlaneTopicHeaderProps, "activeSection">
-> = ({ instanceDetailsHref, instancesHref, activeSection }) => {
+> = ({
+  instanceDetailsHref,
+  instanceTopicsHref,
+  instancesHref,
+  activeSection,
+}) => {
   const history = useHistory();
   const { setActiveTab, toggleExpanded } = useDrawer();
   const {
@@ -19,7 +24,7 @@ export const DataPlaneTopicHeaderConnected: VoidFunctionComponent<
     match: { url },
   } = useTopicGate(instancesHref, instanceDetailsHref);
 
-  const sectionsHref = {
+  const tabsHref = {
     consumer: `${url}/consumer-groups`,
     messages: `${url}/messages`,
     properties: `${url}/properties`,
@@ -36,9 +41,10 @@ export const DataPlaneTopicHeaderConnected: VoidFunctionComponent<
       instancesHref={instancesHref}
       instanceName={instance.name}
       instanceDetailHref={instanceDetailsHref(instance.id)}
+      instanceTopicsHref={instanceTopicsHref(instance.id)}
       activeSection={activeSection}
       topicName={topic.name}
-      sectionsHref={sectionsHref}
+      tabsHref={tabsHref}
       onDetails={() => {
         setActiveTab("details");
         toggleExpanded(true);
