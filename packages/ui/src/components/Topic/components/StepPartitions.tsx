@@ -26,30 +26,31 @@ export const StepPartitions: React.FC<StepPartitionsProps> = ({
   const { t } = useTranslation(["create-topic"]);
 
   const handleOnPlus = () => {
-    onPartitionsChange({
-      ...newTopicData,
-      partitions.length: newTopicData.partitions.length + 1,
-    });
+    // onPartitionsChange({
+    //   ...newTopicData,
+    //   partitions.length: newTopicData.partitions.length + 1,
+    // });
   };
 
   const handleOnMinus = () => {
-    onPartitionsChange({
-      ...newTopicData,
-      partitions.length: newTopicData.partitions.length - 1,
-    });
+    // onPartitionsChange({
+    //   ...newTopicData,
+    //   partitions.length: newTopicData.partitions.length - 1,
+    // });
   };
 
   const handlePartitionTouchspinChange: NumberInputProps["onChange"] = (
     event
   ) => {
-    onPartitionsChange({
-      ...newTopicData,
-      partitions.length: Number((event.target as HTMLInputElement).value),
-    });
+    // onPartitionsChange({
+    //   ...newTopicData,
+    //   partitions.length: Number((event.target as HTMLInputElement).value),
+    // });
   };
   const onBlur = () => {
-    if (newTopicData.partitions.length < 1)
-      onPartitionsChange({ ...newTopicData, partitions.length: 1 });
+    if (newTopicData.partitions.length < 1) {
+      // onPartitionsChange({ ...newTopicData, partitions: 1 });
+    }
   };
 
   return (

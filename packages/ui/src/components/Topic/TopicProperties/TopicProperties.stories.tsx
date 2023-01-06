@@ -1,8 +1,8 @@
 import type { ComponentMeta, ComponentStory } from "@storybook/react";
-import { TopicDetailView } from "./TopicDetailView";
+import { TopicProperties } from "./TopicProperties";
 
 export default {
-  component: TopicDetailView,
+  component: TopicProperties,
   args: {
     topic: {
       name: "test-topic",
@@ -45,10 +45,10 @@ export default {
       exclude: /.*/g,
     },
   },
-} as ComponentMeta<typeof TopicDetailView>;
+} as ComponentMeta<typeof TopicProperties>;
 
-const Template: ComponentStory<typeof TopicDetailView> = (args) => (
-  <TopicDetailView {...args} />
+const Template: ComponentStory<typeof TopicProperties> = (args) => (
+  <TopicProperties {...args} />
 );
 
 export const Properties = Template.bind({});

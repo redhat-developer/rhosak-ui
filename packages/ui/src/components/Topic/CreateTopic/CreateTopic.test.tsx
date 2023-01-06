@@ -1,7 +1,7 @@
 import { userEvent } from "@storybook/testing-library";
 import { composeStories } from "@storybook/testing-react";
-import { render, waitForI18n, waitForPopper } from "../../test-utils";
-import * as stories from "./CreateTopicPage.stories";
+import { render, waitForI18n, waitForPopper } from "../../../test-utils";
+import * as stories from "./CreateTopic.stories";
 
 const {
   TopicCreation,

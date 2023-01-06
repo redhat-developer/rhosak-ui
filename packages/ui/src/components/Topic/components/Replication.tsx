@@ -1,12 +1,12 @@
-import type React from "react";
-import { useTranslation } from "@rhoas/app-services-ui-components";
 import {
   FormSection,
-  TextContent,
   Text,
+  TextContent,
   TextVariants,
 } from "@patternfly/react-core";
-import { TextWithLabelPopover } from "@rhoas/app-services-ui-components";
+import { useTranslation } from "@rhoas/app-services-ui-components";
+import type React from "react";
+import { TextWithLabelPopover } from "./TextWithLabelPopover";
 
 const Replication: React.FC = () => {
   const { t } = useTranslation(["create-topic", "common"]);

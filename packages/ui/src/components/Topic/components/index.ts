@@ -5,4 +5,5 @@ export * from "./StepMessageRetention";
 export * from "./StepPartitions";
 export * from "./StepReplicas";
 export * from "./StepTopicName";
+export * from "./TextWithLabelPopover";
 export * from "./WizardCustomFooter";

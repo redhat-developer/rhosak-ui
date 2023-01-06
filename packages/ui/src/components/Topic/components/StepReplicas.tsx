@@ -1,14 +1,14 @@
-import type React from "react";
-import { useTranslation } from "@rhoas/app-services-ui-components";
 import {
   Alert,
+  Form,
+  FormSection,
   Text,
   TextContent,
   TextVariants,
-  Form,
-  FormSection,
 } from "@patternfly/react-core";
-import { TextWithLabelPopover } from "@rhoas/app-services-ui-components";
+import { useTranslation } from "@rhoas/app-services-ui-components";
+import type React from "react";
+import { TextWithLabelPopover } from "./TextWithLabelPopover";
 
 export type StepReplicasProps = {
   replicationFactor: number;

@@ -1,12 +1,12 @@
 import type { ComponentMeta, ComponentStory } from "@storybook/react";
 import { userEvent, within } from "@storybook/testing-library";
-import { RetentionSizeUnits, RetentionTimeUnits } from "../KafkaTopics";
-import { fakeApi } from "../storiesHelpers";
-import { constantValues } from "./components/storiesHelpers";
-import { CreateTopicPage } from "./CreateTopicPage";
+import { RetentionSizeUnits, RetentionTimeUnits } from "../../KafkaTopics";
+import { fakeApi } from "../../storiesHelpers";
+import { constantValues } from "../components/storiesHelpers";
+import { CreateTopic } from "./CreateTopic";
 
 export default {
-  component: CreateTopicPage,
+  component: CreateTopic,
   args: {
     kafkaName: "kafka-name",
     kafkaPageLink: "kafka-link",
@@ -32,11 +32,11 @@ export default {
     },
     constantValues: constantValues,
   },
-} as ComponentMeta<typeof CreateTopicPage>;
+} as ComponentMeta<typeof CreateTopic>;
 
-const Template: ComponentStory<typeof CreateTopicPage> = (args) => (
+const Template: ComponentStory<typeof CreateTopic> = (args) => (
   <>
-    <CreateTopicPage {...args} />
+    <CreateTopic {...args} />
   </>
 );
 

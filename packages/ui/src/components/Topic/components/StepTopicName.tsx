@@ -12,7 +12,7 @@ import { useTranslation } from "@rhoas/app-services-ui-components";
 import type React from "react";
 import { useCallback, useEffect } from "react";
 import type { Topic } from "ui-models/src/models/topic";
-import { useValidateTopic } from "../types";
+import { useValidateTopic } from "./useValidateTopic";
 
 export type StepTopicNameProps = {
   newTopicData: Topic;

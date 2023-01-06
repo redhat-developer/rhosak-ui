@@ -12,20 +12,23 @@ import {
 } from "@patternfly/react-core";
 import {
   FormGroupWithPopover,
-  RetentionSizeUnits,
-  RetentionTimeUnits,
-  TextWithLabelPopover,
   useTranslation,
 } from "@rhoas/app-services-ui-components";
-import { FunctionComponent, useCallback, useState } from "react";
+import type { FunctionComponent } from "react";
+import { useCallback, useState } from "react";
 import type { Topic } from "ui-models/src/models/topic";
+import {
+  RetentionSizeUnits,
+  RetentionTimeUnits,
+} from "../../KafkaTopics/types";
+import { CustomRetentionMessage } from "./CustomRetentionMessage";
+import { CustomRetentionSize } from "./CustomRetentionSize";
+import { TextWithLabelPopover } from "./TextWithLabelPopover";
 import {
   retentionSizeSelectOptions,
   retentionTimeSelectOptions,
-  useValidateTopic,
-} from "../types";
-import { CustomRetentionMessage } from "./CustomRetentionMessage";
-import { CustomRetentionSize } from "./CustomRetentionSize";
+} from "./types";
+import { useValidateTopic } from "./useValidateTopic";
 
 export type CoreConfigurationProps = {
   isCreate?: boolean;
@@ -54,6 +57,10 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
 }) => {
   const { t } = useTranslation(["create-topic"]);
   const { validateName } = useValidateTopic();
+  const [retentionSizeUnit, setRetentionSizeUnit] =
+    useState<RetentionSizeUnits>(RetentionSizeUnits.BYTE);
+  const [retentionTimeUnit, setRetentionTimeUnit] =
+    useState<RetentionTimeUnits>(RetentionTimeUnits.MILLISECOND);
   const [isRetentionTimeSelectOpen, setIsRetentionTimeSelectOpen] =
     useState<boolean>();
   const [isRetentionSizeSelectOpen, setIsRetentionSizeSelectOpen] =
@@ -75,17 +82,10 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
   const handleRetentionMessageSize = (value: string) => {
     switch (value) {
       case RetentionSizeUnits.CUSTOM:
-        setTopicData({
-          ...topicData,
-          retentionBytes: 1,
-          retentionBytesUnit: RetentionSizeUnits.CUSTOM,
-        });
+        setRetentionSizeUnit(RetentionSizeUnits.CUSTOM);
         break;
       case RetentionTimeUnits.UNLIMITED:
-        setTopicData({
-          ...topicData,
-          retentionBytesUnit: RetentionSizeUnits.UNLIMITED,
-        });
+        setRetentionSizeUnit(RetentionSizeUnits.UNLIMITED);
     }
   };
 
@@ -100,17 +100,10 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
   const handleRetentionMessageTime = (value: string) => {
     switch (value) {
       case RetentionTimeUnits.CUSTOM:
-        setTopicData({
-          ...topicData,
-          retentionTime: 7,
-          retentionTimeUnit: RetentionTimeUnits.CUSTOM,
-        });
+        setRetentionTimeUnit(RetentionTimeUnits.CUSTOM);
         break;
       case RetentionTimeUnits.UNLIMITED:
-        setTopicData({
-          ...topicData,
-          retentionTimeUnit: RetentionTimeUnits.UNLIMITED,
-        });
+        setRetentionTimeUnit(RetentionTimeUnits.UNLIMITED);
     }
   };
 
@@ -120,23 +113,23 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
   };
 
   const onPartitionsChange: NumberInputProps["onChange"] = (event) => {
-    setTopicData({
-      ...topicData,
-      partitions.length: Number((event.target as HTMLInputElement).value),
-    });
+    // setTopicData({
+    //   ...topicData,
+    //   partitions.length: Number((event.target as HTMLInputElement).value),
+    // });
   };
   const handleOnPlus = () => {
-    setTopicData({
-      ...topicData,
-      partitions.length: topicData.partitions.length + 1,
-    });
+    // setTopicData({
+    //   ...topicData,
+    //   partitions.length: topicData.partitions.length + 1,
+    // });
   };
 
   const handleOnMinus = () => {
-    setTopicData({
-      ...topicData,
-      partitions.length: topicData.partitions.length - 1,
-    });
+    // setTopicData({
+    //   ...topicData,
+    //   partitions.length: topicData.partitions.length - 1,
+    // });
   };
 
   const retentionTimeInput = (
@@ -244,7 +237,7 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
         fieldId="replicas"
         btnAriaLabel={t("replicas")}
         fieldLabel={t("replicas")}
-        fieldValue={topicData.replicationFactor.toString()}
+        fieldValue={"3" /* TODO */}
         popoverBody={t("replicas_description")}
         popoverHeader={t("replicas")}
       />
@@ -252,7 +245,7 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
         fieldId="min-insync-replicas"
         btnAriaLabel="topic detail min-in-sync replica"
         fieldLabel="Minimum in-sync replicas"
-        fieldValue={topicData.minInSyncReplica?.toString()}
+        fieldValue={topicData["min.insync.replicas"].toString()}
         popoverBody={t("min_insync_replicas_description")}
         popoverHeader={t("min_insync_replicas")}
       />
@@ -266,9 +259,9 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
         <Stack hasGutter>
           <Radio
             isChecked={
-              topicData.retentionTimeUnit === RetentionTimeUnits.DAY ||
-              topicData.retentionTimeUnit === RetentionTimeUnits.WEEK ||
-              topicData.retentionTimeUnit === RetentionTimeUnits.CUSTOM
+              retentionTimeUnit === RetentionTimeUnits.DAY ||
+              retentionTimeUnit === RetentionTimeUnits.WEEK ||
+              retentionTimeUnit === RetentionTimeUnits.CUSTOM
             }
             name="custom-retention-time"
             onChange={() =>
@@ -281,9 +274,7 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
             value={RetentionTimeUnits.CUSTOM}
           />
           <Radio
-            isChecked={
-              topicData.retentionTimeUnit === RetentionTimeUnits.UNLIMITED
-            }
+            isChecked={retentionTimeUnit === RetentionTimeUnits.UNLIMITED}
             name="unlimited-retention-time"
             onChange={() =>
               handleRetentionMessageTime(RetentionTimeUnits.UNLIMITED)
@@ -304,9 +295,7 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
       >
         <Stack hasGutter>
           <Radio
-            isChecked={
-              topicData.retentionBytesUnit === RetentionSizeUnits.CUSTOM
-            }
+            isChecked={retentionSizeUnit === RetentionSizeUnits.CUSTOM}
             name="custom-retention-size"
             onChange={() =>
               handleRetentionMessageSize(RetentionSizeUnits.CUSTOM)
@@ -318,9 +307,7 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
             value={RetentionSizeUnits.CUSTOM}
           />
           <Radio
-            isChecked={
-              topicData.retentionBytesUnit === RetentionSizeUnits.UNLIMITED
-            }
+            isChecked={retentionSizeUnit === RetentionSizeUnits.UNLIMITED}
             name="unlimited-retention-size"
             onChange={() =>
               handleRetentionMessageSize(RetentionSizeUnits.UNLIMITED)

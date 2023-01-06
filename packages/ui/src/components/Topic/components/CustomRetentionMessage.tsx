@@ -7,12 +7,12 @@ import {
   SelectOption,
   SelectVariant,
 } from "@patternfly/react-core";
-import type { RetentionSizeUnits } from "@rhoas/app-services-ui-components";
 import type React from "react";
 import type { Topic } from "ui-models/src/models/topic";
-import type { SelectOptions } from "../types";
+import { RetentionTimeUnits } from "../../KafkaTopics/types";
+import type { SelectOptions } from "./types";
 
-export type CustomRetentionSizeProps = NumberInputProps &
+export type CustomRetentionMessageProps = NumberInputProps &
   SelectProps & {
     id?: string;
     selectOptions: SelectOptions[];
@@ -20,7 +20,7 @@ export type CustomRetentionSizeProps = NumberInputProps &
     setTopicData: (data: Topic) => void;
   };
 
-const CustomRetentionSize: React.FC<CustomRetentionSizeProps> = ({
+const CustomRetentionMessage: React.FC<CustomRetentionMessageProps> = ({
   onToggle,
   isOpen,
   selectOptions,
@@ -28,10 +28,10 @@ const CustomRetentionSize: React.FC<CustomRetentionSizeProps> = ({
   setTopicData,
 }) => {
   const onSelect: SelectProps["onSelect"] = (event, value) => {
-    setTopicData({
-      ...topicData,
-      customRetentionSizeUnit: value as RetentionSizeUnits,
-    });
+    // setTopicData({
+    //   ...topicData,
+    //   customRetentionTimeUnit: value as RetentionTimeUnits,
+    // });
 
     //}
 
@@ -40,23 +40,23 @@ const CustomRetentionSize: React.FC<CustomRetentionSizeProps> = ({
 
   const handleTouchSpin = (operator: string) => {
     if (operator === "+") {
-      setTopicData({
-        ...topicData,
-        retentionBytes: topicData.retentionBytes + 1,
-      });
+      // setTopicData({
+      //   ...topicData,
+      //   retentionTime: topicData.retentionTime + 1,
+      // });
     } else if (operator === "-") {
-      setTopicData({
-        ...topicData,
-        retentionBytes: topicData.retentionBytes - 1,
-      });
+      // setTopicData({
+      //   ...topicData,
+      //   retentionTime: topicData.retentionTime - 1,
+      // });
     }
   };
 
   const onChangeTouchSpin = (event: React.FormEvent<HTMLInputElement>) => {
-    setTopicData({
-      ...topicData,
-      retentionBytes: Number(event.currentTarget.value),
-    });
+    // setTopicData({
+    //   ...topicData,
+    //   retentionTime: Number(event.currentTarget.value),
+    // });
   };
 
   return (
@@ -66,7 +66,11 @@ const CustomRetentionSize: React.FC<CustomRetentionSizeProps> = ({
           <NumberInput
             onMinus={() => handleTouchSpin("-")}
             onPlus={() => handleTouchSpin("+")}
-            value={topicData.retentionBytes}
+            value={
+              Number(
+                topicData["retention.ms"].value
+              ) /* TODO precision loss from BigInt to Number, handle this as a string */
+            }
             onChange={(event) => onChangeTouchSpin(event)}
             min={0}
           />
@@ -77,7 +81,7 @@ const CustomRetentionSize: React.FC<CustomRetentionSizeProps> = ({
             aria-label="Select Input"
             onToggle={onToggle}
             onSelect={onSelect}
-            selections={topicData.customRetentionSizeUnit}
+            selections={RetentionTimeUnits.MILLISECOND /* TODO */}
             isOpen={isOpen}
           >
             {selectOptions?.map((s) => (
@@ -94,4 +98,4 @@ const CustomRetentionSize: React.FC<CustomRetentionSizeProps> = ({
   );
 };
 
-export { CustomRetentionSize };
+export { CustomRetentionMessage };

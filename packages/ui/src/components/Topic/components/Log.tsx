@@ -7,20 +7,20 @@ import {
 import {
   DropdownWithToggle,
   FormGroupWithPopover,
-  TextWithLabelPopover,
   useTranslation,
 } from "@rhoas/app-services-ui-components";
 import convert from "convert";
 import type React from "react";
 import type { Topic } from "ui-models/src/models/topic";
-import type { IDropdownOption } from "../types";
+import { TextWithLabelPopover } from "./TextWithLabelPopover";
+import type { IDropdownOption } from "./types";
 
 export type LogProps = {
   topicData: Topic;
   setTopicData: (data: Topic) => void;
-  defaultDeleteRetentionTime: number;
+  defaultDeleteRetentionTime: bigint;
   defaultMinCleanbleRatio: number;
-  defaultMinimumCompactionLagTime: number;
+  defaultMinimumCompactionLagTime: bigint;
 };
 
 const Log: React.FC<LogProps> = ({
@@ -54,7 +54,7 @@ const Log: React.FC<LogProps> = ({
   ];
 
   const onSelectOption = (value: string) => {
-    setTopicData({ ...topicData, cleanupPolicy: value });
+    // setTopicData({ ...topicData, cleanupPolicy: value });
   };
 
   return (
@@ -78,7 +78,7 @@ const Log: React.FC<LogProps> = ({
           onSelectOption={onSelectOption}
           items={cleanupPolicyOptions}
           name="cleanup-policy"
-          value={topicData.cleanupPolicy || ""}
+          value={topicData["cleanup.policy"]}
           isLabelAndValueNotSame={true}
         />
       </FormGroupWithPopover>

@@ -1,5 +1,5 @@
 import type { VoidFunctionComponent } from "react";
-import { TopicDetailView } from "ui/src/components/KafkaTopicDetails";
+import { TopicProperties } from "ui";
 import type { DataPlaneTopicNavigationProps } from "../routesConsts";
 import { useTopicGate } from "../useTopicGate";
 import { DataPlaneTopicHeaderConnected } from "./DataPlaneTopicHeaderConnected";
@@ -23,7 +23,7 @@ export const TopicPropertiesRoute: VoidFunctionComponent<
         instanceTopicsHref={instanceTopicsHref}
         activeSection={"properties"}
       />
-      <TopicDetailView
+      <TopicProperties
         topic={topic}
         deleteTopicHref={deleteTopicHref(instance.id, topic.name)}
         updateTopicHref={updateTopicHref(instance.id, topic.name)}

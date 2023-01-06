@@ -1,7 +1,7 @@
 import type React from "react";
 import { useState } from "react";
 import type { Topic } from "ui-models/src/models/topic";
-import { CreateTopicHead, CreateTopicWizard } from "./components";
+import { CreateTopicHead, CreateTopicWizard } from "../components";
 
 export type CreateTopicPageProps = {
   kafkaName: string;
@@ -14,7 +14,7 @@ export type CreateTopicPageProps = {
   availablePartitionLimit: number;
 };
 
-export const CreateTopicPage: React.FC<CreateTopicPageProps> = ({
+export const CreateTopic: React.FC<CreateTopicPageProps> = ({
   kafkaName,
   kafkaPageLink,
   kafkaInstanceLink,

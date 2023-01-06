@@ -13,22 +13,21 @@ import {
   TextContent,
   TextVariants,
 } from "@patternfly/react-core";
-import { TextWithLabelPopover } from "@rhoas/app-services-ui-components";
 import type React from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import type { Topic } from "ui-models/src/models/topic";
-import { Cleanup } from "../CreateKafkaTopic/components/Cleanup";
-import { Flush } from "../CreateKafkaTopic/components/Flush";
-import { Message } from "../CreateKafkaTopic/components/Message";
-import { Replication } from "../CreateKafkaTopic/components/Replication";
-import { TopicAdvanceIndex } from "../CreateKafkaTopic/components/TopicAdvanceIndex";
-import { TopicAdvanceJumpLinks } from "../CreateKafkaTopic/components/TopicAdvanceJumpLinks";
-import "../CreateKafkaTopic/CreateTopicPage.css";
 import {
   formattedRetentionSize,
   formattedRetentionTime,
-} from "../KafkaTopics/types";
+} from "../../KafkaTopics/types";
+import { TextWithLabelPopover } from "../components";
+import { Cleanup } from "../components/Cleanup";
+import { Flush } from "../components/Flush";
+import { Message } from "../components/Message";
+import { Replication } from "../components/Replication";
+import { TopicAdvanceIndex } from "../components/TopicAdvanceIndex";
+import { TopicAdvanceJumpLinks } from "../components/TopicAdvanceJumpLinks";
 
 export type TopicViewDetailProps = {
   topic: Topic;
@@ -36,7 +35,7 @@ export type TopicViewDetailProps = {
   updateTopicHref: string;
 };
 
-export const TopicDetailView: React.FunctionComponent<TopicViewDetailProps> = ({
+export const TopicProperties: React.FunctionComponent<TopicViewDetailProps> = ({
   topic,
   deleteTopicHref,
   updateTopicHref,
@@ -229,7 +228,7 @@ export const TopicDetailView: React.FunctionComponent<TopicViewDetailProps> = ({
                     />
                   </Form>
 
-                  <Divider className="delete-topic-divider__Margin" />
+                  <Divider className="pf-u-mt-2xl pf-u-mb-2xl" />
 
                   <TextContent>
                     <Text component={TextVariants.h2} id="delete">

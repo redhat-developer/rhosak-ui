@@ -4,12 +4,10 @@ import {
   TextContent,
   TextVariants,
 } from "@patternfly/react-core";
-import {
-  TextWithLabelPopover,
-  useTranslation,
-} from "@rhoas/app-services-ui-components";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import convert from "convert";
 import type React from "react";
+import { TextWithLabelPopover } from "./TextWithLabelPopover";
 
 type CleanupProps = {
   defaultLogSegmentSize: bigint;

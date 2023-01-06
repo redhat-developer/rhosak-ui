@@ -99,58 +99,50 @@ export const TopicAdvancePage: React.FunctionComponent<
                 />
                 <Message
                   defaultMaximumMessageBytes={
-                    constantValues.DEFAULT_MAXIMUM_MESSAGE_BYTES
+                    topicData["max.message.bytes"].value
                   }
                   defaultMessageTimestampType={
-                    constantValues.DEFAULT_MESSAGE_TIMESTAMP_TYPE
+                    topicData["message.timestamp.type"]
                   }
                   defaultMaxMessageTimestampDiff={
-                    constantValues.DEFAULT_MAX_MESSAGE_TIMESTAMP_DIFF_MILLISECONDS
+                    topicData["message.timestamp.difference.max.ms"].value
                   }
                 />
                 <Log
                   topicData={topicData}
                   setTopicData={setTopicData}
-                  defaultDeleteRetentionTime={
-                    constantValues.DEFAULT_DELETE_RETENTION_TIME_MILLISECONDS
-                  }
+                  defaultDeleteRetentionTime={topicData["retention.ms"].value}
                   defaultMinCleanbleRatio={
-                    constantValues.DEFAULT_MIN_CLEANBLE_RATIO
+                    topicData["min.cleanable.dirty.ratio"]
                   }
                   defaultMinimumCompactionLagTime={
-                    constantValues.DEFAULT_MINIMUM_COMPACTION_LAG_TIME_MILLISECONDS
+                    topicData["min.compaction.lag.ms"].value
                   }
                 />
                 <Replication />
                 <Cleanup
-                  defaultLogSegmentSize={
-                    constantValues.DEFAULT_LOG_SEGMENT_SIZE_BYTES
-                  }
-                  defaultSegmentTime={
-                    constantValues.DEFAULT_SEGMENT_TIME_MILLISECONDS
-                  }
+                  defaultLogSegmentSize={topicData["segment.bytes"].value}
+                  defaultSegmentTime={topicData["segment.ms"].value}
                   defaultSegmentJitterTime={
-                    constantValues.DEFAULT_SEGMENT_JITTER_TIME_MILLISECONDS
+                    topicData["segment.jitter.ms"].value
                   }
                   defaultFileDeleteDelay={
-                    constantValues.DEFAULT_FILE_DELETE_DELAY_MILLISECONDS
+                    topicData["file.delete.delay.ms"].value
                   }
                 />
                 <TopicAdvanceIndex
                   defaultIndexIntervalSize={
-                    constantValues.DEFAULT_INDEX_INTERVAL_SIZE_BYTES
+                    topicData["index.interval.bytes"].value
                   }
                   defaultSegmentIndexSize={
-                    constantValues.DEFAULT_SEGMENT_INDEX_SIZE_BYTES
+                    topicData["segment.index.bytes"].value
                   }
                 />
                 <Flush
                   defaultFlushIntervalMessages={
-                    constantValues.DEFAULT_FLUSH_INTERVAL_MESSAGES
+                    topicData["flush.messages"].value
                   }
-                  defaultFlushIntervalTime={
-                    constantValues.DEFAULT_FLUSH_INTERVAL_TIME_MILLISECONDS
-                  }
+                  defaultFlushIntervalTime={topicData["flush.ms"].value}
                 />
               </Form>
 
