@@ -4,7 +4,7 @@ import {
   FormGroup,
   Modal,
 } from "@patternfly/react-core";
-import type { FunctionComponent} from "react";
+import type { FunctionComponent } from "react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SelectOwner } from "./SelectOwner";
@@ -26,7 +26,6 @@ export const ChangeKafkaOwner: FunctionComponent<ChangeKafkaOwnerProps> = ({
   onCancel,
 }) => {
   const { t } = useTranslation(["kafka", "common"]);
-  const [selectedOwner,setSelectedOwner] = useState<string|undefined>(undefined)
   return (
     <Modal
       id="change-owner-modal"
@@ -60,9 +59,7 @@ export const ChangeKafkaOwner: FunctionComponent<ChangeKafkaOwnerProps> = ({
         </FormGroup>
         <FormGroup fieldId="New-owner-name" label={t("new_owner")}>
           <SelectOwner
-            value={selectedOwner}
             accounts={accounts}
-            onChangeOwner={(value)=>setSelectedOwner(value)}
           />
         </FormGroup>
       </Form>
