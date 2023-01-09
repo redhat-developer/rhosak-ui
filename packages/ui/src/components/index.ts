@@ -17,3 +17,4 @@ export * from "./Metrics";
 export * from "./ServiceAccount";
 export * from "./Settings";
 export * from "./Topic";
+export * from "./ChangeKafkaOwner";
