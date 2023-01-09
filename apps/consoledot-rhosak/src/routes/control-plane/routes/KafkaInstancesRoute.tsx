@@ -113,6 +113,13 @@ export const KafkaInstancesRoute: FunctionComponent<KafkaInstancesRoute> = ({
     },
     [history]
   );
+  const onChangeOwner = useCallback(
+    ({ id }) => {
+      history.push(`${ControlPlaneRouteRoot}/${id}/change-owner`);
+    },
+    [history]
+  );
+  
 
   const onQuickstartGuide = useCallback(
     () => setActiveQuickStart && setActiveQuickStart("getting-started"),
@@ -142,7 +149,7 @@ export const KafkaInstancesRoute: FunctionComponent<KafkaInstancesRoute> = ({
         onRemoveStatusChip={statusesChips.remove}
         onRemoveStatusChips={statusesChips.clear}
         onClearAllFilters={onClearAllFilters}
-        onChangeOwner={(row) => {}}
+        onChangeOwner={onChangeOwner}
         onDelete={onDelete}
         onCreate={onCreate}
         isRowSelected={({ row }) => row.id === selectedInstance}

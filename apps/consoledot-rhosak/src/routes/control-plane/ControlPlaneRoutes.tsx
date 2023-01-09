@@ -5,10 +5,12 @@ import {
   DeleteKafkaInstanceRoute,
   KafkaInstancesRoute,
 } from "./routes";
+import { ChangeOwnerRoute } from "./routes/ChangeOwnerRoute";
 import {
   ControlPlaneDeleteInstancePath,
   ControlPlaneNewInstancePath,
   ControlPlaneRoutePath,
+  ControlPlaneChangeOwnerPath
 } from "./routesConsts";
 
 export const ControlPlaneRoutes: VoidFunctionComponent = () => {
@@ -23,6 +25,10 @@ export const ControlPlaneRoutes: VoidFunctionComponent = () => {
       <KafkaInstancesRoute
         getUrlForInstance={(instance) => `/kafkas/${instance.id}/details`}
       />
+      <Route path={ControlPlaneChangeOwnerPath}>
+      <ChangeOwnerRoute instancesHref={"/kafkas"} />
     </Route>
+    </Route>
+      
   );
 };
