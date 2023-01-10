@@ -34,7 +34,7 @@ export const SelectOwner: FC<SelectOwnerProps> = ({
       filter !== ""
         ? accounts.filter((account) => filterRegExp.test(account.displayName))
         : accounts;
-    return filteredAccounts.map((account, index) => (
+    return filteredAccounts.map((account) => (
       <SelectOption
         key={account.id}
         value={account.id}
