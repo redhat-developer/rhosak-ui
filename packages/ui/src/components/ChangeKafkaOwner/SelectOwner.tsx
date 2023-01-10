@@ -1,31 +1,35 @@
-import { FC, useState } from "react";
-import {
-  Select,
-  SelectOption,
-  SelectProps,
-  SelectVariant,
-} from "@patternfly/react-core";
+import type { FC } from "react";
+import { useState } from "react";
+import type { SelectProps } from "@patternfly/react-core";
+import { Select, SelectOption, SelectVariant } from "@patternfly/react-core";
 import { useTranslation } from "react-i18next";
-import { OwnerAccount } from "./types";
+import type { OwnerAccount } from "./types";
+import { ChangeOwnerErrorMessage } from ".";
 
 export type SelectOwnerProps = {
   accounts: OwnerAccount[];
+  owner: string | undefined;
+  onChangeOwner: (owner: string | undefined) => void;
+  onChangeErrorCode: (value: ChangeOwnerErrorMessage | undefined) => void;
 };
 
 export const SelectOwner: FC<SelectOwnerProps> = ({
   accounts,
+  owner,
+  onChangeOwner,
+  onChangeErrorCode,
 }) => {
   const { t } = useTranslation("kafka");
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [selectOwner, setSelectOwner] = useState<string | undefined>();
 
   const onToggle = (isExpanded: boolean) => {
     setIsOpen(isExpanded);
   };
 
   const onSelect: SelectProps["onSelect"] = (_, owner) => {
-    setSelectOwner(owner as string);
+    onChangeOwner(owner as string);
     setIsOpen(false);
+    onChangeErrorCode(undefined);
   };
 
   function selectOptions(filter = "") {
@@ -56,7 +60,7 @@ export const SelectOwner: FC<SelectOwnerProps> = ({
       createText={t("change_owner_create_text")}
       menuAppendTo="parent"
       maxHeight={400}
-      selections={selectOwner}
+      selections={owner}
       onSelect={onSelect}
       onFilter={(_, value) => selectOptions(value)}
     >

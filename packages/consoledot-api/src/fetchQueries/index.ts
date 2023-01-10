@@ -8,3 +8,4 @@ export * from "./useMessagesFetchQuery";
 export * from "./useProviderRegionSizesFetchQuery";
 export * from "./useProvidersWithRegionsFetchQuery";
 export * from "./useStandardQuotaFetchQuery";
+export * from "./usePrincipalApiFetchQuery";
