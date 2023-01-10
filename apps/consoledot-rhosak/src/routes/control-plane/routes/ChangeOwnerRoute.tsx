@@ -1,8 +1,7 @@
 import { useKafka } from "consoledot-api";
-import type { FunctionComponent } from "react";
+import { FunctionComponent, useCallback } from "react";
 import { useState } from "react";
-//import { useCallback } from "react";
-import { useRouteMatch } from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import { ChangeKafkaOwner } from "ui";
 import { useUpdateKafkaMutation } from "consoledot-api";
 
@@ -14,23 +13,18 @@ import { ControlPlaneRoutePath } from "../routesConsts";
 
 export const ChangeOwnerRoute: FunctionComponent<
   ControlPlaneNavigationProps
-> = () => {
-  //const history = useHistory();
+> = ({ instancesHref }) => {
+  const history = useHistory();
   const match = useRouteMatch<ControlPlaneRouteParams>(ControlPlaneRoutePath);
 
-  //const [selectedOwner,setSelectedOwner] = useState<string|undefined>(undefined)
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
   //const updateInstance = useUpdateKafkaMutation();
 
   const { data: instance } = useKafka(match?.params.id);
 
-  const onCancel = () => {
-    setIsModalOpen(false);
-  };
+  const onCancel = useCallback(() => {
+    history.push(instancesHref);
+  }, [history, instancesHref]);
 
-  const onSuccess = () => {
-    setIsModalOpen(false);
-  };
   //TODO Update the Kafka instance on confirm
 
   /*const onConfirm = useCallback(
@@ -52,10 +46,10 @@ export const ChangeOwnerRoute: FunctionComponent<
 
   return (
     <ChangeKafkaOwner
-      isModalOpen={isModalOpen}
+      isModalOpen={true}
       currentOwner={instance?.owner || ""}
       accounts={[]}
-      onConfirm={() => {}}
+      onConfirm={() => { }}
       onCancel={onCancel}
     />
   );
