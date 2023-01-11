@@ -11,7 +11,7 @@ export const TopicDeleteRoute: VoidFunctionComponent<
 > = ({ instanceDetailsHref, topicHref, instancesHref, instanceTopicsHref }) => {
   const history = useHistory();
 
-  const { instance, topic } = useTopicGate(instancesHref, instanceDetailsHref);
+  const { instance, topic } = useTopicGate();
   const { mutateAsync, isLoading: isDeleting } = useDeleteTopicMutation();
 
   const onCancel = useCallback(() => {

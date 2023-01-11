@@ -2,7 +2,7 @@ import { InvalidObject } from "@redhat-cloud-services/frontend-components";
 import type { VoidFunctionComponent } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { ControlPlaneRouteRoot } from "../control-plane/routesConsts";
-import { DataPlaneGate } from "./DataPlaneGate";
+import { RedirectOnGateError } from "../RedirectOnGateError";
 import {
   AclsRoute,
   ConsumerGroupsRoute,
@@ -18,7 +18,6 @@ import { TopicDeleteRoute } from "./routes/TopicDeleteRoute";
 import { TopicEditPropertiesRoute } from "./routes/TopicEditPropertiesRoute";
 
 import { DataPlaneRoutePath } from "./routesConsts";
-import { TopicGate } from "./TopicGate";
 
 const instanceDetailsHref = (id: string) =>
   `${ControlPlaneRouteRoot}/${id}/details`;
@@ -38,7 +37,7 @@ const deleteTopicHref = (id: string, topic: string) =>
 export const DataPlaneRoutes: VoidFunctionComponent = () => {
   return (
     <Route path={DataPlaneRoutePath}>
-      <DataPlaneGate instancesHref={"/kafkas"}>
+      <RedirectOnGateError redirectUrl={"/kafkas"}>
         <Switch>
           <Route path={`${DataPlaneRoutePath}/dashboard`} exact>
             <DashboardRoute instancesHref={"/kafkas"} />
@@ -65,10 +64,10 @@ export const DataPlaneRoutes: VoidFunctionComponent = () => {
           </Route>
 
           <Route path={`${DataPlaneRoutePath}/topics`}>
-            <TopicGate
-              instancesHref={"/kafkas"}
-              instanceDetailsHref={instanceDetailsHref}
-              instanceTopicsHref={instanceTopicsHref}
+            <RedirectOnGateError
+              redirectUrl={"/kafkas"}
+              // instanceDetailsHref={instanceDetailsHref}
+              // instanceTopicsHref={instanceTopicsHref}
             >
               <Switch>
                 <Route
@@ -143,7 +142,7 @@ export const DataPlaneRoutes: VoidFunctionComponent = () => {
                   exact
                 />
               </Switch>
-            </TopicGate>
+            </RedirectOnGateError>
           </Route>
 
           <Redirect
@@ -156,7 +155,7 @@ export const DataPlaneRoutes: VoidFunctionComponent = () => {
             <InvalidObject />
           </Route>
         </Switch>
-      </DataPlaneGate>
+      </RedirectOnGateError>
     </Route>
   );
 };

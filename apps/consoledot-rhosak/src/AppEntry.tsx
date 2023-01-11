@@ -10,6 +10,8 @@ import App from "./App";
 import { QuickstartLoader } from "./QuickstartLoader";
 import { init } from "./store";
 
+const apiUrl: string = process!.env.API_URL as string;
+
 const store = init(
   ...(process.env.NODE_ENV !== "production" ? [logger] : [])
 ).getStore();
@@ -30,7 +32,7 @@ const AppEntry = memo(() => {
     <Provider store={store}>
       <ApiProvider
         accessToken={auth.getToken}
-        basePath={process.env.API_URL}
+        basePath={apiUrl}
         refetchInterval={5000}
       >
         <Router basename={getBaseName(window.location.pathname)}>

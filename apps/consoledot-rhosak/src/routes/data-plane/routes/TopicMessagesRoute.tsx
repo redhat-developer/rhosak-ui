@@ -10,7 +10,7 @@ import { DataPlaneTopicHeaderConnected } from "./DataPlaneTopicHeaderConnected";
 export const TopicMessagesGroupsRoute: VoidFunctionComponent<
   DataPlaneNavigationProps
 > = ({ instanceDetailsHref, instanceTopicsHref, instancesHref }) => {
-  const { instance, topic } = useTopicGate(instancesHref, instanceDetailsHref);
+  const { instance, topic } = useTopicGate();
   const kafkaTopicMessagesFetchQuery = useMessagesFetchQuery();
 
   const getMessages = useCallback<KafkaMessageBrowserProps["getMessages"]>(

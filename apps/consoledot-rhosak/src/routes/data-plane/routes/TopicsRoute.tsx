@@ -16,7 +16,7 @@ export const TopicsRoute: VoidFunctionComponent<
 > = ({ instancesHref }) => {
   const labels = useTopicLabels();
 
-  const { instance } = useDataPlaneGate(instancesHref);
+  const { instance } = useDataPlaneGate();
   const { page, perPage, setPagination, setPaginationQuery } =
     usePaginationSearchParams();
   const resetPaginationQuery = useCallback(

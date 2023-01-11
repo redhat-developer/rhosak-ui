@@ -17,7 +17,7 @@ import { DataPlaneTopicHeaderConnected } from "./DataPlaneTopicHeaderConnected";
 export const TopicConsumerGroupsRoute: VoidFunctionComponent<
   DataPlaneNavigationProps
 > = ({ instanceDetailsHref, instanceTopicsHref, instancesHref }) => {
-  const { instance, topic } = useTopicGate(instancesHref, instanceDetailsHref);
+  const { instance, topic } = useTopicGate();
 
   const { page, perPage, setPagination, setPaginationQuery } =
     usePaginationSearchParams();

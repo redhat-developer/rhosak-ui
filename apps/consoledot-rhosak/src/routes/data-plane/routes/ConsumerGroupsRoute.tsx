@@ -17,7 +17,7 @@ import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
 export const ConsumerGroupsRoute: VoidFunctionComponent<
   ControlPlaneNavigationProps
 > = ({ instancesHref }) => {
-  const { instance } = useDataPlaneGate(instancesHref);
+  const { instance } = useDataPlaneGate();
   const { page, perPage, setPagination, setPaginationQuery } =
     usePaginationSearchParams();
   const resetPaginationQuery = useCallback(

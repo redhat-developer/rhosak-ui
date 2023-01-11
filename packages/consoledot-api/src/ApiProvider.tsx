@@ -1,4 +1,3 @@
-import type { ConfigurationParameters } from "@rhoas/kafka-management-sdk";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { isReactQueryDevToolsEanbled } from "local-storage-helpers";
@@ -13,10 +12,9 @@ const ReactQueryDevtoolsProduction = lazy(() =>
   )
 );
 
-type ApiContextProps = Pick<
-  ConfigurationParameters,
-  "accessToken" | "basePath"
-> & {
+type ApiContextProps = {
+  accessToken: () => Promise<string>;
+  basePath: string;
   refetchInterval: number;
 };
 
