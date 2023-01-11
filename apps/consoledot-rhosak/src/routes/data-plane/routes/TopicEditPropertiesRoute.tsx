@@ -7,7 +7,7 @@ import { DataPlaneTopicHeaderConnected } from "./DataPlaneTopicHeaderConnected";
 export const TopicEditPropertiesRoute: VoidFunctionComponent<
   DataPlaneNavigationProps
 > = ({ instanceDetailsHref, instanceTopicsHref, instancesHref }) => {
-  const { instance, topic } = useTopicGate(instancesHref, instanceDetailsHref);
+  const { instance, topic } = useTopicGate();
 
   return (
     <>

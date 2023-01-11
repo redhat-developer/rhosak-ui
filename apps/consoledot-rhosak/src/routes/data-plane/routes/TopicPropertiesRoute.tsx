@@ -13,7 +13,7 @@ export const TopicPropertiesRoute: VoidFunctionComponent<
   deleteTopicHref,
   updateTopicHref,
 }) => {
-  const { instance, topic } = useTopicGate(instancesHref, instanceDetailsHref);
+  const { instance, topic } = useTopicGate();
 
   return (
     <>

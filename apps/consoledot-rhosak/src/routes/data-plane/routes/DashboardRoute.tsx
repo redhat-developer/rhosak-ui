@@ -23,7 +23,7 @@ export const DashboardRoute: VoidFunctionComponent<
   const {
     instance,
     match: { params },
-  } = useDataPlaneGate(instancesHref);
+  } = useDataPlaneGate();
   const [hasUserAlreadyClosedAlert, setHasUserAlreadyClosedAlert] = useState(
     metricsIsLagAlertsDismissed()
   );

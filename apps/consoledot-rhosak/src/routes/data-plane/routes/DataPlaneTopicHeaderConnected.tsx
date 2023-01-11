@@ -22,7 +22,7 @@ export const DataPlaneTopicHeaderConnected: VoidFunctionComponent<
     instance,
     topic,
     match: { url },
-  } = useTopicGate(instancesHref, instanceDetailsHref);
+  } = useTopicGate();
 
   const tabsHref = {
     consumer: `${url}/consumer-groups`,

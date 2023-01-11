@@ -10,7 +10,7 @@ import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
 export const SettingsRoute: VoidFunctionComponent<
   ControlPlaneNavigationProps
 > = ({ instancesHref }) => {
-  const { instance } = useDataPlaneGate(instancesHref);
+  const { instance } = useDataPlaneGate();
   const updateInstance = useUpdateKafkaMutation();
 
   const onSubmitReAuthentication = useCallback<

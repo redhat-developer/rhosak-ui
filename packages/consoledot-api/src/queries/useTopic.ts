@@ -9,7 +9,8 @@ export function useTopic(
   params: { id?: string; adminUrl?: string } & Omit<
     FetchTopicParams,
     "getTopic"
-  >
+  >,
+  suspense = false
 ) {
   const { refetchInterval } = useApiConfiguration();
   const { topics } = useApi();
@@ -35,5 +36,6 @@ export function useTopic(
       Boolean(params.id) &&
       Boolean(params.topicName),
     refetchInterval,
+    suspense,
   });
 }

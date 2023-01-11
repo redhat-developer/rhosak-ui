@@ -17,7 +17,7 @@ export const DataPlaneHeaderConnected: VoidFunctionComponent<
   const {
     instance,
     match: { url },
-  } = useDataPlaneGate(instancesHref);
+  } = useDataPlaneGate();
 
   const sectionsHref = {
     dashboard: `${url}/dashboard`,

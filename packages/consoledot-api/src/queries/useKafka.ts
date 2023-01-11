@@ -4,7 +4,7 @@ import { kafkaQueries } from "../queryKeys";
 import { useApi } from "../useApi";
 import { useKafkaInstanceTransformer } from "./useKafkaInstanceTransformer";
 
-export function useKafka(id: string | undefined) {
+export function useKafka(id: string | undefined, suspense = false) {
   const { refetchInterval } = useApiConfiguration();
   const dataMapper = useKafkaInstanceTransformer();
   const { kafkasFleet } = useApi();
@@ -21,5 +21,6 @@ export function useKafka(id: string | undefined) {
       return dataMapper(instance.data);
     },
     refetchInterval,
+    suspense,
   });
 }

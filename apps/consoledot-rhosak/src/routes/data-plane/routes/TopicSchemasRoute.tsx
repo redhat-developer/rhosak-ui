@@ -16,7 +16,7 @@ export const TopicSchemasRoute: VoidFunctionComponent<
   DataPlaneNavigationProps
 > = ({ instanceDetailsHref, instanceTopicsHref, instancesHref }) => {
   const chrome = useChrome();
-  const { topic } = useTopicGate(instancesHref, instanceDetailsHref);
+  const { topic } = useTopicGate();
   const processor = (([_, m]: [string, { entry: string[] }]) =>
     m.entry.map(
       (e) => `/beta/apps/srs-ui-build${e}`
