@@ -6,7 +6,7 @@ import { useApiConfiguration } from "./ApiProvider";
 import { PrincipalApi } from "@redhat-cloud-services/rbac-client";
 
 export const useApi = () => {
-  const { accessToken, basePath } = useApiConfiguration();
+  const { basePath, accessToken } = useApiConfiguration();
   const kafkasFleet = useCallback(
     () =>
       new DefaultApi(
@@ -17,10 +17,13 @@ export const useApi = () => {
       ),
     [accessToken, basePath]
   );
-  const userAccounts = useCallback(
-    () => new PrincipalApi({ accessToken: accessToken as string, basePath }),
-    [accessToken, basePath]
-  );
+  const userAccounts = useCallback(async () => {
+    const token = await accessToken;
+    new PrincipalApi({
+      accessToken: token as string,
+      basePath,
+    });
+  }, [accessToken, basePath]);
   const account = useCallback(
     () =>
       new AppServicesApi(
