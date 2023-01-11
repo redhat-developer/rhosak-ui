@@ -63,51 +63,60 @@ export const DataPlaneRoutes: VoidFunctionComponent = () => {
             <TopicsRoute instancesHref={"/kafkas"} />
           </Route>
 
-          <Route path={`${DataPlaneRoutePath}/topics`}>
-            <RedirectOnGateError
-              redirectUrl={"/kafkas"}
-              // instanceDetailsHref={instanceDetailsHref}
-              // instanceTopicsHref={instanceTopicsHref}
-            >
-              <Switch>
-                <Route
-                  path={`${DataPlaneRoutePath}/topics/:topicName/consumer-groups`}
-                  exact
-                >
-                  <TopicConsumerGroupsRoute
-                    instancesHref={"/kafkas"}
-                    instanceDetailsHref={instanceDetailsHref}
-                    instanceTopicsHref={instanceTopicsHref}
-                  />
-                </Route>
-                <Route
-                  path={`${DataPlaneRoutePath}/topics/:topicName/messages`}
-                  exact
-                >
-                  <TopicMessagesGroupsRoute
-                    instancesHref={"/kafkas"}
-                    instanceDetailsHref={instanceDetailsHref}
-                    instanceTopicsHref={instanceTopicsHref}
-                  />
-                </Route>
-
-                <Route
-                  path={`${DataPlaneRoutePath}/topics/:topicName/properties/edit`}
-                  exact
-                >
-                  <TopicEditPropertiesRoute
-                    instancesHref={"/kafkas"}
-                    instanceDetailsHref={instanceDetailsHref}
-                    instanceTopicsHref={instanceTopicsHref}
-                  />
-                </Route>
-                <Route
-                  path={`${DataPlaneRoutePath}/topics/:topicName/properties`}
-                >
+          <Route
+            path={`${DataPlaneRoutePath}/topics`}
+            render={({ match }) => (
+              <RedirectOnGateError
+                redirectUrl={instanceTopicsHref(match.params.id)}
+              >
+                <Switch>
                   <Route
-                    path={`${DataPlaneRoutePath}/topics/:topicName/properties/delete`}
+                    path={`${DataPlaneRoutePath}/topics/:topicName/consumer-groups`}
+                    exact
                   >
-                    <TopicDeleteRoute
+                    <TopicConsumerGroupsRoute
+                      instancesHref={"/kafkas"}
+                      instanceDetailsHref={instanceDetailsHref}
+                      instanceTopicsHref={instanceTopicsHref}
+                    />
+                  </Route>
+                  <Route
+                    path={`${DataPlaneRoutePath}/topics/:topicName/messages`}
+                    exact
+                  >
+                    <TopicMessagesGroupsRoute
+                      instancesHref={"/kafkas"}
+                      instanceDetailsHref={instanceDetailsHref}
+                      instanceTopicsHref={instanceTopicsHref}
+                    />
+                  </Route>
+
+                  <Route
+                    path={`${DataPlaneRoutePath}/topics/:topicName/properties/edit`}
+                    exact
+                  >
+                    <TopicEditPropertiesRoute
+                      instancesHref={"/kafkas"}
+                      instanceDetailsHref={instanceDetailsHref}
+                      instanceTopicsHref={instanceTopicsHref}
+                    />
+                  </Route>
+                  <Route
+                    path={`${DataPlaneRoutePath}/topics/:topicName/properties`}
+                  >
+                    <Route
+                      path={`${DataPlaneRoutePath}/topics/:topicName/properties/delete`}
+                    >
+                      <TopicDeleteRoute
+                        instancesHref={"/kafkas"}
+                        instanceDetailsHref={instanceDetailsHref}
+                        instanceTopicsHref={instanceTopicsHref}
+                        topicHref={topicHref}
+                        updateTopicHref={updateTopicHref}
+                        deleteTopicHref={deleteTopicHref}
+                      />
+                    </Route>
+                    <TopicPropertiesRoute
                       instancesHref={"/kafkas"}
                       instanceDetailsHref={instanceDetailsHref}
                       instanceTopicsHref={instanceTopicsHref}
@@ -116,34 +125,26 @@ export const DataPlaneRoutes: VoidFunctionComponent = () => {
                       deleteTopicHref={deleteTopicHref}
                     />
                   </Route>
-                  <TopicPropertiesRoute
-                    instancesHref={"/kafkas"}
-                    instanceDetailsHref={instanceDetailsHref}
-                    instanceTopicsHref={instanceTopicsHref}
-                    topicHref={topicHref}
-                    updateTopicHref={updateTopicHref}
-                    deleteTopicHref={deleteTopicHref}
-                  />
-                </Route>
-                <Route
-                  path={`${DataPlaneRoutePath}/topics/:topicName/schemas`}
-                  exact
-                >
-                  <TopicSchemasRoute
-                    instancesHref={"/kafkas"}
-                    instanceDetailsHref={instanceDetailsHref}
-                    instanceTopicsHref={instanceTopicsHref}
-                  />
-                </Route>
+                  <Route
+                    path={`${DataPlaneRoutePath}/topics/:topicName/schemas`}
+                    exact
+                  >
+                    <TopicSchemasRoute
+                      instancesHref={"/kafkas"}
+                      instanceDetailsHref={instanceDetailsHref}
+                      instanceTopicsHref={instanceTopicsHref}
+                    />
+                  </Route>
 
-                <Redirect
-                  from={`${DataPlaneRoutePath}/topics/:topicName/`}
-                  to={`${DataPlaneRoutePath}/topics/:topicName/consumer-groups`}
-                  exact
-                />
-              </Switch>
-            </RedirectOnGateError>
-          </Route>
+                  <Redirect
+                    from={`${DataPlaneRoutePath}/topics/:topicName/`}
+                    to={`${DataPlaneRoutePath}/topics/:topicName/consumer-groups`}
+                    exact
+                  />
+                </Switch>
+              </RedirectOnGateError>
+            )}
+          />
 
           <Redirect
             from={`${DataPlaneRoutePath}`}
