@@ -59,10 +59,6 @@ export const DataPlaneRoutes: VoidFunctionComponent = () => {
             <SettingsRoute instancesHref={"/kafkas"} />
           </Route>
 
-          <Route path={`${DataPlaneRoutePath}/topics`} exact>
-            <TopicsRoute instancesHref={"/kafkas"} />
-          </Route>
-
           <Route
             path={`${DataPlaneRoutePath}/topics`}
             render={({ match }) => (

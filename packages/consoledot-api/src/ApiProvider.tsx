@@ -45,3 +45,5 @@ export const ApiProvider: FunctionComponent<ApiContextProps> = ({
 export function useApiConfiguration() {
   return useContext(ApiContext);
 }
+
+export { useQueryErrorResetBoundary } from "@tanstack/react-query";
