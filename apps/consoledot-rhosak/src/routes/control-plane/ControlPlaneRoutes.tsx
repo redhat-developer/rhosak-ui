@@ -8,10 +8,10 @@ import {
 } from "./routes";
 import { ChangeOwnerRoute } from "./routes/ChangeOwnerRoute";
 import {
+  ControlPlaneChangeOwnerPath,
   ControlPlaneDeleteInstancePath,
   ControlPlaneNewInstancePath,
   ControlPlaneRoutePath,
-  ControlPlaneChangeOwnerPath
 } from "./routesConsts";
 
 export const ControlPlaneRoutes: VoidFunctionComponent = () => {
@@ -24,14 +24,13 @@ export const ControlPlaneRoutes: VoidFunctionComponent = () => {
         <Route path={ControlPlaneDeleteInstancePath}>
           <DeleteKafkaInstanceRoute instancesHref={"/kafkas"} />
         </Route>
+        <Route path={ControlPlaneChangeOwnerPath}>
+          <ChangeOwnerRoute instancesHref={"/kafkas"} />
+        </Route>
       </RedirectOnGateError>
       <KafkaInstancesRoute
         getUrlForInstance={(instance) => `/kafkas/${instance.id}/details`}
       />
-      <Route path={ControlPlaneChangeOwnerPath}>
-      <ChangeOwnerRoute instancesHref={"/kafkas"} />
     </Route>
-    </Route>
-      
   );
 };

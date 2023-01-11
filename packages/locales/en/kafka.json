@@ -5,7 +5,7 @@
   "connection_rate": "Connection rate",
   "connection_rate_value": "up to 100 connections/second",
   "can_not_change_owner_title": "Cannot change owner",
-  "onwer_transfer_failed_message": "We're unable to change the owner of {{name}} at this time. Try again later.",
+  "owner_transfer_failed_message": "We're unable to change the owner of {{name}} at this time. Try again later.",
   "connection_tab": {
     "authentication_method": "Authentication method",
     "bootstrap_server": "Bootstrap server",
@@ -251,8 +251,8 @@
   "change_owner_create_text": "Use",
   "current_owner": "Current owner",
   "new_owner": "New owner",
-  "change-owner-title": "Change onwer",
-  "change-owner-button": "Change onwer",
+  "change-owner-title": "Change owner",
+  "change-owner-button": "Change owner",
   "new_owner_does_not_exist_title": "New owner doesn’t exist",
   "new_owner_does_not_exist_message": "A user with the user ID {{newOwner}} doesn’t exist in your organization."
 }

@@ -1,9 +1,8 @@
 import type { KafkaRequestPayload } from "@rhoas/kafka-management-sdk";
-import { isServiceApiError } from "@rhoas/kafka-management-sdk";
+import { APIErrorCodes, isServiceApiError } from "@rhoas/kafka-management-sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { CreateKafkaFormData, CreateKafkaInstanceError } from "ui";
 import { kafkaQueries, masQueries } from "../queryKeys";
-import { ErrorCodes } from "../types";
 import { useApi } from "../useApi";
 
 export function useCreateKafkaMutation() {
@@ -97,3 +96,20 @@ export function useCreateKafkaMutation() {
     }
   );
 }
+
+const ErrorCodes = {
+  /** Forbidden to perform this action*/
+  UNAUTHORIZED_USER: APIErrorCodes.ERROR_4,
+  /** Kafka cluster name is already used*/
+  DUPLICATE_INSTANCE_NAME: APIErrorCodes.ERROR_36,
+  /** The maximum number of allowed kafka instances has been reached*/
+  INTERNAL_CAPACITY_ERROR: APIErrorCodes.ERROR_24,
+  /** Insufficient quota*/
+  INSUFFICIENT_QUOTA: APIErrorCodes.ERROR_120,
+  /** Forbidden to create more instances than the maximum allowed*/
+  TRIAL_USED: APIErrorCodes.ERROR_5,
+  /** Failed to check quota*/
+  FAILED_TO_CHECK_QUOTA: APIErrorCodes.ERROR_121,
+  /** Bad request*/
+  OWNER_DOES_NOT_EXIST: APIErrorCodes.ERROR_21,
+} as const;

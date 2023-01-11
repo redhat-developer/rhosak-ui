@@ -5,40 +5,44 @@ import {
   Form,
   FormGroup,
   Modal,
+  Skeleton,
 } from "@patternfly/react-core";
 import type { FunctionComponent } from "react";
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SelectOwner } from "./SelectOwner";
 import type { ChangeOwnerErrorMessage, OwnerAccount } from "./types";
 
 export type ChangeKafkaOwnerProps = {
-  isModalOpen: boolean;
   currentOwner: string;
-  accounts: OwnerAccount[];
-  onConfirm: (newOwner: string) => Promise<ChangeOwnerErrorMessage | undefined>;
+  accounts: OwnerAccount[] | undefined;
+  savingState: "idle" | "saving" | ChangeOwnerErrorMessage;
+  onConfirm: (newOwner: string) => void;
   onCancel: () => void;
 };
 
 export const ChangeKafkaOwner: FunctionComponent<ChangeKafkaOwnerProps> = ({
-  isModalOpen,
   currentOwner,
   accounts,
+  savingState,
   onConfirm,
   onCancel,
 }) => {
   const { t } = useTranslation(["kafka", "common"]);
-  const [owner, setOwner] = useState<string | undefined>();
-  const [errorCode, setErrorCode] = useState<
-    ChangeOwnerErrorMessage | undefined
-  >();
+  const [account, setAccount] = useState<string | undefined>();
+  const submittedAccount = useRef<string>();
 
-  const onConfirmOwner = () => {
-    void onConfirm(owner || "").then((response) => setErrorCode(response));
-  };
+  const isSaving = savingState === "saving";
+
+  const onConfirmOwner = useCallback(() => {
+    if (account) {
+      submittedAccount.current = account;
+      onConfirm(account);
+    }
+  }, [onConfirm, account]);
 
   const renderAlert = () => {
-    switch (errorCode) {
+    switch (savingState) {
       case "invalid-user":
         return (
           <Alert
@@ -48,7 +52,7 @@ export const ChangeKafkaOwner: FunctionComponent<ChangeKafkaOwnerProps> = ({
             title={t("new_owner_does_not_exist_title")}
           >
             {t("new_owner_does_not_exist_message", {
-              newOwner: owner,
+              newOwner: submittedAccount.current,
             })}
           </Alert>
         );
@@ -60,7 +64,7 @@ export const ChangeKafkaOwner: FunctionComponent<ChangeKafkaOwnerProps> = ({
             isInline
             title={t("can_not_change_owner_title")}
           >
-            {t("onwer_transfer_failed_message", {
+            {t("owner_transfer_failed_message", {
               name: currentOwner,
             })}
           </Alert>
@@ -71,7 +75,7 @@ export const ChangeKafkaOwner: FunctionComponent<ChangeKafkaOwnerProps> = ({
     <Modal
       id="change-owner-modal"
       title={t("change-owner-title")}
-      isOpen={isModalOpen}
+      isOpen={true}
       onClose={onCancel}
       variant={"medium"}
       position="top"
@@ -80,6 +84,7 @@ export const ChangeKafkaOwner: FunctionComponent<ChangeKafkaOwnerProps> = ({
           id="confirm-button"
           key="changeowner"
           variant="primary"
+          isDisabled={isSaving}
           onClick={onConfirmOwner}
         >
           {t("change-owner-button")}
@@ -89,6 +94,7 @@ export const ChangeKafkaOwner: FunctionComponent<ChangeKafkaOwnerProps> = ({
           key="cancel"
           variant="link"
           onClick={onCancel}
+          isDisabled={isSaving}
         >
           {t("common:cancel")}
         </Button>,
@@ -100,12 +106,16 @@ export const ChangeKafkaOwner: FunctionComponent<ChangeKafkaOwnerProps> = ({
           {currentOwner}
         </FormGroup>
         <FormGroup fieldId="New-owner-name" label={t("new_owner")}>
-          <SelectOwner
-            accounts={accounts}
-            owner={owner}
-            onChangeOwner={setOwner}
-            onChangeErrorCode={setErrorCode}
-          />
+          {accounts ? (
+            <SelectOwner
+              isDisabled={isSaving}
+              accounts={accounts}
+              owner={account}
+              onChangeOwner={setAccount}
+            />
+          ) : (
+            <Skeleton width={"100%"} />
+          )}
         </FormGroup>
       </Form>
     </Modal>

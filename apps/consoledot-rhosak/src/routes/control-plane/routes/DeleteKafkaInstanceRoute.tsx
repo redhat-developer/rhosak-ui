@@ -12,7 +12,7 @@ export const DeleteKafkaInstanceRoute: FunctionComponent<
 > = ({ instancesHref }) => {
   const history = useHistory();
 
-  const { instance } = useControlPlaneGate(instancesHref);
+  const { instance } = useControlPlaneGate();
   const { mutateAsync, isLoading: isDeleting } = useDeleteKafkaMutation();
 
   const onCancel = useCallback(() => {

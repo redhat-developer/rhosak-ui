@@ -1,23 +1,22 @@
-import type { FC } from "react";
-import { useState } from "react";
 import type { SelectProps } from "@patternfly/react-core";
 import { Select, SelectOption, SelectVariant } from "@patternfly/react-core";
+import type { FC } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { OwnerAccount } from "./types";
-import { ChangeOwnerErrorMessage } from ".";
 
 export type SelectOwnerProps = {
+  isDisabled: boolean;
   accounts: OwnerAccount[];
   owner: string | undefined;
   onChangeOwner: (owner: string | undefined) => void;
-  onChangeErrorCode: (value: ChangeOwnerErrorMessage | undefined) => void;
 };
 
 export const SelectOwner: FC<SelectOwnerProps> = ({
+  isDisabled,
   accounts,
   owner,
   onChangeOwner,
-  onChangeErrorCode,
 }) => {
   const { t } = useTranslation("kafka");
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -29,7 +28,6 @@ export const SelectOwner: FC<SelectOwnerProps> = ({
   const onSelect: SelectProps["onSelect"] = (_, owner) => {
     onChangeOwner(owner as string);
     setIsOpen(false);
-    onChangeErrorCode(undefined);
   };
 
   function selectOptions(filter = "") {
@@ -54,6 +52,7 @@ export const SelectOwner: FC<SelectOwnerProps> = ({
       id="change-permission-owner-select"
       variant={SelectVariant.typeahead}
       onToggle={onToggle}
+      isDisabled={isDisabled}
       isOpen={isOpen}
       placeholderText={t("select_user_account")}
       isCreatable={true}
