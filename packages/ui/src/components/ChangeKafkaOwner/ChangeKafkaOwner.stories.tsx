@@ -13,15 +13,15 @@ export default {
       },
       {
         id: "xxx_kafka_devexp",
-        displayName: "xxx",
+        displayName: "foo-test-name",
       },
       {
         id: "zzz_kafka_devexp",
-        displayName: "zzz",
+        displayName: "bar-test-display-name",
       },
       {
         id: "yyy_kafka_devexp",
-        displayName: "yyy",
+        displayName: "baz-test-display",
       },
     ],
     currentOwner: "hema_kafka_devexp",
@@ -32,9 +32,5 @@ export default {
 export const InteractiveExample: ComponentStory<typeof ChangeKafkaOwner> = (
   args
 ) => {
-  return (
-    <ChangeKafkaOwner
-      {...args}
-    />
-  );
+  return <ChangeKafkaOwner {...args} />;
 };
