@@ -6,7 +6,9 @@ import {
   DeleteKafkaInstanceRoute,
   KafkaInstancesRoute,
 } from "./routes";
+import { ChangeOwnerRoute } from "./routes/ChangeOwnerRoute";
 import {
+  ControlPlaneChangeOwnerPath,
   ControlPlaneDeleteInstancePath,
   ControlPlaneNewInstancePath,
   ControlPlaneRoutePath,
@@ -21,6 +23,9 @@ export const ControlPlaneRoutes: VoidFunctionComponent = () => {
       <RedirectOnGateError redirectUrl={"/kafkas"}>
         <Route path={ControlPlaneDeleteInstancePath}>
           <DeleteKafkaInstanceRoute instancesHref={"/kafkas"} />
+        </Route>
+        <Route path={ControlPlaneChangeOwnerPath}>
+          <ChangeOwnerRoute instancesHref={"/kafkas"} />
         </Route>
       </RedirectOnGateError>
       <KafkaInstancesRoute

@@ -6,12 +6,15 @@ import type {
   FetchTopicParams,
   FetchTopicsMetricsProps,
   FetchTopicsParams,
+  FetchUserAccountsParams,
 } from "./fetchers";
 
 export const masQueries = {
   _root: () => ({ scope: "mas" } as const),
   organization: () =>
     [{ ...masQueries._root(), entity: "organization" }] as const,
+  userAccounts: (params: Omit<FetchUserAccountsParams, "getUserAccounts">) =>
+    [{ ...masQueries._root(), entity: "userAccounts" }, params] as const,
   quota: {
     _root: () => ({ ...masQueries._root(), entity: "quota" } as const),
     available: (params: { organization?: string }) =>

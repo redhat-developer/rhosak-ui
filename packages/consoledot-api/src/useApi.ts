@@ -1,3 +1,4 @@
+import { PrincipalApi } from "@redhat-cloud-services/rbac-client";
 import { AppServicesApi } from "@rhoas/account-management-sdk";
 import { GroupsApi, RecordsApi, TopicsApi } from "@rhoas/kafka-instance-sdk";
 import { Configuration, DefaultApi } from "@rhoas/kafka-management-sdk";
@@ -5,7 +6,8 @@ import { useCallback } from "react";
 import { useApiConfiguration } from "./ApiProvider";
 
 export const useApi = () => {
-  const { accessToken, basePath } = useApiConfiguration();
+  const { basePath, accessToken } = useApiConfiguration();
+
   const kafkasFleet = useCallback(
     () =>
       new DefaultApi(
@@ -16,6 +18,15 @@ export const useApi = () => {
       ),
     [accessToken, basePath]
   );
+
+  const userAccounts = useCallback(async () => {
+    const token = await accessToken();
+    return new PrincipalApi({
+      accessToken: token,
+      basePath: `/api/rbac/v1`,
+    });
+  }, [accessToken, basePath]);
+
   const account = useCallback(
     () =>
       new AppServicesApi(
@@ -26,6 +37,7 @@ export const useApi = () => {
       ),
     [accessToken, basePath]
   );
+
   const topics = useCallback(
     (adminUrl: string) =>
       new TopicsApi(
@@ -36,6 +48,7 @@ export const useApi = () => {
       ),
     [accessToken]
   );
+
   const consumerGroups = useCallback(
     (adminUrl: string) =>
       new GroupsApi(
@@ -46,6 +59,7 @@ export const useApi = () => {
       ),
     [accessToken]
   );
+
   const records = useCallback(
     (adminUrl: string) =>
       new RecordsApi(
@@ -56,11 +70,13 @@ export const useApi = () => {
       ),
     [accessToken]
   );
+
   return {
     kafkasFleet,
     account,
     topics,
     consumerGroups,
     records,
+    userAccounts,
   };
 };
