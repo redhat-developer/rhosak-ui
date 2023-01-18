@@ -137,6 +137,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
           <PageSection
             variant={PageSectionVariants.light}
             hasOverflowScroll={true}
+            aria-label={"TODO"}
           >
             {
               <TopicAdvancePage
@@ -164,6 +165,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
           variant={PageSectionVariants.light}
           type={PageSectionTypes.wizard}
           hasOverflowScroll={true}
+          aria-label={"TODO"}
         >
           <Wizard
             navAriaLabel={`${title} steps`}

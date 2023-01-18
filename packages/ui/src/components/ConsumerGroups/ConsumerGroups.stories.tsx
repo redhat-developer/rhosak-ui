@@ -5,15 +5,15 @@ import { ConsumerGroups } from "./ConsumerGroups";
 const consumers: ConsumerGroup[] = [
   {
     groupId: "consumer-123",
-    activeMembers: 1,
-    partitionsWithLag: 2,
+    activeConsumers: 1,
+    laggingPartitions: 2,
     state: "CompletingRebalance",
     consumers: [],
   },
   {
     groupId: "consumer-233",
-    activeMembers: 2,
-    partitionsWithLag: 3,
+    activeConsumers: 2,
+    laggingPartitions: 3,
     state: "Stable",
     consumers: [],
   },

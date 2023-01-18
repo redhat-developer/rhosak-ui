@@ -20,9 +20,9 @@ export interface Typegen0 {
   };
   missingImplementations: {
     actions: never;
-    services: "getSizes";
-    guards: never;
     delays: never;
+    guards: never;
+    services: "getSizes";
   };
   eventsCausingActions: {
     fieldInvalid:
@@ -40,9 +40,7 @@ export interface Typegen0 {
     triggerSave: "submit";
     triggerSubmit: "create";
   };
-  eventsCausingServices: {
-    getSizes: "";
-  };
+  eventsCausingDelays: {};
   eventsCausingGuards: {
     didProviderChange: "providerChange";
     didRegionChange: "regionChange";
@@ -56,7 +54,9 @@ export interface Typegen0 {
     providerIsValid: "";
     regionIsValid: "";
   };
-  eventsCausingDelays: {};
+  eventsCausingServices: {
+    getSizes: "";
+  };
   matchesStates:
     | "configuring"
     | "configuring.fields"

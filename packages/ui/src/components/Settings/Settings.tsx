@@ -86,7 +86,7 @@ export const Settings: FunctionComponent<SettingsProps> = ({
   };
 
   return (
-    <PageSection isFilled={true} hasOverflowScroll={true}>
+    <PageSection isFilled={true} hasOverflowScroll={true} aria-label={"TODO"}>
       <Stack hasGutter>
         <StackItem>
           <Card>

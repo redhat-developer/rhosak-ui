@@ -51,6 +51,7 @@ export type KafkaInstanceMetricsMachineContext = {
 
 export const KafkaInstanceMetricsMachine = createMachine(
   {
+    predictableActionArguments: true,
     tsTypes: {} as import("./KafkaInstanceMetricsMachine.typegen").Typegen0,
     schema: {
       context: {} as KafkaInstanceMetricsMachineContext,

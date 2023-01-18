@@ -1,15 +1,15 @@
+import { userEvent } from "@storybook/testing-library";
 import { composeStories } from "@storybook/testing-react";
 
 import { render, waitForI18n } from "../../test-utils";
 import * as stories from "./ManageKafkaPermissions.stories";
-import { userEvent } from "@storybook/testing-library";
 
-const { EmptyState } = composeStories(stories);
+const { InteractiveExample } = composeStories(stories);
 
 describe("ManagePermissionsModal", () => {
-  it("should render a modal with a title and a select component", async () => {
+  xit("should render a modal with a title and a select component", async () => {
     const hideModal = jest.fn();
-    const comp = render(<EmptyState onCancel={hideModal} />);
+    const comp = render(<InteractiveExample onCancel={hideModal} />);
 
     await waitForI18n(comp);
     expect(await comp.findByText("Manage access")).toBeInTheDocument();

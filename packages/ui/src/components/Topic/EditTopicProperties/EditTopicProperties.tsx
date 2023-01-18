@@ -18,6 +18,7 @@ export const EditTopicProperties: FunctionComponent<
       variant={"light"}
       className={"topic-properties"}
       hasOverflowScroll={true}
+      aria-label={"TODO"}
     >
       <TopicAdvancePage
         isCreate={false}

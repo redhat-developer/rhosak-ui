@@ -45,6 +45,7 @@ export const StandardPlanMachine =
         creationError: undefined,
       },
       tsTypes: {} as import("./StandardPlanMachine.typegen").Typegen0,
+      predictableActionArguments: true,
       schema: {
         context: {} as StandardPlanMachineContext,
         events: {} as

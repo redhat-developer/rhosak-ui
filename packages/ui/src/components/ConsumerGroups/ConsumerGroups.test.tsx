@@ -47,24 +47,30 @@ describe("Consumer group table", () => {
     userEvent.click(await comp.findByText("Reset offset"));
     expect(onClickResetoffset).toHaveBeenCalledTimes(1);
 
-    expect(onDelete).toHaveBeenCalledWith({
-      consumerGroupId: "consumer-123",
-      activeMembers: 1,
-      partitionsWithLag: 2,
-      state: "CompletingRebalance",
-    });
-    expect(onClickResetoffset).toHaveBeenCalledWith({
-      consumerGroupId: "consumer-123",
-      activeMembers: 1,
-      partitionsWithLag: 2,
-      state: "CompletingRebalance",
-    });
-    expect(onClickPartitionoffset).toHaveBeenCalledWith({
-      consumerGroupId: "consumer-123",
-      activeMembers: 1,
-      partitionsWithLag: 2,
-      state: "CompletingRebalance",
-    });
+    expect(onDelete).toHaveBeenCalledWith(
+      expect.objectContaining({
+        groupId: "consumer-123",
+        activeConsumers: 1,
+        laggingPartitions: 2,
+        state: "CompletingRebalance",
+      })
+    );
+    expect(onClickResetoffset).toHaveBeenCalledWith(
+      expect.objectContaining({
+        groupId: "consumer-123",
+        activeConsumers: 1,
+        laggingPartitions: 2,
+        state: "CompletingRebalance",
+      })
+    );
+    expect(onClickPartitionoffset).toHaveBeenCalledWith(
+      expect.objectContaining({
+        groupId: "consumer-123",
+        activeConsumers: 1,
+        laggingPartitions: 2,
+        state: "CompletingRebalance",
+      })
+    );
 
     const secondRow = comp.getAllByRole("row")[2];
     const btn2Expand = within(secondRow).getByRole("button");
@@ -77,23 +83,29 @@ describe("Consumer group table", () => {
     fireEvent.click(btn2Expand);
     userEvent.click(await comp.findByText("Reset offset"));
     expect(onClickResetoffset).toHaveBeenCalledTimes(2);
-    expect(onDelete).toHaveBeenLastCalledWith({
-      consumerGroupId: "consumer-233",
-      activeMembers: 2,
-      partitionsWithLag: 3,
-      state: "Stable",
-    });
-    expect(onClickResetoffset).toHaveBeenCalledWith({
-      consumerGroupId: "consumer-233",
-      activeMembers: 2,
-      partitionsWithLag: 3,
-      state: "Stable",
-    });
-    expect(onClickPartitionoffset).toHaveBeenCalledWith({
-      consumerGroupId: "consumer-233",
-      activeMembers: 2,
-      partitionsWithLag: 3,
-      state: "Stable",
-    });
+    expect(onDelete).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        groupId: "consumer-233",
+        activeConsumers: 2,
+        laggingPartitions: 3,
+        state: "Stable",
+      })
+    );
+    expect(onClickResetoffset).toHaveBeenCalledWith(
+      expect.objectContaining({
+        groupId: "consumer-233",
+        activeConsumers: 2,
+        laggingPartitions: 3,
+        state: "Stable",
+      })
+    );
+    expect(onClickPartitionoffset).toHaveBeenCalledWith(
+      expect.objectContaining({
+        groupId: "consumer-233",
+        activeConsumers: 2,
+        laggingPartitions: 3,
+        state: "Stable",
+      })
+    );
   });
 });

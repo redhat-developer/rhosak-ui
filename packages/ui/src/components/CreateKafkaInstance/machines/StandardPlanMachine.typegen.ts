@@ -20,9 +20,9 @@ export interface Typegen0 {
   };
   missingImplementations: {
     actions: never;
-    services: "getSizes";
-    guards: never;
     delays: never;
+    guards: never;
+    services: "getSizes";
   };
   eventsCausingActions: {
     fieldInvalid:
@@ -45,9 +45,7 @@ export interface Typegen0 {
     triggerSubmit: "create";
     unsetSubscription: "providerChange";
   };
-  eventsCausingServices: {
-    getSizes: "";
-  };
+  eventsCausingDelays: {};
   eventsCausingGuards: {
     billingRequiredButNotSelected: "";
     didProviderChange: "providerChange";
@@ -72,7 +70,9 @@ export interface Typegen0 {
     sizeIsDisabled: "";
     sizeIsOverQuota: "";
   };
-  eventsCausingDelays: {};
+  eventsCausingServices: {
+    getSizes: "";
+  };
   matchesStates:
     | "configuring"
     | "configuring.fields"

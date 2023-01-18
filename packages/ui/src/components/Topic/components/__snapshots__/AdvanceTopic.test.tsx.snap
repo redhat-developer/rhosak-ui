@@ -7,6 +7,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
       class="pf-c-divider kafka-ui--divider--FlexShrink"
     />
     <section
+      aria-label="TODO"
       class="pf-c-page__main-section pf-m-light pf-m-overflow-scroll"
       tabindex="0"
     >
@@ -149,6 +150,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
               class="pf-c-sidebar__content"
             >
               <div
+                aria-label="TODO"
                 class="pf-c-page__main-group pf-m-overflow-scroll"
                 id="topic-detail-view"
                 tabindex="0"
@@ -417,7 +419,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                         >
                           <input
                             aria-invalid="false"
-                            class="pf-c-form-control"
+                            class="pf-c-form-control pf-m-plain"
                             data-ouia-component-id="OUIA-Generated-TextInputBase-3"
                             data-ouia-component-type="PF4/TextInput"
                             data-ouia-safe="true"
@@ -425,7 +427,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                             name="replicas"
                             readonly=""
                             type="text"
-                            value="1"
+                            value="3"
                           />
                           
                         </div>
@@ -470,7 +472,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                         >
                           <input
                             aria-invalid="false"
-                            class="pf-c-form-control"
+                            class="pf-c-form-control pf-m-plain"
                             data-ouia-component-id="OUIA-Generated-TextInputBase-4"
                             data-ouia-component-type="PF4/TextInput"
                             data-ouia-safe="true"
@@ -478,7 +480,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                             name="min-insync-replicas"
                             readonly=""
                             type="text"
-                            value="1"
+                            value="345"
                           />
                           
                         </div>
@@ -529,7 +531,6 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                             >
                               <input
                                 aria-invalid="false"
-                                checked=""
                                 class="pf-c-radio__input"
                                 data-ouia-component-id="OUIA-Generated-Radio-1"
                                 data-ouia-component-type="PF4/Radio"
@@ -649,7 +650,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                                             <span
                                               class="pf-c-select__toggle-text"
                                             >
-                                              days
+                                              milliseconds
                                             </span>
                                           </div>
                                           <span
@@ -810,7 +811,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                                             data-ouia-component-type="PF4/TextInput"
                                             data-ouia-safe="true"
                                             type="number"
-                                            value="1"
+                                            value="9"
                                           />
                                           <button
                                             aria-disabled="false"
@@ -898,7 +899,6 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                             >
                               <input
                                 aria-invalid="false"
-                                checked=""
                                 class="pf-c-radio__input"
                                 data-ouia-component-id="OUIA-Generated-Radio-4"
                                 data-ouia-component-type="PF4/Radio"
@@ -985,7 +985,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                         >
                           <input
                             aria-invalid="false"
-                            class="pf-c-form-control"
+                            class="pf-c-form-control pf-m-plain"
                             data-ouia-component-id="OUIA-Generated-TextInputBase-7"
                             data-ouia-component-type="PF4/TextInput"
                             data-ouia-safe="true"
@@ -993,7 +993,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                             name="max-message-size"
                             readonly=""
                             type="text"
-                            value=" 1048588 bytes "
+                            value=" 9 bytes "
                           />
                           
                         </div>
@@ -1038,7 +1038,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                         >
                           <input
                             aria-invalid="false"
-                            class="pf-c-form-control"
+                            class="pf-c-form-control pf-m-plain"
                             data-ouia-component-id="OUIA-Generated-TextInputBase-8"
                             data-ouia-component-type="PF4/TextInput"
                             data-ouia-safe="true"
@@ -1091,7 +1091,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                         >
                           <input
                             aria-invalid="false"
-                            class="pf-c-form-control"
+                            class="pf-c-form-control pf-m-plain"
                             data-ouia-component-id="OUIA-Generated-TextInputBase-9"
                             data-ouia-component-type="PF4/TextInput"
                             data-ouia-safe="true"
@@ -1099,7 +1099,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                             name="max-message-timestamp-diff"
                             readonly=""
                             type="text"
-                            value="9223372036854775807 milliseconds "
+                            value="1 milliseconds "
                           />
                           
                         </div>
@@ -1144,7 +1144,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                         >
                           <input
                             aria-invalid="false"
-                            class="pf-c-form-control"
+                            class="pf-c-form-control pf-m-plain"
                             data-ouia-component-id="OUIA-Generated-TextInputBase-10"
                             data-ouia-component-type="PF4/TextInput"
                             data-ouia-safe="true"
@@ -1197,7 +1197,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                         >
                           <input
                             aria-invalid="false"
-                            class="pf-c-form-control"
+                            class="pf-c-form-control pf-m-plain"
                             data-ouia-component-id="OUIA-Generated-TextInputBase-11"
                             data-ouia-component-type="PF4/TextInput"
                             data-ouia-safe="true"
@@ -1369,7 +1369,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                         >
                           <input
                             aria-invalid="false"
-                            class="pf-c-form-control"
+                            class="pf-c-form-control pf-m-plain"
                             data-ouia-component-id="OUIA-Generated-TextInputBase-12"
                             data-ouia-component-type="PF4/TextInput"
                             data-ouia-safe="true"
@@ -1377,7 +1377,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                             name="delete-retention-time"
                             readonly=""
                             type="text"
-                            value="86400000 milliseconds (1 day)"
+                            value="1 milliseconds (1.1574074074074074e-8 day)"
                           />
                           
                         </div>
@@ -1422,7 +1422,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                         >
                           <input
                             aria-invalid="false"
-                            class="pf-c-form-control"
+                            class="pf-c-form-control pf-m-plain"
                             data-ouia-component-id="OUIA-Generated-TextInputBase-13"
                             data-ouia-component-type="PF4/TextInput"
                             data-ouia-safe="true"
@@ -1430,7 +1430,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                             name="min-cleanable-ratio"
                             readonly=""
                             type="text"
-                            value="0.5"
+                            value="678"
                           />
                           
                         </div>
@@ -1475,7 +1475,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                         >
                           <input
                             aria-invalid="false"
-                            class="pf-c-form-control"
+                            class="pf-c-form-control pf-m-plain"
                             data-ouia-component-id="OUIA-Generated-TextInputBase-14"
                             data-ouia-component-type="PF4/TextInput"
                             data-ouia-safe="true"
@@ -1483,7 +1483,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                             name="min-compaction-lag-time-description"
                             readonly=""
                             type="text"
-                            value="0 milliseconds "
+                            value="1 milliseconds "
                           />
                           
                         </div>
@@ -1563,7 +1563,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                         >
                           <input
                             aria-invalid="false"
-                            class="pf-c-form-control"
+                            class="pf-c-form-control pf-m-plain"
                             data-ouia-component-id="OUIA-Generated-TextInputBase-15"
                             data-ouia-component-type="PF4/TextInput"
                             data-ouia-safe="true"
@@ -1642,7 +1642,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                         >
                           <input
                             aria-invalid="false"
-                            class="pf-c-form-control"
+                            class="pf-c-form-control pf-m-plain"
                             data-ouia-component-id="OUIA-Generated-TextInputBase-16"
                             data-ouia-component-type="PF4/TextInput"
                             data-ouia-safe="true"
@@ -1650,7 +1650,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                             name="log-segment-size"
                             readonly=""
                             type="text"
-                            value="1073741824 bytes (1 gibibyte)"
+                            value="9 bytes (8.381903171539307e-9 gibibyte)"
                           />
                           
                         </div>
@@ -1695,7 +1695,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                         >
                           <input
                             aria-invalid="false"
-                            class="pf-c-form-control"
+                            class="pf-c-form-control pf-m-plain"
                             data-ouia-component-id="OUIA-Generated-TextInputBase-17"
                             data-ouia-component-type="PF4/TextInput"
                             data-ouia-safe="true"
@@ -1703,7 +1703,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                             name="segement-time"
                             readonly=""
                             type="text"
-                            value="604800000 milliseconds (7 days)"
+                            value="1 milliseconds (1.1574074074074074e-8 days)"
                           />
                           
                         </div>
@@ -1748,7 +1748,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                         >
                           <input
                             aria-invalid="false"
-                            class="pf-c-form-control"
+                            class="pf-c-form-control pf-m-plain"
                             data-ouia-component-id="OUIA-Generated-TextInputBase-18"
                             data-ouia-component-type="PF4/TextInput"
                             data-ouia-safe="true"
@@ -1756,7 +1756,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                             name="segment-jitter-time"
                             readonly=""
                             type="text"
-                            value="0 milliseconds "
+                            value="1 milliseconds "
                           />
                           
                         </div>
@@ -1801,7 +1801,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                         >
                           <input
                             aria-invalid="false"
-                            class="pf-c-form-control"
+                            class="pf-c-form-control pf-m-plain"
                             data-ouia-component-id="OUIA-Generated-TextInputBase-19"
                             data-ouia-component-type="PF4/TextInput"
                             data-ouia-safe="true"
@@ -1809,7 +1809,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                             name="file-delete-delay"
                             readonly=""
                             type="text"
-                            value="60000 milliseconds (1 minute)"
+                            value="1 milliseconds (0.000016666666666666667 minute)"
                           />
                           
                         </div>
@@ -1854,7 +1854,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                         >
                           <input
                             aria-invalid="false"
-                            class="pf-c-form-control"
+                            class="pf-c-form-control pf-m-plain"
                             data-ouia-component-id="OUIA-Generated-TextInputBase-20"
                             data-ouia-component-type="PF4/TextInput"
                             data-ouia-safe="true"
@@ -1933,7 +1933,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                         >
                           <input
                             aria-invalid="false"
-                            class="pf-c-form-control"
+                            class="pf-c-form-control pf-m-plain"
                             data-ouia-component-id="OUIA-Generated-TextInputBase-21"
                             data-ouia-component-type="PF4/TextInput"
                             data-ouia-safe="true"
@@ -1941,7 +1941,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                             name="index-interval-size"
                             readonly=""
                             type="text"
-                            value="4096 bytes (4 kibibytes)"
+                            value="9 bytes (0.0087890625 kibibytes)"
                           />
                           
                         </div>
@@ -1986,7 +1986,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                         >
                           <input
                             aria-invalid="false"
-                            class="pf-c-form-control"
+                            class="pf-c-form-control pf-m-plain"
                             data-ouia-component-id="OUIA-Generated-TextInputBase-22"
                             data-ouia-component-type="PF4/TextInput"
                             data-ouia-safe="true"
@@ -1994,7 +1994,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                             name="segment-index-size"
                             readonly=""
                             type="text"
-                            value="10485760 bytes (10 mebibytes)"
+                            value="9 bytes (0.00000858306884765625 mebibytes)"
                           />
                           
                         </div>
@@ -2065,7 +2065,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                         >
                           <input
                             aria-invalid="false"
-                            class="pf-c-form-control"
+                            class="pf-c-form-control pf-m-plain"
                             data-ouia-component-id="OUIA-Generated-TextInputBase-23"
                             data-ouia-component-type="PF4/TextInput"
                             data-ouia-safe="true"
@@ -2073,7 +2073,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                             name="flush-interval-messages"
                             readonly=""
                             type="text"
-                            value="9223372036854775807 messages "
+                            value="1 messages "
                           />
                           
                         </div>
@@ -2118,7 +2118,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                         >
                           <input
                             aria-invalid="false"
-                            class="pf-c-form-control"
+                            class="pf-c-form-control pf-m-plain"
                             data-ouia-component-id="OUIA-Generated-TextInputBase-24"
                             data-ouia-component-type="PF4/TextInput"
                             data-ouia-safe="true"
@@ -2126,7 +2126,7 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
                             name="flush-interval-time"
                             readonly=""
                             type="text"
-                            value="9223372036854775807 milliseconds "
+                            value="1 milliseconds "
                           />
                           
                         </div>
@@ -2177,13 +2177,6 @@ exports[`Create advance topic should render an advanced topic creation page 1`] 
         </div>
       </section>
     </section>
-  </div>
-  <div>
-    <ul
-      aria-atomic="false"
-      aria-live="polite"
-      class="pf-c-alert-group pf-m-toast"
-    />
   </div>
 </body>
 `;

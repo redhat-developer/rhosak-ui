@@ -44,6 +44,7 @@ const CreateKafkaInstanceMachine =
         quota: undefined,
         capabilities: undefined,
       },
+      predictableActionArguments: true,
       tsTypes: {} as import("./CreateKafkaInstanceMachine.typegen").Typegen0,
       schema: {
         context: {} as CreateKafkaInstanceMachineContext,

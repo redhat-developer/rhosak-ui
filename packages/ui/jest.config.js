@@ -18,7 +18,7 @@ module.exports = {
   coveragePathIgnorePatterns: [
     "node_modules",
     "__mocks__",
-    "setupJest.ts",
+    "setupJest.js",
     "<rootDir>/src/ProofOfConcepts",
     "<rootDir>/src/test-utils.tsx",
     "storiesHelpers.ts",

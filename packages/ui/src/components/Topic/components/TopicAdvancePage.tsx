@@ -78,7 +78,7 @@ export const TopicAdvancePage: React.FunctionComponent<
         <TopicAdvanceJumpLinks />
         <SidebarContent>
           <PageGroup
-            hasOverflowScroll
+            hasOverflowScroll={true}
             id="topic-detail-view"
             aria-label={"TODO"}
           >
