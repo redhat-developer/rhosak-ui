@@ -6,8 +6,8 @@ import * as stories from "./ManageKafkaPermissions.stories";
 
 const { InteractiveExample } = composeStories(stories);
 
-describe("ManagePermissionsModal", () => {
-  xit("should render a modal with a title and a select component", async () => {
+xdescribe("ManagePermissionsModal", () => {
+  it("should render a modal with a title and a select component", async () => {
     const hideModal = jest.fn();
     const comp = render(<InteractiveExample onCancel={hideModal} />);
 

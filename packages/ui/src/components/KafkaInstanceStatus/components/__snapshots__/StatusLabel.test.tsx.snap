@@ -320,7 +320,7 @@ exports[`Renders AllStatutesAtOnce story 1`] = `
     >
       accepted
     </pre>
-     over 15 minutes
+    over 15 minutes
     <div>
       <div
         class="pf-l-split pf-m-gutter mas-c-status"
@@ -405,7 +405,7 @@ exports[`Renders AllStatutesAtOnce story 1`] = `
     >
       accepted
     </pre>
-     over 30 minutes
+    over 30 minutes
     <div>
       <div
         class="pf-l-split pf-m-gutter mas-c-status"
@@ -1008,7 +1008,7 @@ exports[`Renders Ready story 1`] = `
 </body>
 `;
 
-exports[`Renders suspended story 1`] = `
+exports[`Renders Suspended story 1`] = `
 <body>
   <div>
     <div>
