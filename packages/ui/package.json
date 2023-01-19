@@ -14,7 +14,7 @@
     "test:storybook": "test-storybook --maxWorkers=1",
     "test:jest": "TZ=UTC jest --runInBand",
     "test-ci": "npm-run-all test-ci:*",
-    "test-ci:jest": "npm run test:jest -- --coverage && npm run test-storybook:ci",
+    "test-ci:jest": "npm run test:jest -- --coverage && npm run test-ci:storybook",
     "test-ci:storybook": "concurrently -k -s first -n \"SB,TEST\" -c \"magenta,blue\" \"npm run build-storybook && npx http-server storybook-static --port 6006 --silent\" \"wait-on tcp:6006 && npm run test:storybook\"",
     "test:generate-output": "npm run test:jest -- --json --outputFile=.jest-test-results.json",
     "test:watch": "npm run test -- --watch",
