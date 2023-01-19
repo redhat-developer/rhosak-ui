@@ -73,6 +73,7 @@ export function filtersToSearch(
     ),
   ]
     .filter(Boolean)
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     .map((q) => `(${q!})`)
     .join(" and ");
   return querystring;

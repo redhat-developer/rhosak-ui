@@ -36,6 +36,7 @@ export const TrialPlanMachine =
         creationError: undefined,
       },
       tsTypes: {} as import("./TrialPlanMachine.typegen").Typegen0,
+      predictableActionArguments: true,
       schema: {
         context: {} as TrialPlanMachineContext,
         events: {} as

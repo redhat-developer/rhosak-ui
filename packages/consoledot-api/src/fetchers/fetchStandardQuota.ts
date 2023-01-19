@@ -61,7 +61,7 @@ export const fetchStandardQuota = async (
     : undefined;
   const unaggregatedSubscriptions = marketplaceQuotas
     ?.filter((q) => q.cloud_accounts !== undefined)
-    .flatMap((q) => q.cloud_accounts!);
+    .flatMap((q) => q.cloud_accounts || []);
   const subscriptionMarketplaces = Array.from(
     new Set(
       unaggregatedSubscriptions?.map((s) => s.cloud_provider_id as MarketPlace)
@@ -73,6 +73,7 @@ export const fetchStandardQuota = async (
           marketplace,
           subscriptions: unaggregatedSubscriptions
             .filter((s) => s.cloud_provider_id === marketplace)
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             .map((s) => s.cloud_account_id!),
         }))
       : [];

@@ -12,6 +12,11 @@ export function useKafkaInstanceTransformer() {
   const getProviderRegionsSizes = useProviderRegionSizesFetchQuery();
 
   return async function kafkaInstanceTransformer(instance: KafkaRequest) {
+    if (!instance.region) {
+      throw new Error(
+        `Invalid KafkaRequest, empty region: ${JSON.stringify(instance)}`
+      );
+    }
     const standardQuota = await getStandardQuotaQuery();
 
     const providersInfo = await getProvidersInfo(
@@ -25,12 +30,12 @@ export function useKafkaInstanceTransformer() {
     }
     const standardPlanLimitsQuery = getProviderRegionsSizes(
       providerInfo,
-      instance.region!,
+      instance.region,
       "standard"
     );
     const developerPlanLimitsQuery = getProviderRegionsSizes(
       providerInfo,
-      instance.region!,
+      instance.region,
       "developer"
     );
     const [standardPlanLimits, developerPlanLimits] = await Promise.all([

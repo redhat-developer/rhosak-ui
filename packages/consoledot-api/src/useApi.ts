@@ -25,7 +25,7 @@ export const useApi = () => {
       accessToken: token,
       basePath: `/api/rbac/v1`,
     });
-  }, [accessToken, basePath]);
+  }, [accessToken]);
 
   const account = useCallback(
     () =>

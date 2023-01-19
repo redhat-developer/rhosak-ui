@@ -1,4 +1,3 @@
-import { AlertProvider } from "@rhoas/app-services-ui-components";
 import type { RenderOptions, RenderResult } from "@testing-library/react";
 import { act, render, waitFor } from "@testing-library/react";
 import type { FunctionComponent, ReactElement } from "react";
@@ -11,13 +10,11 @@ const suspenseTestId = "i18n-suspense";
 const AllTheProviders: FunctionComponent = ({ children }) => {
   return (
     <Router>
-      <AlertProvider>
-        <I18nProvider lng={"en"} debug={false}>
-          <Suspense fallback={<div data-testid={suspenseTestId}>loading</div>}>
-            {children}
-          </Suspense>
-        </I18nProvider>
-      </AlertProvider>
+      <I18nProvider lng={"en"} debug={false}>
+        <Suspense fallback={<div data-testid={suspenseTestId}>loading</div>}>
+          {children}
+        </Suspense>
+      </I18nProvider>
     </Router>
   );
 };

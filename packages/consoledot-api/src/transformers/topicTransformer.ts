@@ -71,6 +71,9 @@ export function topicTransformerFactory(plan: Plan) {
   const d = plan === "developer" ? developerDefaults : standardDefaults;
 
   return function topicTransformer(t: ApiTopic): Topic {
+    if (!t.name) {
+      throw new Error(`Invalid topic, name is empty: ${JSON.stringify(t)}`);
+    }
     const cm = Object.fromEntries<string>(
       t.config?.map((c) => [c.key as TopicConfigField, c.value]) || []
     );
@@ -163,7 +166,7 @@ export function topicTransformerFactory(plan: Plan) {
       preallocate: configValueToBoolean(cm["preallocate"], d["preallocate"]),
     };
     return {
-      name: t.name!,
+      name: t.name,
       partitions: t.partitions || [],
       ...config,
     };
@@ -192,11 +195,11 @@ function configValueToNumber(value: string, defaultIfError: number): number {
 function configValueToBoolean(value: string, defaultIfError: boolean): boolean {
   try {
     const v: unknown = JSON.parse(value);
-    if (typeof v !== "boolean") {
-      throw new Error(`configValueToBoolean: not a boolean [${value}]`);
+    if (typeof v === "boolean") {
+      return v;
     }
-    return v;
   } catch {
-    return defaultIfError;
+    // not a boolean, fallback to the default
   }
+  return defaultIfError;
 }

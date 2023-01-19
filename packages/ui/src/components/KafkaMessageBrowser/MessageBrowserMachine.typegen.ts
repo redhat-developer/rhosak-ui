@@ -13,9 +13,9 @@ export interface Typegen0 {
   };
   missingImplementations: {
     actions: never;
-    services: "api";
-    guards: never;
     delays: never;
+    guards: never;
+    services: "api";
   };
   eventsCausingActions: {
     deselectMessage: "" | "deselectMessage";
@@ -28,15 +28,15 @@ export interface Typegen0 {
     setPartition: "setPartition";
     setTimestamp: "setTimestamp";
   };
-  eventsCausingServices: {
-    api: "refresh" | "xstate.init";
-  };
+  eventsCausingDelays: {};
   eventsCausingGuards: {
     areFiltersChanged: "";
     noMessages: "";
     selectedMessageNotAvailable: "";
   };
-  eventsCausingDelays: {};
+  eventsCausingServices: {
+    api: "refresh" | "xstate.init";
+  };
   matchesStates:
     | "error"
     | "initialLoading"

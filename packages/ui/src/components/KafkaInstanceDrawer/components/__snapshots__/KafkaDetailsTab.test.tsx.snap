@@ -50,7 +50,7 @@ exports[`Details Tab renders standard instance 1`] = `
           <dd
             class=""
           >
-            up to 50 GiB
+            up to  GiB
           </dd>
           <dt
             class=""
@@ -90,7 +90,7 @@ exports[`Details Tab renders standard instance 1`] = `
           <dd
             class=""
           >
-            up to 1 MiB
+            up to  MiB
           </dd>
           <dt
             class=""
@@ -155,11 +155,16 @@ exports[`Details Tab renders standard instance 1`] = `
           >
             Cloud provider
           </dt>
-          <dd
-            class=""
+          <div
+            class="pf-c-skeleton"
+            style="--pf-c-skeleton--Width: 50%;"
           >
-            Amazon Web Services
-          </dd>
+            <span
+              class="pf-u-screen-reader"
+            >
+              Loading Cloud provider
+            </span>
+          </div>
           <dt
             class=""
           >
@@ -183,13 +188,6 @@ exports[`Details Tab renders standard instance 1`] = `
         </dl>
       </div>
     </div>
-  </div>
-  <div>
-    <ul
-      aria-atomic="false"
-      aria-live="polite"
-      class="pf-c-alert-group pf-m-toast"
-    />
   </div>
 </body>
 `;

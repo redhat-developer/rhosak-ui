@@ -46,12 +46,14 @@ export const TopicProperties: React.FunctionComponent<TopicViewDetailProps> = ({
       variant={"light"}
       className={"topic-properties"}
       hasOverflowScroll={true}
+      aria-label={"TODO"}
     >
       <Sidebar hasGutter>
         <TopicAdvanceJumpLinks canHaveDelete={true} />
         <SidebarContent>
           <PageGroup
-            hasOverflowScroll
+            hasOverflowScroll={true}
+            aria-label={"TODO"}
             id="topic-detail-view"
             className={"pf-u-mb-4xl"}
           >

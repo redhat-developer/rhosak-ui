@@ -1,11 +1,13 @@
 {
+  "can_not_change_owner_title": "Cannot change owner",
+  "change_owner_create_text": "Use",
+  "change-owner-button": "Change owner",
+  "change-owner-title": "Change owner",
   "client_connections": "Client connections",
   "client_connections_value": "up to 500",
   "clientID": "Client ID",
   "connection_rate": "Connection rate",
   "connection_rate_value": "up to 100 connections/second",
-  "can_not_change_owner_title": "Cannot change owner",
-  "owner_transfer_failed_message": "We're unable to change the owner of {{name}} at this time. Try again later.",
   "connection_tab": {
     "authentication_method": "Authentication method",
     "bootstrap_server": "Bootstrap server",
@@ -101,6 +103,7 @@
     "view_partitions_offsets": "View partition offsets"
   },
   "create_instance": "Create Kafka instance",
+  "current_owner": "Current owner",
   "dataPlaneNavigation": {
     "consumer_groups": "Consumer groups",
     "dashboard": "Dashboard",
@@ -134,9 +137,9 @@
   "empty_state_no_results_found_body": "Adjust your filters and try again, or <0>clear all filters</0>.",
   "empty_state_no_results_found_title": "No results found",
   "fields": {
-    "adminUrl": "",
+    "adminUrl": "URL for Kafka Instance API",
     "billing": "Billing",
-    "bootstrapUrl": "",
+    "bootstrapUrl": "Bootstrap server",
     "connectionRate": "Connection rate",
     "connections": "Connections",
     "createdAt": "Created",
@@ -155,7 +158,7 @@
     "status": "Status",
     "storage": "Storage",
     "updatedAt": "Updated",
-    "version": ""
+    "version": "Version"
   },
   "filter_by_client_id": "Filter by Client ID",
   "filter_by_owner": "Filter by owner",
@@ -168,15 +171,20 @@
   "max_filter_message": "Maximum number of filters reached. Clear a filter before adding another.",
   "message_size": "Message size",
   "message_size_value": "up to 1 MiB",
+  "new_owner": "New owner",
+  "new_owner_does_not_exist_message": "A user with the user ID {{newOwner}} doesn’t exist in your organization.",
+  "new_owner_does_not_exist_title": "New owner doesn’t exist",
   "no_permission_to_change_owner": "Organization administrators and the Kafka instance owner can change the owner of an instance.",
   "no_permission_to_delete_kafka": "Organization administrators and the Kafka instance owner can delete this instance.",
   "no_permission_to_see_connections": "",
   "owner": "Owner",
   "owner_field_invalid_message": "Red Hat Login ID cannot contain spaces, national characters or the following special characters \" $ ^ < > | + % / ; : , * = ~ # ( )",
+  "owner_transfer_failed_message": "We're unable to change the owner of {{name}} at this time. Try again later.",
   "partitions": "Partitions",
   "partitions_value": "up to 500",
   "rhosakTitle": "Red Hat OpenShift Streams for Apache Kafka",
   "select_filter_category": "Select filter category",
+  "select_user_account": "Select user account",
   "settings": {
     "connection_re_authentication_label": "Connection re-authentication",
     "Connection_re_authentication_states": {
@@ -205,9 +213,9 @@
     "preparing": "Preparing",
     "provisioning": "Provisioning",
     "ready": "Ready",
-    "resuming": "",
+    "resuming": "Resuming",
     "suspended": "Suspended",
-    "suspending": ""
+    "suspending": "Suspending"
   },
   "statuses-filter": {
     "creating": "Creation pending",
@@ -221,9 +229,9 @@
     "degraded": "Degraded",
     "deleting": "Deleting",
     "ready": "Ready",
-    "resuming": "",
+    "resuming": "Resuming",
     "suspended": "Suspended",
-    "suspending": ""
+    "suspending": "Suspending"
   },
   "storage": "Storage",
   "storage_value": "up to 1000 GiB",
@@ -246,13 +254,5 @@
     "topic": "Topic"
   },
   "will_expire": "This trial instance will expire in <time>{{time}}</time>",
-  "will_expire_short": "Expires in <time>{{time}}</time>",
-  "select_user_account": "Select user account",
-  "change_owner_create_text": "Use",
-  "current_owner": "Current owner",
-  "new_owner": "New owner",
-  "change-owner-title": "Change owner",
-  "change-owner-button": "Change owner",
-  "new_owner_does_not_exist_title": "New owner doesn’t exist",
-  "new_owner_does_not_exist_message": "A user with the user ID {{newOwner}} doesn’t exist in your organization."
+  "will_expire_short": "Expires in <time>{{time}}</time>"
 }

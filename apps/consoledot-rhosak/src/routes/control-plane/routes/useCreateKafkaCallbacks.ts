@@ -12,7 +12,7 @@ export function useCreateKafkaCallbacks() {
   const { auth } = useChrome();
 
   const getUsername = useCallback(async () => {
-    const username = (await auth.getUser()).identity.user?.username;
+    const username = (await auth.getUser())?.identity.user?.username;
     if (!username) {
       return Promise.reject("Invalid user");
     }

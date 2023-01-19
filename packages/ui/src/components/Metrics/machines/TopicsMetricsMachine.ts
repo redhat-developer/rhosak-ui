@@ -55,6 +55,7 @@ export type TopicsMetricsMachineContext = {
 export const TopicsMetricsMachine = createMachine(
   {
     tsTypes: {} as import("./TopicsMetricsMachine.typegen").Typegen0,
+    predictableActionArguments: true,
     schema: {
       context: {} as TopicsMetricsMachineContext,
       events: {} as  // called when a new kafka id has been specified

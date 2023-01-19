@@ -22,6 +22,7 @@ export type MessageApiResponse = {
 export const MessageBrowserMachine = createMachine(
   {
     id: "message-browser",
+    predictableActionArguments: true,
     tsTypes: {} as import("./MessageBrowserMachine.typegen").Typegen0,
     schema: {
       context: {} as {

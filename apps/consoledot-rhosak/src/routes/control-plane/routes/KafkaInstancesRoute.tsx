@@ -63,7 +63,7 @@ export const KafkaInstancesRoute: FunctionComponent<KafkaInstancesRoute> = ({
     name: namesChips.chips,
     owner: ownersChips.chips,
     status: statusesChips.chips,
-    sort: sort!,
+    sort: sort || "createdAt",
     direction: sortDirection,
   });
 
@@ -107,19 +107,18 @@ export const KafkaInstancesRoute: FunctionComponent<KafkaInstancesRoute> = ({
     history.push(`${ControlPlaneNewInstancePath}`);
   }, [history]);
 
-  const onDelete = useCallback(
+  const onDelete = useCallback<KafkaInstancesProps["onDelete"]>(
     ({ id }) => {
       history.push(`${ControlPlaneRouteRoot}/${id}/delete`);
     },
     [history]
   );
-  const onChangeOwner = useCallback(
+  const onChangeOwner = useCallback<KafkaInstancesProps["onChangeOwner"]>(
     ({ id }) => {
       history.push(`${ControlPlaneRouteRoot}/${id}/change-owner`);
     },
     [history]
   );
-  
 
   const onQuickstartGuide = useCallback(
     () => setActiveQuickStart && setActiveQuickStart("getting-started"),
@@ -156,9 +155,15 @@ export const KafkaInstancesRoute: FunctionComponent<KafkaInstancesRoute> = ({
         getUrlForInstance={getUrlForInstance}
         onDetails={onDetailsClick}
         onConnection={onConnectionsClick}
-        onClickConnectionTabLink={() => {}}
-        onClickSupportLink={() => {}}
-        onInstanceLinkClick={() => {}}
+        onClickConnectionTabLink={() => {
+          /* TODO */
+        }}
+        onClickSupportLink={() => {
+          /* TODO */
+        }}
+        onInstanceLinkClick={() => {
+          /* TODO */
+        }}
         onQuickstartGuide={onQuickstartGuide}
         canHaveInstanceLink={({ status }) => ReadyStatuses.includes(status)}
         canOpenConnection={({ status }) => ReadyStatuses.includes(status)}

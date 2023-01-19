@@ -6,7 +6,7 @@ import type {
   Plan,
   Status,
 } from "ui-models/src/models/kafka";
-import type { DateIsoString } from "../../../ui-models/src/types";
+import type { DateIsoString } from "ui-models/src/types";
 
 import type { SizeWithLimits } from "../fetchers";
 

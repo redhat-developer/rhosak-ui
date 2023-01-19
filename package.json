@@ -10,8 +10,9 @@
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "test": "turbo run test --concurrency=1"
+    "format": "prettier --write \"**/src/**/*.{ts,tsx,md}\"",
+    "test": "turbo run test --concurrency=1",
+    "test-ci": "turbo run test-ci --concurrency=1"
   },
   "devDependencies": {
     "eslint-config-custom": "*",

@@ -8,14 +8,18 @@ export function useDeleteTopicMutation() {
   const queryClient = useQueryClient();
 
   return useMutation(
-    async function kafkaCreateInstance(props: {
+    async function kafkaCreateInstance({
+      adminUrl,
+      name,
+      onSuccess,
+      onError,
+    }: {
       instanceId: string;
       adminUrl: string;
       name: string;
       onSuccess: () => void;
       onError: (code: string, message: string) => void;
     }) {
-      const { instanceId, adminUrl, name, onSuccess, onError } = props;
       const api = topics(adminUrl);
       try {
         await api.deleteTopic(name);

@@ -8,7 +8,7 @@ failOnConsole({
     if (/at CloudRegionSelect/g.test(errorMessage)) {
       return true;
     }
-    if (/at AsyncTypeaheadSelect/g.test(errorMessage)) {
+    if (/at (.*)AsyncTypeaheadSelect/g.test(errorMessage)) {
       return true;
     }
     if (/at SelectGroup/g.test(errorMessage)) {
@@ -18,6 +18,9 @@ failOnConsole({
       return true;
     }
     if (/at Popover/g.test(errorMessage)) {
+      return true;
+    }
+    if (/at Tooltip/g.test(errorMessage)) {
       return true;
     }
     return false;

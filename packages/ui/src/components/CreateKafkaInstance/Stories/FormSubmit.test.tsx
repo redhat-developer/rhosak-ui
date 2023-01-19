@@ -72,7 +72,7 @@ describe("CreateKafkaInstance", () => {
     await FormErrorsCantSubmit.play({ canvasElement: comp.container });
 
     expect(
-      comp.queryByText("Address form errors to proceed.")
+      await comp.findByText("Address form errors to proceed.")
     ).toBeInTheDocument();
 
     expect(comp.getByLabelText("Name *")).toBeInvalid();

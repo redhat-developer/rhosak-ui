@@ -65,13 +65,6 @@ exports[`Renders Accepted story 1`] = `
       </div>
     </div>
   </div>
-  <div>
-    <ul
-      aria-atomic="false"
-      aria-live="polite"
-      class="pf-c-alert-group pf-m-toast"
-    />
-  </div>
 </body>
 `;
 
@@ -327,7 +320,7 @@ exports[`Renders AllStatutesAtOnce story 1`] = `
     >
       accepted
     </pre>
-     over 15 minutes
+    over 15 minutes
     <div>
       <div
         class="pf-l-split pf-m-gutter mas-c-status"
@@ -412,7 +405,7 @@ exports[`Renders AllStatutesAtOnce story 1`] = `
     >
       accepted
     </pre>
-     over 30 minutes
+    over 30 minutes
     <div>
       <div
         class="pf-l-split pf-m-gutter mas-c-status"
@@ -608,13 +601,6 @@ exports[`Renders AllStatutesAtOnce story 1`] = `
       style=""
     />
   </div>
-  <div>
-    <ul
-      aria-atomic="false"
-      aria-live="polite"
-      class="pf-c-alert-group pf-m-toast"
-    />
-  </div>
 </body>
 `;
 
@@ -697,13 +683,6 @@ exports[`Renders CreatingOver15Minutes story 1`] = `
         
       </div>
     </div>
-  </div>
-  <div>
-    <ul
-      aria-atomic="false"
-      aria-live="polite"
-      class="pf-c-alert-group pf-m-toast"
-    />
   </div>
 </body>
 `;
@@ -788,13 +767,6 @@ exports[`Renders CreatingOver30Minutes story 1`] = `
       </div>
     </div>
   </div>
-  <div>
-    <ul
-      aria-atomic="false"
-      aria-live="polite"
-      class="pf-c-alert-group pf-m-toast"
-    />
-  </div>
 </body>
 `;
 
@@ -831,13 +803,6 @@ exports[`Renders Degraded story 1`] = `
       </div>
     </div>
   </div>
-  <div>
-    <ul
-      aria-atomic="false"
-      aria-live="polite"
-      class="pf-c-alert-group pf-m-toast"
-    />
-  </div>
 </body>
 `;
 
@@ -853,13 +818,6 @@ exports[`Renders Deleting story 1`] = `
       </p>
     </div>
   </div>
-  <div>
-    <ul
-      aria-atomic="false"
-      aria-live="polite"
-      class="pf-c-alert-group pf-m-toast"
-    />
-  </div>
 </body>
 `;
 
@@ -874,13 +832,6 @@ exports[`Renders Deprovision story 1`] = `
         Deleting
       </p>
     </div>
-  </div>
-  <div>
-    <ul
-      aria-atomic="false"
-      aria-live="polite"
-      class="pf-c-alert-group pf-m-toast"
-    />
   </div>
 </body>
 `;
@@ -950,13 +901,6 @@ exports[`Renders Preparing story 1`] = `
       </div>
     </div>
   </div>
-  <div>
-    <ul
-      aria-atomic="false"
-      aria-live="polite"
-      class="pf-c-alert-group pf-m-toast"
-    />
-  </div>
 </body>
 `;
 
@@ -1025,13 +969,6 @@ exports[`Renders Provisioning story 1`] = `
       </div>
     </div>
   </div>
-  <div>
-    <ul
-      aria-atomic="false"
-      aria-live="polite"
-      class="pf-c-alert-group pf-m-toast"
-    />
-  </div>
 </body>
 `;
 
@@ -1068,17 +1005,10 @@ exports[`Renders Ready story 1`] = `
       </div>
     </div>
   </div>
-  <div>
-    <ul
-      aria-atomic="false"
-      aria-live="polite"
-      class="pf-c-alert-group pf-m-toast"
-    />
-  </div>
 </body>
 `;
 
-exports[`Renders suspended story 1`] = `
+exports[`Renders Suspended story 1`] = `
 <body>
   <div>
     <div>
@@ -1119,13 +1049,6 @@ exports[`Renders suspended story 1`] = `
         </div>
       </div>
     </div>
-  </div>
-  <div>
-    <ul
-      aria-atomic="false"
-      aria-live="polite"
-      class="pf-c-alert-group pf-m-toast"
-    />
   </div>
 </body>
 `;

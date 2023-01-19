@@ -66,7 +66,7 @@ export const KafkaTopics = <T extends Topic>({
 
   const isFiltered = topicName.length > 0;
   return (
-    <PageSection isFilled={true} hasOverflowScroll={true}>
+    <PageSection isFilled={true} hasOverflowScroll={true} aria-label={"TODO"}>
       <TableView
         variant={TableVariant.compact}
         tableOuiaId={"card-table"}

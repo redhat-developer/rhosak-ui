@@ -10,14 +10,40 @@
         ".next/**"
       ]
     },
+    "consoledot-rhosak#build": {
+      "env": [
+        "API_URL"
+      ]
+    },
+    "ui#build": {
+      "env": [
+        "JEST_WORKER_ID"
+      ]
+    },
     "lint": {
+      "dependsOn": [
+        "build"
+      ],
       "outputs": []
     },
     "dev": {
       "cache": false
     },
     "test": {
+      "dependsOn": [
+        "build"
+      ],
+      "outputs": []
+    },
+    "test-ci": {
+      "dependsOn": [
+        "build"
+      ],
       "outputs": []
     }
-  }
+  },
+  "globalEnv": [
+    "GITHUB_TOKEN",
+    "NODE_ENV"
+  ]
 }

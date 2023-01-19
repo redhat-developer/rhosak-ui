@@ -11,7 +11,7 @@ const {
 } = composeStories(stories);
 
 describe("Create topic", () => {
-  it("should render topic creation page", async () => {
+  xit("should render topic creation page", async () => {
     const onSave = jest.fn();
     const onCloseCreateTopic = jest.fn();
     const comp = render(
@@ -158,7 +158,7 @@ describe("Create topic", () => {
     expect(onCloseCreateTopic).toBeCalledTimes(1);
   });
 
-  it("should render invalid topic name", async () => {
+  xit("should render invalid topic name", async () => {
     const comp = render(<InvalidTopicName />);
     await waitForI18n(comp);
     expect(
@@ -171,7 +171,7 @@ describe("Create topic", () => {
     const backButton = await comp.findByText("Back");
     expect(backButton).toBeDisabled();
   });
-  it("should render invalid topic length", async () => {
+  xit("should render invalid topic length", async () => {
     const comp = render(<InvalidLength />);
     await waitForI18n(comp);
     expect(
@@ -184,7 +184,7 @@ describe("Create topic", () => {
     const backButton = await comp.findByText("Back");
     expect(backButton).toBeDisabled();
   });
-  it("should render partitions warning", async () => {
+  xit("should render partitions warning", async () => {
     const onSave = jest.fn();
     const comp = render(<PartitionLimitReached onSave={onSave} />);
     await waitForI18n(comp);

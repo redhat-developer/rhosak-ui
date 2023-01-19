@@ -42,7 +42,7 @@ export const ConsumerGroupsRoute: VoidFunctionComponent<
     adminUrl: instance?.adminUrl,
     page,
     perPage,
-    sort: sort!,
+    sort: sort || undefined,
     direction: sortDirection,
     groupId: consumerName.chips[0],
   });
@@ -60,7 +60,9 @@ export const ConsumerGroupsRoute: VoidFunctionComponent<
         consumerName={consumerName.chips}
         isRowSelected={() => false}
         isColumnSortable={isColumnSortable}
-        onDelete={() => {}}
+        onDelete={() => {
+          /* TODO */
+        }}
         onSearchConsumer={(value) => {
           consumerName.clear();
           consumerName.toggle(value);
@@ -69,8 +71,12 @@ export const ConsumerGroupsRoute: VoidFunctionComponent<
         onPageChange={setPagination}
         onRemoveConsumerChip={consumerName.clear}
         onRemoveConsumerChips={consumerName.clear}
-        onViewPartition={() => {}}
-        onViewResetOffset={() => {}}
+        onViewPartition={() => {
+          /* TODO */
+        }}
+        onViewResetOffset={() => {
+          /* TODO */
+        }}
       />
     </>
   );

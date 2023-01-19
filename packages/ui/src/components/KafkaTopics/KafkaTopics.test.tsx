@@ -3,7 +3,7 @@ import { composeStories } from "@storybook/testing-react";
 import { render, waitForI18n } from "../../test-utils";
 import * as stories from "./KafkaTopics.stories";
 
-const { KafkaTopicsTable } = composeStories(stories);
+const { WithTopics } = composeStories(stories);
 
 describe("Topics table", () => {
   it("has working actions", async () => {
@@ -11,7 +11,7 @@ describe("Topics table", () => {
     const onEdit = jest.fn();
     const onCreateTopic = jest.fn();
     const comp = render(
-      <KafkaTopicsTable
+      <WithTopics
         onDelete={onDelete}
         onEdit={onEdit}
         onCreateTopic={onCreateTopic}
@@ -39,7 +39,7 @@ describe("Topics table", () => {
   });
 
   it("should persist ouia ids", async () => {
-    const comp = render(<KafkaTopicsTable />);
+    const comp = render(<WithTopics />);
     await waitForI18n(comp);
     expect(comp.getByLabelText("Topic list table")).toHaveAttribute(
       "data-ouia-component-id",

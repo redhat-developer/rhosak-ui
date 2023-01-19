@@ -67,7 +67,7 @@ export const ConsumerGroups = <T extends ConsumerGroup>({
 
   const isFiltered = consumerName.length > 0;
   return (
-    <PageSection isFilled={true} hasOverflowScroll={true}>
+    <PageSection isFilled={true} hasOverflowScroll={true} aria-label={"TODO"}>
       <TableView
         variant={TableVariant.compact}
         tableOuiaId={"card-table"}

@@ -18,6 +18,7 @@ type ApiContextProps = {
   refetchInterval: number;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const ApiContext = createContext<ApiContextProps>(null!);
 
 const queryClient = new QueryClient();

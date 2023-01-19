@@ -101,7 +101,9 @@ export const DashboardRoute: VoidFunctionComponent<
         activeSection={"dashboard"}
       />
       <Metrics
-        onCreateTopic={() => {}}
+        onCreateTopic={() => {
+          /* TODO */
+        }}
         onAlertClose={onAlertClose}
         hasUserAlreadyClosedAlert={hasUserAlreadyClosedAlert}
         getKafkaInstanceMetrics={getKafkaInstanceMetrics}

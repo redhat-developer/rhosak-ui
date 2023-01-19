@@ -42,6 +42,7 @@ export type MetricsKpiMachineContext = {
 export const MetricsKpiMachine = createMachine(
   {
     tsTypes: {} as import("./MetricsKpiMachine.typegen").Typegen0,
+    predictableActionArguments: true,
     schema: {
       context: {} as MetricsKpiMachineContext,
       events: {} as

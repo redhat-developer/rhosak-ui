@@ -1,5 +1,8 @@
-import { Principal, PrincipalApi } from "@redhat-cloud-services/rbac-client";
-import { UserAccount } from "ui-models/src/models/user-account";
+import type {
+  Principal,
+  PrincipalApi,
+} from "@redhat-cloud-services/rbac-client";
+import type { UserAccount } from "ui-models/src/models/user-account";
 
 export type FetchUserAccountsParams = {
   getUserAccounts: PrincipalApi["listPrincipals"];
@@ -16,7 +19,9 @@ export async function fetchUserAccounts({
     const fullObject = p as Principal;
     return {
       username: fullObject.username,
-      displayName: `${fullObject.first_name} ${fullObject.last_name}`,
+      displayName: `${fullObject.first_name || ""} ${
+        fullObject.last_name || ""
+      }`.trim(),
       email: fullObject.email,
       isOrgAdmin: fullObject.is_org_admin || false,
     };
