@@ -35,8 +35,9 @@
       ],
       "outputs": []
     },
-    "test-storybook:ci": {
+    "test-ci": {
       "dependsOn": [
+        "build"
       ],
       "outputs": []
     }
