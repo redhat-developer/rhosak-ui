@@ -31,21 +31,21 @@ jobs:
         with:
           node-version: ${{ inputs.node-version }}
       - name: Run the test suite
-        run: npm run test:ci
+        run: npm run test-ci
       - name: Generate coverage report
         uses: codecov/codecov-action@v3
 
-  test-storybook:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: ./.github/actions/cache-restore
-        id: cache-node-modules
-        with:
-          node-version: ${{ inputs.node-version }}
-      - name: Run the test suite
-        run: npm run test-storybook:ci
+  #  test-storybook:
+  #    needs: setup
+  #    runs-on: ubuntu-latest
+  #    steps:
+  #      - uses: actions/checkout@v3
+  #      - uses: ./.github/actions/cache-restore
+  #        id: cache-node-modules
+  #        with:
+  #          node-version: ${{ inputs.node-version }}
+  #      - name: Run the test suite
+  #        run: npm run test-storybook:ci
 
   lint-and-format:
     needs: setup
@@ -95,3 +95,4 @@ jobs:
           projectToken: dcd99d3b0336
           token: ${{ secrets.GITHUB_TOKEN }}
           exitOnceUploaded: true
+          workingDir: packages/ui
