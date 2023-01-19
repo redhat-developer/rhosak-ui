@@ -7,7 +7,7 @@ jobs:
   build:
     uses: ./.github/workflows/reusable-build.yml
     with:
-      node-version: 16.6.2
+      node-version: 16.19.0
 
   update-storybook-on-ghpages:
     runs-on: ubuntu-latest
@@ -19,7 +19,7 @@ jobs:
       - uses: ./.github/actions/cache-restore
         id: cache-node-modules
         with:
-          node-version: 16.6.2
+          node-version: 16.19.0
 
       - name: Build storybook
         run: |
