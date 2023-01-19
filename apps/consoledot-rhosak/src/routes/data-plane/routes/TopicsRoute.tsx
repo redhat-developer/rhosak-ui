@@ -34,7 +34,7 @@ export const TopicsRoute: VoidFunctionComponent<
     adminUrl: instance?.adminUrl,
     page,
     perPage,
-    sort: sort!,
+    sort: sort || undefined,
     direction: sortDirection,
     filter: topicChips.chips[0],
     plan: instance.plan,
@@ -53,18 +53,26 @@ export const TopicsRoute: VoidFunctionComponent<
         topicName={topicChips.chips}
         getUrlFortopic={(row) => `./topics/${row.name}`}
         isColumnSortable={isColumnSortable}
-        onDelete={() => {}}
-        onEdit={() => {}}
+        onDelete={() => {
+          /* TODO */
+        }}
+        onEdit={() => {
+          /* TODO */
+        }}
         onSearchTopic={(value) => {
           topicChips.clear();
           topicChips.toggle(value);
         }}
         onClearAllFilters={topicChips.clear}
-        onCreateTopic={() => {}}
+        onCreateTopic={() => {
+          /* TODO */
+        }}
         onPageChange={setPagination}
         onRemoveTopicChip={topicChips.clear}
         onRemoveTopicChips={topicChips.clear}
-        onTopicLinkClick={() => {}}
+        onTopicLinkClick={() => {
+          /* TODO */
+        }}
       />
     </>
   );

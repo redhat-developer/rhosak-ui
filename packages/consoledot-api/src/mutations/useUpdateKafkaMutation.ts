@@ -4,7 +4,8 @@ import type {
 } from "@rhoas/kafka-management-sdk";
 import { getErrorCode, isServiceApiError } from "@rhoas/kafka-management-sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { AxiosError, AxiosResponse } from "axios";
+import type { AxiosResponse } from "axios";
+import { AxiosError } from "axios";
 import { kafkaQueries } from "../queryKeys";
 import { useApi } from "../useApi";
 
@@ -50,7 +51,7 @@ export function useUpdateKafkaMutation() {
       }
     },
     {
-      onSuccess: (_, { id }) => {
+      onSuccess: () => {
         void queryClient.invalidateQueries([kafkaQueries._root()]);
       },
     }

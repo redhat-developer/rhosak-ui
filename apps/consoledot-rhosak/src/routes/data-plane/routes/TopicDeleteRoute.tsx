@@ -8,7 +8,7 @@ import { useTopicGate } from "../useTopicGate";
 
 export const TopicDeleteRoute: VoidFunctionComponent<
   DataPlaneTopicNavigationProps
-> = ({ instanceDetailsHref, topicHref, instancesHref, instanceTopicsHref }) => {
+> = ({ topicHref, instanceTopicsHref }) => {
   const history = useHistory();
 
   const { instance, topic } = useTopicGate();
@@ -19,9 +19,12 @@ export const TopicDeleteRoute: VoidFunctionComponent<
   }, [history, instance.id, topic.name, topicHref]);
 
   const onDelete = useCallback(() => {
+    if (!instance.adminUrl) {
+      throw Error("Invalid instance adminUrl");
+    }
     void mutateAsync({
       instanceId: instance.id,
-      adminUrl: instance.adminUrl!,
+      adminUrl: instance.adminUrl,
       name: topic.name,
       onError: () => {
         // TODO: alert
@@ -30,7 +33,14 @@ export const TopicDeleteRoute: VoidFunctionComponent<
         history.replace(instanceTopicsHref(instance.id));
       },
     });
-  }, [mutateAsync, history, instance?.id, instancesHref]);
+  }, [
+    instance.adminUrl,
+    instance.id,
+    mutateAsync,
+    topic.name,
+    history,
+    instanceTopicsHref,
+  ]);
 
   return (
     <DeleteKafkaTopic

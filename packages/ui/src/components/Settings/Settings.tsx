@@ -16,7 +16,6 @@ import { useTranslation } from "@rhoas/app-services-ui-components";
 import type { FunctionComponent } from "react";
 import { useState } from "react";
 import "./Settings.css";
-// import { useAlert, AlertVariant } from "@rhoas/app-services-ui-components";
 import type { SettingsStatus } from "./types";
 
 export type SettingsProps = {
@@ -31,12 +30,6 @@ export const Settings: FunctionComponent<SettingsProps> = ({
   reauthenticationEnabled,
 }) => {
   const { t } = useTranslation("kafka");
-  const { addAlert } = {
-    //TODO
-    addAlert: (args: { [key: string]: any }) => {
-      // TODO
-    },
-  };
   //states
   const [connectionStatus, setConnectionStatus] = useState<SettingsStatus>(
     reauthenticationEnabled ? "On" : "Off"
@@ -62,21 +55,23 @@ export const Settings: FunctionComponent<SettingsProps> = ({
       .then((reauthentication) => {
         setConnectionStatus(reauthentication ? "On" : "Off");
 
-        addAlert({
-          variant: "success",
-          title: t("settings.success_alert", {
-            status: reauthentication ? "on" : "off",
-          }),
-        });
+        // TODO: send notification
+        // addAlert({
+        //   variant: "success",
+        //   title: t("settings.success_alert", {
+        //     status: reauthentication ? "on" : "off",
+        //   }),
+        // });
       })
       .catch(() => {
         setConnectionStatus(!reAuthValue ? "On" : "Off");
 
-        addAlert({
-          variant: "danger",
-          title: t("settings.error_alert_title"),
-          description: t("settings.error_alert_title_description"),
-        });
+        // TODO: send notification
+        // addAlert({
+        //   variant: "danger",
+        //   title: t("settings.error_alert_title"),
+        //   description: t("settings.error_alert_title_description"),
+        // });
       });
   };
 

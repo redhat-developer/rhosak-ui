@@ -26,6 +26,7 @@ type DrawerContextProps = {
   toggleExpanded: (newState?: boolean) => void;
   onClose: MutableRefObject<(() => void) | undefined>;
 };
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const DrawerContext = createContext<DrawerContextProps>(null!);
 
 export const DrawerProvider: FunctionComponent = ({ children }) => {

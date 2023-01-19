@@ -15,10 +15,13 @@ export const TopicMessagesGroupsRoute: VoidFunctionComponent<
 
   const getMessages = useCallback<KafkaMessageBrowserProps["getMessages"]>(
     async (params) => {
+      if (!instance.adminUrl) {
+        throw Error("Invalid instance adminUrl");
+      }
       const messages = await kafkaTopicMessagesFetchQuery({
         ...params,
         id: instance.id,
-        adminUrl: instance.adminUrl!,
+        adminUrl: instance.adminUrl,
         topicName: topic.name,
       });
       return {

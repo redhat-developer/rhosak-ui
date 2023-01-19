@@ -1,5 +1,6 @@
 import { useQueryErrorResetBoundary } from "consoledot-api";
-import { FunctionComponent, useEffect, VoidFunctionComponent } from "react";
+import type { FunctionComponent, VoidFunctionComponent } from "react";
+import { useEffect } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { Redirect, useLocation } from "react-router-dom";
 

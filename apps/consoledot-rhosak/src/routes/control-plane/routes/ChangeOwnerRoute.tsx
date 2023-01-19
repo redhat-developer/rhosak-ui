@@ -2,7 +2,8 @@ import { useUpdateKafkaMutation, useUserAccounts } from "consoledot-api";
 import type { FunctionComponent } from "react";
 import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
-import { ChangeKafkaOwner, ChangeKafkaOwnerProps } from "ui";
+import type { ChangeKafkaOwnerProps } from "ui";
+import { ChangeKafkaOwner } from "ui";
 
 import type { ControlPlaneNavigationProps } from "../routesConsts";
 import { useControlPlaneGate } from "../useControlPlaneGate";

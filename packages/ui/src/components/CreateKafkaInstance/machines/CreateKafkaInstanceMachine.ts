@@ -346,6 +346,7 @@ const CreateKafkaInstanceMachine =
           };
         }),
         setProvidersOrRegionsUnavailable: assign((context) => {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           const quota = context.quota!;
           if (quota.plan === "standard") {
             quota.instanceAvailability = "regions-unavailable";
@@ -478,6 +479,7 @@ export function makeCreateKafkaInstanceMachine({
         };
       },
       fetchProvidersWithRegions: (context) => {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const instanceType = context.quota!.plan;
         return (send) => {
           fetchProvidersWithRegionsCb(instanceType, {

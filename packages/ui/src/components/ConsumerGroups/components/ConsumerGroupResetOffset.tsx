@@ -132,7 +132,7 @@ export const ConsumerGroupResetOffset: FunctionComponent<
               fieldId="consumer-group-input"
             >
               <TextInput
-                isReadOnly
+                readOnlyVariant={"default"}
                 type="text"
                 name={t("consumerGroup.reset_offset_consumer_group_label")}
                 id={"consumer-group-input"}
@@ -223,8 +223,7 @@ export const ConsumerGroupResetOffset: FunctionComponent<
                             select={{
                               rowIndex: index,
                               isSelected: isSelected,
-                              onSelect: (_event) =>
-                                onSelectRow(index, isSelected),
+                              onSelect: () => onSelectRow(index, isSelected),
                             }}
                           />
                           <Td dataLabel={tableColumns.partition}>

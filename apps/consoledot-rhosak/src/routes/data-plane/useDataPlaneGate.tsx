@@ -8,6 +8,6 @@ export function useDataPlaneGate() {
   if (!match) {
     throw Error("useDataPlaneGate used outside the expected route");
   }
-  const { data: instance, isError } = useKafka(match.params.id, true);
+  const { data: instance } = useKafka(match.params.id, true);
   return { instance: instance as NonNullable<typeof instance>, match };
 }

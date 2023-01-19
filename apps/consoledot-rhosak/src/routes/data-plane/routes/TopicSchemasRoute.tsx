@@ -1,3 +1,4 @@
+/* eslint-disable */
 // @ts-nocheck
 import { useChrome } from "@redhat-cloud-services/frontend-components/useChrome";
 import { I18nProvider } from "@rhoas/app-services-ui-components";
@@ -68,7 +69,6 @@ export const TopicSchemasRoute: VoidFunctionComponent<
               basename={basename}
               topicName={topic.name}
               renderSchema={(registry: Registry) => {
-                debugger;
                 return (
                   <ScalprumComponent
                     appName="ar"

@@ -1,6 +1,6 @@
+/* eslint-disable */
 // @ts-nocheck
 import { useChrome } from "@redhat-cloud-services/frontend-components/useChrome";
-/* tslint:disable */
 import { AssetsContext } from "@rhoas/app-services-ui-shared";
 import type { ScalprumComponentProps } from "@scalprum/react-core";
 import { ScalprumComponent } from "@scalprum/react-core";

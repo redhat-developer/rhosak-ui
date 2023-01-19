@@ -45,7 +45,7 @@ export const TopicConsumerGroupsRoute: VoidFunctionComponent<
     adminUrl: instance?.adminUrl,
     page,
     perPage,
-    sort: sort!,
+    sort: sort || undefined,
     direction: sortDirection,
     groupId: consumerName.chips[0],
     topic: topic.name,
@@ -67,7 +67,9 @@ export const TopicConsumerGroupsRoute: VoidFunctionComponent<
         consumerName={consumerName.chips}
         isRowSelected={() => false}
         isColumnSortable={isColumnSortable}
-        onDelete={() => {}}
+        onDelete={() => {
+          /* TODO */
+        }}
         onSearchConsumer={(value) => {
           consumerName.clear();
           consumerName.toggle(value);
@@ -76,8 +78,12 @@ export const TopicConsumerGroupsRoute: VoidFunctionComponent<
         onPageChange={setPagination}
         onRemoveConsumerChip={consumerName.clear}
         onRemoveConsumerChips={consumerName.clear}
-        onViewPartition={() => {}}
-        onViewResetOffset={() => {}}
+        onViewPartition={() => {
+          /* TODO */
+        }}
+        onViewResetOffset={() => {
+          /* TODO */
+        }}
       />
     </>
   );

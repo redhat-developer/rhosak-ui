@@ -25,14 +25,15 @@ export async function fetchProvidersWithRegions(
       allProviders
         .filter((p) => p.enabled)
         .map(async (provider) => {
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           const regions = await fetchProviderRegions(
             getCloudProviderRegions,
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             provider.id!,
             plan
           );
           const providerInfo: CloudProviderInfoWithRegionsCapacity = {
             id: provider.id as CloudProvider,
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             displayName: provider.display_name!,
             regions,
           };
