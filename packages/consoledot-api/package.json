@@ -42,7 +42,7 @@
     "jest-fail-on-console": "3.0.2",
     "local-storage-helpers": "*",
     "prando": "6.0.1",
-    "prettier": "2.7.1",
+    "prettier": "2.8.3",
     "regenerator-runtime": "0.13.10",
     "storybook-xstate-addon": "2.3.6",
     "tsconfig": "*",
