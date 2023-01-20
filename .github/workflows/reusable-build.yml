@@ -89,6 +89,7 @@ jobs:
 
         #👇 Adds Chromatic as a step in the workflow
       - uses: chromaui/action@v1
+        id: chromatic
         # Options required for Chromatic's GitHub Action
         with:
           #👇 Chromatic projectToken, see https://storybook.js.org/tutorials/intro-to-storybook/react/en/deploy/ to obtain it
@@ -96,3 +97,8 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           exitOnceUploaded: true
           workingDir: packages/ui
+
+      - name: Test the deployed Storybook
+        run: |
+          cd packages/ui
+          npm run test-storybook -- --url ${{ steps.chromatic.outputs.storybookUrl }}
