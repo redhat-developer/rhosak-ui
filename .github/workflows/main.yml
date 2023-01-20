@@ -24,7 +24,7 @@ jobs:
       - name: Build storybook
         run: |
           cd packages/ui
-          npm run test:generate-output
+          npm run test-generate-output
           npm run build-storybook -- --quiet --loglevel silent
 
       - name: Deploy 🚀
