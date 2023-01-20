@@ -125,6 +125,7 @@
   "drawer-tabs": {
     "connections": "Connections",
     "details": "Details",
+    "sample-code": "Sample code",
     "tabs-aria-label": "View instance information"
   },
   "duration": "Duration",
@@ -183,6 +184,29 @@
   "partitions": "Partitions",
   "partitions_value": "up to 500",
   "rhosakTitle": "Red Hat OpenShift Streams for Apache Kafka",
+  "sample_code": {
+    "bracket_text": "Update values in brackets (< >) with your own values.",
+    "clients": {
+      "java": "Java",
+      "python": "Python",
+      "quarkus": "Quarkus",
+      "spring_boot": "Spring boot"
+    },
+    "code_snippet_description": "Use our sample code snippets to learn how to connect client applications to your Kafka instance. First, modify our configuration code to make a secure connection to your Kafka instance. Then, use our application code to create example producers and consumers that interact with your instance.",
+    "sample_configuration_code": "Sample configuration code",
+    "sample_configuration_code_description": "Use the following sample configuration code to make a secure connection to your Kafka instance. ",
+    "sample_consumer_code": "Sample consumer code",
+    "sample_consumer_code_description": "Use the following application code to create an example {{client_type}} client that consumes messages from your Kafka instance. ",
+    "sample_producer_code": "Sample producer code",
+    "sample_producer_code_description": "Use the following application code to create an example {{client_type}} client that produces messages to your Kafka instance.",
+    "spring_boot_consumer": "Consumer",
+    "spring_boot_consumer_configuration": "Consumer configuration",
+    "spring_boot_consumer_configuration_description": "Use the following code to create a listener container required by the example Spring Boot consumer.",
+    "spring_boot_consumer_description": "Use the following code to run the example Spring Boot consumer.",
+    "spring_boot_listener": "Listener",
+    "spring_boot_listener_description": "Use the following code to run the listener container required by the example Spring Boot consumer.",
+    "spring_boot_sample_consumer_code_description": "Use the following code snippets to create an example Spring Boot client that consumes messages from your Kafka instance."
+  },
   "select_filter_category": "Select filter category",
   "select_user_account": "Select user account",
   "settings": {
