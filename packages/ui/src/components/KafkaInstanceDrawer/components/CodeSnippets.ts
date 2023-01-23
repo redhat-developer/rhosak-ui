@@ -95,7 +95,8 @@ export const javaConsumerExpandableBlock = `
     }
 }`;
 
-export const pythonConfigCodeBlock = `import time
+export const pythonConfigCodeBlock = `
+import time
 import requests
 
 def _get_token(config):
@@ -262,18 +263,18 @@ public class KafkaConfig {
        String rhoasOauthTokenUrl = System.getenv("RHOAS_SERVICE_ACCOUNT_OAUTH_TOKEN_URL");`;
 
 export const springBootConfigExpandableBlock = `
-config.put("bootstrap.servers", kafkaHost);
+       config.put("bootstrap.servers", kafkaHost);
 
-config.put("security.protocol", "SASL_SSL");
-config.put("sasl.mechanism", "OAUTHBEARER");
+       config.put("security.protocol", "SASL_SSL");
+       config.put("sasl.mechanism", "OAUTHBEARER");
 
-config.put("sasl.jaas.config", "org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required clientId=\\"" + rhoasClientID + "\\" clientSecret=\\"" + rhoasClientSecret + "\\" oauth.token.endpoint.uri=\\"" + rhoasOauthTokenUrl + "\\";");
-config.put("sasl.login.callback.handler.class", "org.apache.kafka.common.security.oauthbearer.secured.OAuthBearerLoginCallbackHandler");
-config.put("sasl.oauthbearer.token.endpoint.url", rhoasOauthTokenUrl);
-config.put("sasl.oauthbearer.scope.claim.name", "api.iam.service_accounts");
+       config.put("sasl.jaas.config", "org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required clientId=\\"" + rhoasClientID + "\\" clientSecret=\\"" + rhoasClientSecret + "\\" oauth.token.endpoint.uri=\\"" + rhoasOauthTokenUrl + "\\";");
+       config.put("sasl.login.callback.handler.class", "org.apache.kafka.common.security.oauthbearer.secured.OAuthBearerLoginCallbackHandler");
+       config.put("sasl.oauthbearer.token.endpoint.url", rhoasOauthTokenUrl);
+       config.put("sasl.oauthbearer.scope.claim.name", "api.iam.service_accounts");
 
-return config;
-}
+       return config;
+    }
 }`;
 
 export const springBootProducerCodeBlock = `package com.example.kafkademo;
@@ -291,7 +292,8 @@ import com.example.kafkaconfig.KafkaConfig;
 
 import java.util.Map;`;
 
-export const springBootProducerExpandableBlock = `@SpringBootApplication
+export const springBootProducerExpandableBlock = `
+@SpringBootApplication
 public class KafkaProducerExample implements CommandLineRunner {
 
   public static void main(String[] args) throws Exception {

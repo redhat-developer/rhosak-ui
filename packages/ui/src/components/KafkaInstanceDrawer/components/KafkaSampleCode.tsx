@@ -50,9 +50,11 @@ export const KafkaSampleCode: VoidFunctionComponent = () => {
     <div className="mas--details__drawer--tab-content">
       <TextContent className="pf-u-pb-sm">
         <Text component={TextVariants.small}>
-          {t("sample_code.code_snippet_description")}
+          {t("sample_code.code_snippet_description_1")}
         </Text>
-
+        <Text component={TextVariants.small}>
+          {t("sample_code.code_snippet_description_2")}
+        </Text>
         <ToggleGroup>
           <ToggleGroupItem
             text={t("sample_code.clients.java")}
@@ -97,7 +99,9 @@ export const KafkaSampleCode: VoidFunctionComponent = () => {
             case "java":
               return (
                 <SampleCodeSnippet
-                  copyCode={javaConfigCodeBlock + javaConfigExpandabledBlock}
+                  copyCode={
+                    javaConfigCodeBlock + "\n" + javaConfigExpandabledBlock
+                  }
                   codeBlockCode={javaConfigCodeBlock}
                   expandableCode={javaConfigExpandabledBlock}
                 />
@@ -106,7 +110,7 @@ export const KafkaSampleCode: VoidFunctionComponent = () => {
               return (
                 <SampleCodeSnippet
                   copyCode={
-                    pythonConfigCodeBlock + pythonConfigExpandabledBlock
+                    pythonConfigCodeBlock + "\n" + pythonConfigExpandabledBlock
                   }
                   codeBlockCode={pythonConfigCodeBlock}
                   expandableCode={pythonConfigExpandabledBlock}
@@ -116,7 +120,7 @@ export const KafkaSampleCode: VoidFunctionComponent = () => {
               return (
                 <SampleCodeSnippet
                   copyCode={
-                    quarkusConfigCodeBlock + quarkusConfigExpandableBlock
+                    quarkusConfigCodeBlock + "\n" + quarkusConfigExpandableBlock
                   }
                   codeBlockCode={quarkusConfigCodeBlock}
                   expandableCode={quarkusConfigExpandableBlock}
@@ -126,7 +130,9 @@ export const KafkaSampleCode: VoidFunctionComponent = () => {
               return (
                 <SampleCodeSnippet
                   copyCode={
-                    springBootConfigCodeBlock + springBootConfigExpandableBlock
+                    springBootConfigCodeBlock +
+                    "\n" +
+                    springBootConfigExpandableBlock
                   }
                   codeBlockCode={springBootConfigCodeBlock}
                   expandableCode={springBootConfigExpandableBlock}
@@ -139,60 +145,73 @@ export const KafkaSampleCode: VoidFunctionComponent = () => {
         <Text component={TextVariants.h3} className="pf-u-mt-xl">
           {t("sample_code.sample_producer_code")}
         </Text>
-        <Text component={TextVariants.small}>
-          <Trans
-            ns={"kafka"}
-            i18nKey={"sample_code.sample_producer_code_description"}
-            values={{
-              client_type: clientSelect,
-            }}
-          />
-        </Text>
-        <Text component={TextVariants.small}>
-          {t("sample_code.bracket_text")}
-        </Text>
-        {(() => {
-          switch (clientSelect) {
-            case "java":
-              return (
-                <SampleCodeSnippet
-                  copyCode={javaProducerCodeBlock + javaProducerExpandableBlock}
-                  codeBlockCode={javaProducerCodeBlock}
-                  expandableCode={javaProducerExpandableBlock}
-                />
-              );
-            case "python":
-              return (
-                <SampleCodeSnippet
-                  copyCode={pythonProducer}
-                  codeBlockCode={pythonProducer}
-                />
-              );
-            case "quarkus":
-              return (
-                <SampleCodeSnippet
-                  copyCode={
-                    quarkusProducerCodeBlock + quarkusProducerExpandableBlock
-                  }
-                  codeBlockCode={quarkusProducerCodeBlock}
-                  expandableCode={quarkusProducerExpandableBlock}
-                />
-              );
-            case "springboot":
-              return (
-                <SampleCodeSnippet
-                  copyCode={
-                    springBootProducerCodeBlock +
-                    springBootProducerExpandableBlock
-                  }
-                  codeBlockCode={springBootProducerCodeBlock}
-                  expandableCode={springBootProducerExpandableBlock}
-                />
-              );
-            default:
-              return null;
-          }
-        })()}
+        {clientSelect === "quarkus" ? (
+          <>
+            <Text component={TextVariants.small}>
+              {t("sample_code.sample_producer_code_quarkus_description")}
+            </Text>
+            <SampleCodeSnippet
+              copyCode={
+                quarkusProducerCodeBlock + "\n" + quarkusProducerExpandableBlock
+              }
+              codeBlockCode={quarkusProducerCodeBlock}
+              expandableCode={quarkusProducerExpandableBlock}
+            />
+          </>
+        ) : (
+          <>
+            <Text component={TextVariants.small}>
+              <Trans
+                ns={"kafka"}
+                i18nKey={"sample_code.sample_producer_code_description"}
+                values={{
+                  client_type: clientSelect,
+                }}
+              />
+            </Text>
+            <Text component={TextVariants.small}>
+              {t("sample_code.bracket_text")}
+            </Text>
+            {(() => {
+              switch (clientSelect) {
+                case "java":
+                  return (
+                    <SampleCodeSnippet
+                      copyCode={
+                        javaProducerCodeBlock +
+                        "\n" +
+                        javaProducerExpandableBlock
+                      }
+                      codeBlockCode={javaProducerCodeBlock}
+                      expandableCode={javaProducerExpandableBlock}
+                    />
+                  );
+                case "python":
+                  return (
+                    <SampleCodeSnippet
+                      copyCode={pythonProducer}
+                      codeBlockCode={pythonProducer}
+                    />
+                  );
+                case "springboot":
+                  return (
+                    <SampleCodeSnippet
+                      copyCode={
+                        springBootProducerCodeBlock +
+                        "\n" +
+                        springBootProducerExpandableBlock
+                      }
+                      codeBlockCode={springBootProducerCodeBlock}
+                      expandableCode={springBootProducerExpandableBlock}
+                    />
+                  );
+                default:
+                  return null;
+              }
+            })()}
+          </>
+        )}
+
         <Text component={TextVariants.h3} className="pf-u-mt-xl">
           {t("sample_code.sample_consumer_code")}
         </Text>
@@ -210,6 +229,7 @@ export const KafkaSampleCode: VoidFunctionComponent = () => {
             <SampleCodeSnippet
               copyCode={
                 springBootConsumerConfigCodeBlock +
+                "\n" +
                 springBootConsumerConfigExpandableBlock
               }
               codeBlockCode={springBootConsumerConfigCodeBlock}
@@ -223,7 +243,9 @@ export const KafkaSampleCode: VoidFunctionComponent = () => {
             </Text>
             <SampleCodeSnippet
               copyCode={
-                springBootListenerCodeBlock + springBootListenerExpandableBlock
+                springBootListenerCodeBlock +
+                "\n" +
+                springBootListenerExpandableBlock
               }
               codeBlockCode={springBootListenerCodeBlock}
               expandableCode={springBootListenerExpandableBlock}
@@ -261,7 +283,9 @@ export const KafkaSampleCode: VoidFunctionComponent = () => {
                   return (
                     <SampleCodeSnippet
                       copyCode={
-                        javaConsumerCodeBlock + javaConsumerExpandableBlock
+                        javaConsumerCodeBlock +
+                        "\n" +
+                        javaConsumerExpandableBlock
                       }
                       codeBlockCode={javaConsumerCodeBlock}
                       expandableCode={javaConsumerExpandableBlock}
@@ -271,7 +295,9 @@ export const KafkaSampleCode: VoidFunctionComponent = () => {
                   return (
                     <SampleCodeSnippet
                       copyCode={
-                        pythonConsumerCodeBlock + pythonConsumerExpandableBlock
+                        pythonConsumerCodeBlock +
+                        "\n" +
+                        pythonConsumerExpandableBlock
                       }
                       codeBlockCode={pythonConsumerCodeBlock}
                       expandableCode={pythonConsumerExpandableBlock}
@@ -282,6 +308,7 @@ export const KafkaSampleCode: VoidFunctionComponent = () => {
                     <SampleCodeSnippet
                       copyCode={
                         quarkusConsumerCodeBlock +
+                        "\n" +
                         quarkusConsumerExpandableBlock
                       }
                       codeBlockCode={quarkusConsumerCodeBlock}

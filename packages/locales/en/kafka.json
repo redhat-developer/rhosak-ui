@@ -192,7 +192,8 @@
       "quarkus": "Quarkus",
       "spring_boot": "Spring boot"
     },
-    "code_snippet_description": "Use our sample code snippets to learn how to connect client applications to your Kafka instance. First, modify our configuration code to make a secure connection to your Kafka instance. Then, use our application code to create example producers and consumers that interact with your instance.",
+    "code_snippet_description_1": "Use our sample code snippets to learn how to connect client applications to your Kafka instance. ",
+    "code_snippet_description_2" : "First, modify our configuration code to make a secure connection to your Kafka instance. Specify details such as your Kafka host (bootstrap server) and service account credentials. Then, use our application code to create example producers and consumers that interact with your instance.",
     "sample_configuration_code": "Sample configuration code",
     "sample_configuration_code_description": "Use the following sample configuration code to make a secure connection to your Kafka instance. ",
     "sample_consumer_code": "Sample consumer code",
@@ -205,7 +206,8 @@
     "spring_boot_consumer_description": "Use the following code to run the example Spring Boot consumer.",
     "spring_boot_listener": "Listener",
     "spring_boot_listener_description": "Use the following code to run the listener container required by the example Spring Boot consumer.",
-    "spring_boot_sample_consumer_code_description": "Use the following code snippets to create an example Spring Boot client that consumes messages from your Kafka instance."
+    "spring_boot_sample_consumer_code_description": "Use the following code snippets to create an example Spring Boot client that consumes messages from your Kafka instance.",
+    "sample_producer_code_quarkus_description": "Use the following application code to create an example Quarkus client that produces messages to your Kafka instance."
   },
   "select_filter_category": "Select filter category",
   "select_user_account": "Select user account",
