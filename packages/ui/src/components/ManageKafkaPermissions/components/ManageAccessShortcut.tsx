@@ -1,10 +1,10 @@
 import { Popover, Title } from "@patternfly/react-core";
-import { HelpIcon } from "@patternfly/react-icons";
 import { Tbody, Td, Tr } from "@patternfly/react-table";
-import { RemoveButton } from "@rhoas/app-services-ui-components";
 import { useTranslation } from "react-i18next";
-import { DisplayResourceName, PermissionOperationCell } from "./Cells";
+import { HelpIcon } from "@patternfly/react-icons";
 import { ResourceTypeLabel } from "./ResourceTypeLabel";
+import { DisplayResourceName, PermissionOperationCell } from "./Cells";
+import { RemoveButton } from "@rhoas/app-services-ui-components";
 import { ShortcutsTableHead } from "./ShortcutsTableHead";
 
 export type ManageAccessShortcutProps = {

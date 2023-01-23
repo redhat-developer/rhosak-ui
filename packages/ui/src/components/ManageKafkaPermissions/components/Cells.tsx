@@ -1,7 +1,7 @@
-import { Label, LabelGroup } from "@patternfly/react-core";
-import { RemoveButton } from "@rhoas/app-services-ui-components";
-import type { VFC } from "react";
+import type { FunctionComponent, VFC } from "react";
 import { useTranslation } from "react-i18next";
+
+import { Label, LabelGroup } from "@patternfly/react-core";
 
 import type {
   AclOperation,
@@ -10,6 +10,7 @@ import type {
   AclResourceType,
 } from "../types";
 import { ResourceTypeLabel } from "./ResourceTypeLabel";
+import { RemoveButton } from "@rhoas/app-services-ui-components";
 
 export const DisplayResourceName: VFC<{ resourceType: AclResourceType }> = ({
   resourceType,
@@ -43,7 +44,7 @@ export type ResourceCellProps = {
   resourceName: string;
 };
 
-export const ResourceCell: VFC<ResourceCellProps> = ({
+export const ResourceCell: FunctionComponent<ResourceCellProps> = ({
   resourceType,
   patternType,
   resourceName,
@@ -71,7 +72,7 @@ export type PermissionOperationCellProps = {
   operation: AclOperation | AclOperation[];
 };
 
-export const PermissionOperationCell: VFC<PermissionOperationCellProps> = ({
+export const PermissionOperationCell: FunctionComponent<PermissionOperationCellProps> = ({
   permission,
   operation,
 }) => {
@@ -92,7 +93,7 @@ export const PermissionOperationCell: VFC<PermissionOperationCellProps> = ({
     ALTER_CONFIGS: t("operations.alter_configs"),
   };
   return (
-    <LabelGroup>
+    <LabelGroup numLabels={4}>
       {permission && (
         <Label
           variant="outline"
@@ -116,23 +117,28 @@ export const PermissionOperationCell: VFC<PermissionOperationCellProps> = ({
 
 export type PrincipalCellProps = {
   isDeleteEnabled: boolean;
-  isAllAccounts: boolean;
-  onRemoveAcl: () => void;
+  isAllAccounts?: boolean;
+  onRemoveAcl?: () => void;
+  isReviewTable?:boolean
+  principal?:string
 };
 
 export const PrincipalCell: VFC<PrincipalCellProps> = ({
   isDeleteEnabled,
   isAllAccounts,
   onRemoveAcl,
+  isReviewTable=true,
+  principal
 }) => {
   const { t } = useTranslation(["manage-kafka-permissions"]);
 
   return (
-    <div className="pf-u-display-flex pf-u-justify-content-space-between pf-u-justify-content-flex-end-on-lg">
-      {isAllAccounts && (
+    <div className={isReviewTable?"pf-u-display-flex pf-u-justify-content-space-between pf-u-justify-content-flex-end-on-lg pf-u-align-items-center":''}>
+      {isAllAccounts && isReviewTable?(
         <Label variant="outline">{t("table.all_accounts")}</Label>
-      )}
-      {isDeleteEnabled && (
+      ):!isReviewTable&&principal&&  <Label variant="outline">{principal=="User:*"?t("table.all_accounts"):principal.substring(principal.lastIndexOf(':') + 1).split(' ')[0]}</Label>}
+      
+      {isDeleteEnabled &&onRemoveAcl!=undefined&& (
         <RemoveButton
           variant="link"
           tooltip={t("remove_permission_tooltip")}

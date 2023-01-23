@@ -1,8 +1,8 @@
-import type { ComponentMeta, ComponentStory } from "@storybook/react";
 import { useState } from "react";
-import type { AclBinding } from "../types";
+import type { ComponentMeta, ComponentStory } from "@storybook/react";
 
 import { ReviewPermissionsTable } from "./ReviewPermissionsTable";
+import type { AclBinding } from "../types";
 
 export const PermissionsForAllAccounts: AclBinding[] = [
   {
@@ -109,10 +109,6 @@ export const PermissionsForSelectedAccount: AclBinding[] = [
 export default {
   component: ReviewPermissionsTable,
   args: {},
-  excludeStories: [
-    "PermissionsForAllAccounts",
-    "PermissionsForSelectedAccount",
-  ],
 } as ComponentMeta<typeof ReviewPermissionsTable>;
 
 const AclsReview: ComponentStory<typeof ReviewPermissionsTable> = ({
@@ -135,8 +131,8 @@ const AclsReview: ComponentStory<typeof ReviewPermissionsTable> = ({
   );
 };
 
-export const Example = AclsReview.bind({});
-Example.args = {
+export const _Example = AclsReview.bind({});
+_Example.args = {
   acls: PermissionsForAllAccounts,
   selectedAccountId: "*",
 };
