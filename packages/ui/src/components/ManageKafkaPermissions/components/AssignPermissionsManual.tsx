@@ -1,17 +1,17 @@
-import { Tbody, Td, Tr } from "@patternfly/react-table";
-import { RemoveButton } from "@rhoas/app-services-ui-components";
+import { Tbody, Tr, Td } from "@patternfly/react-table";
+import { ResourceName } from "./ResourceName";
+import { ResourceOperation } from "./ResourceOperation";
+import type { ResourceOperationValue } from "./ResourceOperation";
+import { ResourcePermission } from "./ResourcePermission";
+import type { ResourcePermissionValue } from "./ResourcePermission";
+import { ResourcePrefixRule } from "./ResourcePrefixRule";
+import type { ResourcePrefixRuleValue } from "./ResourcePrefixRule";
+import { ResourceType } from "./ResourceType";
+import type { ResourceTypeValue } from "./ResourceType";
+import { ShortcutsTableHead } from "./ShortcutsTableHead";
 import { useTranslation } from "react-i18next";
 import { KafkaInstanceManualPermissions } from "./KafkaInstanceManualPermissions";
-import { ResourceName } from "./ResourceName";
-import type { ResourceOperationValue } from "./ResourceOperation";
-import { ResourceOperation } from "./ResourceOperation";
-import type { ResourcePermissionValue } from "./ResourcePermission";
-import { ResourcePermission } from "./ResourcePermission";
-import type { ResourcePrefixRuleValue } from "./ResourcePrefixRule";
-import { ResourcePrefixRule } from "./ResourcePrefixRule";
-import type { ResourceTypeValue } from "./ResourceType";
-import { ResourceType } from "./ResourceType";
-import { ShortcutsTableHead } from "./ShortcutsTableHead";
+import { RemoveButton } from "@rhoas/app-services-ui-components";
 
 export type AssignPermissionsManualProps = {
   resourceType: ResourceTypeValue | undefined;

@@ -1,12 +1,11 @@
-import type { ComponentMeta, ComponentStory } from "@storybook/react";
+import { ManageKafkaPermissions } from "./ManageKafkaPermissions";
+import type { ComponentStory, ComponentMeta } from "@storybook/react";
+import { PrincipalType } from "./types";
 import { useState } from "react";
 import {
   PermissionsForAllAccounts,
   PermissionsForSelectedAccount,
 } from "./components/ReviewPermissionsTable.stories";
-import { ManageKafkaPermissions } from "./ManageKafkaPermissions";
-import { PrincipalType } from "./types";
-
 export default {
   component: ManageKafkaPermissions,
   args: {
@@ -24,37 +23,42 @@ export default {
     accounts: [
       {
         id: "id",
-        displayName: "displayName",
+        displayName: "4e-if-pqhi",
         principalType: PrincipalType.ServiceAccount,
       },
       {
-        id: "id5",
-        displayName: "displayName5",
+        id: "test",
+        displayName: "sakl-uow-iu-twe",
+        principalType: PrincipalType.ServiceAccount,
+      },
+      {
+        id: "qe-account",
+        displayName: "efja-2372-sadh",
+        principalType: PrincipalType.ServiceAccount,
+      },
+      {
+        id: "ui-testing",
+        displayName: "iaefh-6s-y6",
+        principalType: PrincipalType.UserAccount,
+      },
+      {
+        id: "suyash-ua",
+        displayName: "reod-86e-6u9o",
+        principalType: PrincipalType.UserAccount,
+      },
+      {
+        id: "foo-ua",
+        displayName: "81-pou-65f",
+        principalType: PrincipalType.UserAccount,
+      },
+      {
+        id: "bar-sa",
+        displayName: "sa90-4ktvf-posu",
         principalType: PrincipalType.ServiceAccount,
       },
       {
         id: "id2",
         displayName: "displayName2",
-        principalType: PrincipalType.ServiceAccount,
-      },
-      {
-        id: "id3",
-        displayName: "displayName3",
-        principalType: PrincipalType.UserAccount,
-      },
-      {
-        id: "id4",
-        displayName: "displayName4",
-        principalType: PrincipalType.UserAccount,
-      },
-      {
-        id: "id6",
-        displayName: "displayName6",
-        principalType: PrincipalType.UserAccount,
-      },
-      {
-        id: "id7",
-        displayName: "displayName7",
         principalType: PrincipalType.ServiceAccount,
       },
     ],
@@ -69,17 +73,30 @@ export const InteractiveExample: ComponentStory<
   const [selectedAccount, setSelectedAccount] = useState<string | undefined>(
     undefined
   );
+  const [isAclDeleted, setIsAclDeleted] = useState<boolean>(false);
+
+  const onRemoveAcls = () => {
+    setIsAclDeleted(true);
+  };
 
   return (
-    <ManageKafkaPermissions
-      {...args}
-      selectedAccount={selectedAccount}
-      onChangeSelectedAccount={setSelectedAccount}
-      existingAcls={
-        selectedAccount == "*"
-          ? PermissionsForAllAccounts
-          : PermissionsForSelectedAccount
-      }
-    />
+    <div
+      id="modal-scroll"
+      style={{ transform: "scale(1)", minHeight: 850, height: "100%" }}
+    >
+      <ManageKafkaPermissions
+        {...args}
+        isAclDeleted={isAclDeleted}
+        selectedAccount={selectedAccount}
+        onRemoveAcls={onRemoveAcls}
+        onChangeSelectedAccount={setSelectedAccount}
+        existingAcls={
+          selectedAccount == "All accounts"
+            ? PermissionsForAllAccounts
+            : PermissionsForSelectedAccount
+        }
+        id={"modal-scroll"}
+      />
+    </div>
   );
 };

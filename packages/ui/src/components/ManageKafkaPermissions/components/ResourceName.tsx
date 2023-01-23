@@ -1,7 +1,7 @@
-import { AsyncTypeaheadSelect } from "@rhoas/app-services-ui-components";
 import { useTranslation } from "react-i18next";
-import type { ResourcePrefixRuleValue } from "./ResourcePrefixRule";
 import type { ResourceTypeValue } from "./ResourceType";
+import type { ResourcePrefixRuleValue } from "./ResourcePrefixRule";
+import { AsyncTypeaheadSelect } from "@rhoas/app-services-ui-components";
 
 type ResourceNameProps = {
   value: string | undefined;
@@ -30,7 +30,7 @@ export const ResourceName: React.VFC<ResourceNameProps> = ({
   ) => {
     const regExp = new RegExp("^[0-9A-Za-z_.-]+$");
 
-    if (filter === undefined || filter === "")
+    if (filter === undefined || filter === "" || filter == "*")
       return { isValid: true, message: undefined };
     if (resourcePreixCondition == "Is" && resourceType == "topic") {
       if (filter == "." || filter == "..")

@@ -1,12 +1,12 @@
 import { Popover, Title } from "@patternfly/react-core";
-import { HelpIcon } from "@patternfly/react-icons";
 import { Tbody, Td, Tr } from "@patternfly/react-table";
-import { RemoveButton } from "@rhoas/app-services-ui-components";
 import { useTranslation } from "react-i18next";
+import { HelpIcon } from "@patternfly/react-icons";
+import type { ResourcePrefixRuleValue } from "./ResourcePrefixRule";
+import { RemoveButton } from "@rhoas/app-services-ui-components";
+import { ShortcutsTableHead } from "./ShortcutsTableHead";
 
 import { ProduceTopicRow } from "./ProduceTopicRow";
-import type { ResourcePrefixRuleValue } from "./ResourcePrefixRule";
-import { ShortcutsTableHead } from "./ShortcutsTableHead";
 
 export type ProduceTopicShortcutProps = {
   onChange: (value: ResourcePrefixRuleValue) => void;

@@ -62,6 +62,20 @@ export interface AclBinding {
    */
   permission: AclPermissionType;
 }
+export type AclTablePermissionsType={
+  permission:AclPermissionType,
+  operation:AclOperation
+}
+export type AclTableResourceType={
+  resourceType: AclResourceType;
+  resourceName: string;
+  patternType: AclPatternType;
+}
+export type Permissions={
+  account:string,
+  permission:AclTablePermissionsType
+  resource:AclTableResourceType
+}
 export enum PrincipalType {
   UserAccount = "USER_ACCOUNT",
   ServiceAccount = "SERVICE_ACCOUNT",

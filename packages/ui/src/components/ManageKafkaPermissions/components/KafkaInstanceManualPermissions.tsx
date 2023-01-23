@@ -1,13 +1,12 @@
 import { Tbody, Td, Tr } from "@patternfly/react-table";
-import { RemoveButton } from "@rhoas/app-services-ui-components";
 import { useTranslation } from "react-i18next";
-import type { ResourceOperationValue } from "./ResourceOperation";
-import { ResourceOperation } from "./ResourceOperation";
-import type { ResourcePermissionValue } from "./ResourcePermission";
-import { ResourcePermission } from "./ResourcePermission";
-import type { ResourceTypeValue } from "./ResourceType";
 import { ResourceType } from "./ResourceType";
-
+import type { ResourceTypeValue } from "./ResourceType";
+import { ResourcePermission } from "./ResourcePermission";
+import type { ResourcePermissionValue } from "./ResourcePermission";
+import { ResourceOperation } from "./ResourceOperation";
+import type { ResourceOperationValue } from "./ResourceOperation";
+import { RemoveButton } from "@rhoas/app-services-ui-components";
 export type KafkaInstanceManualPermissions = {
   resourceType: ResourceTypeValue | undefined;
   onChangeResourceType: (value: ResourceTypeValue | undefined) => void;
