@@ -1,4 +1,4 @@
-export const javaConfig = `package org.example;
+export const javaConfigCodeBlock = `package org.example;
  
 import org.apache.kafka.clients.producer.ProducerConfig;
 
@@ -11,7 +11,9 @@ public class KafkaConfig {
         String kafkaHost = System.getenv("KAFKA_HOST");
         String rhoasClientID = System.getenv("<client_id>");
         String rhoasClientSecret = System.getenv("<client_secret>");
-        String rhoasOauthTokenUrl = System.getenv("RHOAS_SERVICE_ACCOUNT_OAUTH_TOKEN_URL");
+        String rhoasOauthTokenUrl = System.getenv("RHOAS_SERVICE_ACCOUNT_OAUTH_TOKEN_URL");`;
+
+export const javaConfigExpandabledBlock = `
 
         var properties= new Properties();
 
@@ -29,7 +31,7 @@ public class KafkaConfig {
     }
 }`;
 
-export const javaProducer = `package org.example;
+export const javaProducerCodeBlock = `package org.example;
  
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -38,22 +40,23 @@ import org.apache.kafka.common.serialization.StringSerializer;
  
 public class ProducerExample {
  
-   public static void main(String[] args) {
- 
-       //Creating producer properties
-       var properties= KafkaConfig.properties();
-       properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-       properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
- 
-       KafkaProducer<String,String> producer= new KafkaProducer<String,String>(properties);
- 
-       producer.send(new ProducerRecord<>("prices", "Test Message"));
-       producer.flush();
-       producer.close();
-   }
+   public static void main(String[] args) {`;
+
+export const javaProducerExpandableBlock = `
+   //Creating producer properties
+   var properties= KafkaConfig.properties();
+   properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+   properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+
+   KafkaProducer<String,String> producer= new KafkaProducer<String,String>(properties);
+
+   producer.send(new ProducerRecord<>(<"topic">, "Test Message"));
+   producer.flush();
+   producer.close();
+  }
 }`;
 
-export const javaConsumer = `package org.example;
+export const javaConsumerCodeBlock = `package org.example;
  
 import java.util.Arrays;
 
@@ -62,9 +65,10 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
-import java.time.Duration;
+import java.time.Duration;`;
 
-public class ConsumerExample {
+export const javaConsumerExpandableBlock = `
+    public class ConsumerExample {
 
     public static void main(String[] args) {
 
@@ -78,7 +82,7 @@ public class ConsumerExample {
         KafkaConsumer<String,String> consumer = new KafkaConsumer<String,String>(properties);
 
         //Subscribing
-        consumer.subscribe(Arrays.asList("prices"));
+        consumer.subscribe(Arrays.asList("<topic>"));
 
         //polling
         while(true){
@@ -91,7 +95,7 @@ public class ConsumerExample {
     }
 }`;
 
-export const pythonConfig = `import time
+export const pythonConfigCodeBlock = `import time
 import requests
 
 def _get_token(config):
@@ -103,15 +107,16 @@ def _get_token(config):
             <client_secret>,
         ),
         data=payload,
-    )
-    token = resp.json()
-    return token["access_token"], time.time() + float(token["expires_in"])
+    )`;
+
+export const pythonConfigExpandabledBlock = `token = resp.json()
+return token["access_token"], time.time() + float(token["expires_in"])
 
 common_config = {
-    'bootstrap.servers': KAFKA_HOST,
-    'security.protocol': 'SASL_SSL',
-    'sasl.mechanisms': 'OAUTHBEARER',
-    'oauth_cb': _get_token,
+'bootstrap.servers': KAFKA_HOST,
+'security.protocol': 'SASL_SSL',
+'sasl.mechanisms': 'OAUTHBEARER',
+'oauth_cb': _get_token,
 }
 
 topic=<topic>`;
@@ -120,10 +125,10 @@ export const pythonProducer = `from confluent_kafka import Producer
  
 producer = Producer(common_config)
  
-producer.produce(topic=topic, value=b"Sample Message")
+producer.produce(topic=<topic>, value=b"Sample Message")
 producer.flush()`;
 
-export const pythonConsumer = `from confluent_kafka import Consumer
+export const pythonConsumerCodeBlock = `from confluent_kafka import Consumer
  
 consumer_config = {
     "group.id": "test-group",
@@ -133,33 +138,34 @@ consumer_config = {
 
 consumer = Consumer({ **consumer_config, **common_config })
 
-consumer.subscribe([topic])
+consumer.subscribe([<topic>])`;
 
-while True:
-    try:
-        msg = consumer.poll(1.0)
-        if msg is None:
-            continue
+export const pythonConsumerExpandableBlock = `while True:
+try:
+    msg = consumer.poll(1.0)
+    if msg is None:
+        continue
 
-        print(msg.value())
-    except KeyboardInterrupt:
-        break
+    print(msg.value())
+except KeyboardInterrupt:
+    break
 
 consumer.close()`;
 
-export const quarkusConfig = `# Quarkus config
+export const quarkusConfigCodeBlock = `# Quarkus config
 quarkus.ssl.native=true
 
 # Configure the Kafka sink (we write to it)
 mp.messaging.outgoing.generated-price.connector=smallrye-kafka
-mp.messaging.outgoing.generated-price.topic=prices
+mp.messaging.outgoing.generated-price.topic=<topic>
 mp.messaging.outgoing.generated-price.value.serializer=org.apache.kafka.common.serialization.IntegerSerializer
 
 # Configure the Kafka source (we read from it)
 mp.messaging.incoming.prices.connector=smallrye-kafka
-mp.messaging.incoming.prices.topic=prices
-mp.messaging.incoming.prices.value.deserializer=org.apache.kafka.common.serialization.IntegerDeserializer
+mp.messaging.incoming.prices.topic=<topic>
+mp.messaging.incoming.prices.value.deserializer=org.apache.kafka.common.serialization.IntegerDeserializer`;
 
+export const quarkusConfigExpandableBlock = `
 # Configure docker config
 quarkus.container-image.builder=jib
 quarkus.kubernetes.deployment-target=kubernetes
@@ -180,34 +186,35 @@ quarkus.container-image.push=false
   oauth.token.endpoint.uri="\${RHOAS_SERVICE_ACCOUNT_OAUTH_TOKEN_URL}" ;
 %dev.kafka.sasl.login.callback.handler.class=io.strimzi.kafka.oauth.client.JaasClientOauthLoginCallbackHandler`;
 
-export const quarkusProducer = `package org.acme.kafka;
+export const quarkusProducerCodeBlock = `package org.acme.kafka;
 import java.time.Duration;
 import java.util.Random;
 
 import javax.enterprise.context.ApplicationScoped;
 
 import io.smallrye.mutiny.Multi;
-import org.eclipse.microprofile.reactive.messaging.Outgoing;
+import org.eclipse.microprofile.reactive.messaging.Outgoing;`;
 
+export const quarkusProducerExpandableBlock = `
 /**
- * A bean producing random prices every 5 seconds.
- * The prices are written to a Kafka topic (prices). The Kafka configuration is specified in the application configuration.
- */
+* A bean producing random prices every 5 seconds.
+* The prices are written to a Kafka topic (prices). The Kafka configuration is specified in the application configuration.
+*/
 @ApplicationScoped
 public class PriceGenerator {
 
-    private Random random = new Random();
+   private Random random = new Random();
 
-    @Outgoing("generated-price")
-    public Multi<Integer> generate() {
-        return Multi.createFrom().ticks().every(Duration.ofSeconds(5))
-                .onOverflow().drop()
-                .map(tick -> random.nextInt(100));
-    }
+   @Outgoing("generated-price")
+   public Multi<Integer> generate() {
+       return Multi.createFrom().ticks().every(Duration.ofSeconds(5))
+               .onOverflow().drop()
+               .map(tick -> random.nextInt(100));
+   }
 
 }`;
 
-export const quarkusConsumer = `package org.acme.kafka;
+export const quarkusConsumerCodeBlock = `package org.acme.kafka;
 import javax.enterprise.context.ApplicationScoped;
 
 import org.eclipse.microprofile.reactive.messaging.Acknowledgment;
@@ -220,8 +227,9 @@ import io.smallrye.reactive.messaging.annotations.Broadcast;
  * A bean consuming data from the "prices" Kafka topic and applying some conversion.
  * The result is pushed to the "my-data-stream" stream which is an in-memory stream.
  */
-@ApplicationScoped
-public class PriceConverter {
+@ApplicationScoped`;
+
+export const quarkusConsumerExpandableBlock = `public class PriceConverter {
 
     private static final double CONVERSION_RATE = 0.88;
 
@@ -238,7 +246,7 @@ public class PriceConverter {
 
 }`;
 
-export const springBootConfig = `package com.example.kafkaconfig;
+export const springBootConfigCodeBlock = `package com.example.kafkaconfig;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -251,23 +259,24 @@ public class KafkaConfig {
        String kafkaHost = System.getenv("<bootstrap_server>");
        String rhoasClientID = System.getenv("<client_id>");
        String rhoasClientSecret = System.getenv("{client_secret}");
-       String rhoasOauthTokenUrl = System.getenv("RHOAS_SERVICE_ACCOUNT_OAUTH_TOKEN_URL");
+       String rhoasOauthTokenUrl = System.getenv("RHOAS_SERVICE_ACCOUNT_OAUTH_TOKEN_URL");`;
 
-       config.put("bootstrap.servers", kafkaHost);
+export const springBootConfigExpandableBlock = `
+config.put("bootstrap.servers", kafkaHost);
 
-       config.put("security.protocol", "SASL_SSL");
-       config.put("sasl.mechanism", "OAUTHBEARER");
+config.put("security.protocol", "SASL_SSL");
+config.put("sasl.mechanism", "OAUTHBEARER");
 
-       config.put("sasl.jaas.config", "org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required clientId=\\"" + rhoasClientID + "\\" clientSecret=\\"" + rhoasClientSecret + "\\" oauth.token.endpoint.uri=\\"" + rhoasOauthTokenUrl + "\\";");
-       config.put("sasl.login.callback.handler.class", "org.apache.kafka.common.security.oauthbearer.secured.OAuthBearerLoginCallbackHandler");
-       config.put("sasl.oauthbearer.token.endpoint.url", rhoasOauthTokenUrl);
-       config.put("sasl.oauthbearer.scope.claim.name", "api.iam.service_accounts");
+config.put("sasl.jaas.config", "org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required clientId=\\"" + rhoasClientID + "\\" clientSecret=\\"" + rhoasClientSecret + "\\" oauth.token.endpoint.uri=\\"" + rhoasOauthTokenUrl + "\\";");
+config.put("sasl.login.callback.handler.class", "org.apache.kafka.common.security.oauthbearer.secured.OAuthBearerLoginCallbackHandler");
+config.put("sasl.oauthbearer.token.endpoint.url", rhoasOauthTokenUrl);
+config.put("sasl.oauthbearer.scope.claim.name", "api.iam.service_accounts");
 
-       return config;
-   }
+return config;
+}
 }`;
 
-export const springBootProducer = `package com.example.kafkademo;
+export const springBootProducerCodeBlock = `package com.example.kafkademo;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.boot.ApplicationRunner;
@@ -280,9 +289,9 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import com.example.kafkaconfig.KafkaConfig;
 
-import java.util.Map;
+import java.util.Map;`;
 
-@SpringBootApplication
+export const springBootProducerExpandableBlock = `@SpringBootApplication
 public class KafkaProducerExample implements CommandLineRunner {
 
   public static void main(String[] args) throws Exception {
@@ -320,13 +329,13 @@ public class KafkaProducerExample implements CommandLineRunner {
   @Bean
   public ApplicationRunner runner(KafkaTemplate<String, String> template) {
     return args -> {
-      template.send("prices", "Test Message");
+      template.send(<"topic">, "Test Message");
     };
   }
 
 }`;
 
-export const springBootListener = `package com.example.kafkaconsumer.listener;
+export const springBootListenerCodeBlock = `package com.example.kafkaconsumer.listener;
 
 import com.example.kafkaconfig.KafkaConfig;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -338,12 +347,12 @@ import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
+import java.util.Map;`;
 
-@Component
+export const springBootListenerExpandableBlock = `@Component
 public class Listener {
 
-    @KafkaListener(topics = "prices",
+    @KafkaListener(topics = <"topic">,
             containerFactory = "concurrentKafkaListenerContainerFactory",
             groupId = "group_id")
 
@@ -355,7 +364,7 @@ public class Listener {
     }
 }`;
 
-export const springBootConsumerConfig = `package com.example.kafkaconsumer.config;
+export const springBootConsumerConfigCodeBlock = `package com.example.kafkaconsumer.config;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -368,9 +377,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
+import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;`;
 
-// Annotations
+export const springBootConsumerConfigExpandableBlock = `// Annotations
 @EnableKafka
 @Configuration
 
@@ -396,13 +405,14 @@ public class KafkaConsumerConfig {
     }
 }`;
 
-export const springBootConsumerExample = `
+export const springBootConsumerExampleCodeBlock = `
 package com.example.kafkaconsumer;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;`;
 
+export const springBootConsumerExampleExpandableBlock = `
 @SpringBootApplication
 public class KafkaConsumerExample implements CommandLineRunner {
 

@@ -24,7 +24,11 @@ import { useCallback, useMemo } from "react";
 import type { Kafka } from "ui-models/src/models/kafka";
 import { CreatingStatuses } from "ui-models/src/models/kafka";
 import { useKafkaLabels } from "../../hooks";
-import { KafkaConnectionTabP2, KafkaDetailsTab, KafkaSampleCode } from "./components";
+import {
+  KafkaConnectionTabP2,
+  KafkaDetailsTab,
+  KafkaSampleCode,
+} from "./components";
 
 export type KafkaInstanceDrawerProps = {
   instance?: Kafka;
