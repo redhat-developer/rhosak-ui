@@ -10,10 +10,10 @@ public class KafkaConfig {
     
     static Properties properties() {
     
-        String kafkaHost = System.getenv("${kafkaBootstrapUrl}");
-        String rhoasClientID = System.getenv("<client_id>");
-        String rhoasClientSecret = System.getenv("<client_secret>");
-        String rhoasOauthTokenUrl = System.getenv("${tokenEndpointUrl}");`;
+        String kafkaHost = ${kafkaBootstrapUrl};
+        String rhoasClientID = <client_id>;
+        String rhoasClientSecret = <client_secret>;
+        String rhoasOauthTokenUrl = ${tokenEndpointUrl};`;
 };
 
 export const javaConfigExpandabledBlock = `
@@ -272,10 +272,10 @@ public class KafkaConfig {
 
        Map<String, Object> config = new HashMap<>();
 
-       String kafkaHost = System.getenv("${kafkaBootstrapUrl}");
-       String rhoasClientID = System.getenv("<client_id>");
-       String rhoasClientSecret = System.getenv("<client_secret>");
-       String rhoasOauthTokenUrl = System.getenv("${tokenEndpointUrl}");`;
+       String kafkaHost = ${kafkaBootstrapUrl};
+       String rhoasClientID = <client_id>;
+       String rhoasClientSecret = <client_secret>;
+       String rhoasOauthTokenUrl = ${tokenEndpointUrl};`;
 };
 
 export const springBootConfigExpandableBlock = `
