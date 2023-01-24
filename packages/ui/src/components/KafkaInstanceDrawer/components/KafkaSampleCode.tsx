@@ -193,12 +193,7 @@ export const KafkaSampleCode: VoidFunctionComponent<KafkaSampleCodeProps> = ({
                     />
                   );
                 case "python":
-                  return (
-                    <SampleCodeSnippet
-                      codeBlockCode={pythonProducer}
-                      expandableCode={""}
-                    />
-                  );
+                  return <SampleCodeSnippet codeBlockCode={pythonProducer} />;
                 case "springboot":
                   return (
                     <SampleCodeSnippet

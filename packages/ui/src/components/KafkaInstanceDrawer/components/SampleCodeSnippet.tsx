@@ -10,7 +10,7 @@ import { useState } from "react";
 import type { VoidFunctionComponent } from "react";
 
 export type SampleCodeSnippetProps = {
-  expandableCode: string;
+  expandableCode?: string;
   codeBlockCode: string;
 };
 
@@ -36,7 +36,9 @@ export const SampleCodeSnippet: VoidFunctionComponent<
     setIsExpanded(isExpanded);
   };
 
-  const copyCode = codeBlockCode + "\n" + expandableCode;
+  const copyCode = expandableCode
+    ? codeBlockCode + "\n" + expandableCode
+    : codeBlockCode;
 
   const actions = (
     <CodeBlockAction>
@@ -67,7 +69,7 @@ export const SampleCodeSnippet: VoidFunctionComponent<
           {expandableCode}
         </ExpandableSection>
       </CodeBlockCode>
-      {codeBlockCode.length >= 300 ? (
+      {expandableCode ? (
         <ExpandableSectionToggle
           isExpanded={isExpanded}
           onToggle={onToggle}
