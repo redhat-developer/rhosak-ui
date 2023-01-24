@@ -12,15 +12,23 @@ import {
   ToolbarContent,
   ToolbarItem,
 } from "@patternfly/react-core";
+import type { PaginationProps } from "@rhoas/app-services-ui-components";
+import { Pagination } from "@rhoas/app-services-ui-components";
 
 export type PermissionsToolbarProps = {
   onDeleteSelected: (rowIndex: number[]) => void;
   checkedRows: number[];
-};
+  onManagePermissions: () => void;
+} & PaginationProps;
 
 export const PermissionsToolbar: VFC<PermissionsToolbarProps> = ({
   onDeleteSelected,
   checkedRows,
+  onManagePermissions,
+  onChange,
+  page,
+  perPage,
+  itemCount,
 }) => {
   const { t } = useTranslation(["manage-kafka-permissions"]);
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -36,7 +44,7 @@ export const PermissionsToolbar: VFC<PermissionsToolbarProps> = ({
     <DropdownItem
       key="delete_selected"
       onClick={() => onDeleteSelected(checkedRows)}
-      isDisabled={checkedRows.length>0 ? false : true}
+      isDisabled={checkedRows.length > 0 ? false : true}
     >
       {t("delete_selected")}
     </DropdownItem>,
@@ -44,7 +52,11 @@ export const PermissionsToolbar: VFC<PermissionsToolbarProps> = ({
   const toolbarItems = (
     <>
       <ToolbarItem>
-        <Button variant="primary" style={{ width: "100%" }}>
+        <Button
+          variant="primary"
+          style={{ width: "100%" }}
+          onClick={onManagePermissions}
+        >
           {t("dialog_title")}
         </Button>
       </ToolbarItem>
@@ -60,6 +72,14 @@ export const PermissionsToolbar: VFC<PermissionsToolbarProps> = ({
           isOpen={isOpen}
           isPlain
           dropdownItems={dropdownItems}
+        />
+      </ToolbarItem>
+      <ToolbarItem variant="pagination" alignment={{ default: "alignRight" }}>
+        <Pagination
+          itemCount={itemCount}
+          page={page}
+          perPage={perPage}
+          onChange={onChange}
         />
       </ToolbarItem>
     </>
