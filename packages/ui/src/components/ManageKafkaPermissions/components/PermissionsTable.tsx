@@ -8,18 +8,22 @@ import { useTranslation } from "react-i18next";
 import type { Permissions } from "../types";
 import { ConsumerGroupEmptyState } from "../../ConsumerGroups";
 import { PrincipalCell, PermissionOperationCell, ResourceCell } from "./Cells";
+import { useState } from "react";
+import { PermissionsToolbar } from "./PermissionsToolbar";
 
 type SubUnion<T, U extends T> = U;
 export type PermissionsField = keyof Permissions;
 const Columns: SubUnion<
   PermissionsField,
-  "account" | "permission" | "resource"
->[] = ["account", "permission", "resource"];
+  "" | "account" | "permission" | "resource"
+>[] = ["", "account", "permission", "resource"];
 
 export type PermissionsTableProps<T extends Permissions> = {
   permissions: Array<T> | undefined;
   onDelete: (row: T) => void;
+  onDeleteSelected: (rowIndex: number[]) => void;
   onManagePermissions: () => void;
+  onChange: (page: number, perPage: number) => void;
 } & Pick<
   TableViewProps<T, (typeof Columns)[number]>,
   | "itemCount"
@@ -36,23 +40,31 @@ export const PermissionsTable = <T extends Permissions>({
   itemCount,
   page,
   perPage,
+  onDeleteSelected,
   onPageChange,
   onManagePermissions,
+  onChange,
 }: PermissionsTableProps<T>) => {
   const { t } = useTranslation("manage-kafka-permissions");
+  const [checkedRows, setCheckedRows] = useState<number[]>([]);
 
   const labels: { [field in (typeof Columns)[number]]: string } = {
+    "": "",
     account: t("account_id_title"),
     permission: t("table.permissions_column_title"),
     resource: t("table.resource_column_title"),
   };
   return (
     <>
-      {/* TO DO
       <PermissionsToolbar
+        onManagePermissions={onManagePermissions}
         onDeleteSelected={onDeleteSelected}
-        deleteSelectedEnabled={true}
-      />*/}
+        checkedRows={checkedRows}
+        itemCount={itemCount || 0}
+        page={page}
+        perPage={perPage || 10}
+        onChange={onChange}
+      />
       <TableView
         variant={TableVariant.compact}
         tableOuiaId={"card-table"}
@@ -62,7 +74,7 @@ export const PermissionsTable = <T extends Permissions>({
         renderHeader={({ column, Th, key }) => (
           <Th key={key}>{labels[column]}</Th>
         )}
-        renderCell={({ column, row, Td, key }) => {
+        renderCell={({ column, row, Td, key, rowIndex }) => {
           return (
             <Td key={key} dataLabel={labels[column]}>
               {(() => {
@@ -88,6 +100,21 @@ export const PermissionsTable = <T extends Permissions>({
                         patternType={row.resource.patternType}
                         resourceType={row.resource.resourceType}
                         resourceName={row.resource.resourceName}
+                      />
+                    );
+                  case "":
+                    return (
+                      <Td
+                        select={{
+                          rowIndex,
+                          isSelected: checkedRows.includes(rowIndex),
+                          onSelect: (_event, isSelecting) =>
+                            setCheckedRows(
+                              isSelecting
+                                ? [...checkedRows, rowIndex]
+                                : checkedRows.filter((row) => row !== rowIndex)
+                            ),
+                        }}
                       />
                     );
                 }
