@@ -54,26 +54,6 @@ export const KafkaSampleCode: VoidFunctionComponent<KafkaSampleCodeProps> = ({
 
   const [clientSelect, setClientSelect] = useState<ClientType>("java");
 
-  const javaConfigCode = javaConfigCodeBlock(
-    kafkaBootstrapUrl,
-    tokenEndpointUrl
-  );
-
-  const quarkusConfigExpandableCode = quarkusConfigExpandableBlock(
-    kafkaBootstrapUrl,
-    tokenEndpointUrl
-  );
-
-  const pythonConfigExpandabledCode =
-    pythonConfigExpandabledBlock(kafkaBootstrapUrl);
-
-  const pythonConfigCode = pythonConfigCodeBlock(tokenEndpointUrl);
-
-  const springBootConfigCode = springBootConfigCodeBlock(
-    kafkaBootstrapUrl,
-    tokenEndpointUrl
-  );
-
   return (
     <div className="mas--details__drawer--tab-content">
       <TextContent className="pf-u-pb-sm">
@@ -127,28 +107,39 @@ export const KafkaSampleCode: VoidFunctionComponent<KafkaSampleCodeProps> = ({
             case "java":
               return (
                 <SampleCodeSnippet
-                  codeBlockCode={javaConfigCode}
+                  codeBlockCode={javaConfigCodeBlock(
+                    kafkaBootstrapUrl,
+                    tokenEndpointUrl
+                  )}
                   expandableCode={javaConfigExpandabledBlock}
                 />
               );
             case "python":
               return (
                 <SampleCodeSnippet
-                  codeBlockCode={pythonConfigCode}
-                  expandableCode={pythonConfigExpandabledCode}
+                  codeBlockCode={pythonConfigCodeBlock(tokenEndpointUrl)}
+                  expandableCode={pythonConfigExpandabledBlock(
+                    kafkaBootstrapUrl
+                  )}
                 />
               );
             case "quarkus":
               return (
                 <SampleCodeSnippet
                   codeBlockCode={quarkusConfigCodeBlock}
-                  expandableCode={quarkusConfigExpandableCode}
+                  expandableCode={quarkusConfigExpandableBlock(
+                    kafkaBootstrapUrl,
+                    tokenEndpointUrl
+                  )}
                 />
               );
             case "springboot":
               return (
                 <SampleCodeSnippet
-                  codeBlockCode={springBootConfigCode}
+                  codeBlockCode={springBootConfigCodeBlock(
+                    kafkaBootstrapUrl,
+                    tokenEndpointUrl
+                  )}
                   expandableCode={springBootConfigExpandableBlock}
                 />
               );
