@@ -1,20 +1,22 @@
-export const javaConfigCodeBlock = `package org.example;
- 
-import org.apache.kafka.clients.producer.ProducerConfig;
-
+export const javaConfigCodeBlock = (
+  kafkaBootstrapUrl: string,
+  tokenEndpointUrl: string
+) => {
+  return `package org.example;
+import org.apache.kafka.clients.producer.ProducerConfig;  
 import java.util.Properties;
-
+    
 public class KafkaConfig {
-
+    
     static Properties properties() {
-
-        String kafkaHost = System.getenv("KAFKA_HOST");
+    
+        String kafkaHost = System.getenv("${kafkaBootstrapUrl}");
         String rhoasClientID = System.getenv("<client_id>");
         String rhoasClientSecret = System.getenv("<client_secret>");
-        String rhoasOauthTokenUrl = System.getenv("RHOAS_SERVICE_ACCOUNT_OAUTH_TOKEN_URL");`;
+        String rhoasOauthTokenUrl = System.getenv("${tokenEndpointUrl}");`;
+};
 
 export const javaConfigExpandabledBlock = `
-
         var properties= new Properties();
 
         properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaHost);
@@ -68,7 +70,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import java.time.Duration;`;
 
 export const javaConsumerExpandableBlock = `
-    public class ConsumerExample {
+public class ConsumerExample {
 
     public static void main(String[] args) {
 
@@ -95,32 +97,36 @@ export const javaConsumerExpandableBlock = `
     }
 }`;
 
-export const pythonConfigCodeBlock = `
-import time
+export const pythonConfigCodeBlock = (tokenEndpointUrl: string) => {
+  return `import time
 import requests
-
+    
 def _get_token(config):
     payload = {"grant_type": "client_credentials", "scope": "api.iam.service_accounts"}
     resp = requests.post(
-        RHOAS_SERVICE_ACCOUNT_OAUTH_TOKEN_URL,
+        ${tokenEndpointUrl},
         auth=(
             <client_id>,
             <client_secret>,
         ),
         data=payload,
     )`;
+};
 
-export const pythonConfigExpandabledBlock = `token = resp.json()
-return token["access_token"], time.time() + float(token["expires_in"])
-
-common_config = {
-'bootstrap.servers': KAFKA_HOST,
-'security.protocol': 'SASL_SSL',
-'sasl.mechanisms': 'OAUTHBEARER',
-'oauth_cb': _get_token,
-}
-
-topic=<topic>`;
+export const pythonConfigExpandabledBlock = (kafkaBootstrapUrl: string) => {
+  return `
+    token = resp.json()
+    return token["access_token"], time.time() + float(token["expires_in"])
+    
+    common_config = {
+    'bootstrap.servers': ${kafkaBootstrapUrl},
+    'security.protocol': 'SASL_SSL',
+    'sasl.mechanisms': 'OAUTHBEARER',
+    'oauth_cb': _get_token,
+    }
+    
+    topic=<topic>`;
+};
 
 export const pythonProducer = `from confluent_kafka import Producer
  
@@ -166,26 +172,31 @@ mp.messaging.incoming.prices.connector=smallrye-kafka
 mp.messaging.incoming.prices.topic=<topic>
 mp.messaging.incoming.prices.value.deserializer=org.apache.kafka.common.serialization.IntegerDeserializer`;
 
-export const quarkusConfigExpandableBlock = `
+export const quarkusConfigExpandableBlock = (
+  kafkaBootstrapUrl: string,
+  tokenEndpointUrl: string
+) => {
+  return `
 # Configure docker config
 quarkus.container-image.builder=jib
 quarkus.kubernetes.deployment-target=kubernetes
 quarkus.container-image.build=false
 quarkus.container-image.push=false
-
+    
 ## dev profile using user defined environment variables that uses SASL/OAUTHBEARER
 ## ./mvnw quarkus:dev
 ## ./mvnw package -Dquarkus.profile=dev
-
-%dev.kafka.bootstrap.servers=\${"KAFKA_HOST"}
+    
+%dev.kafka.bootstrap.servers=\${"${kafkaBootstrapUrl}"}
 %dev.kafka.security.protocol=SASL_SSL
-
+    
 %dev.kafka.sasl.mechanism=OAUTHBEARER
 %dev.kafka.sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required \\
-  oauth.client.id="\${<client_id>}" \\
-  oauth.client.secret="\${<client_secret>}" \\
-  oauth.token.endpoint.uri="\${RHOAS_SERVICE_ACCOUNT_OAUTH_TOKEN_URL}" ;
+    oauth.client.id="\${<client_id>}" \\
+    oauth.client.secret="\${<client_secret>}" \\
+    oauth.token.endpoint.uri="\${${tokenEndpointUrl}}" ;
 %dev.kafka.sasl.login.callback.handler.class=io.strimzi.kafka.oauth.client.JaasClientOauthLoginCallbackHandler`;
+};
 
 export const quarkusProducerCodeBlock = `package org.acme.kafka;
 import java.time.Duration;
@@ -247,7 +258,11 @@ export const quarkusConsumerExpandableBlock = `public class PriceConverter {
 
 }`;
 
-export const springBootConfigCodeBlock = `package com.example.kafkaconfig;
+export const springBootConfigCodeBlock = (
+  kafkaBootstrapUrl: string,
+  tokenEndpointUrl: string
+) => {
+  return `package com.example.kafkaconfig;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -257,24 +272,25 @@ public class KafkaConfig {
 
        Map<String, Object> config = new HashMap<>();
 
-       String kafkaHost = System.getenv("<bootstrap_server>");
+       String kafkaHost = System.getenv("${kafkaBootstrapUrl}");
        String rhoasClientID = System.getenv("<client_id>");
-       String rhoasClientSecret = System.getenv("{client_secret}");
-       String rhoasOauthTokenUrl = System.getenv("RHOAS_SERVICE_ACCOUNT_OAUTH_TOKEN_URL");`;
+       String rhoasClientSecret = System.getenv("<client_secret>");
+       String rhoasOauthTokenUrl = System.getenv("${tokenEndpointUrl}");`;
+};
 
 export const springBootConfigExpandableBlock = `
-       config.put("bootstrap.servers", kafkaHost);
+    config.put("bootstrap.servers", kafkaHost);
 
-       config.put("security.protocol", "SASL_SSL");
-       config.put("sasl.mechanism", "OAUTHBEARER");
+    config.put("security.protocol", "SASL_SSL");
+    config.put("sasl.mechanism", "OAUTHBEARER");
 
-       config.put("sasl.jaas.config", "org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required clientId=\\"" + rhoasClientID + "\\" clientSecret=\\"" + rhoasClientSecret + "\\" oauth.token.endpoint.uri=\\"" + rhoasOauthTokenUrl + "\\";");
-       config.put("sasl.login.callback.handler.class", "org.apache.kafka.common.security.oauthbearer.secured.OAuthBearerLoginCallbackHandler");
-       config.put("sasl.oauthbearer.token.endpoint.url", rhoasOauthTokenUrl);
-       config.put("sasl.oauthbearer.scope.claim.name", "api.iam.service_accounts");
+    config.put("sasl.jaas.config", "org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required clientId=\\"" + rhoasClientID + "\\" clientSecret=\\"" + rhoasClientSecret + "\\" oauth.token.endpoint.uri=\\"" + rhoasOauthTokenUrl + "\\";");
+    config.put("sasl.login.callback.handler.class", "org.apache.kafka.common.security.oauthbearer.secured.OAuthBearerLoginCallbackHandler");
+    config.put("sasl.oauthbearer.token.endpoint.url", rhoasOauthTokenUrl);
+    config.put("sasl.oauthbearer.scope.claim.name", "api.iam.service_accounts");
 
-       return config;
-    }
+    return config;
+   }
 }`;
 
 export const springBootProducerCodeBlock = `package com.example.kafkademo;

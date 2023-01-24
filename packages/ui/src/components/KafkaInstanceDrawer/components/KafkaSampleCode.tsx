@@ -41,7 +41,15 @@ import {
 
 export type ClientType = "java" | "python" | "quarkus" | "springboot";
 
-export const KafkaSampleCode: VoidFunctionComponent = () => {
+export type KafkaSampleCodeProps = {
+  kafkaBootstrapUrl: string;
+  tokenEndpointUrl: string;
+};
+
+export const KafkaSampleCode: VoidFunctionComponent<KafkaSampleCodeProps> = ({
+  kafkaBootstrapUrl,
+  tokenEndpointUrl,
+}) => {
   const { t } = useTranslation("kafka");
 
   const [clientSelect, setClientSelect] = useState<ClientType>("java");
@@ -102,7 +110,10 @@ export const KafkaSampleCode: VoidFunctionComponent = () => {
                   copyCode={
                     javaConfigCodeBlock + "\n" + javaConfigExpandabledBlock
                   }
-                  codeBlockCode={javaConfigCodeBlock}
+                  codeBlockCode={javaConfigCodeBlock(
+                    kafkaBootstrapUrl,
+                    tokenEndpointUrl
+                  )}
                   expandableCode={javaConfigExpandabledBlock}
                 />
               );
@@ -112,8 +123,10 @@ export const KafkaSampleCode: VoidFunctionComponent = () => {
                   copyCode={
                     pythonConfigCodeBlock + "\n" + pythonConfigExpandabledBlock
                   }
-                  codeBlockCode={pythonConfigCodeBlock}
-                  expandableCode={pythonConfigExpandabledBlock}
+                  codeBlockCode={pythonConfigCodeBlock(tokenEndpointUrl)}
+                  expandableCode={pythonConfigExpandabledBlock(
+                    kafkaBootstrapUrl
+                  )}
                 />
               );
             case "quarkus":
@@ -123,7 +136,10 @@ export const KafkaSampleCode: VoidFunctionComponent = () => {
                     quarkusConfigCodeBlock + "\n" + quarkusConfigExpandableBlock
                   }
                   codeBlockCode={quarkusConfigCodeBlock}
-                  expandableCode={quarkusConfigExpandableBlock}
+                  expandableCode={quarkusConfigExpandableBlock(
+                    kafkaBootstrapUrl,
+                    tokenEndpointUrl
+                  )}
                 />
               );
             case "springboot":
@@ -134,7 +150,10 @@ export const KafkaSampleCode: VoidFunctionComponent = () => {
                     "\n" +
                     springBootConfigExpandableBlock
                   }
-                  codeBlockCode={springBootConfigCodeBlock}
+                  codeBlockCode={springBootConfigCodeBlock(
+                    kafkaBootstrapUrl,
+                    tokenEndpointUrl
+                  )}
                   expandableCode={springBootConfigExpandableBlock}
                 />
               );

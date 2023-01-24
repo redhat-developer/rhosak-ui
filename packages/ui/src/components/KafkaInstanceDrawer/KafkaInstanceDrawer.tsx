@@ -173,7 +173,10 @@ export const KafkaInstanceDrawerPanel: VoidFunctionComponent<
             title={<TabTitleText>{t("drawer-tabs.sample-code")}</TabTitleText>}
           >
             <div className={"pf-u-pt-md pf-u-pb-md"}>
-              <KafkaSampleCode />
+              <KafkaSampleCode
+                kafkaBootstrapUrl={getExternalServer(instance.bootstrapUrl)!}
+                tokenEndpointUrl={"TODO"}
+              />
             </div>
           </Tab>
         </Tabs>

@@ -4,7 +4,11 @@ import { KafkaSampleCode } from "./KafkaSampleCode";
 
 export default {
   component: KafkaSampleCode,
-  args: {},
+  args: {
+    kafkaBootstrapUrl: "hema-test-c-k-l-kafka-stage.rhcloud.com:443",
+    tokenEndpointUrl:
+      "https://identify.api.stage.openshift.com/auth/realms/rhoas/protocol/openid-connect/token",
+  },
   parameters: {
     backgrounds: {
       default: "Background color 100",
