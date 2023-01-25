@@ -10,10 +10,10 @@ public class KafkaConfig {
     
     static Properties properties() {
     
-        String kafkaHost = ${kafkaBootstrapUrl};
-        String rhoasClientID = <client_id>;
-        String rhoasClientSecret = <client_secret>;
-        String rhoasOauthTokenUrl = ${tokenEndpointUrl};`;
+        String kafkaHost = "${kafkaBootstrapUrl}";
+        String rhoasClientID = "<client_id>";
+        String rhoasClientSecret = "<client_secret>";
+        String rhoasOauthTokenUrl = "${tokenEndpointUrl}";`;
 };
 
 export const javaConfigExpandabledBlock = `
@@ -104,7 +104,7 @@ import requests
 def _get_token(config):
     payload = {"grant_type": "client_credentials", "scope": "api.iam.service_accounts"}
     resp = requests.post(
-        ${tokenEndpointUrl},
+        "${tokenEndpointUrl}",
         auth=(
             <client_id>,
             <client_secret>,
@@ -119,7 +119,7 @@ export const pythonConfigExpandabledBlock = (kafkaBootstrapUrl: string) => {
     return token["access_token"], time.time() + float(token["expires_in"])
     
     common_config = {
-    'bootstrap.servers': ${kafkaBootstrapUrl},
+    'bootstrap.servers': "${kafkaBootstrapUrl}",
     'security.protocol': 'SASL_SSL',
     'sasl.mechanisms': 'OAUTHBEARER',
     'oauth_cb': _get_token,
@@ -194,7 +194,7 @@ quarkus.container-image.push=false
 %dev.kafka.sasl.jaas.config=org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required \\
     oauth.client.id="\${<client_id>}" \\
     oauth.client.secret="\${<client_secret>}" \\
-    oauth.token.endpoint.uri="\${${tokenEndpointUrl}}" ;
+    oauth.token.endpoint.uri="\${"${tokenEndpointUrl}"}" ;
 %dev.kafka.sasl.login.callback.handler.class=io.strimzi.kafka.oauth.client.JaasClientOauthLoginCallbackHandler`;
 };
 
@@ -272,10 +272,10 @@ public class KafkaConfig {
 
        Map<String, Object> config = new HashMap<>();
 
-       String kafkaHost = ${kafkaBootstrapUrl};
-       String rhoasClientID = <client_id>;
-       String rhoasClientSecret = <client_secret>;
-       String rhoasOauthTokenUrl = ${tokenEndpointUrl};`;
+       String kafkaHost = "${kafkaBootstrapUrl}";
+       String rhoasClientID = "<client_id>";
+       String rhoasClientSecret = "<client_secret>";
+       String rhoasOauthTokenUrl = "${tokenEndpointUrl}";`;
 };
 
 export const springBootConfigExpandableBlock = `
