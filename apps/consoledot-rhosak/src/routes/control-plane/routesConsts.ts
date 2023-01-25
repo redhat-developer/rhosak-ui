@@ -7,7 +7,10 @@ export const ControlPlaneRoutePath =
 export const ControlPlaneNewInstancePath = `${ControlPlaneRouteRoot}/${NewInstanceSegment}`;
 export const ControlPlaneDeleteInstancePath = `${ControlPlaneRouteRoot}/:id/delete`;
 export const ControlPlaneChangeOwnerPath = `${ControlPlaneRouteRoot}/:id/change-owner`;
-export type ControlPlaneRouteParams = { id?: string; section?: "delete"|"change-owner" };
+export type ControlPlaneRouteParams = {
+  id?: string;
+  section?: "delete" | "change-owner";
+};
 
 export type ControlPlaneNavigationProps = {
   instancesHref: string;

@@ -24,7 +24,11 @@ import { useCallback, useMemo } from "react";
 import type { Kafka } from "ui-models/src/models/kafka";
 import { CreatingStatuses } from "ui-models/src/models/kafka";
 import { useKafkaLabels } from "../../hooks";
-import { KafkaConnectionTabP2, KafkaDetailsTab } from "./components";
+import {
+  KafkaConnectionTabP2,
+  KafkaDetailsTab,
+  KafkaSampleCode,
+} from "./components";
 
 export type KafkaInstanceDrawerProps = {
   instance?: Kafka;
@@ -161,6 +165,17 @@ export const KafkaInstanceDrawerPanel: VoidFunctionComponent<
                 kafkaFleetManagerUrl={
                   "https://api.openshift.com/api/kafkas_mgmt/v1/openapi"
                 }
+              />
+            </div>
+          </Tab>
+          <Tab
+            eventKey={"samplecode"}
+            title={<TabTitleText>{t("drawer-tabs.sample-code")}</TabTitleText>}
+          >
+            <div className={"pf-u-pt-md pf-u-pb-md"}>
+              <KafkaSampleCode
+                kafkaBootstrapUrl={getExternalServer(instance.bootstrapUrl)!}
+                tokenEndpointUrl={"TODO"}
               />
             </div>
           </Tab>
