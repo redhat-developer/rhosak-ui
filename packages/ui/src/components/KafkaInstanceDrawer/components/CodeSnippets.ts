@@ -297,7 +297,6 @@ export const springBootProducerCodeBlock = `package com.example.kafkademo;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -310,23 +309,10 @@ import java.util.Map;`;
 
 export const springBootProducerExpandableBlock = `
 @SpringBootApplication
-public class KafkaProducerExample implements CommandLineRunner {
+public class KafkaProducerExample {
 
   public static void main(String[] args) throws Exception {
     SpringApplication.run(KafkaProducerExample.class, args);
-
-    SpringApplication app = new SpringApplication(KafkaProducerExample.class);
-
-    app.run(args);
-  }
-
-
-  //access command line arguments
-  @Override
-  public void run(String... args) throws Exception {
-
-    System.exit(0);
-
   }
 
   @Bean
@@ -372,7 +358,7 @@ public class Listener {
 
     @KafkaListener(topics = <"topic">,
             containerFactory = "concurrentKafkaListenerContainerFactory",
-            groupId = "group_id")
+            groupId = "test_group")
 
     // Method
     public void consume(String message)
@@ -426,23 +412,15 @@ public class KafkaConsumerConfig {
 export const springBootConsumerExampleCodeBlock = `
 package com.example.kafkaconsumer;
 
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;`;
 
 export const springBootConsumerExampleExpandableBlock = `
 @SpringBootApplication
-public class KafkaConsumerExample implements CommandLineRunner {
+public class KafkaConsumerExample {
 
     public static void main(String[] args) {
         SpringApplication.run(KafkaConsumerExample.class, args);
-    }
-
-    @Override
-    public void run(String... args) throws Exception {
-
-       System.exit(0);
-
     }
 
 }`;
