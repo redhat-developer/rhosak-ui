@@ -23,5 +23,5 @@
     "node": ">=14.0.0"
   },
   "dependencies": {},
-  "packageManager": "npm@9.2.0"
+  "packageManager": "npm@9.4.0"
 }
