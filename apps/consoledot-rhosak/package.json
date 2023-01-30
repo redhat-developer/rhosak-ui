@@ -26,7 +26,6 @@
     "@redhat-cloud-services/frontend-components-utilities": "3.3.12",
     "@rhoas/app-services-ui-shared": "0.16.6",
     "@rhoas/registry-management-sdk": "0.51.0",
-    "@xstate/react": "3.0.1",
     "classnames": "2.3.2",
     "consoledot-api": "*",
     "local-storage-helpers": "*",
@@ -40,8 +39,7 @@
     "redux-logger": "3.0.6",
     "redux-promise-middleware": "6.1.3",
     "ui": "*",
-    "ui-models": "*",
-    "xstate": "^4.35.0"
+    "ui-models": "*"
   },
   "devDependencies": {
     "@babel/core": "7.20.12",
