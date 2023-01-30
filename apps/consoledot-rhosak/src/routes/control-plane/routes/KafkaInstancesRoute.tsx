@@ -26,12 +26,16 @@ export type KafkaInstancesRoute = Pick<
 export const KafkaInstancesRoute: FunctionComponent<KafkaInstancesRoute> = ({
   getUrlForInstance,
 }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
   const { setActiveQuickStart } = useContext(QuickStartContext);
 
   const { selectedInstance, toggleExpanded, setActiveTab, isExpanded } =
     useDrawer(
-      useCallback(() => history.replace(`${ControlPlaneRouteRoot}`), [history])
+      useCallback(() => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+        history.replace(`${ControlPlaneRouteRoot}`);
+      }, [history])
     );
 
   const labels = useKafkaLabels();
@@ -81,6 +85,7 @@ export const KafkaInstancesRoute: FunctionComponent<KafkaInstancesRoute> = ({
       if (selectedInstance === id && isExpanded) {
         toggleExpanded(false);
       } else {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
         history.replace(`${ControlPlaneRouteRoot}/${id}`);
         toggleExpanded(true);
         setActiveTab(tab);
@@ -104,17 +109,20 @@ export const KafkaInstancesRoute: FunctionComponent<KafkaInstancesRoute> = ({
   );
 
   const onCreate = useCallback(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(`${ControlPlaneNewInstancePath}`);
   }, [history]);
 
   const onDelete = useCallback<KafkaInstancesProps["onDelete"]>(
     ({ id }) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       history.push(`${ControlPlaneRouteRoot}/${id}/delete`);
     },
     [history]
   );
   const onChangeOwner = useCallback<KafkaInstancesProps["onChangeOwner"]>(
     ({ id }) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       history.push(`${ControlPlaneRouteRoot}/${id}/change-owner`);
     },
     [history]

@@ -12,12 +12,14 @@ import { useCreateKafkaCallbacks } from "./useCreateKafkaCallbacks";
 export const CreateKafkaInstanceRoute: FunctionComponent<
   ControlPlaneNavigationProps
 > = ({ instancesHref }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
   const callbacks = useCreateKafkaCallbacks();
   const createKafkaInstance = useCreateKafkaMutation();
   const qsContext = useContext(QuickStartContext);
 
   const onClickKafkaOverview = () => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(`overview`);
   };
 
@@ -30,6 +32,7 @@ export const CreateKafkaInstanceRoute: FunctionComponent<
     function (instance, onSuccess, onError) {
       const onOnSuccess = () => {
         onSuccess();
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
         history.push(ControlPlaneRouteRoot);
       };
       void createKafkaInstance.mutateAsync({
@@ -42,6 +45,7 @@ export const CreateKafkaInstanceRoute: FunctionComponent<
   );
 
   const onCancel = useCallback(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(instancesHref);
   }, [history, instancesHref]);
 

@@ -1,6 +1,6 @@
 import type { CardKafkaInstanceMetricsLimits } from "./components";
 
-export type TimeSeriesMetrics = { [timestamp: number]: number };
+export type TimeSeriesMetrics = { [timestamp: string]: number };
 export type PartitionBytesMetric = { [partition: string]: TimeSeriesMetrics };
 
 export enum DurationOptions {

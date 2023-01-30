@@ -11,6 +11,7 @@ import { useControlPlaneGate } from "../useControlPlaneGate";
 export const ChangeOwnerRoute: FunctionComponent<
   ControlPlaneNavigationProps
 > = ({ instancesHref }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
 
   const { instance } = useControlPlaneGate();
@@ -18,6 +19,7 @@ export const ChangeOwnerRoute: FunctionComponent<
   const updateInstance = useUpdateKafkaMutation();
 
   const onCancel = useCallback(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(instancesHref);
   }, [history, instancesHref]);
 
@@ -29,7 +31,10 @@ export const ChangeOwnerRoute: FunctionComponent<
           updates: { owner: newOwner },
         },
         {
-          onSuccess: () => history.replace(instancesHref),
+          onSuccess: () => {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+            history.replace(instancesHref);
+          },
         }
       );
     },

@@ -16,6 +16,7 @@ export const DataPlaneTopicHeaderConnected: VoidFunctionComponent<
   instancesHref,
   activeSection,
 }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
   const { setActiveTab, toggleExpanded } = useDrawer();
   const {
@@ -33,6 +34,7 @@ export const DataPlaneTopicHeaderConnected: VoidFunctionComponent<
 
   const onDelete = useCallback(() => {
     // TODO: unhardcode this url
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(`${instancesHref}/${instance.id}/delete`);
   }, [history, instance, instancesHref]);
 

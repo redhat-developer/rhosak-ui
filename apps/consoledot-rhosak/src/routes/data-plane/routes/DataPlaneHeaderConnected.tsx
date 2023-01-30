@@ -11,6 +11,7 @@ import { useDataPlaneGate } from "../useDataPlaneGate";
 export const DataPlaneHeaderConnected: VoidFunctionComponent<
   ControlPlaneNavigationProps & Pick<DataPlaneHeaderProps, "activeSection">
 > = ({ instancesHref, activeSection }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
   const { setActiveTab, toggleExpanded } = useDrawer();
 
@@ -29,6 +30,7 @@ export const DataPlaneHeaderConnected: VoidFunctionComponent<
 
   const onDelete = useCallback(() => {
     // TODO: unhardcode this url
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(`${instancesHref}/${instance.id}/delete`);
   }, [history, instance, instancesHref]);
 

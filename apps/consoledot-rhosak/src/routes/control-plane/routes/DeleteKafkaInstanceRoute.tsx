@@ -10,12 +10,14 @@ import { useControlPlaneGate } from "../useControlPlaneGate";
 export const DeleteKafkaInstanceRoute: FunctionComponent<
   ControlPlaneNavigationProps
 > = ({ instancesHref }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
 
   const { instance } = useControlPlaneGate();
   const { mutateAsync, isLoading: isDeleting } = useDeleteKafkaMutation();
 
   const onCancel = useCallback(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(instancesHref);
   }, [history, instancesHref]);
 
@@ -26,6 +28,7 @@ export const DeleteKafkaInstanceRoute: FunctionComponent<
         // TODO: alert
       },
       onSuccess: () => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
         history.replace(instancesHref);
       },
     });

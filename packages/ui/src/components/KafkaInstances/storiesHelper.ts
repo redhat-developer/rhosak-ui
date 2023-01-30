@@ -1,10 +1,11 @@
 import { addHours } from "date-fns";
-import type { KafkaInstance } from "../../types";
+import type { Kafka } from "ui-models/src/models/kafka";
+import type { DateIsoString } from "ui-models/src/types";
 
-const now = new Date().toISOString();
-const future = addHours(new Date(), 19).toISOString();
+const now = new Date().toISOString() as DateIsoString;
+const future = addHours(new Date(), 19).toISOString() as DateIsoString;
 
-export const instances: KafkaInstance[] = [
+export const instances: Kafka[] = [
   {
     id: "1",
     name: "foo",
@@ -25,6 +26,9 @@ export const instances: KafkaInstance[] = [
     connectionRate: undefined,
     messageSize: undefined,
     billing: undefined,
+    version: "1.2.3",
+    bootstrapUrl: undefined,
+    adminUrl: undefined,
   },
   {
     id: "2",
@@ -46,6 +50,9 @@ export const instances: KafkaInstance[] = [
     connectionRate: undefined,
     messageSize: undefined,
     billing: undefined,
+    version: "1.2.3",
+    bootstrapUrl: undefined,
+    adminUrl: undefined,
   },
   {
     id: "3",
@@ -67,6 +74,9 @@ export const instances: KafkaInstance[] = [
     connectionRate: undefined,
     messageSize: undefined,
     billing: undefined,
+    version: "1.2.3",
+    bootstrapUrl: undefined,
+    adminUrl: undefined,
   },
   {
     id: "4",
@@ -88,5 +98,8 @@ export const instances: KafkaInstance[] = [
     connectionRate: undefined,
     messageSize: undefined,
     billing: undefined,
+    version: "1.2.3",
+    bootstrapUrl: undefined,
+    adminUrl: undefined,
   },
 ];

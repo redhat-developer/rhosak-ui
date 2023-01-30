@@ -2,7 +2,7 @@ import type { AppServicesApi } from "@rhoas/account-management-sdk";
 import type {
   MarketPlace,
   MarketPlaceSubscriptions,
-} from "@rhoas/app-services-ui-components";
+} from "ui-models/src/models/kafka";
 import {
   developerId,
   isMarketplaceQuota,

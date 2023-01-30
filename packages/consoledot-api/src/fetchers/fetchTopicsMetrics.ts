@@ -1,9 +1,9 @@
+import type { DefaultApi } from "@rhoas/kafka-management-sdk";
 import type {
   GetTopicsMetricsResponse,
   PartitionBytesMetric,
   TimeSeriesMetrics,
-} from "@rhoas/app-services-ui-components";
-import type { DefaultApi } from "@rhoas/kafka-management-sdk";
+} from "ui";
 import type { SafeRangeQuery } from "../types";
 
 export type FetchTopicsMetricsProps = {

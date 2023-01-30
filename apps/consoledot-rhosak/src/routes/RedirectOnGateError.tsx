@@ -7,6 +7,7 @@ import { Redirect, useLocation } from "react-router-dom";
 export const RedirectOnGateError: FunctionComponent<{
   redirectUrl: string;
 }> = ({ children, redirectUrl }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const { key } = useLocation();
 
   return (

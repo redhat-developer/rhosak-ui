@@ -1,7 +1,6 @@
 import { Form } from "@patternfly/react-core";
 import { TableComposable } from "@patternfly/react-table";
 import type { ComponentMeta, ComponentStory } from "@storybook/react";
-import { fakeApi } from "../../storiesHelpers";
 import { ConsumeTopicShortcut } from "./ConsumeTopicShortcut";
 import { ManageAccessShortcut } from "./ManageAccessShortcut";
 import { ProduceTopicShortcut } from "./ProduceTopicShortcut";
@@ -10,18 +9,12 @@ export default {
   component: ConsumeTopicShortcut,
   args: {
     onFetchConsumerResourceNameOptions: (filter) =>
-      fakeApi<string[]>(
-        ["foo-consumer", "test", "my-consumer", "random-consumer-name"].filter(
-          (v) => v.includes(filter)
-        ),
-        100
+      ["foo-consumer", "test", "my-consumer", "random-consumer-name"].filter(
+        (v) => v.includes(filter)
       ),
     onFetchTopicResourceNameOptions: (filter) =>
-      fakeApi<string[]>(
-        ["foo-topic", "test", "my-test", "random-topic-name"].filter((v) =>
-          v.includes(filter)
-        ),
-        100
+      ["foo-topic", "test", "my-test", "random-topic-name"].filter((v) =>
+        v.includes(filter)
       ),
     topicPrefixRuleValue: "Starts with",
     consumerPrefixRuleValue: "Starts with",
@@ -43,10 +36,15 @@ const Template: ComponentStory<typeof ConsumeTopicShortcut> = (args) => (
         submitted={args.submitted}
         onDelete={args.onDelete}
         multipleShorctutPermissions={true}
+        row={1}
+        setIsNameValid={() => {
+          /* TODO */
+        }}
       />
       <ManageAccessShortcut
         onDelete={args.onDelete}
         instanceName={"story-instance"}
+        row={1}
       />
     </TableComposable>
   </Form>
