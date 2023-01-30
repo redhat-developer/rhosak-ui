@@ -108,7 +108,7 @@ export const KafkaDetailsTab: VoidFunctionComponent<KafkaDetailsTabProps> = ({
           )}
           {renderTextListItem(
             t("storage"),
-            storage
+            storage?.value
               ? t("create-kafka-instance:storage_value", {
                   value: storage.value,
                 })
@@ -140,7 +140,7 @@ export const KafkaDetailsTab: VoidFunctionComponent<KafkaDetailsTabProps> = ({
           )}
           {renderTextListItem(
             t("message_size"),
-            messageSize
+            messageSize?.value
               ? t("create-kafka-instance:message_size_value", {
                   value: messageSize.value,
                 })
