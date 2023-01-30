@@ -50,7 +50,7 @@ exports[`Details Tab renders standard instance 1`] = `
           <dd
             class=""
           >
-            up to  GiB
+            up to 50 GiB
           </dd>
           <dt
             class=""
@@ -90,7 +90,7 @@ exports[`Details Tab renders standard instance 1`] = `
           <dd
             class=""
           >
-            up to  MiB
+            up to 1 MiB
           </dd>
           <dt
             class=""
