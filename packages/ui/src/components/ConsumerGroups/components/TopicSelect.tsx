@@ -40,9 +40,12 @@ export const TopicSelect: FunctionComponent<TopicSelectProps> = ({
       selections={value}
       placeholderText={t("consumerGroup.select_topic")}
       menuAppendTo={"parent"}
+      isDisabled={topics.length <= 0}
     >
-      {topics.map((topic) => (
-        <SelectOption key={topic}>{topic}</SelectOption>
+      {topics.map((topic, index) => (
+        <SelectOption key={index} value={topic}>
+          {topic}
+        </SelectOption>
       ))}
     </Select>
   );

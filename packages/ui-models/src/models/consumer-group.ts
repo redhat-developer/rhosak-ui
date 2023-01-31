@@ -25,4 +25,7 @@ export type State =
   | "PreparingRebalance"
   | "Unknown";
 
-export type ConsumerGroupField = keyof ConsumerGroup;
+export type ConsumerGroupField = Exclude<
+  keyof ConsumerGroup,
+  "consumers" | "unassignedPartitions"
+>;

@@ -1,7 +1,4 @@
-import {
-  ConsumerGroupOrderKey,
-  TopicOrderKey,
-} from "@rhoas/kafka-instance-sdk";
+import { TopicOrderKey } from "@rhoas/kafka-instance-sdk";
 import type { RangeQuery } from "@rhoas/kafka-management-sdk";
 
 export type NoUndefinedField<T> = {
@@ -19,18 +16,16 @@ export const KafkaInstancesSortableColumns = [
 ] as const;
 
 export type KafkaInstancesSortableColumn =
-  typeof KafkaInstancesSortableColumns[number];
+  (typeof KafkaInstancesSortableColumns)[number];
 
 export const KafkaTopicsSortableColumns = [
   ...Object.values(TopicOrderKey),
 ] as const;
 
 export type KafkaTopicsSortableColumn =
-  typeof KafkaTopicsSortableColumns[number];
+  (typeof KafkaTopicsSortableColumns)[number];
 
-export const KafkaConsumerGroupSortableColumns = [
-  ...Object.values(ConsumerGroupOrderKey),
-] as const;
+export const KafkaConsumerGroupSortableColumns = ["groupId"] as const;
 
 export type KafkaConsumerGroupSortableColumn =
-  typeof KafkaConsumerGroupSortableColumns[number];
+  (typeof KafkaConsumerGroupSortableColumns)[number];

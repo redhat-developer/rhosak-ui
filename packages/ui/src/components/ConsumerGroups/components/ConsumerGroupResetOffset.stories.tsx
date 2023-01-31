@@ -20,6 +20,33 @@ const consumer: ConsumerRow[] = [
     offset: 3,
     logEndOffset: 1,
     lag: 0,
+    selected: true,
+  },
+  {
+    groupId: "3",
+    topic: "test",
+    partition: 1,
+    offset: 3,
+    logEndOffset: 1,
+    lag: 0,
+    selected: true,
+  },
+  {
+    groupId: "4",
+    topic: "test2",
+    partition: 1,
+    offset: 3,
+    logEndOffset: 1,
+    lag: 0,
+    selected: false,
+  },
+  {
+    groupId: "4",
+    topic: "test1",
+    partition: 1,
+    offset: 3,
+    logEndOffset: 1,
+    lag: 0,
     selected: false,
   },
 ];
@@ -62,39 +89,8 @@ NoTopicSelected.args = {
   isModalOpen: true,
 };
 
-export const NoOffsetSelected = Template.bind({});
-NoOffsetSelected.args = {
-  isModalOpen: true,
-  selectedTopic: "test-topic",
-};
-
-export const CustomOffsetDisabled = Template.bind({});
-CustomOffsetDisabled.args = {
-  isModalOpen: true,
-  selectedTopic: "test-topic",
-  selectedOffset: "earliest",
-  customOffsetValue: "2",
-};
-
-export const CustomOffsetEnabled = Template.bind({});
-CustomOffsetEnabled.args = {
-  isModalOpen: true,
-  selectedTopic: "test-topic",
-  selectedOffset: "absolute",
-  customOffsetValue: "2",
-};
-
-export const ResetOffsetWhenAllFieldsSelected = Template.bind({});
-ResetOffsetWhenAllFieldsSelected.args = {
-  isModalOpen: true,
-  selectedTopic: "test-topic",
-  selectedOffset: "absolute",
-  customOffsetValue: "2",
-  confirmCheckboxChecked: true,
-};
-
 export const ResetOffsetErrorMessage = Template.bind({});
 ResetOffsetErrorMessage.args = {
-  isDisconnected: false,
+  state: "Stable",
   isModalOpen: true,
 };
