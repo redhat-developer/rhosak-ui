@@ -1,4 +1,4 @@
-import { fakeApi } from "../../shared/storiesHelpers";
+import { fakeApi } from "../storiesHelpers";
 import { makeGrowingMetrics, makeMetrics } from "./makeMetrics";
 import type {
   DurationOptions,

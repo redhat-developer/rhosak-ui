@@ -1,5 +1,5 @@
 import type { ComponentMeta, ComponentStory } from "@storybook/react";
-import { apiError, fakeApi } from "../../shared/storiesHelpers";
+import { apiError, fakeApi } from "../storiesHelpers";
 import { makeGrowingMetrics, makeMetrics } from "./makeMetrics";
 import { Metrics } from "./Metrics";
 import {
