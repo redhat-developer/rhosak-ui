@@ -10,7 +10,14 @@ import App from "./App";
 import { QuickstartLoader } from "./QuickstartLoader";
 import { init } from "./store";
 
-const apiUrl: string = process.env.API_URL as string;
+function apiUrlFromHostname() {
+  if (window.location.hostname === "console.redhat.com") {
+    return "https://api.openshift.com";
+  }
+  return "https://api.stage.openshift.com";
+}
+
+const apiUrl = process.env.API_URL || apiUrlFromHostname();
 
 const store = init(
   ...(process.env.NODE_ENV !== "production" ? [logger] : [])

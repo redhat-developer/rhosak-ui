@@ -14,7 +14,7 @@ module.exports = {
    */
   plugins: [
     new webpack.EnvironmentPlugin({
-      API_URL: process.env.API_URL || "https://api.openshift.com",
+      API_URL: process.env.API_URL || "",
     }),
   ],
   _unstableHotReload: process.env.HOT === "true",
