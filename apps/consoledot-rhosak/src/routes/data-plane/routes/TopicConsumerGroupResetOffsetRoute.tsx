@@ -13,9 +13,12 @@ export const TopicConsumerGroupResetOffsetRoute: VoidFunctionComponent<
   const { instance, topic, consumerGroup } = useTopicConsumerGroupGate();
 
   const { mutateAsync } = useResetConsumerGroupMutation();
+
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
 
   const onCancel = useCallback(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(instanceTopicConsumerGroupsHref(instance.id, topic.name));
   }, [history, instance.id, topic.name, instanceTopicConsumerGroupsHref]);
 
@@ -36,7 +39,7 @@ export const TopicConsumerGroupResetOffsetRoute: VoidFunctionComponent<
     ) => {
       void mutateAsync({
         instanceId: instance.id,
-        adminUrl: instance?.adminUrl!,
+        adminUrl: instance.adminUrl!,
         consumerGroupId: consumerGroup.groupId,
         topic: topicName,
         offset: offset,
@@ -46,6 +49,7 @@ export const TopicConsumerGroupResetOffsetRoute: VoidFunctionComponent<
           // TODO: alert
         },
         onSuccess: () => {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
           history.replace(
             instanceTopicConsumerGroupsHref(instance.id, topic.name)
           );
@@ -58,6 +62,8 @@ export const TopicConsumerGroupResetOffsetRoute: VoidFunctionComponent<
       instance?.id,
       topic.name,
       instanceTopicConsumerGroupsHref,
+      instance.adminUrl,
+      consumerGroup.groupId,
     ]
   );
 

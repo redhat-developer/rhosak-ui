@@ -15,13 +15,14 @@ import type { ControlPlaneNavigationProps } from "../../control-plane/routesCons
 import { useDataPlaneGate } from "../useDataPlaneGate";
 import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
 import { useHistory } from "react-router-dom";
-import { instanceConsumerGroupsHref } from '../DataPlaneRoutes';
+import { instanceConsumerGroupsHref } from "../DataPlaneRoutes";
 
 export const ConsumerGroupsRoute: VoidFunctionComponent<
   ControlPlaneNavigationProps
 > = ({ instancesHref }) => {
   const { instance } = useDataPlaneGate();
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
 
   const labels = useConsumerGroupLabels();
@@ -53,29 +54,32 @@ export const ConsumerGroupsRoute: VoidFunctionComponent<
 
   const onDeletConsumerGroup = useCallback(
     (groupId: string) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       history.push(
         `${instanceConsumerGroupsHref(instance.id)}/${groupId}/delete`
       );
     },
-    [history, instance.id, instanceConsumerGroupsHref]
+    [history, instance.id]
   );
 
   const onViewPartition = useCallback(
     (groupId: string) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       history.push(
         `${instanceConsumerGroupsHref(instance.id)}/${groupId}/view-partition`
       );
     },
-    [history, instance.id, instanceConsumerGroupsHref]
+    [history, instance.id]
   );
 
   const onClickResetOffset = useCallback(
     (groupId: string) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       history.push(
         `${instanceConsumerGroupsHref(instance.id)}/${groupId}/reset-offset`
       );
     },
-    [history, instance.id, instanceConsumerGroupsHref]
+    [history, instance.id]
   );
   return (
     <>
