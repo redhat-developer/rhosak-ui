@@ -1,9 +1,9 @@
 import type { ChartVoronoiContainerProps } from "@patternfly/react-charts";
-import { ChartLine } from "@patternfly/react-charts";
 import {
   Chart,
   ChartAxis,
-  ChartGroup,
+  ChartBar,
+  ChartStack,
   ChartLegend,
   ChartThemeColor,
   ChartVoronoiContainer,
@@ -42,19 +42,19 @@ type LegendData = {
   name: string;
 };
 
-export type ChartLogSizePerPartitionProps = {
+export type PartitionSizeStackChartPerBrokerProps = {
   partitions: PartitionBytesMetric;
-  topic: string | undefined;
+  broker: string | undefined;
   duration: number;
   isLoading: boolean;
   emptyState: ReactElement;
   selectedPartition: PartitionSelect;
 };
-export const ChartLogSizePerPartition: FunctionComponent<
-  ChartLogSizePerPartitionProps
+export const StackChartPartitionSizePerBroker: FunctionComponent<
+  PartitionSizeStackChartPerBrokerProps
 > = ({
   partitions,
-  topic,
+  broker,
   duration,
   isLoading,
   emptyState,
@@ -65,7 +65,7 @@ export const ChartLogSizePerPartition: FunctionComponent<
 
   const { chartData, legendData, tickValues } = getChartData(
     partitions,
-    topic,
+    broker,
     duration,
     selectedPartition
   );
@@ -74,8 +74,10 @@ export const ChartLogSizePerPartition: FunctionComponent<
 
   const showDate = shouldShowDate(duration);
 
+  console.log(chartData);
+
   return (
-    <div ref={containerRef} style={{ height: "500px" }}>
+    <div ref={containerRef} style={{ height: "515px" }}>
       {(() => {
         switch (true) {
           case isLoading:
@@ -118,11 +120,11 @@ export const ChartLogSizePerPartition: FunctionComponent<
                   dependentAxis
                   tickFormat={formatBytes}
                 />
-                <ChartGroup>
+                <ChartStack>
                   {chartData.map((value, index) => (
-                    <ChartLine key={`chart-area-${index}`} data={value.area} />
+                    <ChartBar key={`chart-area-${index}`} data={value.area} />
                   ))}
-                </ChartGroup>
+                </ChartStack>
               </Chart>
             );
           }
@@ -134,7 +136,7 @@ export const ChartLogSizePerPartition: FunctionComponent<
 
 export function getChartData(
   partitions: PartitionBytesMetric,
-  topic: string | undefined,
+  broker: string | undefined,
   duration: number,
   selectedPartition: PartitionSelect
 ): {
@@ -144,11 +146,12 @@ export function getChartData(
 } {
   const legendData: Array<LegendData> = [];
   const chartData: Array<ChartData> = [];
+
   selectedPartition === "Top10"
     ? Object.entries(partitions)
         .slice(0, 10)
         .map(([partition, dataMap], index) => {
-          const name = topic ? `${topic}/${partition}` : partition;
+          const name = broker ? `${broker}, ${partition}` : partition;
           const color = colors[index];
           legendData.push({
             name,
@@ -163,7 +166,7 @@ export function getChartData(
     : Object.entries(partitions)
         .slice(0, 20)
         .map(([partition, dataMap], index) => {
-          const name = topic ? `${topic}/${partition}` : partition;
+          const name = broker ? `${broker}/${partition}` : partition;
           const color = colors[index];
           legendData.push({
             name,
@@ -175,7 +178,6 @@ export function getChartData(
           });
           chartData.push({ color, area });
         });
-
   const allTimestamps = Array.from(
     new Set(Object.values(partitions).flatMap((m) => Object.keys(m)))
   );

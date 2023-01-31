@@ -1,15 +1,35 @@
-import { Card, CardBody, CardTitle, Divider } from "@patternfly/react-core";
+import {
+  Alert,
+  Card,
+  CardBody,
+  CardTitle,
+  Divider,
+  Grid,
+  GridItem,
+  Toolbar,
+  ToolbarContent,
+} from "@patternfly/react-core";
 import type { FunctionComponent } from "react";
-import { useTranslation } from "@rhoas/app-services-ui-components";
-import type { DurationOptions, TimeSeriesMetrics } from "../types";
+import { useTranslation } from "react-i18next";
+import type {
+  BrokerBytesMetric,
+  BrokerFilter,
+  DurationOptions,
+  PartitionBytesMetric,
+  PartitionSelect,
+  TimeSeriesMetrics,
+} from "../types";
 import { CardBodyLoading } from "./CardBodyLoading";
 import { ChartPopover } from "./ChartPopover";
 import { ChartLinearWithOptionalLimit } from "./ChartLinearWithOptionalLimit";
 import { EmptyStateMetricsUnavailable } from "./EmptyStateMetricsUnavailable";
 import { ToolbarKafkaInstanceMetric } from "./ToolbarKafkaInstanceMetric";
-import { formatBytes } from "./utils";
 import { EmptyStateNoMetricsData } from "./EmptyStateNoMetricsData";
 import type { ToolbarRefreshProps } from "./ToolbarRefresh";
+import { BrokerToggle } from "./BrokerToggle";
+import { ChartPartitionSizePerBroker } from "./ChartPartitionSizePerBroker";
+import { FilterByPartition } from "./FilterByPartition";
+import { ChartUsedDiskSpace } from "./CardUsedDiskSpaceMetrics";
 
 export type CardKafkaInstanceMetricsLimits = {
   diskSpaceLimit: number;
@@ -18,7 +38,8 @@ export type CardKafkaInstanceMetricsLimits = {
 };
 
 export type CardKafkaInstanceMetricsProps = {
-  usedDiskMetrics: TimeSeriesMetrics;
+  brokers: string[];
+  usedDiskMetrics: BrokerBytesMetric;
   clientConnectionsMetrics: TimeSeriesMetrics;
   connectionAttemptRateMetrics: TimeSeriesMetrics;
   duration: DurationOptions;
@@ -27,7 +48,14 @@ export type CardKafkaInstanceMetricsProps = {
   isInitialLoading: boolean;
   isLoading: boolean;
   isJustCreated: boolean;
+  selectedBroker: string | undefined;
+  onSelectedBroker: (broker: string | undefined) => void;
   onDurationChange: (duration: DurationOptions) => void;
+  selectToggle: BrokerFilter;
+  onSelectedToggle: (value: BrokerFilter) => void;
+  bytesPerPartitions: PartitionBytesMetric;
+  onSelectedPartition: (value: PartitionSelect) => void;
+  selectedPartition: PartitionSelect;
 } & Omit<ToolbarRefreshProps, "ariaLabel"> &
   CardKafkaInstanceMetricsLimits;
 
@@ -39,6 +67,7 @@ type ChartTitleProps = {
 export const CardKafkaInstanceMetrics: FunctionComponent<
   CardKafkaInstanceMetricsProps
 > = ({
+  brokers,
   usedDiskMetrics,
   clientConnectionsMetrics,
   connectionAttemptRateMetrics,
@@ -54,6 +83,13 @@ export const CardKafkaInstanceMetrics: FunctionComponent<
   connectionRateLimit,
   onRefresh,
   onDurationChange,
+  selectedBroker,
+  onSelectedBroker,
+  selectToggle,
+  onSelectedToggle,
+  selectedPartition,
+  onSelectedPartition,
+  bytesPerPartitions,
 }) => {
   const { t } = useTranslation("metrics");
 
@@ -67,6 +103,9 @@ export const CardKafkaInstanceMetrics: FunctionComponent<
         isDisabled={backendUnavailable || isJustCreated || isLoading}
         isRefreshing={isRefreshing}
         onRefresh={onRefresh}
+        selectedBroker={selectedBroker}
+        brokerList={brokers}
+        onSetSelectedBroker={onSelectedBroker}
       />
       {(() => {
         switch (true) {
@@ -95,14 +134,41 @@ export const CardKafkaInstanceMetrics: FunctionComponent<
                   helperText={t("used_disk_space_help_text")}
                 />
                 <CardBody>
-                  <ChartLinearWithOptionalLimit
-                    chartName={t("used_disk_space")}
-                    yLabel={t("axis-label-bytes")}
+                  <BrokerToggle
+                    value={selectToggle}
+                    onChange={onSelectedToggle}
+                    selectedBroker={selectedBroker}
+                  />
+                  <ChartUsedDiskSpace
                     metrics={usedDiskMetrics}
+                    broker={selectedBroker}
                     duration={duration}
-                    formatValue={formatBytes}
-                    usageLimit={diskSpaceLimit}
                     isLoading={isLoading}
+                    emptyState={<EmptyStateNoMetricsData />}
+                    brokerToggle={selectToggle}
+                    usageLimit={diskSpaceLimit}
+                  />
+                </CardBody>
+                <Divider />
+                <ChartTitle
+                  title={t("partition_size")}
+                  helperText={t("broker_partition_size_help_text")}
+                />
+                <CardBody>
+                  <Toolbar>
+                    <ToolbarContent>
+                      <FilterByPartition
+                        onSetSelectedPartition={onSelectedPartition}
+                        partitionValue={selectedPartition}
+                      />
+                    </ToolbarContent>
+                  </Toolbar>
+                  <ChartPartitionSizePerBroker
+                    partitions={bytesPerPartitions}
+                    broker={selectedBroker}
+                    duration={duration}
+                    isLoading={isLoading}
+                    selectedPartition={selectedPartition}
                     emptyState={<EmptyStateNoMetricsData />}
                   />
                 </CardBody>
@@ -112,15 +178,28 @@ export const CardKafkaInstanceMetrics: FunctionComponent<
                   helperText={t("client_connections_helper_text")}
                 />
                 <CardBody>
-                  <ChartLinearWithOptionalLimit
-                    chartName={t("client_connections")}
-                    yLabel={t("client_connections_y_axis")}
-                    metrics={clientConnectionsMetrics}
-                    duration={duration}
-                    usageLimit={connectionsLimit}
-                    isLoading={isLoading}
-                    emptyState={<EmptyStateNoMetricsData />}
-                  />
+                  <Grid hasGutter>
+                    <GridItem>
+                      {selectedBroker ? (
+                        <Alert
+                          variant="info"
+                          isInline
+                          title={t("client_connection_alert")}
+                        />
+                      ) : null}
+                    </GridItem>
+                    <GridItem>
+                      <ChartLinearWithOptionalLimit
+                        chartName={t("client_connections")}
+                        yLabel={t("client_connections_y_axis")}
+                        metrics={clientConnectionsMetrics}
+                        duration={duration}
+                        usageLimit={connectionsLimit}
+                        isLoading={isLoading}
+                        emptyState={<EmptyStateNoMetricsData />}
+                      />
+                    </GridItem>
+                  </Grid>
                 </CardBody>
                 <Divider />
                 <ChartTitle
@@ -128,15 +207,28 @@ export const CardKafkaInstanceMetrics: FunctionComponent<
                   helperText={t("connection_attempt_rate_help_text")}
                 />
                 <CardBody>
-                  <ChartLinearWithOptionalLimit
-                    chartName={t("connection_attempt_rate")}
-                    yLabel={t("connection_attempt_rate_yaxis")}
-                    metrics={connectionAttemptRateMetrics}
-                    duration={duration}
-                    usageLimit={connectionRateLimit}
-                    isLoading={isLoading}
-                    emptyState={<EmptyStateNoMetricsData />}
-                  />
+                  <Grid hasGutter>
+                    <GridItem>
+                      {selectedBroker ? (
+                        <Alert
+                          variant="info"
+                          isInline
+                          title={t("connection_attempt_rate_alert")}
+                        />
+                      ) : null}
+                    </GridItem>
+                    <GridItem>
+                      <ChartLinearWithOptionalLimit
+                        chartName={t("connection_attempt_rate")}
+                        yLabel={t("connection_attempt_rate_yaxis")}
+                        metrics={connectionAttemptRateMetrics}
+                        duration={duration}
+                        usageLimit={connectionRateLimit}
+                        isLoading={isLoading}
+                        emptyState={<EmptyStateNoMetricsData />}
+                      />
+                    </GridItem>
+                  </Grid>
                 </CardBody>
               </>
             );
