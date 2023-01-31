@@ -6,20 +6,27 @@ import {
   ExpandableSection,
   ExpandableSectionToggle,
 } from "@patternfly/react-core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { VoidFunctionComponent } from "react";
+
+export type ClientType = "java" | "python" | "quarkus" | "springboot";
 
 export type SampleCodeSnippetProps = {
   expandableCode?: string;
   codeBlockCode: string;
+  codeSnippet?: ClientType;
 };
 
 export const SampleCodeSnippet: VoidFunctionComponent<
   SampleCodeSnippetProps
-> = ({ expandableCode, codeBlockCode }) => {
+> = ({ expandableCode, codeBlockCode, codeSnippet }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const [copied, setCopied] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsExpanded(false);
+  }, [codeSnippet]);
 
   const clipboardCopyFunc = (_event: any, text: string) => {
     navigator.clipboard

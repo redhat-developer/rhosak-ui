@@ -112,6 +112,7 @@ export const KafkaSampleCode: VoidFunctionComponent<KafkaSampleCodeProps> = ({
                     tokenEndpointUrl
                   )}
                   expandableCode={javaConfigExpandabledBlock}
+                  codeSnippet={clientSelect}
                 />
               );
             case "python":
@@ -121,6 +122,7 @@ export const KafkaSampleCode: VoidFunctionComponent<KafkaSampleCodeProps> = ({
                   expandableCode={pythonConfigExpandabledBlock(
                     kafkaBootstrapUrl
                   )}
+                  codeSnippet={clientSelect}
                 />
               );
             case "quarkus":
@@ -131,6 +133,7 @@ export const KafkaSampleCode: VoidFunctionComponent<KafkaSampleCodeProps> = ({
                     kafkaBootstrapUrl,
                     tokenEndpointUrl
                   )}
+                  codeSnippet={clientSelect}
                 />
               );
             case "springboot":
@@ -141,6 +144,7 @@ export const KafkaSampleCode: VoidFunctionComponent<KafkaSampleCodeProps> = ({
                     tokenEndpointUrl
                   )}
                   expandableCode={springBootConfigExpandableBlock}
+                  codeSnippet={clientSelect}
                 />
               );
             default:
@@ -158,6 +162,7 @@ export const KafkaSampleCode: VoidFunctionComponent<KafkaSampleCodeProps> = ({
             <SampleCodeSnippet
               codeBlockCode={quarkusProducerCodeBlock}
               expandableCode={quarkusProducerExpandableBlock}
+              codeSnippet={clientSelect}
             />
           </>
         ) : (
@@ -181,6 +186,7 @@ export const KafkaSampleCode: VoidFunctionComponent<KafkaSampleCodeProps> = ({
                     <SampleCodeSnippet
                       codeBlockCode={javaProducerCodeBlock}
                       expandableCode={javaProducerExpandableBlock}
+                      codeSnippet={clientSelect}
                     />
                   );
                 case "python":
@@ -190,6 +196,7 @@ export const KafkaSampleCode: VoidFunctionComponent<KafkaSampleCodeProps> = ({
                     <SampleCodeSnippet
                       codeBlockCode={springBootProducerCodeBlock}
                       expandableCode={springBootProducerExpandableBlock}
+                      codeSnippet={clientSelect}
                     />
                   );
                 default:
@@ -216,6 +223,7 @@ export const KafkaSampleCode: VoidFunctionComponent<KafkaSampleCodeProps> = ({
             <SampleCodeSnippet
               codeBlockCode={springBootConsumerConfigCodeBlock}
               expandableCode={springBootConsumerConfigExpandableBlock}
+              codeSnippet={clientSelect}
             />
             <Text component={TextVariants.h4} className="pf-u-mt-xl">
               {t("sample_code.spring_boot_listener")}
@@ -226,6 +234,7 @@ export const KafkaSampleCode: VoidFunctionComponent<KafkaSampleCodeProps> = ({
             <SampleCodeSnippet
               codeBlockCode={springBootListenerCodeBlock}
               expandableCode={springBootListenerExpandableBlock}
+              codeSnippet={clientSelect}
             />
             <Text component={TextVariants.h4} className="pf-u-mt-xl">
               {t("sample_code.spring_boot_consumer")}
@@ -236,6 +245,7 @@ export const KafkaSampleCode: VoidFunctionComponent<KafkaSampleCodeProps> = ({
             <SampleCodeSnippet
               codeBlockCode={springBootConsumerExampleCodeBlock}
               expandableCode={springBootConsumerExampleExpandableBlock}
+              codeSnippet={clientSelect}
             />
           </>
         ) : (
@@ -256,6 +266,7 @@ export const KafkaSampleCode: VoidFunctionComponent<KafkaSampleCodeProps> = ({
                     <SampleCodeSnippet
                       codeBlockCode={javaConsumerCodeBlock}
                       expandableCode={javaConsumerExpandableBlock}
+                      codeSnippet={clientSelect}
                     />
                   );
                 case "python":
@@ -263,6 +274,7 @@ export const KafkaSampleCode: VoidFunctionComponent<KafkaSampleCodeProps> = ({
                     <SampleCodeSnippet
                       codeBlockCode={pythonConsumerCodeBlock}
                       expandableCode={pythonConsumerExpandableBlock}
+                      codeSnippet={clientSelect}
                     />
                   );
                 case "quarkus":
@@ -270,6 +282,7 @@ export const KafkaSampleCode: VoidFunctionComponent<KafkaSampleCodeProps> = ({
                     <SampleCodeSnippet
                       codeBlockCode={quarkusConsumerCodeBlock}
                       expandableCode={quarkusConsumerExpandableBlock}
+                      codeSnippet={clientSelect}
                     />
                   );
                 default:
