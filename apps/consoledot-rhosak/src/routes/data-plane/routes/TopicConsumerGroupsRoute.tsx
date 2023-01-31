@@ -21,6 +21,7 @@ export const TopicConsumerGroupsRoute: VoidFunctionComponent<
 > = ({ instanceDetailsHref, instanceTopicsHref, instancesHref }) => {
   const { instance, topic } = useTopicGate();
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
 
   const labels = useConsumerGroupLabels();
@@ -54,7 +55,8 @@ export const TopicConsumerGroupsRoute: VoidFunctionComponent<
   });
 
   const onDeletConsumerGroup = useCallback(
-    ({ groupId }) => {
+    (groupId: string) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       history.push(
         `${ControlPlaneRouteRoot}/${instance.id}/details/topics/${topic.name}/consumer-groups/${groupId}/delete`
       );
@@ -63,7 +65,8 @@ export const TopicConsumerGroupsRoute: VoidFunctionComponent<
   );
 
   const onViewPartition = useCallback(
-    ({ groupId }) => {
+    (groupId: string) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       history.push(
         `${ControlPlaneRouteRoot}/${instance.id}/details/topics/${topic.name}/consumer-groups/${groupId}/view-partition`
       );
@@ -72,7 +75,8 @@ export const TopicConsumerGroupsRoute: VoidFunctionComponent<
   );
 
   const onClickResetOffset = useCallback(
-    ({ groupId }) => {
+    (groupId: string) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       history.push(
         `${ControlPlaneRouteRoot}/${instance.id}/details/topics/${topic.name}/consumer-groups/${groupId}/reset-offset`
       );
@@ -96,7 +100,7 @@ export const TopicConsumerGroupsRoute: VoidFunctionComponent<
         consumerName={consumerName.chips}
         isRowSelected={() => false}
         isColumnSortable={isColumnSortable}
-        onDelete={onDeletConsumerGroup}
+        onDelete={(row) => onDeletConsumerGroup(row.groupId)}
         onSearchConsumer={(value) => {
           consumerName.clear();
           consumerName.toggle(value);
@@ -105,8 +109,8 @@ export const TopicConsumerGroupsRoute: VoidFunctionComponent<
         onPageChange={setPagination}
         onRemoveConsumerChip={consumerName.clear}
         onRemoveConsumerChips={consumerName.clear}
-        onViewPartition={onViewPartition}
-        onViewResetOffset={onClickResetOffset}
+        onViewPartition={(row) => onViewPartition(row.groupId)}
+        onViewResetOffset={(row) => onClickResetOffset(row.groupId)}
       />
     </>
   );

@@ -9,6 +9,7 @@ import { useTopicConsumerGroupGate } from "../useTopicConsumerGroupGate";
 export const TopicConsumerGroupDeleteRoute: VoidFunctionComponent<
   DataPlaneTopicConsumerGroupNavigationsProps
 > = ({ instanceTopicConsumerGroupsHref }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
 
   const { instance, consumerGroup, topic } = useTopicConsumerGroupGate();
@@ -16,6 +17,7 @@ export const TopicConsumerGroupDeleteRoute: VoidFunctionComponent<
   const { mutateAsync } = useDeleteConsumerGroupMutation();
 
   const onCancel = useCallback(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(instanceTopicConsumerGroupsHref(instance.id, topic.name));
   }, [history, instance.id, topic.name, instanceTopicConsumerGroupsHref]);
 
@@ -28,6 +30,7 @@ export const TopicConsumerGroupDeleteRoute: VoidFunctionComponent<
         // TODO: alert
       },
       onSuccess: () => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
         history.replace(
           instanceTopicConsumerGroupsHref(instance.id, topic.name)
         );
@@ -39,6 +42,8 @@ export const TopicConsumerGroupDeleteRoute: VoidFunctionComponent<
     instance?.id,
     instanceTopicConsumerGroupsHref,
     topic.name,
+    consumerGroup.groupId,
+    instance?.adminUrl,
   ]);
 
   return (

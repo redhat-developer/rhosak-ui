@@ -13,9 +13,12 @@ export const ConsumerGroupResetOffsetRoute: VoidFunctionComponent<
   const { instance, consumerGroup } = useConsumerGroupGate();
 
   const { mutateAsync } = useResetConsumerGroupMutation();
+
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
 
   const onCancel = useCallback(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(instanceConsumerGroupsHref(instance.id));
   }, [history, instance.id, instanceConsumerGroupsHref]);
 
@@ -46,11 +49,19 @@ export const ConsumerGroupResetOffsetRoute: VoidFunctionComponent<
           // TODO: alert
         },
         onSuccess: () => {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
           history.replace(instanceConsumerGroupsHref(instance.id));
         },
       });
     },
-    [mutateAsync, history, instance?.id, instanceConsumerGroupsHref]
+    [
+      mutateAsync,
+      history,
+      instance?.id,
+      instanceConsumerGroupsHref,
+      instance.adminUrl,
+      consumerGroup.groupId,
+    ]
   );
 
   return (
