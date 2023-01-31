@@ -1,6 +1,5 @@
 import {
   ConsumerGroupOrderKey,
-  TopicOrderKey,
 } from "@rhoas/kafka-instance-sdk";
 import type { RangeQuery } from "@rhoas/kafka-management-sdk";
 
@@ -22,8 +21,10 @@ export type KafkaInstancesSortableColumn =
   typeof KafkaInstancesSortableColumns[number];
 
 export const KafkaTopicsSortableColumns = [
-  ...Object.values(TopicOrderKey),
-] as const;
+    'partitions',
+    'retention.ms',
+    'retention.bytes',
+  ] as const;
 
 export type KafkaTopicsSortableColumn =
   typeof KafkaTopicsSortableColumns[number];
