@@ -10,8 +10,8 @@ import type {
   ConsumerGroup,
   ConsumerGroupField,
 } from "ui-models/src/models/consumer-group";
-
 import { ConsumerGroupEmptyState, ConsumerGroupStateLabel } from "./components";
+import { useConsumerGroupLabels } from "../../hooks";
 
 type SubUnion<T, U extends T> = U;
 
@@ -30,7 +30,7 @@ export type ConsumerGroupsProps<T extends ConsumerGroup> = {
   onRemoveConsumerChip: (value: string) => void;
   onRemoveConsumerChips: () => void;
 } & Pick<
-  TableViewProps<T, typeof Columns[number]>,
+  TableViewProps<T, (typeof Columns)[number]>,
   | "itemCount"
   | "page"
   | "perPage"
@@ -58,12 +58,7 @@ export const ConsumerGroups = <T extends ConsumerGroup>({
 }: ConsumerGroupsProps<T>) => {
   const { t } = useTranslation("kafka");
 
-  const labels: { [field in typeof Columns[number]]: string } = {
-    groupId: t("consumerGroup.consumer_group_id"),
-    activeConsumers: t("consumerGroup.active_members"),
-    laggingPartitions: t("consumerGroup.partitions_with_lag"),
-    state: t("consumerGroup.state_header"),
-  };
+  const labels = useConsumerGroupLabels();
 
   const isFiltered = consumerName.length > 0;
   return (
@@ -95,12 +90,12 @@ export const ConsumerGroups = <T extends ConsumerGroup>({
                 : undefined
             }
           >
-            {labels[column]}
+            {labels.fields[column]}
           </Th>
         )}
         renderCell={({ column, row, Td, key }) => {
           return (
-            <Td key={key} dataLabel={labels[column]}>
+            <Td key={key} dataLabel={labels.fields[column]}>
               {(() => {
                 switch (column) {
                   case "groupId":
@@ -136,7 +131,7 @@ export const ConsumerGroups = <T extends ConsumerGroup>({
         )}
         isColumnSortable={isColumnSortable}
         filters={{
-          [labels.groupId]: {
+          [labels.fields.groupId]: {
             type: "search",
             chips: consumerName,
             onSearch: onSearchConsumer,

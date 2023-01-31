@@ -1,4 +1,5 @@
 import type {
+  FetchConsumerGroupParams,
   FetchConsumerGroupsParams,
   FetchKafkaMetricsProps,
   FetchKafkasParams,
@@ -107,6 +108,21 @@ export const kafkaQueries = {
           subentity: "consumer-groups",
         },
         params,
+      ] as const,
+    consumerGroup: ({
+      id,
+      adminUrl,
+      consumerGroupId,
+    }: { id?: string; adminUrl?: string } & Omit<
+      FetchConsumerGroupParams,
+      "getConsumerGroupById"
+    >) =>
+      [
+        {
+          ...kafkaQueries.instance._root({ id, adminUrl }),
+          subentity: "consumerGroup",
+        },
+        { consumerGroupId },
       ] as const,
     metrics: {
       _root: ({ id }: { id: string }) =>

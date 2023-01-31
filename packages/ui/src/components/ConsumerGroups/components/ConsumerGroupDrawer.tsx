@@ -114,6 +114,7 @@ export const ConsumerGroupDrawer: FunctionComponent<
     <Drawer
       isExpanded={isExpanded}
       data-ouia-app-id={"dataPlane-consumerGroupDetails"}
+      isInline={true}
     >
       <DrawerContent panelContent={panelContent}>
         <DrawerContentBody className="consumer-group-drawer__drawer-content-body">

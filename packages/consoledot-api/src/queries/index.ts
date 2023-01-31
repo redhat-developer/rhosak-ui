@@ -6,3 +6,4 @@ export * from "./useKafkas";
 export * from "./useTopic";
 export * from "./useTopics";
 export * from "./useUserAccounts";
+export * from "./useConsumerGroup";
