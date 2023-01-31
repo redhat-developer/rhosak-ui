@@ -1,5 +1,5 @@
 import type { ComponentMeta, ComponentStory } from "@storybook/react";
-import { apiError, fakeApi } from "../storiesHelpers";
+import { apiError, fakeApi } from "../../shared/storiesHelpers";
 import { makeGrowingMetrics, makeMetrics } from "./makeMetrics";
 import { Metrics } from "./Metrics";
 import {
@@ -48,7 +48,9 @@ JustCreated.args = {
   getKafkaInstanceMetrics: () =>
     fakeApi(
       {
+        brokers: ["broker1", "broker2"],
         usedDiskSpaceMetrics: {},
+        bytesPerPartitionMetrics: {},
         clientConnectionsMetrics: {},
         connectionAttemptRateMetrics: {},
         connectionsLimit: 100,
@@ -288,7 +290,17 @@ SomeMissingMetricsButApiOk.args = {
   getMetricsKpi,
   getKafkaInstanceMetrics: ({ duration }) =>
     fakeApi({
-      usedDiskSpaceMetrics: makeMetrics(duration, 500, 999, 10 ** 9),
+      brokers: ["broker1", "broker2"],
+      usedDiskSpaceMetrics: {
+        total: makeMetrics(duration, 500, 999, 10 ** 9),
+        "broker 1": makeMetrics(duration, 200, 999, 10 ** 9),
+        "broker 2": makeMetrics(duration, 100, 999, 10 ** 9),
+      },
+      bytesPerPartitionMetrics: {
+        "partition 1": makeMetrics(duration, 0, 2, 10 ** 7),
+        "partition 2": makeMetrics(duration, 0, 4, 10 ** 7),
+        "partition 3": makeMetrics(duration, 0, 6, 10 ** 7),
+      },
       clientConnectionsMetrics: {},
       connectionAttemptRateMetrics: makeMetrics(duration, 0, 100, 1),
       connectionsLimit: 100,
@@ -333,7 +345,17 @@ LimitsReached.args = {
     }),
   getKafkaInstanceMetrics: ({ duration }) =>
     fakeApi({
-      usedDiskSpaceMetrics: makeMetrics(duration, 900, 1100, 10 ** 9),
+      brokers: ["broker1", "broker2"],
+      usedDiskSpaceMetrics: {
+        total: makeMetrics(duration, 500, 999, 10 ** 9),
+        "broker 1": makeMetrics(duration, 200, 999, 10 ** 9),
+        "broker 2": makeMetrics(duration, 100, 999, 10 ** 9),
+      },
+      bytesPerPartitionMetrics: {
+        "lorem partition 1": makeMetrics(duration, 0, 2, 10 ** 7),
+        "lorem partition 2": makeMetrics(duration, 0, 4, 10 ** 7),
+        "lorem partition 3": makeMetrics(duration, 0, 6, 10 ** 7),
+      },
       clientConnectionsMetrics: makeMetrics(duration, 60, 170, 1),
       connectionAttemptRateMetrics: makeMetrics(duration, 4, 130, 1),
       connectionsLimit: 100,

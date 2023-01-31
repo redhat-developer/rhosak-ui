@@ -2,7 +2,7 @@ import { useSelector } from "@xstate/react";
 import { useCallback, useContext } from "react";
 import { KafkaInstanceMetricsContext } from "./KafkaInstanceMetricsProvider";
 import type { KafkaInstanceMetricsMachineContext } from "./machines";
-import type { DurationOptions } from "./types";
+import type { BrokerFilter, DurationOptions, PartitionSelect } from "./types";
 
 type SeletorReturn = KafkaInstanceMetricsMachineContext & {
   isInitialLoading: boolean;
@@ -16,9 +16,13 @@ export function useKafkaInstanceMetrics() {
   const { service } = useContext(KafkaInstanceMetricsContext);
 
   const {
+    selectedToggle,
+    selectedBroker,
+    brokers,
     usedDiskSpaceMetrics,
     clientConnectionsMetrics,
     connectionAttemptRateMetrics,
+    bytesPerPartitionMetrics,
     diskSpaceLimit,
     connectionsLimit,
     connectionRateLimit,
@@ -29,6 +33,7 @@ export function useKafkaInstanceMetrics() {
     isRefreshing,
     isFailed,
     isJustCreated,
+    selectedPartition,
   } = useSelector<typeof service, SeletorReturn>(
     service,
     useCallback(
@@ -44,6 +49,12 @@ export function useKafkaInstanceMetrics() {
     )
   );
 
+  const onBrokerChange = useCallback(
+    (broker: string | undefined) =>
+      service.send({ type: "selectBroker", broker }),
+    [service]
+  );
+
   const onDurationChange = useCallback(
     (duration: DurationOptions) =>
       service.send({ type: "selectDuration", duration }),
@@ -52,10 +63,22 @@ export function useKafkaInstanceMetrics() {
 
   const onRefresh = useCallback(() => service.send("refresh"), [service]);
 
+  const onSelectToggle = useCallback(
+    (value: BrokerFilter) => service.send({ type: "selectToggle", value }),
+    [service]
+  );
+
+  const onSelectPartition = useCallback(
+    (value: PartitionSelect) =>
+      service.send({ type: "selectPartition", value }),
+    [service]
+  );
+
   return {
     usedDiskSpaceMetrics,
     clientConnectionsMetrics,
     connectionAttemptRateMetrics,
+    bytesPerPartitionMetrics,
     diskSpaceLimit,
     connectionsLimit,
     connectionRateLimit,
@@ -68,5 +91,12 @@ export function useKafkaInstanceMetrics() {
     duration,
     onDurationChange,
     onRefresh,
+    onBrokerChange,
+    selectedBroker,
+    brokers,
+    selectedToggle,
+    onSelectToggle,
+    onSelectPartition,
+    selectedPartition,
   };
 }

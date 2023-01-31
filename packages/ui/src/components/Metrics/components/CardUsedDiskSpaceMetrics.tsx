@@ -7,15 +7,17 @@ import {
   ChartLegend,
   ChartThemeColor,
   ChartVoronoiContainer,
+  ChartThreshold,
 } from "@patternfly/react-charts";
 import {
   chart_color_blue_300,
   chart_color_cyan_300,
+  chart_color_black_500,
 } from "@patternfly/react-tokens";
 import type { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { chartHeight, chartPadding } from "../consts";
-import type { PartitionBytesMetric, PartitionSelect } from "../types";
+import type { BrokerBytesMetric, BrokerFilter } from "../types";
 import { ChartSkeletonLoader } from "./ChartSkeletonLoader";
 import { useChartWidth } from "./useChartWidth";
 import {
@@ -29,10 +31,12 @@ const colors = [chart_color_cyan_300.value, chart_color_blue_300.value];
 
 type ChartData = {
   color: string;
-  area: PartitionChartData[];
+  softLimitColor: string;
+  area: BrokerChartData[];
+  softLimit: BrokerChartData[];
 };
 
-type PartitionChartData = {
+type BrokerChartData = {
   name: string;
   x: number;
   y: number;
@@ -40,42 +44,48 @@ type PartitionChartData = {
 
 type LegendData = {
   name: string;
+  symbol?: {
+    fill?: string;
+    type?: string;
+  };
 };
 
-export type ChartLogSizePerPartitionProps = {
-  partitions: PartitionBytesMetric;
-  topic: string | undefined;
+export type ChartUsedDiskSpaceProps = {
+  metrics: BrokerBytesMetric;
+  broker: string | undefined;
   duration: number;
   isLoading: boolean;
   emptyState: ReactElement;
-  selectedPartition: PartitionSelect;
+  brokerToggle: BrokerFilter;
+  usageLimit?: number;
 };
-export const ChartLogSizePerPartition: FunctionComponent<
-  ChartLogSizePerPartitionProps
-> = ({
-  partitions,
-  topic,
+export const ChartUsedDiskSpace: FunctionComponent<ChartUsedDiskSpaceProps> = ({
+  metrics,
+  broker,
   duration,
   isLoading,
   emptyState,
-  selectedPartition,
+  brokerToggle,
+  usageLimit,
 }) => {
   const { t } = useTranslation();
   const [containerRef, width] = useChartWidth();
 
   const { chartData, legendData, tickValues } = getChartData(
-    partitions,
-    topic,
+    metrics,
+    broker,
     duration,
-    selectedPartition
+    brokerToggle,
+    t("metrics:limit"),
+    usageLimit
   );
 
-  const hasMetrics = Object.keys(partitions).length > 0;
+  const hasMetrics = Object.keys(metrics).length > 0;
 
   const showDate = shouldShowDate(duration);
 
   return (
-    <div ref={containerRef} style={{ height: "500px" }}>
+    <div ref={containerRef} style={{ height: "400px" }}>
       {(() => {
         switch (true) {
           case isLoading:
@@ -123,6 +133,15 @@ export const ChartLogSizePerPartition: FunctionComponent<
                     <ChartLine key={`chart-area-${index}`} data={value.area} />
                   ))}
                 </ChartGroup>
+                <ChartThreshold
+                  key={`chart-softlimit`}
+                  data={chartData[0].softLimit}
+                  style={{
+                    data: {
+                      stroke: chartData[0].softLimitColor,
+                    },
+                  }}
+                />
               </Chart>
             );
           }
@@ -133,54 +152,78 @@ export const ChartLogSizePerPartition: FunctionComponent<
 };
 
 export function getChartData(
-  partitions: PartitionBytesMetric,
-  topic: string | undefined,
+  metrics: BrokerBytesMetric,
+  broker: string | undefined,
   duration: number,
-  selectedPartition: PartitionSelect
+  brokerToggle: BrokerFilter,
+  limitLabel: string,
+  usageLimit?: number
 ): {
   legendData: Array<LegendData>;
   chartData: Array<ChartData>;
   tickValues: number[];
 } {
-  const legendData: Array<LegendData> = [];
+  const legendData = [
+    usageLimit
+      ? {
+          name: limitLabel,
+          symbol: { fill: chart_color_black_500.value, type: "threshold" },
+        }
+      : undefined,
+  ].filter((d) => !!d) as Array<LegendData>;
+
   const chartData: Array<ChartData> = [];
-  selectedPartition === "Top10"
-    ? Object.entries(partitions)
-        .slice(0, 10)
-        .map(([partition, dataMap], index) => {
-          const name = topic ? `${topic}/${partition}` : partition;
-          const color = colors[index];
-          legendData.push({
-            name,
-          });
-          const area: Array<PartitionChartData> = [];
+  const softLimit: Array<BrokerChartData> = [];
+  const softLimitColor = chart_color_black_500.value;
 
-          Object.entries(dataMap).map(([timestamp, value]) => {
-            area.push({ name, x: parseInt(timestamp, 10), y: value });
-          });
-          chartData.push({ color, area });
-        })
-    : Object.entries(partitions)
-        .slice(0, 20)
-        .map(([partition, dataMap], index) => {
-          const name = topic ? `${topic}/${partition}` : partition;
-          const color = colors[index];
-          legendData.push({
-            name,
-          });
-          const area: Array<PartitionChartData> = [];
+  if (broker && metrics[broker]) {
+    const area: Array<BrokerChartData> = [];
+    const color = chart_color_blue_300.value;
+    legendData.push({ name: broker, symbol: { fill: color } });
+    Object.entries(metrics[broker]).forEach(([timestamp, bytes]) => {
+      area.push({ name: broker, x: parseInt(timestamp, 10), y: bytes });
+    });
+    chartData.push({ color, softLimitColor, area, softLimit });
+  } else if (brokerToggle === "total") {
+    const area: Array<BrokerChartData> = [];
 
-          Object.entries(dataMap).map(([timestamp, value]) => {
-            area.push({ name, x: parseInt(timestamp, 10), y: value });
-          });
-          chartData.push({ color, area });
+    const color = chart_color_blue_300.value;
+    legendData.push({ name: "Instance", symbol: { fill: color } });
+    Object.entries(metrics[brokerToggle]).forEach(([timestamp, bytes]) => {
+      area.push({ name: "Instance", x: parseInt(timestamp, 10), y: bytes });
+    });
+    chartData.push({ color, softLimitColor, area, softLimit });
+  } else {
+    Object.entries(metrics)
+      .filter((metric) => metric[0] !== "total")
+      .map(([metric, dataMap], index) => {
+        const name = metric;
+
+        const color = colors[index];
+        legendData.push({ name });
+        const area: Array<BrokerChartData> = [];
+
+        Object.entries(dataMap).forEach(([timestamp, value]) => {
+          area.push({ name, x: parseInt(timestamp, 10), y: value });
         });
+        chartData.push({ color, softLimitColor, area, softLimit });
+      });
+  }
 
   const allTimestamps = Array.from(
-    new Set(Object.values(partitions).flatMap((m) => Object.keys(m)))
+    new Set(Object.values(metrics).flatMap((m) => Object.keys(m)))
   );
   const tickValues = timestampsToTicks(allTimestamps, duration);
 
+  if (usageLimit) {
+    tickValues.forEach((timestamp) =>
+      softLimit.push({
+        name: limitLabel,
+        x: timestamp,
+        y: usageLimit,
+      })
+    );
+  }
   return {
     legendData,
     chartData,
