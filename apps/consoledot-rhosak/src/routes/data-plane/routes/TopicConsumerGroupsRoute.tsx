@@ -56,7 +56,7 @@ export const TopicConsumerGroupsRoute: VoidFunctionComponent<
   const onDeletConsumerGroup = useCallback(
     ({ groupId }) => {
       history.push(
-        `${ControlPlaneRouteRoot}/${instance.id}/details/topic/${topic.name}/consumer-groups/${groupId}/delete`
+        `${ControlPlaneRouteRoot}/${instance.id}/details/topics/${topic.name}/consumer-groups/${groupId}/delete`
       );
     },
     [history, instance.id, topic.name]
@@ -65,7 +65,7 @@ export const TopicConsumerGroupsRoute: VoidFunctionComponent<
   const onViewPartition = useCallback(
     ({ groupId }) => {
       history.push(
-        `${ControlPlaneRouteRoot}/${instance.id}/details/topic/${topic.name}/consumer-groups/${groupId}/view-partition`
+        `${ControlPlaneRouteRoot}/${instance.id}/details/topics/${topic.name}/consumer-groups/${groupId}/view-partition`
       );
     },
     [history, instance.id, topic.name]
@@ -74,7 +74,7 @@ export const TopicConsumerGroupsRoute: VoidFunctionComponent<
   const onClickResetOffset = useCallback(
     ({ groupId }) => {
       history.push(
-        `${ControlPlaneRouteRoot}/${instance.id}/details/topic/${topic.name}/consumer-groups/${groupId}/${groupId}/reset-offset`
+        `${ControlPlaneRouteRoot}/${instance.id}/details/topics/${topic.name}/consumer-groups/${groupId}/reset-offset`
       );
     },
     [history, instance.id, topic.name]

@@ -93,6 +93,87 @@ export const DataPlaneRoutes: VoidFunctionComponent = () => {
                   <Route
                     path={`${DataPlaneRoutePath}/topics/:topicName/consumer-groups`}
                   >
+                    <RedirectOnGateError
+                      redirectUrl={instanceTopicsHref(match.params.id)}
+                    >
+                      <Switch>
+                        <Route
+                          path={`${DataPlaneTopicRoutePath}/consumer-groups/:consumerGroupId/view-partition`}
+                        >
+                          <Route
+                            path={`${DataPlaneTopicRoutePath}/consumer-groups/:consumerGroupId/view-partition/delete`}
+                          >
+                            <TopicConsumerGroupDeleteRoute
+                              instancesHref={"/kafkas"}
+                              instanceTopicConsumerGroupsHref={
+                                instanceTopicConsumerGroupHref
+                              }
+                              viewTopicPartitionConsumerGroupHref={
+                                viewTopicPartitionConsumerGroupHref
+                              }
+                              instanceDetailsHref={instanceDetailsHref}
+                              instanceTopicsHref={instanceTopicsHref}
+                            />
+                          </Route>
+                          <Route
+                            path={`${DataPlaneTopicRoutePath}/consumer-groups/:consumerGroupId/view-partition/reset-offset`}
+                          >
+                            <TopicConsumerGroupResetOffsetRoute
+                              instancesHref={"/kafkas"}
+                              instanceTopicConsumerGroupsHref={
+                                instanceTopicConsumerGroupHref
+                              }
+                              viewTopicPartitionConsumerGroupHref={
+                                viewTopicPartitionConsumerGroupHref
+                              }
+                              instanceDetailsHref={instanceDetailsHref}
+                              instanceTopicsHref={instanceTopicsHref}
+                            />
+                          </Route>
+                          <TopicConsumerGroupViewPartitionRoute
+                            instancesHref={"/kafkas"}
+                            instanceTopicConsumerGroupsHref={
+                              instanceTopicConsumerGroupHref
+                            }
+                            viewTopicPartitionConsumerGroupHref={
+                              viewTopicPartitionConsumerGroupHref
+                            }
+                            instanceDetailsHref={instanceDetailsHref}
+                            instanceTopicsHref={instanceTopicsHref}
+                          />
+                        </Route>
+                        <Route
+                          path={`${DataPlaneTopicRoutePath}/consumer-groups/:consumerGroupId/reset-offset`}
+                        >
+                          <TopicConsumerGroupResetOffsetRoute
+                            instancesHref={"/kafkas"}
+                            instanceTopicConsumerGroupsHref={
+                              instanceTopicConsumerGroupHref
+                            }
+                            viewTopicPartitionConsumerGroupHref={
+                              viewTopicPartitionConsumerGroupHref
+                            }
+                            instanceDetailsHref={instanceDetailsHref}
+                            instanceTopicsHref={instanceTopicsHref}
+                          />
+                        </Route>
+                        <Route
+                          path={`${DataPlaneTopicRoutePath}/consumer-groups/:consumerGroupId/delete`}
+                        >
+                          <TopicConsumerGroupDeleteRoute
+                            instancesHref={"/kafkas"}
+                            instanceTopicConsumerGroupsHref={
+                              instanceTopicConsumerGroupHref
+                            }
+                            viewTopicPartitionConsumerGroupHref={
+                              viewTopicPartitionConsumerGroupHref
+                            }
+                            instanceDetailsHref={instanceDetailsHref}
+                            instanceTopicsHref={instanceTopicsHref}
+                          />
+                        </Route>
+                      </Switch>
+                    </RedirectOnGateError>
                     <TopicConsumerGroupsRoute
                       instancesHref={"/kafkas"}
                       instanceDetailsHref={instanceDetailsHref}
@@ -154,7 +235,6 @@ export const DataPlaneRoutes: VoidFunctionComponent = () => {
                       instanceTopicsHref={instanceTopicsHref}
                     />
                   </Route>
-
                   <Redirect
                     from={`${DataPlaneRoutePath}/topics/:topicName/`}
                     to={`${DataPlaneRoutePath}/topics/:topicName/consumer-groups`}
@@ -219,38 +299,22 @@ export const DataPlaneRoutes: VoidFunctionComponent = () => {
                       }
                     />
                   </Route>
-                  <Route
-                    path={`${DataPlaneRoutePath}/consumer-groups/:consumerGroupId/delete`}
-                    exact
-                  >
-                    <ConsumerGroupDeleteRoute
-                      instancesHref={"/kafkas"}
-                      instanceDetailsHref={instanceDetailsHref}
-                      instanceConsumerGroupsHref={instanceConsumerGroupsHref}
-                      viewPartitionConsumerGroupHref={
-                        viewPartitionConsumerGroupHref
-                      }
-                    />
-                  </Route>
                 </Switch>
               </RedirectOnGateError>
             )}
           />
           <Route
-            path={`${DataPlaneTopicRoutePath}/consumer-groups`}
+            path={`${DataPlaneRoutePath}/topics/:topicName/consumer-groups`}
             render={({ match }) => (
               <RedirectOnGateError
-                redirectUrl={instanceTopicConsumerGroupHref(
-                  match.params.id,
-                  match.params.topicName
-                )}
+                redirectUrl={instanceTopicsHref(match.params.id)}
               >
                 <Switch>
                   <Route
-                    path={`${DataPlaneTopicRoutePath}/consumer-groups/:consumerGroupId/view-partition`}
+                    path={`${DataPlaneRoutePath}/topics/:topicName/consumer-groups/:consumerGroupId/view-partition`}
                   >
                     <Route
-                      path={`${DataPlaneTopicRoutePath}/consumer-groups/:consumerGroupId/view-partition/delete`}
+                      path={`${DataPlaneRoutePath}/topics/:topicName/consumer-groups/:consumerGroupId/view-partition/delete`}
                     >
                       <TopicConsumerGroupDeleteRoute
                         instancesHref={"/kafkas"}
@@ -325,6 +389,7 @@ export const DataPlaneRoutes: VoidFunctionComponent = () => {
               </RedirectOnGateError>
             )}
           />
+
           <Redirect
             from={`${DataPlaneRoutePath}`}
             to={`${DataPlaneRoutePath}/dashboard`}
