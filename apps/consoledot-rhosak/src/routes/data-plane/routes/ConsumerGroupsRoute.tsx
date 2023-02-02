@@ -10,7 +10,6 @@ import {
 import type { VoidFunctionComponent } from "react";
 import { useCallback } from "react";
 import { ConsumerGroups, useConsumerGroupLabels } from "ui";
-import { ControlPlaneRouteRoot } from "../../control-plane/routesConsts";
 import type { ControlPlaneNavigationProps } from "../../control-plane/routesConsts";
 import { useDataPlaneGate } from "../useDataPlaneGate";
 import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
@@ -40,7 +39,7 @@ export const ConsumerGroupsRoute: VoidFunctionComponent<
   );
   const [isColumnSortable, sort, sortDirection] = useSortableSearchParams(
     KafkaConsumerGroupSortableColumns,
-    labels.fields
+    labels.fields.groupId.toString
   );
   const { data } = useConsumerGroups({
     id: instance?.id,
@@ -55,6 +54,7 @@ export const ConsumerGroupsRoute: VoidFunctionComponent<
   const onDeletConsumerGroup = useCallback(
     (groupId: string) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+      //TODO: remove hardcode value
       history.push(
         `${instanceConsumerGroupsHref(instance.id)}/${groupId}/delete`
       );
@@ -65,6 +65,7 @@ export const ConsumerGroupsRoute: VoidFunctionComponent<
   const onViewPartition = useCallback(
     (groupId: string) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+      //TODO: remove hardcode value
       history.push(
         `${instanceConsumerGroupsHref(instance.id)}/${groupId}/view-partition`
       );
@@ -75,6 +76,7 @@ export const ConsumerGroupsRoute: VoidFunctionComponent<
   const onClickResetOffset = useCallback(
     (groupId: string) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+      //TODO: remove hardcode value
       history.push(
         `${instanceConsumerGroupsHref(instance.id)}/${groupId}/reset-offset`
       );

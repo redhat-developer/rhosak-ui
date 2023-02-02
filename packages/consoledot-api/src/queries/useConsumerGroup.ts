@@ -24,6 +24,9 @@ export function useConsumerGroup(
       if (!params.adminUrl) {
         return Promise.reject("Invalid adminUrl");
       }
+      if (!params.consumerGroupId) {
+        return Promise.reject("Invalid consumerGroupId");
+      }
       const api = consumerGroups(params.adminUrl);
 
       return fetchConsumerGroup({

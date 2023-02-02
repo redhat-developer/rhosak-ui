@@ -3,7 +3,7 @@ import { render, waitForI18n } from "../../../test-utils";
 import * as stories from "./ConsumerGroupResetOffset.stories";
 import { userEvent } from "@storybook/testing-library";
 
-const { NoTopicSelected, ResetOffsetErrorMessage } = composeStories(stories);
+const { ResetOffset, ResetOffsetErrorMessage } = composeStories(stories);
 
 describe("Consumer group reset offset Modal", () => {
   const onClickResetOffset = jest.fn();
@@ -37,7 +37,7 @@ describe("Consumer group reset offset Modal", () => {
   });
 
   it("Reset offset when consumer group is disconnected", async () => {
-    const comp = render(<NoTopicSelected />);
+    const comp = render(<ResetOffset />);
 
     await waitForI18n(comp);
 

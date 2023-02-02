@@ -41,7 +41,7 @@ const deleteTopicHref = (id: string, topic: string) =>
   `${topicHref(id, topic)}/delete`;
 
 export const instanceConsumerGroupsHref = (id: string) =>
-  `${ControlPlaneRouteRoot}/${id}/details/consumer-groups`;
+  `${instanceDetailsHref(id)}/consumer-groups`;
 
 const viewPartitionConsumerGroupHref = (id: string, consumerGroupId: string) =>
   `${instanceDetailsHref(

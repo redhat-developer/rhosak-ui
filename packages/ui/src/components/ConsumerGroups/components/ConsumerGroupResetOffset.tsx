@@ -18,7 +18,7 @@ import {
   Thead,
   Tr,
 } from "@patternfly/react-table";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { Consumer } from "ui-models/src/models/consumer-group";
 import "../ConsumerGroup.css";
@@ -37,7 +37,7 @@ export type ConsumerGroupResetOffsetProps = {
   state: ConsumerGroupState;
   groupId: string;
   topics: string[];
-  consumers: ConsumerRow[];
+  consumers: Consumer[];
   onClickClose: () => void;
   onClickResetOffset: (
     topic: string,
@@ -70,17 +70,19 @@ export const ConsumerGroupResetOffset: FunctionComponent<
 
   const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false);
 
-  const [selectableConsumer, setSelectableConsumer] =
-    useState<ConsumerRow[]>(consumers);
+  const [selectedConsumer, setSelectedConsumer] = useState<Consumer[]>([]);
 
   const isDisconnected = state !== "Stable";
+
+  const consumerList =
+    consumers.filter((consumer) => consumer.topic === selectedTopic) || [];
 
   const isResetOffsetDisabled =
     !selectedTopic ||
     !selectedOffset ||
     !isCheckboxChecked ||
     !isDisconnected ||
-    selectableConsumer.filter(({ selected }) => selected === true).length === 0;
+    selectedConsumer.length === 0;
 
   const tableColumns = {
     partition: t("consumerGroup.partition"),
@@ -93,25 +95,26 @@ export const ConsumerGroupResetOffset: FunctionComponent<
     new_offset: t("consumerGroup.new_offset"),
   };
 
+  const areAllConsumerSelected =
+    selectedConsumer.length === consumerList.length;
+
   const onSelectAllConsumer = (isSelecting = true) => {
-    setSelectableConsumer(
-      selectableConsumer.map((consumer) => {
-        consumer.selected = isSelecting;
-        return consumer;
-      })
+    setSelectedConsumer(isSelecting ? consumerList : []);
+  };
+
+  const isConsumerSelected = (consumer: Consumer) => {
+    return selectedConsumer.includes(consumer);
+  };
+  const onSelect = (consumer: Consumer, isSelecting = true) => {
+    setSelectedConsumer(
+      isSelecting
+        ? [...selectedConsumer, consumer]
+        : selectedConsumer.filter((r) => r !== consumer)
     );
   };
 
-  const onSelect = (rowId: number, selecting: boolean) => {
-    const selectedConsumers = [...selectableConsumer];
-    selectedConsumers[rowId].selected = !selecting;
-    setSelectableConsumer(selectedConsumers);
-  };
-
   const onResetOffset = useCallback(() => {
-    const partitions = selectableConsumer
-      .filter(({ selected }) => selected === true)
-      .map(({ partition }) => partition);
+    const partitions = selectedConsumer.map(({ partition }) => partition);
     onClickResetOffset(
       selectedTopic,
       selectedOffset,
@@ -122,7 +125,7 @@ export const ConsumerGroupResetOffset: FunctionComponent<
     onClickResetOffset,
     selectedTopic,
     selectedOffset,
-    selectableConsumer,
+    selectedConsumer,
     customOffsetValue,
   ]);
 
@@ -222,7 +225,7 @@ export const ConsumerGroupResetOffset: FunctionComponent<
           )}
         </StackItem>
         <StackItem>
-          {isDisconnected && consumers.length > 0 && selectedTopic && (
+          {isDisconnected && consumerList.length > 0 && selectedTopic && (
             <Stack hasGutter>
               <StackItem>
                 <TableComposable
@@ -235,11 +238,7 @@ export const ConsumerGroupResetOffset: FunctionComponent<
                         select={{
                           onSelect: (_event, isSelecting) =>
                             onSelectAllConsumer(isSelecting),
-                          isSelected:
-                            consumers.length ===
-                            selectableConsumer.filter(
-                              (consumer) => consumer.selected === true
-                            ).length,
+                          isSelected: areAllConsumerSelected,
                         }}
                       />
                       <Th>{tableColumns.partition}</Th>
@@ -251,15 +250,15 @@ export const ConsumerGroupResetOffset: FunctionComponent<
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {selectableConsumer.map((consumer, index) => {
+                    {consumerList.map((consumer, index) => {
                       return (
                         <Tr key={index}>
                           <Td
                             select={{
                               rowIndex: index,
-                              isSelected: consumer.selected || false,
-                              onSelect: (_event) =>
-                                onSelect(index, consumer.selected || false),
+                              isSelected: isConsumerSelected(consumer),
+                              onSelect: (_event, isSelecting) =>
+                                onSelect(consumer, isSelecting),
                             }}
                           />
                           <Td dataLabel={tableColumns.partition}>
@@ -279,7 +278,7 @@ export const ConsumerGroupResetOffset: FunctionComponent<
                             {consumer.lag}
                           </Td>
                           <Td dataLabel={tableColumns.offset_lag}>
-                            {consumer.selected && selectedOffset
+                            {isConsumerSelected(consumer) && selectedOffset
                               ? selectedOffset === "absolute"
                                 ? customOffsetValue || 0
                                 : selectedOffset
