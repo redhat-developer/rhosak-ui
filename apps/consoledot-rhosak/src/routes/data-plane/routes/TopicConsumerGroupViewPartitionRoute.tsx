@@ -1,4 +1,4 @@
-import { FunctionComponent, useCallback } from "react";
+import { useCallback } from "react";
 import type { VoidFunctionComponent } from "react";
 import { ConsumerGroupDrawer } from "ui";
 import type { DataPlaneTopicConsumerGroupNavigationsProps } from "../routesConsts";

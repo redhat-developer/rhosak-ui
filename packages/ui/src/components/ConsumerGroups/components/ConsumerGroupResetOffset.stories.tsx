@@ -1,6 +1,6 @@
 import type { ComponentStory, ComponentMeta } from "@storybook/react";
 import { ConsumerGroupResetOffset } from "./ConsumerGroupResetOffset";
-import { Consumer } from "ui-models/src/models/consumer-group";
+import type { Consumer } from "ui-models/src/models/consumer-group";
 
 const consumer: Consumer[] = [
   {

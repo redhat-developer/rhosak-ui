@@ -34,13 +34,15 @@ export const TopicConsumerGroupsRoute: VoidFunctionComponent<
     [perPage, setPaginationQuery]
   );
 
+  const name = labels.fields.groupId;
+
   const consumerName = useURLSearchParamsChips(
     "consumer",
     resetPaginationQuery
   );
   const [isColumnSortable, sort, sortDirection] = useSortableSearchParams(
     KafkaConsumerGroupSortableColumns,
-    labels.fields.groupId.toString
+    { name }
   );
 
   const { data } = useConsumerGroups({
@@ -56,8 +58,8 @@ export const TopicConsumerGroupsRoute: VoidFunctionComponent<
 
   const onDeletConsumerGroup = useCallback(
     (groupId: string) => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       //TODO: remove hardcode value
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       history.push(
         `${ControlPlaneRouteRoot}/${instance.id}/details/topics/${topic.name}/consumer-groups/${groupId}/delete`
       );
@@ -67,8 +69,8 @@ export const TopicConsumerGroupsRoute: VoidFunctionComponent<
 
   const onViewPartition = useCallback(
     (groupId: string) => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       //TODO: remove hardcode value
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       history.push(
         `${ControlPlaneRouteRoot}/${instance.id}/details/topics/${topic.name}/consumer-groups/${groupId}/view-partition`
       );
@@ -78,8 +80,8 @@ export const TopicConsumerGroupsRoute: VoidFunctionComponent<
 
   const onClickResetOffset = useCallback(
     (groupId: string) => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       //TODO: remove hardcode value
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       history.push(
         `${ControlPlaneRouteRoot}/${instance.id}/details/topics/${topic.name}/consumer-groups/${groupId}/reset-offset`
       );

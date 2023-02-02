@@ -33,13 +33,15 @@ export const ConsumerGroupsRoute: VoidFunctionComponent<
     [perPage, setPaginationQuery]
   );
 
+  const name = labels.fields.groupId;
+
   const consumerName = useURLSearchParamsChips(
     "consumer",
     resetPaginationQuery
   );
   const [isColumnSortable, sort, sortDirection] = useSortableSearchParams(
     KafkaConsumerGroupSortableColumns,
-    labels.fields.groupId.toString
+    { name }
   );
   const { data } = useConsumerGroups({
     id: instance?.id,
@@ -53,8 +55,8 @@ export const ConsumerGroupsRoute: VoidFunctionComponent<
 
   const onDeletConsumerGroup = useCallback(
     (groupId: string) => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       //TODO: remove hardcode value
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       history.push(
         `${instanceConsumerGroupsHref(instance.id)}/${groupId}/delete`
       );
@@ -64,8 +66,8 @@ export const ConsumerGroupsRoute: VoidFunctionComponent<
 
   const onViewPartition = useCallback(
     (groupId: string) => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       //TODO: remove hardcode value
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       history.push(
         `${instanceConsumerGroupsHref(instance.id)}/${groupId}/view-partition`
       );
@@ -75,8 +77,8 @@ export const ConsumerGroupsRoute: VoidFunctionComponent<
 
   const onClickResetOffset = useCallback(
     (groupId: string) => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       //TODO: remove hardcode value
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       history.push(
         `${instanceConsumerGroupsHref(instance.id)}/${groupId}/reset-offset`
       );
