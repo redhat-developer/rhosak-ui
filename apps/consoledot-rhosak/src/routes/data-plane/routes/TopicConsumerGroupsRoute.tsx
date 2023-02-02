@@ -40,7 +40,7 @@ export const TopicConsumerGroupsRoute: VoidFunctionComponent<
   );
   const [isColumnSortable, sort, sortDirection] = useSortableSearchParams(
     KafkaConsumerGroupSortableColumns,
-    labels.fields
+    labels.fields.groupId.toString
   );
 
   const { data } = useConsumerGroups({
@@ -57,6 +57,7 @@ export const TopicConsumerGroupsRoute: VoidFunctionComponent<
   const onDeletConsumerGroup = useCallback(
     (groupId: string) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+      //TODO: remove hardcode value
       history.push(
         `${ControlPlaneRouteRoot}/${instance.id}/details/topics/${topic.name}/consumer-groups/${groupId}/delete`
       );
@@ -67,6 +68,7 @@ export const TopicConsumerGroupsRoute: VoidFunctionComponent<
   const onViewPartition = useCallback(
     (groupId: string) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+      //TODO: remove hardcode value
       history.push(
         `${ControlPlaneRouteRoot}/${instance.id}/details/topics/${topic.name}/consumer-groups/${groupId}/view-partition`
       );
@@ -77,6 +79,7 @@ export const TopicConsumerGroupsRoute: VoidFunctionComponent<
   const onClickResetOffset = useCallback(
     (groupId: string) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+      //TODO: remove hardcode value
       history.push(
         `${ControlPlaneRouteRoot}/${instance.id}/details/topics/${topic.name}/consumer-groups/${groupId}/reset-offset`
       );

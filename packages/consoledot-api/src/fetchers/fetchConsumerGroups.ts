@@ -37,7 +37,7 @@ export async function fetchConsumerGroups({
     topic,
     groupId,
     direction,
-    sort as "name"
+    sort
   );
   const groups = (response.data.items || []).map<ConsumerGroup>((t) => ({
     groupId: t.groupId || "",

@@ -1,8 +1,8 @@
 import type { ComponentStory, ComponentMeta } from "@storybook/react";
 import { ConsumerGroupResetOffset } from "./ConsumerGroupResetOffset";
-import type { ConsumerRow } from "./ConsumerGroupResetOffset";
+import { Consumer } from "ui-models/src/models/consumer-group";
 
-const consumer: ConsumerRow[] = [
+const consumer: Consumer[] = [
   {
     groupId: "1",
     topic: "test-topic",
@@ -11,16 +11,14 @@ const consumer: ConsumerRow[] = [
     logEndOffset: 1,
     lag: 0,
     memberId: "123456789",
-    selected: true,
   },
   {
-    groupId: "2",
+    groupId: "1",
     topic: "test",
     partition: 1,
     offset: 3,
     logEndOffset: 1,
     lag: 0,
-    selected: true,
   },
   {
     groupId: "3",
@@ -29,7 +27,6 @@ const consumer: ConsumerRow[] = [
     offset: 3,
     logEndOffset: 1,
     lag: 0,
-    selected: true,
   },
   {
     groupId: "4",
@@ -38,7 +35,6 @@ const consumer: ConsumerRow[] = [
     offset: 3,
     logEndOffset: 1,
     lag: 0,
-    selected: false,
   },
   {
     groupId: "4",
@@ -47,13 +43,11 @@ const consumer: ConsumerRow[] = [
     offset: 3,
     logEndOffset: 1,
     lag: 0,
-    selected: false,
   },
 ];
 
 const getTopics = () => {
   const topics = consumer.map((consumer) => consumer.topic);
-
   const distinctTopics = [...new Set(topics)];
   return distinctTopics;
 };
@@ -84,8 +78,8 @@ const Template: ComponentStory<typeof ConsumerGroupResetOffset> = (
   />
 );
 
-export const NoTopicSelected = Template.bind({});
-NoTopicSelected.args = {
+export const ResetOffset = Template.bind({});
+ResetOffset.args = {
   isModalOpen: true,
 };
 
