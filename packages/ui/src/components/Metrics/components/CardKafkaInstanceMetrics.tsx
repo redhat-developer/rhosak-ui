@@ -14,7 +14,6 @@ import { useTranslation } from "react-i18next";
 import type {
   BrokerBytesMetric,
   BrokerFilter,
-  BrokerValue,
   DurationOptions,
   PartitionBytesMetric,
   PartitionSelect,
@@ -40,6 +39,7 @@ export type CardKafkaInstanceMetricsLimits = {
 
 export type CardKafkaInstanceMetricsProps = {
   usedDiskMetrics: BrokerBytesMetric;
+  brokers: string[];
   clientConnectionsMetrics: TimeSeriesMetrics;
   connectionAttemptRateMetrics: TimeSeriesMetrics;
   duration: DurationOptions;
@@ -48,8 +48,8 @@ export type CardKafkaInstanceMetricsProps = {
   isInitialLoading: boolean;
   isLoading: boolean;
   isJustCreated: boolean;
-  selectedBroker: BrokerValue | undefined;
-  onSelectedBroker: (broker: BrokerValue | undefined) => void;
+  selectedBroker: string | undefined;
+  onSelectedBroker: (broker: string | undefined) => void;
   onDurationChange: (duration: DurationOptions) => void;
   selectToggle: BrokerFilter;
   onSelectedToggle: (value: BrokerFilter) => void;
@@ -68,6 +68,7 @@ export const CardKafkaInstanceMetrics: FunctionComponent<
   CardKafkaInstanceMetricsProps
 > = ({
   usedDiskMetrics,
+  brokers,
   clientConnectionsMetrics,
   connectionAttemptRateMetrics,
   duration,
@@ -104,6 +105,7 @@ export const CardKafkaInstanceMetrics: FunctionComponent<
         onRefresh={onRefresh}
         selectedBroker={selectedBroker}
         onSetSelectedBroker={onSelectedBroker}
+        brokerList={brokers}
       />
       {(() => {
         switch (true) {

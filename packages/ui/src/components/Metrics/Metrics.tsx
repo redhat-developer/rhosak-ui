@@ -135,6 +135,7 @@ const ConnectedKafkaInstanceMetrics: VoidFunctionComponent = () => {
     connectionRateLimit,
     onDurationChange,
     onRefresh,
+    brokers,
     onBrokerChange,
     selectedBroker,
     selectedToggle,
@@ -161,6 +162,7 @@ const ConnectedKafkaInstanceMetrics: VoidFunctionComponent = () => {
       diskSpaceLimit={diskSpaceLimit || 0}
       connectionsLimit={connectionsLimit || 0}
       connectionRateLimit={connectionRateLimit || 0}
+      brokers={brokers}
       selectedBroker={selectedBroker}
       onSelectedBroker={onBrokerChange}
       selectToggle={selectedToggle}

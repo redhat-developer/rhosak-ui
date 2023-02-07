@@ -6,6 +6,7 @@ export default {
   component: FilterByBroker,
   args: {
     selectedBroker: undefined,
+    brokerList: ["Broker1", "Broker2", "Broker3"],
   },
 } as ComponentMeta<typeof FilterByBroker>;
 
