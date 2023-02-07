@@ -26,12 +26,14 @@ export async function fetchTopicsMetrics({
   const response = await getMetricsByRangeQuery(id, duration, interval, [
     "kafka_topic:kafka_server_brokertopicmetrics_bytes_in_total:rate5m",
     "kafka_topic:kafka_server_brokertopicmetrics_bytes_out_total:rate5m",
-    "kafka_topic:kafka_log_log_size:sum",
+    "kas_topic_partition_log_size_bytes",
     "kafka_topic:kafka_server_brokertopicmetrics_messages_in_total:rate5m",
   ]);
 
   // Remove all results with no data. Not sure this can really  happen but since
   // the types allow for undefined we need to do a bit of defensive programming.
+
+  // response.data.items && response.data.items.filter((m) => m.metric?.topic === "test2" ? console.log(m) : console.log([]))
   const safeMetrics: SafeRangeQuery[] = (response.data.items || []).filter(
     (m) =>
       // defensive programming
@@ -53,6 +55,7 @@ export async function fetchTopicsMetrics({
   const incomingMessageRate: TimeSeriesMetrics = {};
 
   filteredMetrics.forEach((m) => {
+    console.log(m);
     const { __name__: name, topic } = m.metric;
 
     function addAggregatedTotalBytesTo(metric: TimeSeriesMetrics) {
@@ -78,7 +81,7 @@ export async function fetchTopicsMetrics({
       case "kafka_topic:kafka_server_brokertopicmetrics_bytes_out_total:rate5m":
         addAggregatedTotalBytesTo(bytesOutgoing);
         break;
-      case "kafka_topic:kafka_log_log_size:sum":
+      case "kas_topic_partition_log_size_bytes":
         addAggregatePartitionBytes();
         break;
       case "kafka_topic:kafka_server_brokertopicmetrics_messages_in_total:rate5m":

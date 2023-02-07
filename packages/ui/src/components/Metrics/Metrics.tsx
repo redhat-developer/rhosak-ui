@@ -22,8 +22,8 @@ import { MetricsLagAlert } from "./components/MetricsLagAlert";
 
 export type MetricsProps = {
   onCreateTopic: () => void;
-  onClickClose: () => void;
-  isClosed: boolean;
+  onAlertClose: () => void;
+  hasUserAlreadyClosedAlert: boolean;
 } & KafkaInstanceMetricsProviderProps &
   TopicsMetricsProviderProps &
   MetricsKpiProviderProps;
@@ -33,8 +33,8 @@ export const Metrics: VoidFunctionComponent<MetricsProps> = ({
   getTopicsMetrics,
   getMetricsKpi,
   onCreateTopic,
-  onClickClose,
-  isClosed,
+  onAlertClose,
+  hasUserAlreadyClosedAlert,
 }) => {
   return (
     <TopicsMetricsProvider getTopicsMetrics={getTopicsMetrics}>
@@ -44,8 +44,8 @@ export const Metrics: VoidFunctionComponent<MetricsProps> = ({
         <MetricsKpiProvider getMetricsKpi={getMetricsKpi}>
           <ConnectedMetrics
             onCreateTopic={onCreateTopic}
-            onClickClose={onClickClose}
-            isClosed={isClosed}
+            onClickClose={onAlertClose}
+            isClosed={hasUserAlreadyClosedAlert}
           />
         </MetricsKpiProvider>
       </KafkaInstanceMetricsProvider>
@@ -135,7 +135,6 @@ const ConnectedKafkaInstanceMetrics: VoidFunctionComponent = () => {
     connectionRateLimit,
     onDurationChange,
     onRefresh,
-    brokers,
     onBrokerChange,
     selectedBroker,
     selectedToggle,
@@ -162,7 +161,6 @@ const ConnectedKafkaInstanceMetrics: VoidFunctionComponent = () => {
       diskSpaceLimit={diskSpaceLimit || 0}
       connectionsLimit={connectionsLimit || 0}
       connectionRateLimit={connectionRateLimit || 0}
-      brokers={brokers}
       selectedBroker={selectedBroker}
       onSelectedBroker={onBrokerChange}
       selectToggle={selectedToggle}

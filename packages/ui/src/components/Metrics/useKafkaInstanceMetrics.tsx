@@ -2,7 +2,12 @@ import { useSelector } from "@xstate/react";
 import { useCallback, useContext } from "react";
 import { KafkaInstanceMetricsContext } from "./KafkaInstanceMetricsProvider";
 import type { KafkaInstanceMetricsMachineContext } from "./machines";
-import type { BrokerFilter, DurationOptions, PartitionSelect } from "./types";
+import type {
+  BrokerFilter,
+  BrokerValue,
+  DurationOptions,
+  PartitionSelect,
+} from "./types";
 
 type SeletorReturn = KafkaInstanceMetricsMachineContext & {
   isInitialLoading: boolean;
@@ -18,7 +23,6 @@ export function useKafkaInstanceMetrics() {
   const {
     selectedToggle,
     selectedBroker,
-    brokers,
     usedDiskSpaceMetrics,
     clientConnectionsMetrics,
     connectionAttemptRateMetrics,
@@ -50,7 +54,7 @@ export function useKafkaInstanceMetrics() {
   );
 
   const onBrokerChange = useCallback(
-    (broker: string | undefined) =>
+    (broker: BrokerValue | undefined) =>
       service.send({ type: "selectBroker", broker }),
     [service]
   );
@@ -93,7 +97,6 @@ export function useKafkaInstanceMetrics() {
     onRefresh,
     onBrokerChange,
     selectedBroker,
-    brokers,
     selectedToggle,
     onSelectToggle,
     onSelectPartition,

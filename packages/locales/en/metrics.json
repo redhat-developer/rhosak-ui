@@ -8,6 +8,14 @@
     "total": "Total"
   },
   "broker_partition_size_help_text": "Partition size is the log size of a partition in a topic. This metric enables you to assess the amount of data used by partitions in your Kafka instance as a whole, or in a selected broker. To reduce partition sizes in a topic, you can decrease the retention time or the retention size, or modify the cleanup policy. You can also increase the number of partitions for the topic.",
+  "brokerList": {
+    "broker0": "Broker 0",
+    "broker1": "Broker 1",
+    "broker2": "Broker 2",
+    "broker3": "Broker 3",
+    "broker4": "Broker 4",
+    "broker5": "Broker 5"
+  },
   "chart-popover-icon-screenreader-text": "Information about {{title}}",
   "client_connection_alert": "Client connections are shown for all brokers",
   "client_connections": "Client connections",

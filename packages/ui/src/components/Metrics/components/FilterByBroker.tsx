@@ -9,17 +9,16 @@ import {
 import type { VoidFunctionComponent } from "react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import type { BrokerValue } from "../types";
 
 type FilterByBrokerProps = {
-  selectedBroker: string | undefined;
-  brokerList: string[];
-  onSetSelectedBroker: (value: string | undefined) => void;
+  selectedBroker: BrokerValue | undefined;
+  onSetSelectedBroker: (value: BrokerValue | undefined) => void;
   disableToolbar: boolean;
 };
 
 export const FilterByBroker: VoidFunctionComponent<FilterByBrokerProps> = ({
   selectedBroker,
-  brokerList,
   onSetSelectedBroker,
   disableToolbar,
 }) => {
@@ -31,27 +30,34 @@ export const FilterByBroker: VoidFunctionComponent<FilterByBrokerProps> = ({
     setIsBrokerSelectOpen(isBrokerSelectOpen);
   };
 
+  const brokerValueOption: { [key in BrokerValue]: string } = {
+    "0": t("brokerList.broker0"),
+    "1": t("brokerList.broker1"),
+    "2": t("brokerList.broker2"),
+    "3": t("brokerList.broker3"),
+    "4": t("brokerList.broker4"),
+    "5": t("brokerList.broker5"),
+  };
+
   const onBrokerSelect: SelectProps["onSelect"] = (_, broker) => {
     broker !== t("all_brokers")
-      ? onSetSelectedBroker(broker as string)
+      ? onSetSelectedBroker(broker as BrokerValue)
       : onSetSelectedBroker(undefined);
     setIsBrokerSelectOpen(false);
   };
 
-  const brokerOptions = (brokerList: string[]) => [
+  const brokerOptions = () => [
     <SelectOption key={"broker-filter-0"} value={t("all_brokers")} />,
     <SelectGroup label="Filter by broker" key="broker-filter-group">
-      {brokerList.map((broker, index) => (
-        <SelectOption
-          key={`broker-filter-${index + 1}`}
-          value={broker}
-          title={broker}
-        />
+      {Object.entries(brokerValueOption).map(([value, label]) => (
+        <SelectOption key={value} value={value}>
+          {label}
+        </SelectOption>
       ))}
     </SelectGroup>,
   ];
 
-  const isDisabled = disableToolbar || brokerList.length === 0;
+  const isDisabled = disableToolbar;
 
   return (
     <ToolbarItem>
@@ -66,7 +72,7 @@ export const FilterByBroker: VoidFunctionComponent<FilterByBrokerProps> = ({
         aria-label={t("filter-by-broker")}
         isDisabled={isDisabled}
       >
-        {brokerOptions(brokerList)}
+        {brokerOptions()}
       </Select>
     </ToolbarItem>
   );

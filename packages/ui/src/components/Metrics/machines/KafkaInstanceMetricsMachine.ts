@@ -2,6 +2,7 @@ import { assign, createMachine } from "xstate";
 import type {
   BrokerBytesMetric,
   BrokerFilter,
+  BrokerValue,
   GetKafkaInstanceMetricsResponse,
   PartitionBytesMetric,
   PartitionSelect,
@@ -41,12 +42,11 @@ export type KafkaInstanceMetricsMachineContext = {
 
   // from the UI elements
   duration: DurationOptions;
-  selectedBroker: string | undefined;
+  selectedBroker: BrokerValue | undefined;
   selectedToggle: BrokerFilter;
   selectedPartition: PartitionSelect;
 
   // from the api
-  brokers: string[];
   usedDiskSpaceMetrics: BrokerBytesMetric;
   clientConnectionsMetrics: TimeSeriesMetrics;
   connectionAttemptRateMetrics: TimeSeriesMetrics;
@@ -71,7 +71,7 @@ export const KafkaInstanceMetricsMachine = createMachine(
         // from the UI elements
         | { type: "selectTopic"; topic: string | undefined }
         | { type: "selectDuration"; duration: DurationOptions }
-        | { type: "selectBroker"; broker: string | undefined }
+        | { type: "selectBroker"; broker: BrokerValue | undefined }
         | { type: "selectToggle"; value: BrokerFilter }
         | { type: "selectPartition"; value: PartitionSelect },
     },
@@ -88,7 +88,6 @@ export const KafkaInstanceMetricsMachine = createMachine(
       connectionsLimit: undefined,
       connectionRateLimit: undefined,
       fetchFailures: 0,
-      brokers: [],
       selectedToggle: "total",
       selectedPartition: "Top10",
     },
@@ -195,10 +194,8 @@ export const KafkaInstanceMetricsMachine = createMachine(
           diskSpaceLimit,
           connectionsLimit,
           connectionRateLimit,
-          brokers,
         } = event;
         return {
-          brokers,
           usedDiskSpaceMetrics,
           bytesPerPartitionMetrics,
           clientConnectionsMetrics,

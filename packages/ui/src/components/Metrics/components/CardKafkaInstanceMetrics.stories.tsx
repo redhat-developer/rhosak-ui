@@ -102,7 +102,7 @@ OverLimits.args = {
 
 export const DisplayAlertWhenBrokerIsSelected = Template.bind({});
 DisplayAlertWhenBrokerIsSelected.args = {
-  selectedBroker: "broker 1",
+  selectedBroker: "0",
   usedDiskMetrics: {
     total: makeMetrics(DurationOptions.Last12hours, 0, 999, 10 ** 9),
     "broker 1": makeMetrics(DurationOptions.Last12hours, 200, 999, 10 ** 9),
