@@ -49,10 +49,15 @@ export const DashboardRoute: VoidFunctionComponent<
 
   const getKafkaInstanceMetrics: MetricsProps["getKafkaInstanceMetrics"] =
     useCallback(
-      async ({ interval, duration }) => {
+      async ({ interval, duration, selectedBroker }) => {
         const [instance, metrics] = await Promise.all([
           queryInstance(params.id),
-          queryInstanceMetrics({ id: params.id, duration, interval }),
+          queryInstanceMetrics({
+            id: params.id,
+            duration,
+            interval,
+            selectedBroker,
+          }),
         ]);
         if (!instance) {
           return Promise.reject("Can't retrieve instance");

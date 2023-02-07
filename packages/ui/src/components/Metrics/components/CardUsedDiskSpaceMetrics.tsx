@@ -17,7 +17,7 @@ import {
 import type { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { chartHeight, chartPadding } from "../consts";
-import type { BrokerBytesMetric, BrokerFilter } from "../types";
+import type { BrokerBytesMetric, BrokerFilter, BrokerValue } from "../types";
 import { ChartSkeletonLoader } from "./ChartSkeletonLoader";
 import { useChartWidth } from "./useChartWidth";
 import {
@@ -52,7 +52,7 @@ type LegendData = {
 
 export type ChartUsedDiskSpaceProps = {
   metrics: BrokerBytesMetric;
-  broker: string | undefined;
+  broker: BrokerValue | undefined;
   duration: number;
   isLoading: boolean;
   emptyState: ReactElement;
@@ -153,7 +153,7 @@ export const ChartUsedDiskSpace: FunctionComponent<ChartUsedDiskSpaceProps> = ({
 
 export function getChartData(
   metrics: BrokerBytesMetric,
-  broker: string | undefined,
+  broker: BrokerValue | undefined,
   duration: number,
   brokerToggle: BrokerFilter,
   limitLabel: string,

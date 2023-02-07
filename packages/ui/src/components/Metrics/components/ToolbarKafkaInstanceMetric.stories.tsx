@@ -6,7 +6,6 @@ export default {
   controls: {},
   args: {
     topicList: ["lorem", "dolor", "ipsum"],
-    brokerList: ["Broker1", "Broker2", "Broker3"],
     isDisabled: false,
   },
 } as ComponentMeta<typeof ToolbarKafkaInstanceMetric>;
