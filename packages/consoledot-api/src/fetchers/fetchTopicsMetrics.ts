@@ -32,8 +32,6 @@ export async function fetchTopicsMetrics({
 
   // Remove all results with no data. Not sure this can really  happen but since
   // the types allow for undefined we need to do a bit of defensive programming.
-
-  // response.data.items && response.data.items.filter((m) => m.metric?.topic === "test2" ? console.log(m) : console.log([]))
   const safeMetrics: SafeRangeQuery[] = (response.data.items || []).filter(
     (m) =>
       // defensive programming
@@ -55,7 +53,6 @@ export async function fetchTopicsMetrics({
   const incomingMessageRate: TimeSeriesMetrics = {};
 
   filteredMetrics.forEach((m) => {
-    console.log(m);
     const { __name__: name, topic } = m.metric;
 
     function addAggregatedTotalBytesTo(metric: TimeSeriesMetrics) {

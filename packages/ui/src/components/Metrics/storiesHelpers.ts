@@ -1,7 +1,6 @@
 import { fakeApi } from "../storiesHelpers";
 import { makeGrowingMetrics, makeMetrics } from "./makeMetrics";
 import type {
-  BrokerValue,
   DurationOptions,
   GetKafkaInstanceMetricsResponse,
   GetMetricsKpiResponse,
@@ -17,10 +16,18 @@ export const getKafkaInstanceMetrics = ({
   duration: DurationOptions;
   offset?: number;
   waitLengthMs?: number;
-  selectedBroker?: BrokerValue | undefined;
+  selectedBroker?: string;
 }) => {
   return fakeApi<GetKafkaInstanceMetricsResponse>(
     {
+      brokers: [
+        "broker 1",
+        "broker 2",
+        "broker 3",
+        "broker 4",
+        "broker 5",
+        "broker 6",
+      ],
       usedDiskSpaceMetrics: {
         total: makeMetrics(duration, 500, 999, 10 ** 9),
         "broker 1": makeMetrics(duration, 200, 999, 10 ** 9),

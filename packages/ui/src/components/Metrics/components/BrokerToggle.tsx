@@ -1,12 +1,12 @@
 import { ToggleGroup, ToggleGroupItem } from "@patternfly/react-core";
 import type { VoidFunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
-import type { BrokerFilter, BrokerValue } from "../types";
+import type { BrokerFilter } from "../types";
 
 export type BrokerToggleProps = {
   value: BrokerFilter;
   onChange: (value: BrokerFilter) => void;
-  selectedBroker: BrokerValue | undefined;
+  selectedBroker: string | undefined;
 };
 
 export const BrokerToggle: VoidFunctionComponent<BrokerToggleProps> = ({

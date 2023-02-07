@@ -5,11 +5,7 @@ import type { ActorRefFrom } from "xstate";
 import { timeIntervalsMapping } from "./consts";
 import type { KafkaInstanceMetricsMachineType } from "./machines";
 import { KafkaInstanceMetricsMachine } from "./machines";
-import type {
-  BrokerValue,
-  DurationOptions,
-  GetKafkaInstanceMetricsResponse,
-} from "./types";
+import type { DurationOptions, GetKafkaInstanceMetricsResponse } from "./types";
 
 export const KafkaInstanceMetricsContext = createContext<{
   service: ActorRefFrom<KafkaInstanceMetricsMachineType>;
@@ -20,7 +16,7 @@ export type KafkaInstanceMetricsProviderProps = {
   getKafkaInstanceMetrics: (options: {
     duration: DurationOptions;
     interval: number;
-    selectedBroker: BrokerValue | undefined;
+    selectedBroker: string | undefined;
   }) => Promise<GetKafkaInstanceMetricsResponse>;
 };
 export const KafkaInstanceMetricsProvider: FunctionComponent<

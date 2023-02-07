@@ -74,8 +74,6 @@ export const StackChartPartitionSizePerBroker: FunctionComponent<
 
   const showDate = shouldShowDate(duration);
 
-  console.log(chartData);
-
   return (
     <div ref={containerRef} style={{ height: "515px" }}>
       {(() => {
