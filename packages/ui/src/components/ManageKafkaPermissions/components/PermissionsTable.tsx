@@ -15,8 +15,8 @@ type SubUnion<T, U extends T> = U;
 export type PermissionsField = keyof Permissions;
 const Columns: SubUnion<
   PermissionsField,
-  "" | "account" | "permission" | "resource"
->[] = ["", "account", "permission", "resource"];
+  "account" | "permission" | "resource"
+>[] = ["account", "permission", "resource"];
 
 export type PermissionsTableProps<T extends Permissions> = {
   permissions: Array<T> | undefined;
@@ -49,11 +49,24 @@ export const PermissionsTable = <T extends Permissions>({
   const [checkedRows, setCheckedRows] = useState<number[]>([]);
 
   const labels: { [field in (typeof Columns)[number]]: string } = {
-    "": "",
     account: t("account_id_title"),
     permission: t("table.permissions_column_title"),
     resource: t("table.resource_column_title"),
   };
+  const onCheck = (isSelecting: boolean, rowIndex: number) => {
+    if (rowIndex != undefined) {
+      setCheckedRows(
+        isSelecting
+          ? [...checkedRows, rowIndex]
+          : checkedRows.filter((row) => row !== rowIndex)
+      );
+    }
+  };
+
+  const isRowChecked = (rowIndex: number) => {
+    return checkedRows.includes(rowIndex);
+  };
+
   return (
     <>
       <PermissionsToolbar
@@ -71,10 +84,12 @@ export const PermissionsTable = <T extends Permissions>({
         ariaLabel={t("consumerGroup.consumer_group_list")}
         data={permissions}
         columns={Columns}
+        //onCheck={onCheck}
+        //isRowChecked={({ rowIndex }) => isRowChecked(rowIndex as number)}
         renderHeader={({ column, Th, key }) => (
           <Th key={key}>{labels[column]}</Th>
         )}
-        renderCell={({ column, row, Td, key, rowIndex }) => {
+        renderCell={({ column, row, Td, key }) => {
           return (
             <Td key={key} dataLabel={labels[column]}>
               {(() => {
@@ -100,21 +115,6 @@ export const PermissionsTable = <T extends Permissions>({
                         patternType={row.resource.patternType}
                         resourceType={row.resource.resourceType}
                         resourceName={row.resource.resourceName}
-                      />
-                    );
-                  case "":
-                    return (
-                      <Td
-                        select={{
-                          rowIndex,
-                          isSelected: checkedRows.includes(rowIndex),
-                          onSelect: (_event, isSelecting) =>
-                            setCheckedRows(
-                              isSelecting
-                                ? [...checkedRows, rowIndex]
-                                : checkedRows.filter((row) => row !== rowIndex)
-                            ),
-                        }}
                       />
                     );
                 }

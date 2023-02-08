@@ -7,3 +7,4 @@ export * from "./useTopic";
 export * from "./useTopics";
 export * from "./useUserAccounts";
 export * from "./useConsumerGroup";
+export * from "./useAcls";
