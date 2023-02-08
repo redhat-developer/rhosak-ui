@@ -41,8 +41,10 @@ export async function fetchTopicsMetrics({
   // Also filter for metrics about the selectedTopic, if specified
   const filteredMetrics = safeMetrics.filter((m) =>
     // filter for metrics for the selectedTopic, if needed
-    selectedTopic !== undefined ? m.metric?.topic === selectedTopic : true
+    selectedTopic !== undefined ? m.metric?.topic === "test" : true
   );
+
+
 
   // get the unique topics we have metrics for in the selected time range
   const topics = Array.from(new Set(safeMetrics.map((m) => m.metric.topic)));
@@ -51,6 +53,9 @@ export async function fetchTopicsMetrics({
   const bytesOutgoing: TimeSeriesMetrics = {};
   const bytesPerPartition: PartitionBytesMetric = {};
   const incomingMessageRate: TimeSeriesMetrics = {};
+
+
+
 
   filteredMetrics.forEach((m) => {
     const { __name__: name, topic } = m.metric;
@@ -63,12 +68,12 @@ export async function fetchTopicsMetrics({
     }
 
     function addAggregatePartitionBytes() {
-      const partition = bytesPerPartition[topic] || {};
+      const partition = bytesPerPartition[m.metric.partition_id] || {};    
       m.values.forEach(
         ({ value, timestamp }) =>
           (partition[timestamp] = value + (partition[timestamp] || 0))
       );
-      bytesPerPartition[topic] = partition;
+      bytesPerPartition[m.metric.partition_id] = partition;
     }
 
     switch (name) {

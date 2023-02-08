@@ -1,7 +1,6 @@
 import type { DefaultApi } from "@rhoas/kafka-management-sdk";
 import type {
   BrokerBytesMetric,
-  BrokerValue,
   GetKafkaInstanceMetricsResponse,
   PartitionBytesMetric,
   TimeSeriesMetrics,
@@ -41,8 +40,6 @@ export async function fetchKafkaMetrics({
         m.metric &&
         m.metric.topic &&
         m.metric.name &&
-        m.metric.broker_id &&
-        m.metric.partition_id &&
         m.metric.persistentvolumeclaim &&
         m.metric.persistentvolumeclaim.includes("zookeeper")
       )
@@ -51,12 +48,14 @@ export async function fetchKafkaMetrics({
   // Also filter for metrics about the selectedBroker, if specified
   const filteredMetrics = safeMetrics.filter((m) =>
     // filter for metrics for the selectedBroker, if needed
-    selectedBroker !== undefined ? m.metric?.broker_id === selectedBroker : {}
+    selectedBroker !== undefined ? m.metric?.broker_id === selectedBroker : true
   );
 
-  const brokers = Array.from(
-    new Set(safeMetrics.map((m) => m.metric.broker_id))
+  const filterbrokers = Array.from(
+    new Set(filteredMetrics.map((m) => m.metric.broker_id))
   );
+
+  const brokers = filterbrokers.filter(broker => broker !== undefined)
 
   const usedDiskSpaceMetrics: BrokerBytesMetric = {};
   const connectionAttemptRateMetrics: TimeSeriesMetrics = {};
@@ -67,7 +66,7 @@ export async function fetchKafkaMetrics({
     connectionsLimit = 0,
     diskSpaceLimit = 0;
 
-  filteredMetrics.forEach((m) => {
+    safeMetrics.forEach((m) => {
     const { __name__: name, broker_id } = m.metric;
 
     function addAggregatedValuesTo(metric: TimeSeriesMetrics) {
@@ -78,8 +77,8 @@ export async function fetchKafkaMetrics({
     }
 
     function addAggregateBrokerBytes() {
-      const broker =
-        usedDiskSpaceMetrics[m.metric.broker_id] || usedDiskSpaceMetrics["0"];
+        const broker =
+        usedDiskSpaceMetrics[m.metric.broker_id] || {};
       m.values.forEach(
         ({ timestamp, value }) =>
           (broker[timestamp] = value + broker[timestamp] || 0)
@@ -87,12 +86,13 @@ export async function fetchKafkaMetrics({
       usedDiskSpaceMetrics[broker_id] = broker;
     }
 
+
     function addAggregatePartitionBytes() {
-      const partition = bytesPerPartitionMetrics["0"] || {};
+      const partition = bytesPerPartitionMetrics[m.metric.topic + "/" + m.metric.partition_id] || {};
       m.values.forEach(({ value, timestamp }) => {
         partition[timestamp] = value + (partition[timestamp] || 0);
       });
-      bytesPerPartitionMetrics[broker_id] = partition;
+      bytesPerPartitionMetrics[m.metric.topic + "/" + m.metric.partition_id] = partition;
     }
 
     switch (name) {
