@@ -4,6 +4,7 @@ import type {
   FetchKafkaMetricsProps,
   FetchKafkasParams,
   FetchMessagesParams,
+  FetchPermissionsParams,
   FetchTopicParams,
   FetchTopicsMetricsProps,
   FetchTopicsParams,
@@ -122,7 +123,16 @@ export const kafkaQueries = {
           ...kafkaQueries.instance._root({ id, adminUrl }),
           subentity: "consumerGroup",
         },
-        { consumerGroupId },
+        { consumerGroupId },] as const,
+    permissions: (
+      params: { adminUrl?: string } & Omit<FetchPermissionsParams, "getAcls">
+    ) =>
+      [
+        {
+          ...kafkaQueries.instance._root(params),
+          subentity: "acls",
+        },
+        params,
       ] as const,
     metrics: {
       _root: ({ id }: { id: string }) =>
