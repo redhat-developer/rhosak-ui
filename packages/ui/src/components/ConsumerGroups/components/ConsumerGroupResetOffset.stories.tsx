@@ -82,9 +82,23 @@ export const ResetOffset = Template.bind({});
 ResetOffset.args = {
   isModalOpen: true,
 };
+ResetOffset.parameters = {
+  docs: {
+    description: {
+      story: `Consumer group reset offset modal when the consumer group state is not stable`,
+    },
+  },
+};
 
 export const ResetOffsetErrorMessage = Template.bind({});
 ResetOffsetErrorMessage.args = {
   state: "Stable",
   isModalOpen: true,
+};
+ResetOffsetErrorMessage.parameters = {
+  docs: {
+    description: {
+      story: `Consumer group reset offset modal when the consumer group state is stable`,
+    },
+  },
 };

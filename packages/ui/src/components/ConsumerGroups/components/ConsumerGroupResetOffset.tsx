@@ -18,23 +18,19 @@ import {
   Thead,
   Tr,
 } from "@patternfly/react-table";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { Consumer } from "ui-models/src/models/consumer-group";
 import "../ConsumerGroup.css";
 import type { OffsetValue } from "../types";
 import { OffsetSelect } from "./OffsetSelect";
 import { TopicSelect } from "./TopicSelect";
-import type { ConsumerGroupState } from "@rhoas/app-services-ui-components";
 import type { FunctionComponent } from "react";
-
-export type ConsumerRow = Consumer & {
-  selected?: boolean;
-};
+import type { State } from "ui-models/src/models/consumer-group";
 
 export type ConsumerGroupResetOffsetProps = {
   isModalOpen: boolean;
-  state: ConsumerGroupState;
+  state: State;
   groupId: string;
   topics: string[];
   consumers: Consumer[];
@@ -68,7 +64,7 @@ export const ConsumerGroupResetOffset: FunctionComponent<
   const [selectedOffset, setSelectedOffset] = useState<OffsetValue>("absolute");
   const [customOffsetValue, setcustomOffsetValue] = useState<string>();
 
-  const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false);
+  const [isResetAccepted, setIsResetAccepted] = useState<boolean>(false);
 
   const [selectedConsumer, setSelectedConsumer] = useState<Consumer[]>([]);
 
@@ -80,7 +76,7 @@ export const ConsumerGroupResetOffset: FunctionComponent<
   const isResetOffsetDisabled =
     !selectedTopic ||
     !selectedOffset ||
-    !isCheckboxChecked ||
+    !isResetAccepted ||
     !isDisconnected ||
     selectedConsumer.length === 0;
 
@@ -294,8 +290,8 @@ export const ConsumerGroupResetOffset: FunctionComponent<
                 <Checkbox
                   label={t("consumerGroup.reset_offset_accept")}
                   id="resetoffset-checkbox"
-                  isChecked={isCheckboxChecked}
-                  onChange={setIsCheckboxChecked}
+                  isChecked={isResetAccepted}
+                  onChange={setIsResetAccepted}
                 />
               </StackItem>
             </Stack>
