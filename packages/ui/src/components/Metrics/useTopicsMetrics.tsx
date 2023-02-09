@@ -1,8 +1,8 @@
 import { useSelector } from "@xstate/react";
 import { useCallback, useContext, useMemo } from "react";
 import type { TopicsMetricsMachineContext } from "./machines";
-import { TopicsMetricsContext } from "./TopicsMetricsProvider";
-import type { DurationOptions } from "./types";
+import type { DurationOptions, PartitionSelect } from "./types";
+import { TopicsMetricsContext } from './TopicsMetricsProvider';
 
 type SelectorReturn = TopicsMetricsMachineContext & {
   isInitialLoading: boolean;
@@ -30,6 +30,7 @@ export function useTopicsMetrics() {
     isFailed,
     isJustCreated,
     lastUpdated,
+    selectedPartition,
   } = useSelector<typeof service, SelectorReturn>(
     service,
     useCallback(
@@ -66,6 +67,12 @@ export function useTopicsMetrics() {
     return topics;
   }, [kafkaTopics, metricsTopics]);
 
+  const onSelectPartition = useCallback(
+    (value: PartitionSelect) =>
+      service.send({ type: "selectPartition", value }),
+    [service]
+  );
+
   return {
     isInitialLoading,
     isLoading,
@@ -83,5 +90,7 @@ export function useTopicsMetrics() {
     onTopicChange,
     onDurationChange,
     onRefresh,
+    onSelectPartition,
+    selectedPartition,
   };
 }

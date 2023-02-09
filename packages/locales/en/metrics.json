@@ -52,14 +52,17 @@
   "topic_incoming_message_rate_y_axis": "Messages/seconds",
   "topic_metrics": "Topic metrics",
   "topic_metrics_help_text": "Bytes incoming and outgoing are the total bytes for all topics or total bytes for a selected topic in the $t(common:kafka) instance. This metric enables you to assess data transfer in and out of your $t(common:kafka) instance. To modify incoming and outgoing bytes, you can adjust topic message size or other topic properties as needed.",
-  "topic_partition_size": "Topic partition size",
-  "topic_partition_size_help_text": "Topic partition size is the log size for each partition in a selected topic. This metric enables you to assess the amount of data used in one or more topic partitions. To reduce the topic partition size, you can decrease the retention time or the retention size, or modify the cleanup policy as needed. You can also increase the number of partitions for the topic.",
-  "topic_partition_size_popover_header": "Topic partition size",
+  "topic_partition_size_help_text": "Partition size is the log size of a partition in a topic. This metric enables you to assess the amount of data used by partitions in the selected topic. To reduce partition sizes in a topic, you can decrease the retention time or the retention size, or modify the cleanup policy. You can also increase the number of partitions for the topic.",
+  "topic_partition_size_popover_header": "Partition size",
   "topics_filter_by_time": "Filter topic metrics by time range",
   "topics_filter_by_topic": "Filter topic metrics by topic name",
   "topics_refresh": "Refresh topic metrics",
   "total_bytes": "Bytes incoming and outgoing",
   "total_bytes_popover_header": "Bytes incoming and outgoing",
   "used_disk_space": "Used disk space",
-  "used_disk_space_help_text": "Used disk space is the amount of disk space used by the Kafka broker in the instance. This metric enables you to assess available disk space relative to the limit. To reduce used disk space, you can adjust topic retention time or other topic properties as needed."
+  "used_disk_space_help_text": "Used disk space is the amount of disk space used by the Kafka broker in the instance. This metric enables you to assess available disk space relative to the limit. To reduce used disk space, you can adjust topic retention time or other topic properties as needed.",
+  "filter-by-partitions": "Filter by partition",
+  "top10_partitions": "Top 10 partitions",
+  "top20_partitions": "Top 20 partitions",
+  "partition_size": "Partition size"
 }

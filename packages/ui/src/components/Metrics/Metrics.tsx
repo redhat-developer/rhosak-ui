@@ -181,6 +181,8 @@ const ConnectedTopicsMetrics: VoidFunctionComponent<
     onDurationChange,
     onTopicChange,
     onRefresh,
+    onSelectPartition,
+    selectedPartition,
   } = useTopicsMetrics();
 
   return (
@@ -202,6 +204,8 @@ const ConnectedTopicsMetrics: VoidFunctionComponent<
       onSelectedTopic={onTopicChange}
       onDurationChange={onDurationChange}
       onCreateTopic={onCreateTopic}
+      onSelectedPartition={onSelectPartition}
+      selectedPartition={selectedPartition}
     />
   );
 };

@@ -26,7 +26,7 @@ export async function fetchTopicsMetrics({
   const response = await getMetricsByRangeQuery(id, duration, interval, [
     "kafka_topic:kafka_server_brokertopicmetrics_bytes_in_total:rate5m",
     "kafka_topic:kafka_server_brokertopicmetrics_bytes_out_total:rate5m",
-    "kafka_topic:kafka_log_log_size:sum",
+    "kas_topic_partition_log_size_bytes",
     "kafka_topic:kafka_server_brokertopicmetrics_messages_in_total:rate5m",
   ]);
 
@@ -40,9 +40,10 @@ export async function fetchTopicsMetrics({
 
   // Also filter for metrics about the selectedTopic, if specified
   const filteredMetrics = safeMetrics.filter((m) =>
+
     // filter for metrics for the selectedTopic, if needed
     selectedTopic !== undefined ? m.metric?.topic === selectedTopic : true
-  );
+);
 
   // get the unique topics we have metrics for in the selected time range
   const topics = Array.from(new Set(safeMetrics.map((m) => m.metric.topic)));
@@ -53,7 +54,7 @@ export async function fetchTopicsMetrics({
   const incomingMessageRate: TimeSeriesMetrics = {};
 
   filteredMetrics.forEach((m) => {
-    const { __name__: name, topic } = m.metric;
+    const { __name__: name, topic, partition_id } = m.metric;
 
     function addAggregatedTotalBytesTo(metric: TimeSeriesMetrics) {
       m.values.forEach(
@@ -63,12 +64,12 @@ export async function fetchTopicsMetrics({
     }
 
     function addAggregatePartitionBytes() {
-      const partition = bytesPerPartition[topic] || {};
+      const partition = bytesPerPartition[topic] || {};    
       m.values.forEach(
         ({ value, timestamp }) =>
           (partition[timestamp] = value + (partition[timestamp] || 0))
       );
-      bytesPerPartition[topic] = partition;
+      bytesPerPartition[topic +"/" + partition_id] = partition;
     }
 
     switch (name) {
@@ -78,7 +79,7 @@ export async function fetchTopicsMetrics({
       case "kafka_topic:kafka_server_brokertopicmetrics_bytes_out_total:rate5m":
         addAggregatedTotalBytesTo(bytesOutgoing);
         break;
-      case "kafka_topic:kafka_log_log_size:sum":
+      case "kas_topic_partition_log_size_bytes":
         addAggregatePartitionBytes();
         break;
       case "kafka_topic:kafka_server_brokertopicmetrics_messages_in_total:rate5m":
