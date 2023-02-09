@@ -12,16 +12,17 @@
     "lint": "turbo run lint",
     "format": "prettier --write \"**/src/**/*.{ts,tsx,md}\"",
     "test": "turbo run test --concurrency=1",
-    "test-ci": "turbo run test-ci --concurrency=1"
+    "test-ci": "turbo run test-ci --concurrency=1",
+    "verify": "npm-run-all build lint test"
   },
   "devDependencies": {
     "eslint-config-custom": "*",
+    "npm-run-all": "^4.1.5",
     "prettier": "latest",
     "turbo": "latest"
   },
   "engines": {
     "node": ">=14.0.0"
   },
-  "dependencies": {},
   "packageManager": "npm@9.4.0"
 }
