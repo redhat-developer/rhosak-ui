@@ -90,6 +90,6 @@
     "webpack-bundle-analyzer": "4.7.0"
   },
   "insights": {
-    "appname": "rhosak-ui"
+    "appname": "rhosak"
   }
 }
