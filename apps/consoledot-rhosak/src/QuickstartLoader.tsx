@@ -6,6 +6,7 @@ import type { ScalprumComponentProps } from "@scalprum/react-core";
 import { ScalprumComponent } from "@scalprum/react-core";
 import type { VoidFunctionComponent } from "react";
 import { useState } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 
 export const appIdentifier = "applicationServices";
 
@@ -32,18 +33,20 @@ export const QuickstartLoader: VoidFunctionComponent = () => {
     )) as unknown as ScalprumComponentProps["processor"];
 
   return (
-    <AssetsContext.Provider value={{ getPath }}>
-      {!loaded ? (
-        <ScalprumComponent
-          appName="guides"
-          scope="guides"
-          module="./QuickStartLoader"
-          ErrorComponent={<div>opsie</div>}
-          processor={processor}
-          showDrafts={false}
-          onLoad={onLoad}
-        />
-      ) : null}
-    </AssetsContext.Provider>
+    <ErrorBoundary fallbackRender={() => null}>
+      <AssetsContext.Provider value={{ getPath }}>
+        {!loaded ? (
+          <ScalprumComponent
+            appName="guides"
+            scope="guides"
+            module="./QuickStartLoader"
+            ErrorComponent={<div>opsie</div>}
+            processor={processor}
+            showDrafts={false}
+            onLoad={onLoad}
+          />
+        ) : null}
+      </AssetsContext.Provider>
+    </ErrorBoundary>
   );
 };
