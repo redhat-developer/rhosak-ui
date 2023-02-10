@@ -8,3 +8,4 @@ export * from "./useTopics";
 export * from "./useUserAccounts";
 export * from "./useConsumerGroup";
 export * from "./useAcls";
+export * from "./useServiceAccounts";
