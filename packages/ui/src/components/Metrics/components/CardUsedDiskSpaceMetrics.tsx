@@ -175,7 +175,6 @@ export function getChartData(
   const chartData: Array<ChartData> = [];
   const softLimit: Array<BrokerChartData> = [];
   const softLimitColor = chart_color_black_500.value;
-
   if (broker && metrics[broker]) {
     const area: Array<BrokerChartData> = [];
     const color = chart_color_blue_300.value;
@@ -184,30 +183,19 @@ export function getChartData(
       area.push({ name: broker, x: parseInt(timestamp, 10), y: bytes });
     });
     chartData.push({ color, softLimitColor, area, softLimit });
-  } else if (brokerToggle === "total") {
-    const area: Array<BrokerChartData> = [];
-
-    const color = chart_color_blue_300.value;
-    legendData.push({ name: "Instance", symbol: { fill: color } });
-    Object.entries(metrics[brokerToggle]).forEach(([timestamp, bytes]) => {
-      area.push({ name: "Instance", x: parseInt(timestamp, 10), y: bytes });
-    });
-    chartData.push({ color, softLimitColor, area, softLimit });
   } else {
-    Object.entries(metrics)
-      .filter((metric) => metric[0] !== "total")
-      .map(([metric, dataMap], index) => {
-        const name = metric;
+    Object.entries(metrics).map(([metric, dataMap], index) => {
+      const name = metric;
 
-        const color = colors[index];
-        legendData.push({ name });
-        const area: Array<BrokerChartData> = [];
+      const color = colors[index];
+      legendData.push({ name });
+      const area: Array<BrokerChartData> = [];
 
-        Object.entries(dataMap).forEach(([timestamp, value]) => {
-          area.push({ name, x: parseInt(timestamp, 10), y: value });
-        });
-        chartData.push({ color, softLimitColor, area, softLimit });
+      Object.entries(dataMap).forEach(([timestamp, value]) => {
+        area.push({ name, x: parseInt(timestamp, 10), y: value });
       });
+      chartData.push({ color, softLimitColor, area, softLimit });
+    });
   }
 
   const allTimestamps = Array.from(
