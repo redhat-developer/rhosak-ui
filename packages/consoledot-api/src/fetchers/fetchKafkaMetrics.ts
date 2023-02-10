@@ -20,7 +20,6 @@ export async function fetchKafkaMetrics({
   id,
   duration,
   interval,
-  selectedBroker,
 }: FetchKafkaMetricsProps): Promise<GetKafkaInstanceMetricsResponse> {
   const response = await getMetricsByRangeQuery(id, duration, interval, [
     "kubelet_volume_stats_used_bytes",
@@ -103,6 +102,7 @@ export async function fetchKafkaMetrics({
         break;
       case "kas_broker_partition_log_size_bytes_top50":
         addAggregatePartitionBytes();
+        break;
       case "kafka_namespace:kafka_server_socket_server_metrics_connection_creation_rate:sum":
         addAggregatedValuesTo(connectionAttemptRateMetrics);
         break;
