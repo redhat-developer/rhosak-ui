@@ -48,7 +48,9 @@ export async function fetchKafkaMetrics({
       )
   ) as SafeRangeQuery[];
 
-  const brokers = Array.from(new Set(safeMetrics.map((m) => m.metric.broker_id)));
+  const brokers = Array.from(
+    new Set(safeMetrics.map((m) => m.metric.broker_id))
+  );
 
   const usedDiskSpaceMetrics: BrokerBytesMetric = {};
   const connectionAttemptRateMetrics: TimeSeriesMetrics = {};
@@ -59,10 +61,8 @@ export async function fetchKafkaMetrics({
     connectionsLimit = 0,
     diskSpaceLimit = 0;
 
-    safeMetrics.forEach((m) => {
-    const { __name__: name, topic, partition_id, broker_id} = m.metric;
-
- 
+  safeMetrics.forEach((m) => {
+    const { __name__: name, topic, partition_id, broker_id } = m.metric;
 
     function addAggregatedValuesTo(metric: TimeSeriesMetrics) {
       m.values.forEach(
@@ -72,27 +72,33 @@ export async function fetchKafkaMetrics({
     }
 
     function addAggregateBrokerBytes() {
-      const broker = usedDiskSpaceMetrics[broker_id] || {};
-    m.values.forEach(
-      ({ timestamp, value }) =>
-        (broker[timestamp] = value + broker[timestamp] || 0)
-    );
-    usedDiskSpaceMetrics[broker_id] = broker;
-  }
+      if (name === "kubelet_volume_stats_used_bytes") {
+        const broker = usedDiskSpaceMetrics["total"] || {};
+        m.values.forEach(({ value, timestamp }) => {
+          broker[timestamp] = value + (broker[timestamp] || 0);
+        });
+        usedDiskSpaceMetrics["total"] = broker;
+      } else {
+        const broker = usedDiskSpaceMetrics[broker_id] || {};
+        m.values.forEach(
+          ({ timestamp, value }) =>
+            (broker[timestamp] = value + broker[timestamp] || 0)
+        );
+        usedDiskSpaceMetrics[broker_id] = broker;
+      }
+    }
 
-
-  function addAggregatePartitionBytes() {
-    const partition = bytesPerPartitionMetrics[broker_id + topic + "/" + partition_id] || {};
-    m.values.forEach(({ value, timestamp }) => {
-      partition[timestamp] = value + (partition[timestamp] || 0);
-    });
-    bytesPerPartitionMetrics[topic + "/" + partition_id] = partition;
-  }
-
-
-    
+    function addAggregatePartitionBytes() {
+      const partition = bytesPerPartitionMetrics[broker_id] || {};
+      m.values.forEach(({ value, timestamp }) => {
+        partition[timestamp] = value + (partition[timestamp] || 0);
+      });
+      bytesPerPartitionMetrics[broker_id + "/" + topic + "/" + partition_id] =
+        partition;
+    }
     switch (name) {
-      case "kafka_broker_quota_totalstorageusedbytes" || "kubelet_volume_stats_used_bytes":
+      case "kubelet_volume_stats_used_bytes":
+      case "kafka_broker_quota_totalstorageusedbytes":
         addAggregateBrokerBytes();
         break;
       case "kas_broker_partition_log_size_bytes_top50":
@@ -103,7 +109,8 @@ export async function fetchKafkaMetrics({
       case "kafka_namespace:kafka_server_socket_server_metrics_connection_count:sum":
         addAggregatedValuesTo(clientConnectionsMetrics);
         break;
-  }});
+    }
+  });
   return {
     brokers,
     usedDiskSpaceMetrics,
