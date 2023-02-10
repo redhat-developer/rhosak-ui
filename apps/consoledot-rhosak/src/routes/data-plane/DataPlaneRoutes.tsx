@@ -299,6 +299,18 @@ export const DataPlaneRoutes: VoidFunctionComponent = () => {
                       }
                     />
                   </Route>
+                  <Route
+                    path={`${DataPlaneRoutePath}/consumer-groups/:consumerGroupId/delete`}
+                  >
+                    <ConsumerGroupDeleteRoute
+                      instancesHref={"/kafkas"}
+                      instanceDetailsHref={instanceDetailsHref}
+                      instanceConsumerGroupsHref={instanceConsumerGroupsHref}
+                      viewPartitionConsumerGroupHref={
+                        viewPartitionConsumerGroupHref
+                      }
+                    />
+                  </Route>
                 </Switch>
               </RedirectOnGateError>
             )}
