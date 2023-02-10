@@ -22,6 +22,7 @@ import {
   TopicDeleteRoute,
   TopicEditPropertiesRoute,
 } from "./routes";
+import { ManagePermissionsRoute } from "./routes/ManagePermissionsRoute";
 
 import { DataPlaneRoutePath, DataPlaneTopicRoutePath } from "./routesConsts";
 
@@ -59,6 +60,8 @@ const viewTopicPartitionConsumerGroupHref = (
   `${instanceDetailsHref(
     id
   )}/topics/${topic}/consumer-groups/${consumerGroupId}/view-partition`;
+export const managePermissionsHref = (id: string) =>
+  `${instanceDetailsHref(id)}/acls/manage-permissions`;
 
 export const DataPlaneRoutes: VoidFunctionComponent = () => {
   return (
@@ -76,10 +79,19 @@ export const DataPlaneRoutes: VoidFunctionComponent = () => {
           <Route path={`${DataPlaneRoutePath}/consumer-groups`} exact>
             <ConsumerGroupsRoute instancesHref={"/kafkas"} />
           </Route>
-          <Route path={`${DataPlaneRoutePath}/acls`} exact>
-            <AclsRoute instancesHref={"/kafkas"} />
-          </Route>
 
+          <Route path={`${DataPlaneRoutePath}/acls/manage-permissions`}>
+            <ManagePermissionsRoute instancesHref={"/kafkas"} />
+          </Route>
+          <Route path={`${DataPlaneRoutePath}/acls`}>
+            <AclsRoute
+              instancesHref={"/kafkas"}
+              managePermissionsHref={managePermissionsHref}
+            />
+          </Route>
+          <Route path={`${DataPlaneRoutePath}/acls/manage-permissions`}>
+            <ManagePermissionsRoute instancesHref={"/kafkas"} />
+          </Route>
           <Route path={`${DataPlaneRoutePath}/settings`} exact>
             <SettingsRoute instancesHref={"/kafkas"} />
           </Route>

@@ -5,6 +5,7 @@ import type {
   FetchKafkasParams,
   FetchMessagesParams,
   FetchPermissionsParams,
+  FetchServiceAccountsParams,
   FetchTopicParams,
   FetchTopicsMetricsProps,
   FetchTopicsParams,
@@ -17,6 +18,9 @@ export const masQueries = {
     [{ ...masQueries._root(), entity: "organization" }] as const,
   userAccounts: (params: Omit<FetchUserAccountsParams, "getUserAccounts">) =>
     [{ ...masQueries._root(), entity: "userAccounts" }, params] as const,
+  serviceAccounts: (
+    params: Omit<FetchServiceAccountsParams, "getServiceAccounts">
+  ) => [{ ...masQueries._root(), entity: "serviceAccounts" }, params] as const,
   quota: {
     _root: () => ({ ...masQueries._root(), entity: "quota" } as const),
     available: (params: { organization?: string }) =>
@@ -125,7 +129,10 @@ export const kafkaQueries = {
         },
         { consumerGroupId },] as const,
     permissions: (
-      params: { adminUrl?: string } & Omit<FetchPermissionsParams, "getAcls">
+      params: { id?: string; adminUrl?: string } & Omit<
+        FetchPermissionsParams,
+        "getAcls"
+      >
     ) =>
       [
         {

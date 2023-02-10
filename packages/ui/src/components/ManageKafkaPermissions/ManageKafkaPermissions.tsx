@@ -18,26 +18,27 @@ import { AssignPermissions } from "./components/AssignPermissions";
 import { PreCancelModal } from "./components/PreCancelModal";
 import { SelectAccount } from "./components/SelectAccount";
 import { ViewAccountDetails } from "./components/ViewAccountDetails";
-import type { Account, AclBinding, AddAclType } from "./types";
+import type { Account, AddAclType } from "./types";
+import type { AclBinding } from "@rhoas/kafka-instance-sdk";
 import {
   createEmptyConsumeTopicAcl,
   createEmptyManageAccessAcl,
   createEmptyManualAcl,
   createEmptyProduceTopicAcl,
 } from "./types";
+import { transformResourceType, transformResourceOperation } from "./utils";
 
 export type ManageKafkaPermissionsProps = {
   accounts: Account[];
   onCancel: () => void;
   kafkaName: string;
-  onSave: (acls: AddAclType[] | undefined) => Promise<void>;
-  existingAcls: AclBinding[];
-  onRemoveAcls: (index: number) => void;
-  selectedAccount: string | undefined;
-  onChangeSelectedAccount: (value: string | undefined) => void;
-  topicNameOptions: (filter: string) => string[];
-  consumerGroupNameOptions: (filter: string) => string[];
-  isAclDeleted: boolean;
+  onSave: (
+    acls: AclBinding[] | undefined,
+    deletedAcls: AclBinding[] | undefined
+  ) => void;
+  acls: AclBinding[] | undefined;
+  topicsList: string[];
+  consumerGroupsList: string[];
   id?: string;
 };
 
@@ -45,14 +46,10 @@ export const ManageKafkaPermissions: React.FC<ManageKafkaPermissionsProps> = ({
   onCancel,
   kafkaName,
   accounts,
-  existingAcls,
-  onRemoveAcls,
+  acls,
   onSave,
-  selectedAccount,
-  onChangeSelectedAccount,
-  topicNameOptions,
-  consumerGroupNameOptions,
-  isAclDeleted,
+  topicsList,
+  consumerGroupsList,
   id,
 }) => {
   const { t } = useTranslation([
@@ -65,6 +62,8 @@ export const ManageKafkaPermissions: React.FC<ManageKafkaPermissionsProps> = ({
     isExpandedExistingPermissionSection,
     setIsExpandedExistingPermissionSection,
   ] = useState<boolean>(false);
+  const [isAclDeleted, setIsAclDeleted] = useState<boolean>(false);
+  const [selectedAccount, setSelectedAccount] = useState<string | undefined>();
   const [
     isExpandedAssignPermissionsSection,
     setIsExpandedAssignPermissionsSection,
@@ -75,7 +74,13 @@ export const ManageKafkaPermissions: React.FC<ManageKafkaPermissionsProps> = ({
   const [isOpenPreCancelModal, setIsOpenPreCancelModal] =
     useState<boolean>(false);
   const [step, setStep] = useState<number>(1);
+  const [existingAcls, setExistingAcls] = useState<AclBinding[] | undefined>(
+    acls
+  );
   const [newAcls, setNewAcls] = useState<AddAclType[]>();
+  const [deletedAcls, setDeletedAcls] = useState<AclBinding[] | undefined>(
+    undefined
+  );
 
   const checkValidation = useCallback(() => {
     if (newAcls) {
@@ -102,15 +107,159 @@ export const ManageKafkaPermissions: React.FC<ManageKafkaPermissionsProps> = ({
       onCancel();
     }
   };
+  const topicFilter = (filter: string) => {
+    if (filter == "") return topicsList || [];
+    else return topicsList?.filter((v) => v.includes(filter)) || [];
+  };
+
+  const consumerGroupsFilter = (filter: string) => {
+    if (filter == "") return consumerGroupsList || [];
+    else return consumerGroupsList?.filter((v) => v.includes(filter)) || [];
+  };
+  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+  const selectedAccountName = `User:${selectedAccount}`;
+
+  const aclsToSave: AclBinding[] = [];
+
+  const transformPermissions = (transformAclData: AclBinding[]) => {
+    newAcls?.map((value) => {
+      switch (value.type) {
+        case "manual": {
+          transformAclData.push({
+            resourceName:
+              value.resourceType == "kafka-instance"
+                ? "kafka-cluster"
+                : value.resourceName
+                ? value.resourceName
+                : "",
+            resourceType: transformResourceType(value.resourceType),
+            patternType: value.resourcePrefix == "Is" ? "LITERAL" : "PREFIXED",
+            operation: transformResourceOperation(value.resourceOperation),
+            permission: value.resourcePermission == "allow" ? "ALLOW" : "DENY",
+            principal:
+              selectedAccount == "All accounts"
+                ? `User:*`
+                : selectedAccountName,
+          });
+          break;
+        }
+        case "manage-access":
+          {
+            transformAclData.push({
+              resourceName: "kafka-cluster",
+              resourceType: "CLUSTER",
+              patternType: "LITERAL",
+              operation: "ALTER",
+              permission: "ALLOW",
+              principal:
+                selectedAccount == "All accounts"
+                  ? `User:*`
+                  : selectedAccountName,
+            });
+          }
+          break;
+        case "consume-topic":
+          {
+            transformAclData.push(
+              {
+                resourceName: value.topicResourceName || "",
+                resourceType: "TOPIC",
+                patternType:
+                  value.topicResourcePrefixRule == "Is"
+                    ? "LITERAL"
+                    : "PREFIXED",
+                operation: "READ",
+                permission: "ALLOW",
+                principal:
+                  selectedAccount == "All accounts"
+                    ? `User:*`
+                    : selectedAccountName,
+              },
+              {
+                resourceName: value.topicResourceName || "",
+                resourceType: "TOPIC",
+                patternType:
+                  value.topicResourcePrefixRule == "Is"
+                    ? "LITERAL"
+                    : "PREFIXED",
+                operation: "DESCRIBE",
+                permission: "ALLOW",
+                principal:
+                  selectedAccount == "All accounts"
+                    ? `User:*`
+                    : selectedAccountName,
+              },
+              {
+                resourceName: value.consumerResourceName || "",
+                resourceType: "GROUP",
+                patternType:
+                  value.consumerResourcePrefixRule == "Is"
+                    ? "LITERAL"
+                    : "PREFIXED",
+                operation: "READ",
+                permission: "ALLOW",
+                principal:
+                  selectedAccount == "All accounts"
+                    ? `User:*`
+                    : selectedAccountName,
+              }
+            );
+          }
+          break;
+        case "produce-topic": {
+          transformAclData.push(
+            {
+              resourceName: value.resourceNameValue || "",
+              resourceType: "TOPIC",
+              patternType:
+                value.prefixRuleValue == "Is" ? "LITERAL" : "PREFIXED",
+              operation: "WRITE",
+              permission: "ALLOW",
+              principal:
+                selectedAccount == "All accounts"
+                  ? `User:*`
+                  : selectedAccountName,
+            },
+            {
+              resourceName: value.resourceNameValue || "",
+              resourceType: "TOPIC",
+              patternType:
+                value.prefixRuleValue == "Is" ? "LITERAL" : "PREFIXED",
+              operation: "CREATE",
+              permission: "ALLOW",
+              principal:
+                selectedAccount == "All accounts"
+                  ? `User:*`
+                  : selectedAccountName,
+            },
+            {
+              resourceName: value.resourceNameValue || "",
+              resourceType: "TOPIC",
+              patternType:
+                value.prefixRuleValue == "Is" ? "LITERAL" : "PREFIXED",
+              operation: "DESCRIBE",
+              permission: "ALLOW",
+              principal:
+                selectedAccount == "All accounts"
+                  ? `User:*`
+                  : selectedAccountName,
+            }
+          );
+        }
+      }
+    });
+  };
 
   const onClickSubmit = () => {
     if (step == 1) setStep(2);
     else if (newAcls && newAcls?.length > 0) {
       setSubmitted(true);
       const isAclValid = checkValidation();
-      isAclValid && onSave(newAcls);
-    } else if (!newAcls || (newAcls.length < 1 && isAclDeleted))
-      void onSave(undefined);
+      transformPermissions(aclsToSave);
+      isAclValid && onSave(aclsToSave, deletedAcls);
+    }
+    //else if (!newAcls || (newAcls.length < 1 && isAclDeleted))
+    //  void onSave(undefined);
   };
 
   const onAddManualPermissions = () => {
@@ -184,6 +333,20 @@ export const ManageKafkaPermissions: React.FC<ManageKafkaPermissionsProps> = ({
   const resumeEditingPermissions = () => {
     setIsOpenPreCancelModal(false);
   };
+
+  const updateExistingAcls = (row: number) => {
+    setExistingAcls((existingAcls || []).filter((_, index) => index != row));
+  };
+
+  const onRemoveAcls = (row: number) => {
+    setDeletedAcls((prevState) =>
+      existingAcls && prevState != undefined
+        ? [...prevState, existingAcls[row]]
+        : existingAcls && [existingAcls[row]]
+    );
+    setIsAclDeleted(true);
+    updateExistingAcls(row);
+  };
   return (
     <Modal
       id="manage-permissions-modal"
@@ -237,7 +400,7 @@ export const ManageKafkaPermissions: React.FC<ManageKafkaPermissionsProps> = ({
         {step == 1 ? (
           <SelectAccount
             value={selectedAccount}
-            onChangeAccount={onChangeSelectedAccount}
+            onChangeAccount={setSelectedAccount}
             accounts={accounts}
           />
         ) : (
@@ -276,16 +439,20 @@ export const ManageKafkaPermissions: React.FC<ManageKafkaPermissionsProps> = ({
               toggleContent={
                 <div>
                   <span>{t("review_existing_title")}</span>{" "}
-                  <Badge isRead={existingAcls.length == 0 ? true : false}>
-                    {existingAcls.length}
+                  <Badge
+                    isRead={
+                      existingAcls && existingAcls.length == 0 ? true : false
+                    }
+                  >
+                    {existingAcls ? existingAcls.length : ""}
                   </Badge>
                 </div>
               }
             >
               <ViewAccountDetails
                 accountId={selectedAccount}
+                existingAcls={existingAcls || []}
                 onRemoveAcl={onRemoveAcls}
-                existingAcls={existingAcls}
               />
             </ExpandableSection>
             <FormGroup>
@@ -319,8 +486,8 @@ export const ManageKafkaPermissions: React.FC<ManageKafkaPermissionsProps> = ({
                   onConsumeTopicShortcut={onConsumeTopicShortcut}
                   onManageAccessShortcut={onManageAccessShortcut}
                   onDelete={onDeleteNewAcl}
-                  topicNameOptions={topicNameOptions}
-                  consumerGroupNameOptions={consumerGroupNameOptions}
+                  topicNameOptions={topicFilter}
+                  consumerGroupNameOptions={consumerGroupsFilter}
                   addedAcls={newAcls}
                   kafkaName={kafkaName}
                   setAddedAcls={setNewAcls}

@@ -18,12 +18,14 @@ import { Pagination } from "@rhoas/app-services-ui-components";
 export type PermissionsToolbarProps = {
   onDeleteSelected: (rowIndex: number[]) => void;
   checkedRows: number[];
+  onChangeCheckedRows: (value: number[]) => void;
   onManagePermissions: () => void;
 } & PaginationProps;
 
 export const PermissionsToolbar: VFC<PermissionsToolbarProps> = ({
   onDeleteSelected,
   checkedRows,
+  onChangeCheckedRows,
   onManagePermissions,
   onChange,
   page,
@@ -43,7 +45,10 @@ export const PermissionsToolbar: VFC<PermissionsToolbarProps> = ({
   const dropdownItems = [
     <DropdownItem
       key="delete_selected"
-      onClick={() => onDeleteSelected(checkedRows)}
+      onClick={() => {
+        onDeleteSelected(checkedRows);
+        onChangeCheckedRows([]);
+      }}
       isDisabled={checkedRows.length > 0 ? false : true}
     >
       {t("delete_selected")}

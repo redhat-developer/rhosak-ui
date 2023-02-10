@@ -6,7 +6,10 @@ import { kafkaQueries } from "../queryKeys";
 import { useApi } from "../useApi";
 
 export function useAcls(
-  params: { adminUrl?: string } & Omit<FetchPermissionsParams, "getAcls">
+  params: { id?: string; adminUrl?: string } & Omit<
+    FetchPermissionsParams,
+    "getAcls"
+  >
 ) {
   const { refetchInterval } = useApiConfiguration();
   const { acls } = useApi();
@@ -16,6 +19,9 @@ export function useAcls(
     queryFn: () => {
       if (!params.adminUrl) {
         return Promise.reject("Invalid adminUrl");
+      }
+      if (!params.id) {
+        return Promise.reject("Invalid id");
       }
       const api = acls(params.adminUrl);
 

@@ -60,3 +60,7 @@ export type DataPlaneTopicConsumerGroupNavigationsProps = {
   instanceDetailsHref: (instanceId: string) => string;
   instanceTopicsHref: (instanceId: string) => string;
 } & ControlPlaneNavigationProps;
+
+export type DataPlanePermissionsNavigationProps = {
+  managePermissionsHref: (instanceId: string) => string;
+} & ControlPlaneNavigationProps;

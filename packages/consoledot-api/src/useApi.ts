@@ -36,6 +36,16 @@ export const useApi = () => {
     });
   }, [accessToken]);
 
+  const serviceAccount = useCallback(async () => {
+    const token = await accessToken();
+    return new ServiceAccountsApi(
+      new Configuration({
+        accessToken: token,
+        basePath: `/mas-local-fm/sas_ui`,
+      })
+    );
+  }, [accessToken]);
+
   const account = useCallback(
     () =>
       new AppServicesApi(
@@ -100,5 +110,6 @@ export const useApi = () => {
     userAccounts,
     dedicatedClusters,
     acls,
+    serviceAccount,
   };
 };

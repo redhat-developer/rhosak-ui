@@ -20,10 +20,10 @@ const Columns: SubUnion<
 
 export type PermissionsTableProps<T extends Permissions> = {
   permissions: Array<T> | undefined;
-  onDelete: (row: T) => void;
+  onDelete: (rowIndex: number) => void;
   onDeleteSelected: (rowIndex: number[]) => void;
   onManagePermissions: () => void;
-  onChange: (page: number, perPage: number) => void;
+  onPerPageChange: (page: number, perPage: number) => void;
 } & Pick<
   TableViewProps<T, (typeof Columns)[number]>,
   | "itemCount"
@@ -43,7 +43,7 @@ export const PermissionsTable = <T extends Permissions>({
   onDeleteSelected,
   onPageChange,
   onManagePermissions,
-  onChange,
+  onPerPageChange,
 }: PermissionsTableProps<T>) => {
   const { t } = useTranslation("manage-kafka-permissions");
   const [checkedRows, setCheckedRows] = useState<number[]>([]);
@@ -73,10 +73,11 @@ export const PermissionsTable = <T extends Permissions>({
         onManagePermissions={onManagePermissions}
         onDeleteSelected={onDeleteSelected}
         checkedRows={checkedRows}
+        onChangeCheckedRows={setCheckedRows}
         itemCount={itemCount || 0}
         page={page}
         perPage={perPage || 10}
-        onChange={onChange}
+        onChange={onPerPageChange}
       />
       <TableView
         variant={TableVariant.compact}
@@ -84,8 +85,8 @@ export const PermissionsTable = <T extends Permissions>({
         ariaLabel={t("consumerGroup.consumer_group_list")}
         data={permissions}
         columns={Columns}
-        //onCheck={onCheck}
-        //isRowChecked={({ rowIndex }) => isRowChecked(rowIndex as number)}
+        onCheck={onCheck}
+        isRowChecked={({ rowIndex }) => isRowChecked(rowIndex)}
         renderHeader={({ column, Th, key }) => (
           <Th key={key}>{labels[column]}</Th>
         )}
@@ -122,7 +123,7 @@ export const PermissionsTable = <T extends Permissions>({
             </Td>
           );
         }}
-        renderActions={({ row, ActionsColumn }) => (
+        renderActions={({ ActionsColumn, rowIndex }) => (
           <ActionsColumn
             items={[
               {
@@ -131,7 +132,7 @@ export const PermissionsTable = <T extends Permissions>({
               },
               {
                 title: t("common:delete"),
-                onClick: () => onDelete(row),
+                onClick: () => onDelete(rowIndex),
               },
             ]}
           />

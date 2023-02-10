@@ -72,7 +72,6 @@ export type AclTableResourceType = {
   patternType: AclPatternType;
 };
 export type Permissions = {
-  ""?: string;
   account: string;
   permission: AclTablePermissionsType;
   resource: AclTableResourceType;

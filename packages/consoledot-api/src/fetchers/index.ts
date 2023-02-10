@@ -13,3 +13,4 @@ export * from "./fetchTopicsMetrics";
 export * from "./fetchUserAccounts";
 export * from "./fetchConsumerGroup";
 export * from "./fetchPermissions";
+export * from "./fetchServiceAccounts";
