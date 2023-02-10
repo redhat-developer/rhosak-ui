@@ -9,15 +9,23 @@ import {
 } from "consoledot-api";
 import type { VoidFunctionComponent } from "react";
 import { useCallback } from "react";
-import { ConsumerGroups } from "ui";
+import { ConsumerGroups, useConsumerGroupLabels } from "ui";
 import type { ControlPlaneNavigationProps } from "../../control-plane/routesConsts";
 import { useDataPlaneGate } from "../useDataPlaneGate";
 import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
+import { useHistory } from "react-router-dom";
+import { instanceConsumerGroupsHref } from "../DataPlaneRoutes";
 
 export const ConsumerGroupsRoute: VoidFunctionComponent<
   ControlPlaneNavigationProps
 > = ({ instancesHref }) => {
   const { instance } = useDataPlaneGate();
+
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const history = useHistory();
+
+  const labels = useConsumerGroupLabels();
+
   const { page, perPage, setPagination, setPaginationQuery } =
     usePaginationSearchParams();
   const resetPaginationQuery = useCallback(
@@ -25,17 +33,15 @@ export const ConsumerGroupsRoute: VoidFunctionComponent<
     [perPage, setPaginationQuery]
   );
 
+  const name = labels.fields.groupId;
+
   const consumerName = useURLSearchParamsChips(
     "consumer",
     resetPaginationQuery
   );
   const [isColumnSortable, sort, sortDirection] = useSortableSearchParams(
     KafkaConsumerGroupSortableColumns,
-    {
-      name: "TODO name",
-    },
-    "name",
-    "desc"
+    { name }
   );
   const { data } = useConsumerGroups({
     id: instance?.id,
@@ -46,6 +52,39 @@ export const ConsumerGroupsRoute: VoidFunctionComponent<
     direction: sortDirection,
     groupId: consumerName.chips[0],
   });
+
+  const onDeletConsumerGroup = useCallback(
+    (groupId: string) => {
+      //TODO: remove hardcode value
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+      history.push(
+        `${instanceConsumerGroupsHref(instance.id)}/${groupId}/delete`
+      );
+    },
+    [history, instance.id]
+  );
+
+  const onViewPartition = useCallback(
+    (groupId: string) => {
+      //TODO: remove hardcode value
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+      history.push(
+        `${instanceConsumerGroupsHref(instance.id)}/${groupId}/view-partition`
+      );
+    },
+    [history, instance.id]
+  );
+
+  const onClickResetOffset = useCallback(
+    (groupId: string) => {
+      //TODO: remove hardcode value
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+      history.push(
+        `${instanceConsumerGroupsHref(instance.id)}/${groupId}/reset-offset`
+      );
+    },
+    [history, instance.id]
+  );
   return (
     <>
       <DataPlaneHeaderConnected
@@ -60,9 +99,7 @@ export const ConsumerGroupsRoute: VoidFunctionComponent<
         consumerName={consumerName.chips}
         isRowSelected={() => false}
         isColumnSortable={isColumnSortable}
-        onDelete={() => {
-          /* TODO */
-        }}
+        onDelete={(row) => onDeletConsumerGroup(row.groupId)}
         onSearchConsumer={(value) => {
           consumerName.clear();
           consumerName.toggle(value);
@@ -71,12 +108,8 @@ export const ConsumerGroupsRoute: VoidFunctionComponent<
         onPageChange={setPagination}
         onRemoveConsumerChip={consumerName.clear}
         onRemoveConsumerChips={consumerName.clear}
-        onViewPartition={() => {
-          /* TODO */
-        }}
-        onViewResetOffset={() => {
-          /* TODO */
-        }}
+        onViewPartition={(row) => onViewPartition(row.groupId)}
+        onViewResetOffset={(row) => onClickResetOffset(row.groupId)}
       />
     </>
   );

@@ -1,8 +1,8 @@
 import type { ComponentStory, ComponentMeta } from "@storybook/react";
 import { ConsumerGroupResetOffset } from "./ConsumerGroupResetOffset";
-import type { ConsumerRow } from "./ConsumerGroupResetOffset";
+import type { Consumer } from "ui-models/src/models/consumer-group";
 
-const consumer: ConsumerRow[] = [
+const consumer: Consumer[] = [
   {
     groupId: "1",
     topic: "test-topic",
@@ -11,22 +11,43 @@ const consumer: ConsumerRow[] = [
     logEndOffset: 1,
     lag: 0,
     memberId: "123456789",
-    selected: true,
   },
   {
-    groupId: "2",
+    groupId: "1",
     topic: "test",
     partition: 1,
     offset: 3,
     logEndOffset: 1,
     lag: 0,
-    selected: false,
+  },
+  {
+    groupId: "3",
+    topic: "test",
+    partition: 1,
+    offset: 3,
+    logEndOffset: 1,
+    lag: 0,
+  },
+  {
+    groupId: "4",
+    topic: "test2",
+    partition: 1,
+    offset: 3,
+    logEndOffset: 1,
+    lag: 0,
+  },
+  {
+    groupId: "4",
+    topic: "test1",
+    partition: 1,
+    offset: 3,
+    logEndOffset: 1,
+    lag: 0,
   },
 ];
 
 const getTopics = () => {
   const topics = consumer.map((consumer) => consumer.topic);
-
   const distinctTopics = [...new Set(topics)];
   return distinctTopics;
 };
@@ -57,44 +78,27 @@ const Template: ComponentStory<typeof ConsumerGroupResetOffset> = (
   />
 );
 
-export const NoTopicSelected = Template.bind({});
-NoTopicSelected.args = {
+export const ResetOffset = Template.bind({});
+ResetOffset.args = {
   isModalOpen: true,
 };
-
-export const NoOffsetSelected = Template.bind({});
-NoOffsetSelected.args = {
-  isModalOpen: true,
-  selectedTopic: "test-topic",
-};
-
-export const CustomOffsetDisabled = Template.bind({});
-CustomOffsetDisabled.args = {
-  isModalOpen: true,
-  selectedTopic: "test-topic",
-  selectedOffset: "earliest",
-  customOffsetValue: "2",
-};
-
-export const CustomOffsetEnabled = Template.bind({});
-CustomOffsetEnabled.args = {
-  isModalOpen: true,
-  selectedTopic: "test-topic",
-  selectedOffset: "absolute",
-  customOffsetValue: "2",
-};
-
-export const ResetOffsetWhenAllFieldsSelected = Template.bind({});
-ResetOffsetWhenAllFieldsSelected.args = {
-  isModalOpen: true,
-  selectedTopic: "test-topic",
-  selectedOffset: "absolute",
-  customOffsetValue: "2",
-  confirmCheckboxChecked: true,
+ResetOffset.parameters = {
+  docs: {
+    description: {
+      story: `Consumer group reset offset modal when the consumer group state is not stable`,
+    },
+  },
 };
 
 export const ResetOffsetErrorMessage = Template.bind({});
 ResetOffsetErrorMessage.args = {
-  isDisconnected: false,
+  state: "Stable",
   isModalOpen: true,
+};
+ResetOffsetErrorMessage.parameters = {
+  docs: {
+    description: {
+      story: `Consumer group reset offset modal when the consumer group state is stable`,
+    },
+  },
 };

@@ -5,6 +5,7 @@ import type {
 } from "@rhoas/kafka-instance-sdk";
 import type { ConsumerGroup } from "ui-models/src/models/consumer-group";
 import type { KafkaConsumerGroupSortableColumn } from "../types";
+import { stateMapping } from "../transformers/ConsumerGroupTransformer";
 
 export type FetchConsumerGroupsParams = {
   getConsumerGroups: GroupsApi["getConsumerGroups"];
@@ -47,15 +48,6 @@ export async function fetchConsumerGroups({
     unassignedPartitions: t.metrics?.unassignedPartitions,
   }));
   const count = response.data.total;
+
   return { count, groups };
 }
-
-const stateMapping: { [state in ConsumerGroupState]: ConsumerGroup["state"] } =
-  {
-    DEAD: "Dead",
-    EMPTY: "Empty",
-    STABLE: "Stable",
-    UNKNOWN: "Unknown",
-    COMPLETING_REBALANCE: "CompletingRebalance",
-    PREPARING_REBALANCE: "PreparingRebalance",
-  };

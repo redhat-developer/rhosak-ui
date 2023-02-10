@@ -19,18 +19,18 @@ export const KafkaInstancesSortableColumns = [
 ] as const;
 
 export type KafkaInstancesSortableColumn =
-  typeof KafkaInstancesSortableColumns[number];
+  (typeof KafkaInstancesSortableColumns)[number];
 
 export const KafkaTopicsSortableColumns = [
   ...Object.values(TopicOrderKey),
 ] as const;
 
 export type KafkaTopicsSortableColumn =
-  typeof KafkaTopicsSortableColumns[number];
+  (typeof KafkaTopicsSortableColumns)[number];
 
 export const KafkaConsumerGroupSortableColumns = [
   ...Object.values(ConsumerGroupOrderKey),
 ] as const;
 
 export type KafkaConsumerGroupSortableColumn =
-  typeof KafkaConsumerGroupSortableColumns[number];
+  (typeof KafkaConsumerGroupSortableColumns)[number];
