@@ -3,6 +3,7 @@ import { AppServicesApi } from "@rhoas/account-management-sdk";
 import {
   Configuration,
   DefaultApi,
+  SecurityApi,
   EnterpriseDataplaneClustersApi,
 } from "@rhoas/kafka-management-sdk";
 import {
@@ -36,15 +37,16 @@ export const useApi = () => {
     });
   }, [accessToken]);
 
-  const serviceAccount = useCallback(async () => {
-    const token = await accessToken();
-    return new ServiceAccountsApi(
-      new Configuration({
-        accessToken: token,
-        basePath: `/mas-local-fm/sas_ui`,
-      })
-    );
-  }, [accessToken]);
+  const serviceAccount = useCallback(
+    () =>
+      new SecurityApi(
+        new Configuration({
+          accessToken,
+          basePath,
+        })
+      ),
+    [accessToken, basePath]
+  );
 
   const account = useCallback(
     () =>

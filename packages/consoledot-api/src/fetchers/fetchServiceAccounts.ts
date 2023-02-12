@@ -1,9 +1,9 @@
-import type { ServiceAccountsApi } from "@rhoas/service-accounts-sdk";
+import type { SecurityApi } from "@rhoas/kafka-management-sdk";
 import type { Account } from "ui";
 import { PrincipalType } from "ui";
 
 export type FetchServiceAccountsParams = {
-  getServiceAccounts: ServiceAccountsApi["getServiceAccounts"];
+  getServiceAccounts: SecurityApi["getServiceAccounts"];
 };
 
 export async function fetchServiceAccounts({
@@ -11,8 +11,8 @@ export async function fetchServiceAccounts({
 }: FetchServiceAccountsParams): Promise<{
   serviceAccounts: Account[];
 }> {
-  const response = await getServiceAccounts(-1);
-  const data = response.data;
+  const response = await getServiceAccounts();
+  const data = response.data.items;
   const serviceAccounts: Account[] = data.map((t) => {
     return {
       principalType: PrincipalType.ServiceAccount,

@@ -14,7 +14,7 @@ export async function fetchUserAccounts({
   accounts: UserAccount[];
   count: number;
 }> {
-  const response = await getUserAccounts();
+  const response = await getUserAccounts(-1);
   const accounts = response.data.data.map<UserAccount>((p) => {
     const fullObject = p as Principal;
     return {

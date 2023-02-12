@@ -26,7 +26,7 @@ import {
   createEmptyManualAcl,
   createEmptyProduceTopicAcl,
 } from "./types";
-import { transformResourceType, transformResourceOperation } from "./utils";
+import { transformPermissions } from "./utils";
 
 export type ManageKafkaPermissionsProps = {
   accounts: Account[];
@@ -95,8 +95,11 @@ export const ManageKafkaPermissions: React.FC<ManageKafkaPermissionsProps> = ({
       if (canSave == true && isNameValid) return true;
       else return false;
     }
-    return false;
-  }, [canSave, isNameValid, newAcls]);
+    if (deletedAcls && deletedAcls.length > 0) {
+      setCanSave(true);
+      return true;
+    } else return false;
+  }, [canSave, deletedAcls, isNameValid, newAcls]);
 
   useEffect(() => {
     checkValidation();
@@ -116,150 +119,20 @@ export const ManageKafkaPermissions: React.FC<ManageKafkaPermissionsProps> = ({
     if (filter == "") return consumerGroupsList || [];
     else return consumerGroupsList?.filter((v) => v.includes(filter)) || [];
   };
-  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-  const selectedAccountName = `User:${selectedAccount}`;
 
   const aclsToSave: AclBinding[] = [];
 
-  const transformPermissions = (transformAclData: AclBinding[]) => {
-    newAcls?.map((value) => {
-      switch (value.type) {
-        case "manual": {
-          transformAclData.push({
-            resourceName:
-              value.resourceType == "kafka-instance"
-                ? "kafka-cluster"
-                : value.resourceName
-                ? value.resourceName
-                : "",
-            resourceType: transformResourceType(value.resourceType),
-            patternType: value.resourcePrefix == "Is" ? "LITERAL" : "PREFIXED",
-            operation: transformResourceOperation(value.resourceOperation),
-            permission: value.resourcePermission == "allow" ? "ALLOW" : "DENY",
-            principal:
-              selectedAccount == "All accounts"
-                ? `User:*`
-                : selectedAccountName,
-          });
-          break;
-        }
-        case "manage-access":
-          {
-            transformAclData.push({
-              resourceName: "kafka-cluster",
-              resourceType: "CLUSTER",
-              patternType: "LITERAL",
-              operation: "ALTER",
-              permission: "ALLOW",
-              principal:
-                selectedAccount == "All accounts"
-                  ? `User:*`
-                  : selectedAccountName,
-            });
-          }
-          break;
-        case "consume-topic":
-          {
-            transformAclData.push(
-              {
-                resourceName: value.topicResourceName || "",
-                resourceType: "TOPIC",
-                patternType:
-                  value.topicResourcePrefixRule == "Is"
-                    ? "LITERAL"
-                    : "PREFIXED",
-                operation: "READ",
-                permission: "ALLOW",
-                principal:
-                  selectedAccount == "All accounts"
-                    ? `User:*`
-                    : selectedAccountName,
-              },
-              {
-                resourceName: value.topicResourceName || "",
-                resourceType: "TOPIC",
-                patternType:
-                  value.topicResourcePrefixRule == "Is"
-                    ? "LITERAL"
-                    : "PREFIXED",
-                operation: "DESCRIBE",
-                permission: "ALLOW",
-                principal:
-                  selectedAccount == "All accounts"
-                    ? `User:*`
-                    : selectedAccountName,
-              },
-              {
-                resourceName: value.consumerResourceName || "",
-                resourceType: "GROUP",
-                patternType:
-                  value.consumerResourcePrefixRule == "Is"
-                    ? "LITERAL"
-                    : "PREFIXED",
-                operation: "READ",
-                permission: "ALLOW",
-                principal:
-                  selectedAccount == "All accounts"
-                    ? `User:*`
-                    : selectedAccountName,
-              }
-            );
-          }
-          break;
-        case "produce-topic": {
-          transformAclData.push(
-            {
-              resourceName: value.resourceNameValue || "",
-              resourceType: "TOPIC",
-              patternType:
-                value.prefixRuleValue == "Is" ? "LITERAL" : "PREFIXED",
-              operation: "WRITE",
-              permission: "ALLOW",
-              principal:
-                selectedAccount == "All accounts"
-                  ? `User:*`
-                  : selectedAccountName,
-            },
-            {
-              resourceName: value.resourceNameValue || "",
-              resourceType: "TOPIC",
-              patternType:
-                value.prefixRuleValue == "Is" ? "LITERAL" : "PREFIXED",
-              operation: "CREATE",
-              permission: "ALLOW",
-              principal:
-                selectedAccount == "All accounts"
-                  ? `User:*`
-                  : selectedAccountName,
-            },
-            {
-              resourceName: value.resourceNameValue || "",
-              resourceType: "TOPIC",
-              patternType:
-                value.prefixRuleValue == "Is" ? "LITERAL" : "PREFIXED",
-              operation: "DESCRIBE",
-              permission: "ALLOW",
-              principal:
-                selectedAccount == "All accounts"
-                  ? `User:*`
-                  : selectedAccountName,
-            }
-          );
-        }
-      }
-    });
-  };
-
   const onClickSubmit = () => {
     if (step == 1) setStep(2);
-    else if (newAcls && newAcls?.length > 0) {
+    else if (
+      (newAcls && newAcls?.length > 0) ||
+      (deletedAcls && deletedAcls?.length > 0)
+    ) {
       setSubmitted(true);
       const isAclValid = checkValidation();
-      transformPermissions(aclsToSave);
+      transformPermissions(aclsToSave, newAcls, selectedAccount);
       isAclValid && onSave(aclsToSave, deletedAcls);
     }
-    //else if (!newAcls || (newAcls.length < 1 && isAclDeleted))
-    //  void onSave(undefined);
   };
 
   const onAddManualPermissions = () => {
@@ -441,10 +314,12 @@ export const ManageKafkaPermissions: React.FC<ManageKafkaPermissionsProps> = ({
                   <span>{t("review_existing_title")}</span>{" "}
                   <Badge
                     isRead={
-                      existingAcls && existingAcls.length == 0 ? true : false
+                      existingAcls == undefined || existingAcls.length == 0
+                        ? true
+                        : false
                     }
                   >
-                    {existingAcls ? existingAcls.length : ""}
+                    {existingAcls == undefined ? 0 : existingAcls.length}
                   </Badge>
                 </div>
               }

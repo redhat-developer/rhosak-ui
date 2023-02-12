@@ -1,15 +1,17 @@
-import { TableVariant } from "@patternfly/react-table";
-import type { TableViewProps } from "@rhoas/app-services-ui-components";
 import {
-  EmptyStateNoResults,
-  TableView,
-} from "@rhoas/app-services-ui-components";
+  InnerScrollContainer,
+  OuterScrollContainer,
+  TableVariant,
+} from "@patternfly/react-table";
+import type { TableViewProps } from "@rhoas/app-services-ui-components";
+import { TableView, Pagination } from "@rhoas/app-services-ui-components";
 import { useTranslation } from "react-i18next";
 import type { Permissions } from "../types";
-import { ConsumerGroupEmptyState } from "../../ConsumerGroups";
 import { PrincipalCell, PermissionOperationCell, ResourceCell } from "./Cells";
 import { useState } from "react";
 import { PermissionsToolbar } from "./PermissionsToolbar";
+import { PageSection } from "@patternfly/react-core";
+import { PermissionsTableEmptyState } from "./EmptyPermissionsTable";
 
 type SubUnion<T, U extends T> = U;
 export type PermissionsField = keyof Permissions;
@@ -68,82 +70,105 @@ export const PermissionsTable = <T extends Permissions>({
   };
 
   return (
-    <>
-      <PermissionsToolbar
-        onManagePermissions={onManagePermissions}
-        onDeleteSelected={onDeleteSelected}
-        checkedRows={checkedRows}
-        onChangeCheckedRows={setCheckedRows}
-        itemCount={itemCount || 0}
-        page={page}
-        perPage={perPage || 10}
-        onChange={onPerPageChange}
-      />
-      <TableView
-        variant={TableVariant.compact}
-        tableOuiaId={"card-table"}
-        ariaLabel={t("consumerGroup.consumer_group_list")}
-        data={permissions}
-        columns={Columns}
-        onCheck={onCheck}
-        isRowChecked={({ rowIndex }) => isRowChecked(rowIndex)}
-        renderHeader={({ column, Th, key }) => (
-          <Th key={key}>{labels[column]}</Th>
-        )}
-        renderCell={({ column, row, Td, key }) => {
-          return (
-            <Td key={key} dataLabel={labels[column]}>
-              {(() => {
-                switch (column) {
-                  case "account":
-                    return (
-                      <PrincipalCell
-                        isReviewTable={false}
-                        principal={row.account}
-                        isDeleteEnabled={false}
-                      />
-                    );
-                  case "permission":
-                    return (
-                      <PermissionOperationCell
-                        permission={row.permission.permission}
-                        operation={row.permission.operation}
-                      />
-                    );
-                  case "resource":
-                    return (
-                      <ResourceCell
-                        patternType={row.resource.patternType}
-                        resourceType={row.resource.resourceType}
-                        resourceName={row.resource.resourceName}
-                      />
-                    );
-                }
-              })()}
-            </Td>
-          );
-        }}
-        renderActions={({ ActionsColumn, rowIndex }) => (
-          <ActionsColumn
-            items={[
-              {
-                title: t("manage"),
-                onClick: () => onManagePermissions(),
-              },
-              {
-                title: t("common:delete"),
-                onClick: () => onDelete(rowIndex),
-              },
-            ]}
+    <PageSection hasOverflowScroll={true}>
+      <OuterScrollContainer className={"pf-u-h-100"}>
+        <PermissionsToolbar
+          onManagePermissions={onManagePermissions}
+          onDeleteSelected={onDeleteSelected}
+          checkedRows={checkedRows}
+          onChangeCheckedRows={setCheckedRows}
+          itemCount={itemCount || 0}
+          page={page}
+          perPage={perPage || 10}
+          onChange={onPerPageChange}
+        />
+        <InnerScrollContainer>
+          <TableView
+            variant={TableVariant.compact}
+            tableOuiaId={"card-table"}
+            ariaLabel={t("consumerGroup.consumer_group_list")}
+            data={permissions}
+            columns={Columns}
+            onCheck={onCheck}
+            isRowChecked={({ rowIndex }) => isRowChecked(rowIndex)}
+            renderHeader={({ column, Th, key }) => (
+              <Th key={key}>{labels[column]}</Th>
+            )}
+            renderCell={({ column, row, Td, key }) => {
+              return (
+                <Td key={key} dataLabel={labels[column]}>
+                  {(() => {
+                    switch (column) {
+                      case "account":
+                        return (
+                          <PrincipalCell
+                            isReviewTable={false}
+                            principal={row.account}
+                            isDeleteEnabled={false}
+                          />
+                        );
+                      case "permission":
+                        return (
+                          <PermissionOperationCell
+                            permission={row.permission.permission}
+                            operation={row.permission.operation}
+                          />
+                        );
+                      case "resource":
+                        return (
+                          <ResourceCell
+                            patternType={row.resource.patternType}
+                            resourceType={row.resource.resourceType}
+                            resourceName={row.resource.resourceName}
+                          />
+                        );
+                    }
+                  })()}
+                </Td>
+              );
+            }}
+            renderActions={({ ActionsColumn, rowIndex }) => (
+              <ActionsColumn
+                items={[
+                  {
+                    title: t("manage"),
+                    onClick: () => onManagePermissions(),
+                  },
+                  {
+                    title: t("common:delete"),
+                    onClick: () => onDelete(rowIndex),
+                  },
+                ]}
+              />
+            )}
+            itemCount={itemCount}
+            page={page}
+            onPageChange={onPageChange}
+            perPage={perPage}
+            emptyStateNoData={
+              <PermissionsTableEmptyState
+                openManagePermissions={onManagePermissions}
+              />
+            }
+            emptyStateNoResults={
+              <PermissionsTableEmptyState
+                openManagePermissions={onManagePermissions}
+              />
+            }
           />
-        )}
-        itemCount={itemCount}
-        page={page}
-        onPageChange={onPageChange}
-        perPage={perPage}
-        emptyStateNoData={<ConsumerGroupEmptyState />}
-        emptyStateNoResults={<EmptyStateNoResults />}
-      />
-    </>
+        </InnerScrollContainer>
+
+        {itemCount != undefined && itemCount > 20 ? (
+          <Pagination
+            isCompact
+            itemCount={itemCount || 0}
+            page={page}
+            perPage={perPage || 10}
+            onChange={onPerPageChange}
+            variant={"bottom"}
+          />
+        ) : null}
+      </OuterScrollContainer>
+    </PageSection>
   );
 };

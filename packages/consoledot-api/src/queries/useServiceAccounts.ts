@@ -1,20 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
 import { useApiConfiguration } from "../ApiProvider";
-import type { FetchUserAccountsParams } from "../fetchers";
+import type { FetchServiceAccountsParams } from "../fetchers";
 import { fetchServiceAccounts } from "../fetchers";
-import { masQueries } from "../queryKeys";
+import { kafkaQueries } from "../queryKeys";
 import { useApi } from "../useApi";
 
 export function useServiceAccounts(
-  params: Omit<FetchUserAccountsParams, "getUserAccounts">
+  params: Omit<FetchServiceAccountsParams, "getServiceAccounts">
 ) {
   const { refetchInterval } = useApiConfiguration();
   const { serviceAccount } = useApi();
 
   return useQuery({
-    queryKey: masQueries.serviceAccounts(params),
+    queryKey: kafkaQueries.instance.serviceAccounts(params),
     queryFn: async () => {
-      const api = await serviceAccount();
+      const api = serviceAccount();
 
       return fetchServiceAccounts({
         getServiceAccounts: (...args) => api.getServiceAccounts(...args),

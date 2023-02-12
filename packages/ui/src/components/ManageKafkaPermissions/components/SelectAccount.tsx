@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import type { Account } from "../types";
 import { PrincipalType } from "../types";
 import type { SelectProps } from "@patternfly/react-core";
+import { Skeleton } from "@patternfly/react-core";
 import { FormGroup, Popover } from "@patternfly/react-core";
 import {
   Divider,
@@ -167,32 +168,36 @@ export const SelectAccount: React.VFC<SelectAccountProps> = ({
         </Popover>
       }
     >
-      <Select
-        id={"account-id"}
-        data-testid="acls-select-account"
-        className="kafka-ui--select--limit-height"
-        variant={SelectVariant.typeahead}
-        typeAheadAriaLabel={t("account_id_title")}
-        maxHeight={400}
-        onToggle={onToggle}
-        onSelect={onSelect}
-        onClear={clearSelection}
-        selections={value}
-        onFilter={(_, value) => makeOptions(value)}
-        isOpen={isOpen}
-        placeholderText={t("account_id_typeahead_placeholder")}
-        isCreatable
-        menuAppendTo="parent"
-        validated={validated}
-        createText={t("resourcePrefix.create_text")}
-        isGrouped
-        onCreateOption={() => {
-          setIsOpen(false);
-          setIsDirty(false);
-        }}
-      >
-        {makeOptions()}
-      </Select>
+      {accounts ? (
+        <Select
+          id={"account-id"}
+          data-testid="acls-select-account"
+          className="kafka-ui--select--limit-height"
+          variant={SelectVariant.typeahead}
+          typeAheadAriaLabel={t("account_id_title")}
+          maxHeight={400}
+          onToggle={onToggle}
+          onSelect={onSelect}
+          onClear={clearSelection}
+          selections={value}
+          onFilter={(_, value) => makeOptions(value)}
+          isOpen={isOpen}
+          placeholderText={t("account_id_typeahead_placeholder")}
+          isCreatable
+          menuAppendTo="parent"
+          validated={validated}
+          createText={t("resourcePrefix.create_text")}
+          isGrouped
+          onCreateOption={() => {
+            setIsOpen(false);
+            setIsDirty(false);
+          }}
+        >
+          {makeOptions()}
+        </Select>
+      ) : (
+        <Skeleton width={"100%"} />
+      )}
     </FormGroup>
   );
 };
