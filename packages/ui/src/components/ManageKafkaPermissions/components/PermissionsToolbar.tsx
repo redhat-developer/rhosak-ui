@@ -80,12 +80,15 @@ export const PermissionsToolbar: VFC<PermissionsToolbarProps> = ({
         />
       </ToolbarItem>
       <ToolbarItem variant="pagination" alignment={{ default: "alignRight" }}>
-        <Pagination
-          itemCount={itemCount}
-          page={page}
-          perPage={perPage}
-          onChange={onChange}
-        />
+        {itemCount > 20 && (
+          <Pagination
+            itemCount={itemCount}
+            isCompact
+            page={page}
+            perPage={perPage}
+            onChange={onChange}
+          />
+        )}
       </ToolbarItem>
     </>
   );

@@ -80,18 +80,19 @@ export const DataPlaneRoutes: VoidFunctionComponent = () => {
             <ConsumerGroupsRoute instancesHref={"/kafkas"} />
           </Route>
 
-          <Route path={`${DataPlaneRoutePath}/acls/manage-permissions`}>
-            <ManagePermissionsRoute instancesHref={"/kafkas"} />
+          <Route path={`${DataPlaneRoutePath}/acls/manage-permissions`} exact>
+            <ManagePermissionsRoute
+              instancesHref={"/kafkas"}
+              managePermissionsHref={managePermissionsHref}
+            />
           </Route>
-          <Route path={`${DataPlaneRoutePath}/acls`}>
+          <Route path={`${DataPlaneRoutePath}/acls`} exact>
             <AclsRoute
               instancesHref={"/kafkas"}
               managePermissionsHref={managePermissionsHref}
             />
           </Route>
-          <Route path={`${DataPlaneRoutePath}/acls/manage-permissions`}>
-            <ManagePermissionsRoute instancesHref={"/kafkas"} />
-          </Route>
+
           <Route path={`${DataPlaneRoutePath}/settings`} exact>
             <SettingsRoute instancesHref={"/kafkas"} />
           </Route>

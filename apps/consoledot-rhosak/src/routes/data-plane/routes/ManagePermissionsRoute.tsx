@@ -7,7 +7,7 @@ import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
 import {
   useAcls,
   useDeletePermissionsMutation,
-  //useServiceAccounts,
+  useServiceAccounts,
   useUserAccounts,
   useTopics,
   useConsumerGroups,
@@ -15,24 +15,39 @@ import {
 } from "consoledot-api";
 import { useDataPlaneGate } from "../useDataPlaneGate";
 import { useHistory } from "react-router-dom";
-import type { ControlPlaneNavigationProps } from "../../control-plane/routesConsts";
 import type { AclBinding } from "@rhoas/kafka-instance-sdk";
-import { DataPlaneRoutePath } from "../routesConsts";
+import type { DataPlanePermissionsNavigationProps } from "../routesConsts";
 
 export const ManagePermissionsRoute: VoidFunctionComponent<
-  ControlPlaneNavigationProps
-> = ({ instancesHref }) => {
+  DataPlanePermissionsNavigationProps
+> = ({ instancesHref, managePermissionsHref }) => {
   const { instance } = useDataPlaneGate();
   const { data: accounts } = useUserAccounts({});
+  const { data: serviceAccounts } = useServiceAccounts({});
   const userAccounts: Account[] | undefined = accounts?.accounts.map(
     (userAccount) => {
       return {
         displayName: userAccount.displayName,
         id: userAccount.username,
-        principalType: PrincipalType.ServiceAccount,
+        principalType: PrincipalType.UserAccount,
       };
     }
   );
+
+  const serviceAccountList: Account[] | undefined =
+    serviceAccounts?.serviceAccounts.map((userAccount) => {
+      return {
+        displayName: userAccount.displayName,
+        id: userAccount.id,
+        principalType: PrincipalType.ServiceAccount,
+      };
+    });
+
+  const allAccounts =
+    serviceAccountList != undefined &&
+    userAccounts != undefined &&
+    serviceAccountList.concat(userAccounts);
+
   const topicData = useTopics({
     id: instance.id,
     adminUrl: instance.adminUrl,
@@ -46,8 +61,6 @@ export const ManagePermissionsRoute: VoidFunctionComponent<
     (consumer) => consumer.groupId
   );
   const topicsList = topicData.data?.topics.map((topic) => topic.name);
-  //To-Do :Get service accounts
-  //const serviceAccounts = useServiceAccounts({});
   const { mutateAsync } = useDeletePermissionsMutation();
   const updatePermissions = useUpdatePermissionsMutation();
 
@@ -64,51 +77,63 @@ export const ManagePermissionsRoute: VoidFunctionComponent<
       aclPermission: AclBinding[] | undefined,
       deletedPermissions: AclBinding[] | undefined
     ) => {
-      aclPermission?.map(
-        (aclData) =>
-          void updatePermissions.mutateAsync({
-            instanceId: instance.id,
-            adminUrl: instance?.adminUrl || "",
-            acl: {
-              patternType: aclData.patternType,
-              permission: aclData.permission,
-              principal: aclData.principal,
-              operation: aclData.operation,
-              resourceName: aclData.resourceName,
-              resourceType: aclData.resourceType,
-            },
+      if (aclPermission != undefined && aclPermission.length > 0) {
+        aclPermission.map(
+          (aclData) =>
+            void updatePermissions.mutateAsync({
+              instanceId: instance.id,
+              adminUrl: instance?.adminUrl || "",
+              acl: {
+                patternType: aclData.patternType,
+                permission: aclData.permission,
+                principal: aclData.principal,
+                operation: aclData.operation,
+                resourceName: aclData.resourceName,
+                resourceType: aclData.resourceType,
+              },
 
-            onSuccess: () => {
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-              //history.replace(instancesHref);
+              onSuccess: () => {
+                //eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+                history.replace(managePermissionsHref(instance.id));
+              },
+              onError: () => {
+                //To-Do
+              },
+            })
+        );
+      }
+
+      if (deletedPermissions != undefined && deletedPermissions.length > 0) {
+        deletedPermissions.map((aclToDelete) => {
+          void mutateAsync({
+            instanceId: instance.id,
+            adminUrl: instance.adminUrl || "",
+            acl: {
+              patternType: aclToDelete.patternType,
+              permissionType: aclToDelete.permission,
+              principal: aclToDelete.principal,
+              resourceName: aclToDelete.resourceName,
+              operation: aclToDelete.operation,
+              resourceType: aclToDelete.resourceType,
             },
             onError: () => {
-              //
+              //To-Do
             },
-          })
-      );
-      deletedPermissions?.map((aclToDelete) => {
-        void mutateAsync({
-          instanceId: instance.id,
-          adminUrl: instance.adminUrl || "",
-          acl: {
-            patternType: aclToDelete.patternType,
-            permissionType: aclToDelete.permission,
-            principal: aclToDelete.principal,
-            resourceName: aclToDelete.resourceName,
-            operation: aclToDelete.operation,
-            resourceType: aclToDelete.resourceType,
-          },
-          onError: () => {
-            // TODO: alert
-          },
-          onSuccess: () => {
-            // No action
-          },
+            onSuccess: () => {
+              //To-Do
+            },
+          });
         });
-      });
+      }
     },
-    [instance.adminUrl, instance.id, mutateAsync, updatePermissions]
+    [
+      history,
+      instance.adminUrl,
+      instance.id,
+      managePermissionsHref,
+      mutateAsync,
+      updatePermissions,
+    ]
   );
 
   const existingAcls: AclBinding[] | undefined = data?.groups.map((acl) => {
@@ -123,9 +148,9 @@ export const ManagePermissionsRoute: VoidFunctionComponent<
   });
 
   const onCancel = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-    history.push(`${DataPlaneRoutePath}/acls`);
-  }, [history]);
+    //eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+    history.push(instancesHref);
+  }, [history, instancesHref]);
 
   return (
     <>
@@ -134,7 +159,7 @@ export const ManagePermissionsRoute: VoidFunctionComponent<
         activeSection={"permissions"}
       />
       <ManageKafkaPermissions
-        accounts={userAccounts || []}
+        accounts={allAccounts || []}
         onCancel={onCancel}
         kafkaName={instance.name}
         onSave={onSaveAcls}
