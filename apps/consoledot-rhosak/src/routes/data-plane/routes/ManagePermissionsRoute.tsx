@@ -119,7 +119,8 @@ export const ManagePermissionsRoute: VoidFunctionComponent<
               //To-Do
             },
             onSuccess: () => {
-              //To-Do
+              //eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+              history.push(managePermissionsHref(instance.id));
             },
           });
         });
