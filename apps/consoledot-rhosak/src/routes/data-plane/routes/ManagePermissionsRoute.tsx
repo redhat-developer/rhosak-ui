@@ -3,7 +3,6 @@ import type { VoidFunctionComponent } from "react";
 import type { Account } from "ui";
 import { PrincipalType } from "ui";
 import { ManageKafkaPermissions } from "ui";
-import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
 import {
   useAcls,
   useDeletePermissionsMutation,
@@ -20,7 +19,7 @@ import type { DataPlanePermissionsNavigationProps } from "../routesConsts";
 
 export const ManagePermissionsRoute: VoidFunctionComponent<
   DataPlanePermissionsNavigationProps
-> = ({ instancesHref, managePermissionsHref }) => {
+> = ({ managePermissionsHref }) => {
   const { instance } = useDataPlaneGate();
   const { data: accounts } = useUserAccounts({});
   const { data: serviceAccounts } = useServiceAccounts({});
@@ -94,7 +93,7 @@ export const ManagePermissionsRoute: VoidFunctionComponent<
 
               onSuccess: () => {
                 //eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-                history.replace(managePermissionsHref(instance.id));
+                history.push(managePermissionsHref(instance.id));
               },
               onError: () => {
                 //To-Do
@@ -149,15 +148,11 @@ export const ManagePermissionsRoute: VoidFunctionComponent<
 
   const onCancel = useCallback(() => {
     //eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-    history.push(instancesHref);
-  }, [history, instancesHref]);
+    history.push(managePermissionsHref(instance.id));
+  }, [history, instance.id, managePermissionsHref]);
 
   return (
     <>
-      <DataPlaneHeaderConnected
-        instancesHref={instancesHref}
-        activeSection={"permissions"}
-      />
       <ManageKafkaPermissions
         accounts={allAccounts || []}
         onCancel={onCancel}
