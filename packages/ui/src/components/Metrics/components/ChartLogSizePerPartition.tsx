@@ -75,7 +75,7 @@ export const ChartLogSizePerPartition: FunctionComponent<
   const showDate = shouldShowDate(duration);
 
   return (
-    <div ref={containerRef} style={{ height: "500px" }}>
+    <div ref={containerRef} style={{ marginTop: "-30px", height: "700px" }}>
       {(() => {
         switch (true) {
           case isLoading:
@@ -148,7 +148,7 @@ export function getChartData(
     ? Object.entries(partitions)
         .slice(0, 10)
         .map(([partition, dataMap], index) => {
-          const name = topic ? `${topic}/${partition}` : partition;
+          const name = topic ? `${topic} / ${partition}` : partition;
           const color = colors[index];
           legendData.push({
             name,
@@ -163,7 +163,7 @@ export function getChartData(
     : Object.entries(partitions)
         .slice(0, 20)
         .map(([partition, dataMap], index) => {
-          const name = topic ? `${topic}/${partition}` : partition;
+          const name = topic ? `${topic} / ${partition}` : partition;
           const color = colors[index];
           legendData.push({
             name,
