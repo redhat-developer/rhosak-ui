@@ -63,6 +63,9 @@ const viewTopicPartitionConsumerGroupHref = (
 export const managePermissionsHref = (id: string) =>
   `${instanceDetailsHref(id)}/acls/manage-permissions`;
 
+export const permissionsModalHref = (id: string) =>
+  `${instanceDetailsHref(id)}/acls`;
+
 export const DataPlaneRoutes: VoidFunctionComponent = () => {
   return (
     <Route path={DataPlaneRoutePath}>
@@ -80,13 +83,13 @@ export const DataPlaneRoutes: VoidFunctionComponent = () => {
             <ConsumerGroupsRoute instancesHref={"/kafkas"} />
           </Route>
 
-          <Route path={`${DataPlaneRoutePath}/acls/manage-permissions`} exact>
-            <ManagePermissionsRoute
-              instancesHref={"/kafkas"}
-              managePermissionsHref={managePermissionsHref}
-            />
-          </Route>
-          <Route path={`${DataPlaneRoutePath}/acls`} exact>
+          <Route path={`${DataPlaneRoutePath}/acls`}>
+            <Route path={`${DataPlaneRoutePath}/acls/manage-permissions`}>
+              <ManagePermissionsRoute
+                instancesHref={"/kafkas"}
+                managePermissionsHref={permissionsModalHref}
+              />
+            </Route>
             <AclsRoute
               instancesHref={"/kafkas"}
               managePermissionsHref={managePermissionsHref}
