@@ -13,7 +13,7 @@ export function useServiceAccounts(
 
   return useQuery({
     queryKey: kafkaQueries.instance.serviceAccounts(params),
-    queryFn: async () => {
+    queryFn: () => {
       const api = serviceAccount();
 
       return fetchServiceAccounts({
