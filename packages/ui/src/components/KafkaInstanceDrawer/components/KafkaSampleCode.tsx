@@ -54,6 +54,13 @@ export const KafkaSampleCode: VoidFunctionComponent<KafkaSampleCodeProps> = ({
 
   const [clientSelect, setClientSelect] = useState<ClientType>("java");
 
+  const clientProvider: { [provider in ClientType]: string } = {
+    java: t("sample_code.clients.java"),
+    python: t("sample_code.clients.python"),
+    quarkus: t("sample_code.clients.quarkus"),
+    springboot: t("sample_code.clients.spring_boot"),
+  };
+
   return (
     <div className="mas--details__drawer--tab-content">
       <TextContent className="pf-u-pb-sm">
@@ -65,28 +72,28 @@ export const KafkaSampleCode: VoidFunctionComponent<KafkaSampleCodeProps> = ({
         </Text>
         <ToggleGroup>
           <ToggleGroupItem
-            text={t("sample_code.clients.java")}
+            text={clientProvider["java"]}
             value="java"
             buttonId="java"
             isSelected={clientSelect === "java"}
             onChange={() => setClientSelect("java")}
           />
           <ToggleGroupItem
-            text={t("sample_code.clients.python")}
+            text={clientProvider["python"]}
             value="python"
             buttonId="python"
             isSelected={clientSelect === "python"}
             onChange={() => setClientSelect("python")}
           />
           <ToggleGroupItem
-            text={t("sample_code.clients.quarkus")}
+            text={clientProvider["quarkus"]}
             value="quarkus"
             buttonId="quarkus"
             isSelected={clientSelect === "quarkus"}
             onChange={() => setClientSelect("quarkus")}
           />
           <ToggleGroupItem
-            text={t("sample_code.clients.spring_boot")}
+            text={clientProvider["springboot"]}
             value="springboot"
             buttonId="springboot"
             isSelected={clientSelect === "springboot"}
@@ -172,7 +179,7 @@ export const KafkaSampleCode: VoidFunctionComponent<KafkaSampleCodeProps> = ({
                 ns={"kafka"}
                 i18nKey={"sample_code.sample_producer_code_description"}
                 values={{
-                  client_type: clientSelect,
+                  client_type: clientProvider[clientSelect],
                 }}
               />
             </Text>
@@ -255,7 +262,7 @@ export const KafkaSampleCode: VoidFunctionComponent<KafkaSampleCodeProps> = ({
                 ns={"kafka"}
                 i18nKey={"sample_code.sample_consumer_code_description"}
                 values={{
-                  client_type: clientSelect,
+                  client_type: clientProvider[clientSelect],
                 }}
               />
             </Text>
