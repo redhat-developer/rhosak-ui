@@ -68,7 +68,7 @@ export async function fetchTopicsMetrics({
         ({ value, timestamp }) =>
           (partition[timestamp] = value + (partition[timestamp] || 0))
       );
-      bytesPerPartition[topic + "/" + partition_id] = partition;
+      bytesPerPartition[partition_id] = partition;
     }
 
     switch (name) {
