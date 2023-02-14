@@ -2,20 +2,18 @@ import { composeStories } from "@storybook/testing-react";
 import * as stories from "./ManageKafkaPermissions.stories";
 import { userEvent } from "@storybook/testing-library";
 import { render, waitForI18n, waitForPopper, within } from "../../test-utils";
-const { InteractiveExample } = composeStories(stories);
+const {
+  InteractiveExampleAllAccountsSelected,
+  InteractiveExampleSelectedAccount,
+} = composeStories(stories);
 
 describe("Manage Kafka Permissions Dialog", () => {
   jest.setTimeout(10000);
   it("should render an acl modal for a service account", async () => {
     const onCancel = jest.fn();
     const onSave = jest.fn();
-    const onRemoveAcls = jest.fn();
     const comp = render(
-      <InteractiveExample
-        onCancel={onCancel}
-        onSave={onSave}
-        onRemoveAcls={onRemoveAcls}
-      />
+      <InteractiveExampleSelectedAccount onCancel={onCancel} onSave={onSave} />
     );
     await waitForI18n(comp);
     userEvent.click(await comp.findByLabelText("Account"));
@@ -139,12 +137,10 @@ describe("Manage Kafka Permissions Dialog", () => {
   it("should render an acl modal for all accounts", async () => {
     const onCancel = jest.fn();
     const onSave = jest.fn();
-    const onRemoveAcls = jest.fn();
     const comp = render(
-      <InteractiveExample
+      <InteractiveExampleAllAccountsSelected
         onCancel={onCancel}
         onSave={onSave}
-        onRemoveAcls={onRemoveAcls}
       />
     );
     await waitForI18n(comp);

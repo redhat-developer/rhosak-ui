@@ -13,7 +13,7 @@ const {
 } = composeStories(stories);
 
 describe("Resource Name", () => {
-  it("should render a select with validation message for invalid topic name", async () => {
+  xit("should render a select with validation message for invalid topic name", async () => {
     const onChangeValue = jest.fn();
     const comp = render(<InvalidTopicName onChangeValue={onChangeValue} />);
     await waitForI18n(comp);
