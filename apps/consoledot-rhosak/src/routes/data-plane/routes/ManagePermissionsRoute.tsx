@@ -76,6 +76,8 @@ export const ManagePermissionsRoute: VoidFunctionComponent<
       aclPermission: AclBinding[] | undefined,
       deletedPermissions: AclBinding[] | undefined
     ) => {
+      //eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+      history.push(managePermissionsHref(instance.id));
       if (aclPermission != undefined && aclPermission.length > 0) {
         aclPermission.map(
           (aclData) =>
@@ -92,8 +94,7 @@ export const ManagePermissionsRoute: VoidFunctionComponent<
               },
 
               onSuccess: () => {
-                //eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-                history.push(managePermissionsHref(instance.id));
+                //To-Do
               },
               onError: () => {
                 //To-Do
@@ -119,8 +120,7 @@ export const ManagePermissionsRoute: VoidFunctionComponent<
               //To-Do
             },
             onSuccess: () => {
-              //eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-              history.push(managePermissionsHref(instance.id));
+              //To-Do
             },
           });
         });
