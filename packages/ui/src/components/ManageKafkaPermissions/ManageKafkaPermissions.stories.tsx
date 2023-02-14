@@ -1,7 +1,6 @@
 import { ManageKafkaPermissions } from "./ManageKafkaPermissions";
 import type { ComponentStory, ComponentMeta } from "@storybook/react";
 import { PrincipalType } from "./types";
-import { useState } from "react";
 import {
   PermissionsForAllAccounts,
   PermissionsForSelectedAccount,
@@ -67,18 +66,9 @@ export default {
   },
 } as ComponentMeta<typeof ManageKafkaPermissions>;
 
-export const InteractiveExample: ComponentStory<
+export const InteractiveExampleAllAccountsSelected: ComponentStory<
   typeof ManageKafkaPermissions
 > = (args) => {
-  const [selectedAccount, setSelectedAccount] = useState<string | undefined>(
-    undefined
-  );
-  const [isAclDeleted, setIsAclDeleted] = useState<boolean>(false);
-
-  const onRemoveAcls = () => {
-    setIsAclDeleted(true);
-  };
-
   return (
     <div
       id="modal-scroll"
@@ -86,16 +76,25 @@ export const InteractiveExample: ComponentStory<
     >
       <ManageKafkaPermissions
         {...args}
-        isAclDeleted={isAclDeleted}
-        selectedAccount={selectedAccount}
-        onRemoveAcls={onRemoveAcls}
-        onChangeSelectedAccount={setSelectedAccount}
-        existingAcls={
-          selectedAccount == "All accounts"
-            ? PermissionsForAllAccounts
-            : PermissionsForSelectedAccount
-        }
         id={"modal-scroll"}
+        acls={PermissionsForAllAccounts}
+      />
+    </div>
+  );
+};
+
+export const InteractiveExampleSelectedAccount: ComponentStory<
+  typeof ManageKafkaPermissions
+> = (args) => {
+  return (
+    <div
+      id="modal-scroll"
+      style={{ transform: "scale(1)", minHeight: 850, height: "100%" }}
+    >
+      <ManageKafkaPermissions
+        {...args}
+        id={"modal-scroll"}
+        acls={PermissionsForSelectedAccount}
       />
     </div>
   );
