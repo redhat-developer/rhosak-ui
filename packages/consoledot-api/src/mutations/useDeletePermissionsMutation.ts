@@ -30,7 +30,7 @@ export function useDeletePermissionsMutation() {
         onSuccess();
       } catch (error) {
         if (isServiceApiError(error)) {
-          const message = error?.message;
+          const message = error?.response?.data.reason || "";
           const { code } = error?.response?.data || {};
 
           onError(code || "?", message);
