@@ -190,7 +190,7 @@
       "java": "Java",
       "python": "Python",
       "quarkus": "Quarkus",
-      "spring_boot": "Spring boot"
+      "spring_boot": "Spring Boot"
     },
     "code_snippet_description_1": "Use our sample code snippets to learn how to connect client applications to your Kafka instance. ",
     "code_snippet_description_2": "First, modify our configuration code to make a secure connection to your Kafka instance. Specify details such as your Kafka host (bootstrap server) and service account credentials. Then, use our application code to create example producers and consumers that interact with your instance.",
@@ -205,7 +205,7 @@
     "spring_boot_consumer_configuration": "Consumer configuration",
     "spring_boot_consumer_configuration_description": "Use the following code to create a listener container required by the example Spring Boot consumer.",
     "spring_boot_consumer_description": "Use the following code to run the example Spring Boot consumer.",
-    "spring_boot_listener": "Listener",
+    "spring_boot_listener": "Consumer listener",
     "spring_boot_listener_description": "Use the following code to run the listener container required by the example Spring Boot consumer.",
     "spring_boot_sample_consumer_code_description": "Use the following code snippets to create an example Spring Boot client that consumes messages from your Kafka instance."
   },
