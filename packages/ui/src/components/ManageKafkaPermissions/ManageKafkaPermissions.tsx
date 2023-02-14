@@ -74,9 +74,9 @@ export const ManageKafkaPermissions: React.FC<ManageKafkaPermissionsProps> = ({
   const [isOpenPreCancelModal, setIsOpenPreCancelModal] =
     useState<boolean>(false);
   const [step, setStep] = useState<number>(1);
-  const [existingAcls, setExistingAcls] = useState<AclBinding[] | undefined>(
+  /*const [acls, setacls] = useState<AclBinding[] | undefined>(
     acls
-  );
+  );*/
   const [newAcls, setNewAcls] = useState<AddAclType[]>();
   const [deletedAcls, setDeletedAcls] = useState<AclBinding[] | undefined>(
     undefined
@@ -207,18 +207,18 @@ export const ManageKafkaPermissions: React.FC<ManageKafkaPermissionsProps> = ({
     setIsOpenPreCancelModal(false);
   };
 
-  const updateExistingAcls = (row: number) => {
-    setExistingAcls((existingAcls || []).filter((_, index) => index != row));
+  const updateacls = (row: number) => {
+    acls?.splice(row, 1);
   };
 
   const onRemoveAcls = (row: number) => {
     setDeletedAcls((prevState) =>
-      existingAcls && prevState != undefined
-        ? [...prevState, existingAcls[row]]
-        : existingAcls && [existingAcls[row]]
+      acls && prevState != undefined
+        ? [...prevState, acls[row]]
+        : acls && [acls[row]]
     );
     setIsAclDeleted(true);
-    updateExistingAcls(row);
+    updateacls(row);
   };
   return (
     <Modal
@@ -314,19 +314,17 @@ export const ManageKafkaPermissions: React.FC<ManageKafkaPermissionsProps> = ({
                   <span>{t("review_existing_title")}</span>{" "}
                   <Badge
                     isRead={
-                      existingAcls == undefined || existingAcls.length == 0
-                        ? true
-                        : false
+                      acls == undefined || acls.length == 0 ? true : false
                     }
                   >
-                    {existingAcls == undefined ? 0 : existingAcls.length}
+                    {acls == undefined ? 0 : acls.length}
                   </Badge>
                 </div>
               }
             >
               <ViewAccountDetails
                 accountId={selectedAccount}
-                existingAcls={existingAcls || []}
+                existingAcls={acls || []}
                 onRemoveAcl={onRemoveAcls}
               />
             </ExpandableSection>
