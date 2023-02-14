@@ -3,6 +3,8 @@ import type { VoidFunctionComponent } from "react";
 import type { Account } from "ui";
 import { PrincipalType } from "ui";
 import { ManageKafkaPermissions } from "ui";
+import { addNotification } from "@redhat-cloud-services/frontend-components-notifications";
+import { useDispatch } from "react-redux";
 import {
   useAcls,
   useDeletePermissionsMutation,
@@ -23,6 +25,7 @@ export const ManagePermissionsRoute: VoidFunctionComponent<
   const { instance } = useDataPlaneGate();
   const { data: accounts } = useUserAccounts({});
   const { data: serviceAccounts } = useServiceAccounts({});
+  const dispatch = useDispatch();
   const userAccounts: Account[] | undefined = accounts?.accounts.map(
     (userAccount) => {
       return {
@@ -76,8 +79,6 @@ export const ManagePermissionsRoute: VoidFunctionComponent<
       aclPermission: AclBinding[] | undefined,
       deletedPermissions: AclBinding[] | undefined
     ) => {
-      //eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      history.push(managePermissionsHref(instance.id));
       if (aclPermission != undefined && aclPermission.length > 0) {
         aclPermission.map(
           (aclData) =>
@@ -94,10 +95,18 @@ export const ManagePermissionsRoute: VoidFunctionComponent<
               },
 
               onSuccess: () => {
-                //To-Do
+                //eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+                history.push(managePermissionsHref(instance.id));
               },
-              onError: () => {
-                //To-Do
+              onError: (_, message) => {
+                dispatch(
+                  addNotification({
+                    variant: "danger",
+                    title: message,
+                    dismissable: true,
+                    id: "save-error",
+                  })
+                );
               },
             })
         );
@@ -116,17 +125,26 @@ export const ManagePermissionsRoute: VoidFunctionComponent<
               operation: aclToDelete.operation,
               resourceType: aclToDelete.resourceType,
             },
-            onError: () => {
-              //To-Do
+            onError: (_, message) => {
+              dispatch(
+                addNotification({
+                  variant: "danger",
+                  title: message,
+                  dismissable: true,
+                  id: "delete-error",
+                })
+              );
             },
             onSuccess: () => {
-              //To-Do
+              //eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+              history.push(managePermissionsHref(instance.id));
             },
           });
         });
       }
     },
     [
+      dispatch,
       history,
       instance.adminUrl,
       instance.id,
