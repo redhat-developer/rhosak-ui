@@ -205,7 +205,7 @@
     "spring_boot_consumer_configuration": "Consumer configuration",
     "spring_boot_consumer_configuration_description": "Use the following code to create a listener container required by the example Spring Boot consumer.",
     "spring_boot_consumer_description": "Use the following code to run the example Spring Boot consumer.",
-    "spring_boot_listener": "Listener",
+    "spring_boot_listener": "Consumer listener",
     "spring_boot_listener_description": "Use the following code to run the listener container required by the example Spring Boot consumer.",
     "spring_boot_sample_consumer_code_description": "Use the following code snippets to create an example Spring Boot client that consumes messages from your Kafka instance."
   },

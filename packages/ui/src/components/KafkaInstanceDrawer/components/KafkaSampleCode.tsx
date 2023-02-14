@@ -238,6 +238,9 @@ export const KafkaSampleCode: VoidFunctionComponent<KafkaSampleCodeProps> = ({
             <Text component={TextVariants.small}>
               {t("sample_code.spring_boot_listener_description")}
             </Text>
+            <Text component={TextVariants.small}>
+              {t("sample_code.bracket_text")}
+            </Text>
             <SampleCodeSnippet
               codeBlockCode={springBootListenerCodeBlock}
               expandableCode={springBootListenerExpandableBlock}
@@ -266,6 +269,10 @@ export const KafkaSampleCode: VoidFunctionComponent<KafkaSampleCodeProps> = ({
                 }}
               />
             </Text>
+            {clientSelect === "quarkus" ? null :
+              <Text component={TextVariants.small}>
+                {t("sample_code.bracket_text")}
+              </Text>}
             {(() => {
               switch (clientSelect) {
                 case "java":
