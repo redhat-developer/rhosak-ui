@@ -5,6 +5,7 @@ import type {
   TimeSeriesMetrics,
 } from "ui";
 import type { SafeRangeQuery } from "../types";
+import { BrokerToggle } from "ui/src/components/Metrics/components/BrokerToggle";
 
 export type FetchTopicsMetricsProps = {
   getMetricsByRangeQuery: DefaultApi["getMetricsByRangeQuery"];
@@ -53,7 +54,7 @@ export async function fetchTopicsMetrics({
   const incomingMessageRate: TimeSeriesMetrics = {};
 
   filteredMetrics.forEach((m) => {
-    const { __name__: name, topic, partition_id } = m.metric;
+    const { __name__: name, topic, partition_id, broker_id } = m.metric;
 
     function addAggregatedTotalBytesTo(metric: TimeSeriesMetrics) {
       m.values.forEach(
@@ -63,12 +64,13 @@ export async function fetchTopicsMetrics({
     }
 
     function addAggregatePartitionBytes() {
-      const partition = bytesPerPartition[topic] || {};
+      const partitionKey = `${topic} / ${partition_id}`;
+      const partition = bytesPerPartition[partitionKey] || {};
       m.values.forEach(
         ({ value, timestamp }) =>
           (partition[timestamp] = value + (partition[timestamp] || 0))
       );
-      bytesPerPartition[partition_id] = partition;
+      bytesPerPartition[partitionKey] = partition;
     }
 
     switch (name) {

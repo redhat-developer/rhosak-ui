@@ -189,9 +189,10 @@ export function getChartData(
 
     const color = chart_color_blue_300.value;
     legendData.push({ name: "Instance", symbol: { fill: color } });
-    Object.entries(metrics[brokerToggle]).forEach(([timestamp, bytes]) => {
-      area.push({ name: "Instance", x: parseInt(timestamp, 10), y: bytes });
-    });
+    metrics[brokerToggle] &&
+      Object.entries(metrics[brokerToggle]).forEach(([timestamp, bytes]) => {
+        area.push({ name: "Instance", x: parseInt(timestamp, 10), y: bytes });
+      });
     chartData.push({ color, softLimitColor, area, softLimit });
   } else {
     Object.entries(metrics)

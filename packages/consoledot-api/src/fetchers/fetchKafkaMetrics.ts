@@ -20,6 +20,7 @@ export async function fetchKafkaMetrics({
   id,
   duration,
   interval,
+  selectedBroker,
 }: FetchKafkaMetricsProps): Promise<GetKafkaInstanceMetricsResponse> {
   const response = await getMetricsByRangeQuery(id, duration, interval, [
     "kubelet_volume_stats_used_bytes",
@@ -92,8 +93,11 @@ export async function fetchKafkaMetrics({
       m.values.forEach(({ value, timestamp }) => {
         partition[timestamp] = value + (partition[timestamp] || 0);
       });
-      bytesPerPartitionMetrics[broker_id + "/" + topic + "/" + partition_id] =
-        partition;
+      bytesPerPartitionMetrics[
+        selectedBroker
+          ? topic + "/" + partition_id
+          : broker_id + ", " + topic + "/" + partition_id
+      ] = partition;
     }
     switch (name) {
       case "kubelet_volume_stats_used_bytes":
