@@ -24,6 +24,7 @@ import {
   shouldShowDate,
   timestampsToTicks,
 } from "./utils";
+import { partition } from "xstate/lib/utils";
 
 const colors = [chart_color_cyan_300.value, chart_color_blue_300.value];
 
@@ -144,26 +145,40 @@ export function getChartData(
 } {
   const legendData: Array<LegendData> = [];
   const chartData: Array<ChartData> = [];
-  selectedPartition === "Top10"
-    ? Object.entries(partitions)
-        .slice(0, 10)
-        .map(([partition, dataMap], index) => {
-          const name = topic ? `${topic} / ${partition}` : partition;
-          const color = colors[index];
-          legendData.push({
-            name,
-          });
-          const area: Array<PartitionChartData> = [];
 
-          Object.entries(dataMap).map(([timestamp, value]) => {
-            area.push({ name, x: parseInt(timestamp, 10), y: value });
-          });
-          chartData.push({ color, area });
+  const top50Partition = Object.entries(partitions).sort((a, b) => {
+    const aValue = Object.values(a[1]).reduce((sum, val) => sum + val, 0);
+    const bValue = Object.values(b[1]).reduce((sum, val) => sum + val, 0);
+    return bValue - aValue;
+  });
+
+  selectedPartition === "Top10"
+    ? top50Partition.slice(0, 10).map(([partition, dataMap], index) => {
+        const name = topic ? `${partition}` : partition;
+        const color = colors[index];
+        legendData.push({
+          name,
+        });
+        const area: Array<PartitionChartData> = [];
+
+        Object.entries(dataMap).map(([timestamp, value]) => {
+          area.push({ name, x: parseInt(timestamp, 10), y: value });
+        });
+        chartData.push({ color, area });
+      })
+    : top50Partition
+        .slice(0, 20)
+        .sort((a, b) => {
+          const dataMapAValues = Object.values(a[1]);
+          const dataMapBValues = Object.values(b[1]);
+          const aValueSum = dataMapAValues.reduce((sum, val) => sum + val, 0);
+          const bValueSum = dataMapBValues.reduce((sum, val) => sum + val, 0);
+          return bValueSum - aValueSum;
         })
-    : Object.entries(partitions)
+        .sort((a, b) => b[1][1] - a[1][1])
         .slice(0, 20)
         .map(([partition, dataMap], index) => {
-          const name = topic ? `${topic} / ${partition}` : partition;
+          const name = topic ? `${partition}` : partition;
           const color = colors[index];
           legendData.push({
             name,
