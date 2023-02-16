@@ -4,8 +4,8 @@ import type {
   SortDirection,
 } from "@rhoas/kafka-instance-sdk";
 import type { ConsumerGroup } from "ui-models/src/models/consumer-group";
+import { stateMapping } from "../transformers/consumerGroupTransformer";
 import type { KafkaConsumerGroupSortableColumn } from "../types";
-import { stateMapping } from "../transformers/ConsumerGroupTransformer";
 
 export type FetchConsumerGroupsParams = {
   getConsumerGroups: GroupsApi["getConsumerGroups"];

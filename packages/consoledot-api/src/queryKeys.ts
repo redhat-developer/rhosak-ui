@@ -18,10 +18,8 @@ export const masQueries = {
     [{ ...masQueries._root(), entity: "userAccounts" }, params] as const,
   quota: {
     _root: () => ({ ...masQueries._root(), entity: "quota" } as const),
-    available: (params: { organization?: string }) =>
-      [
-        { ...masQueries.quota._root(), subentity: "available", ...params },
-      ] as const,
+    available: () =>
+      [{ ...masQueries.quota._root(), subentity: "available" }] as const,
     developerAvailability: () =>
       [
         { ...masQueries.quota._root(), subentity: "developerAvailability" },
@@ -31,6 +29,8 @@ export const masQueries = {
         { ...masQueries.quota._root(), subentity: "standardAvailability" },
       ] as const,
   },
+  dedicatedClusters: () =>
+    [{ ...masQueries._root(), subentity: "dedicatedClusters" }] as const,
 } as const;
 
 export const kafkaQueries = {

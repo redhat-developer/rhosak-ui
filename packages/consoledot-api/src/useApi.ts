@@ -1,7 +1,11 @@
 import { PrincipalApi } from "@redhat-cloud-services/rbac-client";
 import { AppServicesApi } from "@rhoas/account-management-sdk";
 import { GroupsApi, RecordsApi, TopicsApi } from "@rhoas/kafka-instance-sdk";
-import { Configuration, DefaultApi } from "@rhoas/kafka-management-sdk";
+import {
+  Configuration,
+  DefaultApi,
+  EnterpriseDataplaneClustersApi,
+} from "@rhoas/kafka-management-sdk";
 import { useCallback } from "react";
 import { useApiConfiguration } from "./ApiProvider";
 
@@ -71,6 +75,17 @@ export const useApi = () => {
     [accessToken]
   );
 
+  const dedicatedClusters = useCallback(
+    () =>
+      new EnterpriseDataplaneClustersApi(
+        new Configuration({
+          accessToken,
+          basePath,
+        })
+      ),
+    [accessToken]
+  );
+
   return {
     kafkasFleet,
     account,
@@ -78,5 +93,6 @@ export const useApi = () => {
     consumerGroups,
     records,
     userAccounts,
+    dedicatedClusters,
   };
 };

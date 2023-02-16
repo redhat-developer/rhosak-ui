@@ -12,24 +12,39 @@ import {
   ControlPlaneDeleteInstancePath,
   ControlPlaneNewInstancePath,
   ControlPlaneRoutePath,
+  ControlPlaneRouteRoot,
+  DedicatedControlPlaneClustersPath,
+  DedicatedControlPlaneRouteRoot,
 } from "./routesConsts";
 
 export const ControlPlaneRoutes: VoidFunctionComponent = () => {
   return (
     <Route path={ControlPlaneRoutePath} exact>
       <Route path={ControlPlaneNewInstancePath}>
-        <CreateKafkaInstanceRoute instancesHref={"/kafkas"} />
+        <CreateKafkaInstanceRoute instancesHref={ControlPlaneRouteRoot} />
       </Route>
-      <RedirectOnGateError redirectUrl={"/kafkas"}>
+      <RedirectOnGateError redirectUrl={ControlPlaneRouteRoot}>
         <Route path={ControlPlaneDeleteInstancePath}>
-          <DeleteKafkaInstanceRoute instancesHref={"/kafkas"} />
+          <DeleteKafkaInstanceRoute instancesHref={ControlPlaneRouteRoot} />
         </Route>
         <Route path={ControlPlaneChangeOwnerPath}>
-          <ChangeOwnerRoute instancesHref={"/kafkas"} />
+          <ChangeOwnerRoute instancesHref={ControlPlaneRouteRoot} />
         </Route>
       </RedirectOnGateError>
       <KafkaInstancesRoute
-        getUrlForInstance={(instance) => `/kafkas/${instance.id}/details`}
+        activeSection={"standard"}
+        instancesHref={ControlPlaneRouteRoot}
+        dedicatedHref={DedicatedControlPlaneRouteRoot}
+        clustersHref={DedicatedControlPlaneClustersPath}
+        instanceSelectedHref={(id) => `${ControlPlaneRouteRoot}/${id}`}
+        instanceCreationHref={`${ControlPlaneRouteRoot}/create`}
+        instanceDeletionHref={(id) => `${ControlPlaneRouteRoot}/${id}/delete`}
+        instanceChangeOwnerHref={(id) =>
+          `${ControlPlaneRouteRoot}/${id}/change-owner`
+        }
+        getUrlForInstance={(instance) =>
+          `${ControlPlaneRouteRoot}/${instance.id}/details`
+        }
       />
     </Route>
   );

@@ -1,6 +1,6 @@
 import type { GroupsApi } from "@rhoas/kafka-instance-sdk";
 import type { ConsumerGroup } from "ui-models/src/models/consumer-group";
-import { consumerGroupTransformer } from "../transformers/ConsumerGroupTransformer";
+import { consumerGroupTransformer } from "../transformers/consumerGroupTransformer";
 
 export type FetchConsumerGroupParams = {
   getConsumerGroupById: GroupsApi["getConsumerGroupById"];

@@ -25,6 +25,7 @@ export const I18nProvider: FunctionComponent<
           "connection-tab": () => import("locales/en/connection-tab.json"),
           "connection-tab-p1": () =>
             import("locales/en/connection-tab-p1.json"),
+          cluster: () => import("locales/en/cluster.json"),
         },
         it: {
           common: () => Promise.resolve({ delete: "Elimina" }),
