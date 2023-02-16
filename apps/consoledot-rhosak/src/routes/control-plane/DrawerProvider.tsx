@@ -16,6 +16,7 @@ import type { ControlPlaneRouteParams } from "./routesConsts";
 import {
   ControlPlaneRoutePath,
   ControlPlaneSpecialSegments,
+  DedicatedControlPlaneRoutePath,
 } from "./routesConsts";
 
 type DrawerContextProps = {
@@ -30,7 +31,13 @@ type DrawerContextProps = {
 const DrawerContext = createContext<DrawerContextProps>(null!);
 
 export const DrawerProvider: FunctionComponent = ({ children }) => {
-  const match = useRouteMatch<ControlPlaneRouteParams>(ControlPlaneRoutePath);
+  const standardMatch = useRouteMatch<ControlPlaneRouteParams>(
+    ControlPlaneRoutePath
+  );
+  const dedicatedMatch = useRouteMatch<ControlPlaneRouteParams>(
+    DedicatedControlPlaneRoutePath
+  );
+  const match = standardMatch || dedicatedMatch;
   if (!match) {
     throw Error("DrawerProvider used outside the expected route");
   }

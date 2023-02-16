@@ -38,6 +38,7 @@ export const fetchStandardQuota = async (
   );
 
   const prepaidQuota = standardQuotas?.find(isStandardQuota);
+  const hasStandardQuota = prepaidQuota !== undefined;
 
   const marketplaceQuotas = standardQuotas?.some(isMarketplaceQuota)
     ? standardQuotas?.filter(isMarketplaceQuota)
@@ -79,6 +80,7 @@ export const fetchStandardQuota = async (
       : [];
 
   return {
+    hasStandardQuota,
     hasTrialQuota,
     remainingPrepaidQuota,
     remainingMarketplaceQuota,

@@ -1,10 +1,10 @@
-import { useCallback } from "react";
 import type { VoidFunctionComponent } from "react";
+import { useCallback } from "react";
+import { useHistory } from "react-router-dom";
 import { ConsumerGroupDrawer } from "ui";
 import type { DataPlaneConsumerGroupNavigationsProps } from "../routesConsts";
-import { useHistory } from "react-router-dom";
-import { ConsumerGroupsRoute } from "./ConsumerGroupsRoute";
 import { useConsumerGroupGate } from "../useConsumerGroupGate";
+import { ConsumerGroupsRoute } from "./ConsumerGroupsRoute";
 
 export const ConsumerGroupViewPartitionRoute: VoidFunctionComponent<
   DataPlaneConsumerGroupNavigationsProps
@@ -12,6 +12,8 @@ export const ConsumerGroupViewPartitionRoute: VoidFunctionComponent<
   instanceConsumerGroupsHref,
   viewPartitionConsumerGroupHref,
   instancesHref,
+  instanceDetailsHref,
+  instanceTopicsHref,
 }) => {
   const { instance, consumerGroup } = useConsumerGroupGate();
 
@@ -66,7 +68,12 @@ export const ConsumerGroupViewPartitionRoute: VoidFunctionComponent<
       isExpanded={true}
       onClickClose={onCancel}
     >
-      <ConsumerGroupsRoute instancesHref={instancesHref} />
+      <ConsumerGroupsRoute
+        instancesHref={instancesHref}
+        instanceTopicsHref={instanceTopicsHref}
+        instanceDetailsHref={instanceDetailsHref}
+        instanceConsumerGroupsHref={instanceConsumerGroupsHref}
+      />
     </ConsumerGroupDrawer>
   );
 };

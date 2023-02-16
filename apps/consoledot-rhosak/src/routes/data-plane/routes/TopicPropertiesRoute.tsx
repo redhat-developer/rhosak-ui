@@ -9,6 +9,7 @@ export const TopicPropertiesRoute: VoidFunctionComponent<
 > = ({
   instanceDetailsHref,
   instanceTopicsHref,
+  instanceConsumerGroupsHref,
   instancesHref,
   deleteTopicHref,
   updateTopicHref,
@@ -21,6 +22,7 @@ export const TopicPropertiesRoute: VoidFunctionComponent<
         instancesHref={instancesHref}
         instanceDetailsHref={instanceDetailsHref}
         instanceTopicsHref={instanceTopicsHref}
+        instanceConsumerGroupsHref={instanceConsumerGroupsHref}
         activeSection={"properties"}
       />
       <TopicProperties

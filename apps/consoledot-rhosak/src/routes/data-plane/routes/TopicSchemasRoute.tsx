@@ -15,7 +15,12 @@ import { DataPlaneTopicHeaderConnected } from "./DataPlaneTopicHeaderConnected";
 
 export const TopicSchemasRoute: VoidFunctionComponent<
   DataPlaneNavigationProps
-> = ({ instanceDetailsHref, instanceTopicsHref, instancesHref }) => {
+> = ({
+  instanceDetailsHref,
+  instanceTopicsHref,
+  instancesHref,
+  instanceConsumerGroupsHref,
+}) => {
   const chrome = useChrome();
   const { topic } = useTopicGate();
   const processor = (([_, m]: [string, { entry: string[] }]) =>
@@ -39,6 +44,7 @@ export const TopicSchemasRoute: VoidFunctionComponent<
         instancesHref={instancesHref}
         instanceDetailsHref={instanceDetailsHref}
         instanceTopicsHref={instanceTopicsHref}
+        instanceConsumerGroupsHref={instanceConsumerGroupsHref}
         activeSection={"schemas"}
       />
       <AuthContext.Provider value={auth}>

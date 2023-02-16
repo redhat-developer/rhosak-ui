@@ -9,7 +9,7 @@ import type { Reducer } from "redux";
 
 import "./App.scss";
 
-import { Routes } from "./routes/Routes";
+import { Routes } from "./routes";
 
 const App = memo(() => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
