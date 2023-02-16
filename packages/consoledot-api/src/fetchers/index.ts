@@ -1,4 +1,6 @@
+export * from "./fetchConsumerGroup";
 export * from "./fetchConsumerGroups";
+export * from "./fetchDedicatedClusters";
 export * from "./fetchKafkaKpis";
 export * from "./fetchKafkaMetrics";
 export * from "./fetchKafkas";
@@ -11,6 +13,5 @@ export * from "./fetchTopic";
 export * from "./fetchTopics";
 export * from "./fetchTopicsMetrics";
 export * from "./fetchUserAccounts";
-export * from "./fetchConsumerGroup";
 export * from "./fetchPermissions";
 export * from "./fetchServiceAccounts";

@@ -1,10 +1,17 @@
 import { useKafka } from "consoledot-api";
 import { useRouteMatch } from "react-router-dom";
 import type { DataPlaneRouteParams } from "./routesConsts";
-import { DataPlaneRoutePath } from "./routesConsts";
+import {
+  DataPlaneRoutePath,
+  DedicatedDataPlaneRoutePath,
+} from "./routesConsts";
 
 export function useDataPlaneGate() {
-  const match = useRouteMatch<DataPlaneRouteParams>(DataPlaneRoutePath);
+  const standardMatch = useRouteMatch<DataPlaneRouteParams>(DataPlaneRoutePath);
+  const dedicatedMatch = useRouteMatch<DataPlaneRouteParams>(
+    DedicatedDataPlaneRoutePath
+  );
+  const match = standardMatch || dedicatedMatch;
   if (!match) {
     throw Error("useDataPlaneGate used outside the expected route");
   }

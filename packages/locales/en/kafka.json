@@ -102,6 +102,12 @@
     "uncosumed_partitions_for_topic": "Unconsumed partitions for this topic",
     "view_partitions_offsets": "View partition offsets"
   },
+  "controlPlaneNavigation": {
+    "clusters": "OpenShift clusters",
+    "dedicated": "Dedicated",
+    "dedicated-instances": "Kafka instances",
+    "standard": "Standard"
+  },
   "create_instance": "Create Kafka instance",
   "current_owner": "Current owner",
   "dataPlaneNavigation": {
@@ -122,6 +128,7 @@
   "delete_topic_active_message": "One or more consumers are currently active in this topic, and will be removed at the time of deletion. ",
   "delete_topic_message": "The <0>{{topicName}}</0> topic will be deleted and removed from this instance. Applications will no longer have access to this topic.",
   "delete_topic_title": "Delete topic?",
+  "description": "Streams for Apache Kafka enables IT development teams to capture, process, and stream real-time data across hybrid cloud environments.",
   "drawer-tabs": {
     "connections": "Connections",
     "details": "Details",
@@ -276,6 +283,7 @@
     },
     "title": "Kafka Instances"
   },
+  "title": "Kafka Instances",
   "topic": {
     "topic": "Topic"
   },

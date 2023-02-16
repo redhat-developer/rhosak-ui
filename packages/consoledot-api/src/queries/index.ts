@@ -1,5 +1,7 @@
+export * from "./useConsumerGroup";
 export * from "./useConsumerGroups";
 export * from "./useCreateInstance";
+export * from "./useDedicatedClusters";
 export * from "./useKafka";
 export * from "./useKafkaInstanceTransformer";
 export * from "./useKafkas";

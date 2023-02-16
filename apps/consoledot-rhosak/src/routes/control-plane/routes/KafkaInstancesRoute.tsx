@@ -8,34 +8,50 @@ import { KafkaInstancesSortableColumns, useKafkas } from "consoledot-api";
 import type { FunctionComponent } from "react";
 import { useCallback, useContext } from "react";
 import { useHistory } from "react-router-dom";
-import type { KafkaInstanceDrawerTab, KafkaInstancesProps } from "ui";
+import type {
+  ControlPlaneHeaderProps,
+  KafkaInstanceDrawerTab,
+  KafkaInstancesProps,
+} from "ui";
 import { ControlPlaneHeader, KafkaInstances, useKafkaLabels } from "ui";
 import type { Kafka, SimplifiedStatus } from "ui-models/src/models/kafka";
 import { ReadyStatuses } from "ui-models/src/models/kafka";
+import { useDedicatedGate } from "../../useDedicatedGate";
 import { useDrawer } from "../DrawerProvider";
-import {
-  ControlPlaneNewInstancePath,
-  ControlPlaneRouteRoot,
-} from "../routesConsts";
 
-export type KafkaInstancesRoute = Pick<
-  KafkaInstancesProps<Kafka>,
-  "getUrlForInstance"
->;
+export type KafkaInstancesRoute = {
+  activeSection: ControlPlaneHeaderProps["activeSection"];
+  instancesHref: string;
+  dedicatedHref: string;
+  clustersHref: string;
+  instanceSelectedHref: (id: string) => string;
+  instanceCreationHref: string;
+  instanceDeletionHref: (id: string) => string;
+  instanceChangeOwnerHref: (id: string) => string;
+} & Pick<KafkaInstancesProps<Kafka>, "getUrlForInstance">;
 
 export const KafkaInstancesRoute: FunctionComponent<KafkaInstancesRoute> = ({
+  activeSection,
+  instancesHref,
+  dedicatedHref,
+  clustersHref,
+  instanceDeletionHref,
+  instanceSelectedHref,
+  instanceCreationHref,
+  instanceChangeOwnerHref,
   getUrlForInstance,
 }) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
   const { setActiveQuickStart } = useContext(QuickStartContext);
+  const gate = useDedicatedGate();
 
   const { selectedInstance, toggleExpanded, setActiveTab, isExpanded } =
     useDrawer(
       useCallback(() => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-        history.replace(`${ControlPlaneRouteRoot}`);
-      }, [history])
+        history.replace(instancesHref);
+      }, [history, instancesHref])
     );
 
   const labels = useKafkaLabels();
@@ -86,12 +102,19 @@ export const KafkaInstancesRoute: FunctionComponent<KafkaInstancesRoute> = ({
         toggleExpanded(false);
       } else {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-        history.replace(`${ControlPlaneRouteRoot}/${id}`);
+        history.replace(instanceSelectedHref(id));
         toggleExpanded(true);
         setActiveTab(tab);
       }
     },
-    [history, isExpanded, selectedInstance, setActiveTab, toggleExpanded]
+    [
+      history,
+      instanceSelectedHref,
+      isExpanded,
+      selectedInstance,
+      setActiveTab,
+      toggleExpanded,
+    ]
   );
 
   const onDetailsClick: KafkaInstancesProps["onDetails"] = useCallback(
@@ -110,22 +133,22 @@ export const KafkaInstancesRoute: FunctionComponent<KafkaInstancesRoute> = ({
 
   const onCreate = useCallback(() => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-    history.push(`${ControlPlaneNewInstancePath}`);
-  }, [history]);
+    history.push(instanceCreationHref);
+  }, [history, instanceCreationHref]);
 
   const onDelete = useCallback<KafkaInstancesProps["onDelete"]>(
     ({ id }) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      history.push(`${ControlPlaneRouteRoot}/${id}/delete`);
+      history.push(instanceDeletionHref);
     },
-    [history]
+    [history, instanceDeletionHref]
   );
   const onChangeOwner = useCallback<KafkaInstancesProps["onChangeOwner"]>(
     ({ id }) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      history.push(`${ControlPlaneRouteRoot}/${id}/change-owner`);
+      history.push(instanceChangeOwnerHref);
     },
-    [history]
+    [history, instanceChangeOwnerHref]
   );
 
   const onQuickstartGuide = useCallback(
@@ -135,7 +158,18 @@ export const KafkaInstancesRoute: FunctionComponent<KafkaInstancesRoute> = ({
 
   return (
     <>
-      <ControlPlaneHeader />
+      <ControlPlaneHeader
+        activeSection={activeSection}
+        hasStandardNavigation={gate === "standard-and-dedicated"}
+        hasDedicatedNavigation={
+          gate === "standard-and-dedicated" || gate === "dedicated-only"
+        }
+        sectionsHref={{
+          standard: "/kafkas",
+          dedicated: "/dedicated",
+          clusters: "/dedicated/clusters",
+        }}
+      />
       <KafkaInstances
         instances={data?.instances}
         itemCount={data?.count}

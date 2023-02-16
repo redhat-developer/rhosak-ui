@@ -9,16 +9,15 @@ import {
 } from "consoledot-api";
 import type { VoidFunctionComponent } from "react";
 import { useCallback } from "react";
+import { useHistory } from "react-router-dom";
 import { ConsumerGroups, useConsumerGroupLabels } from "ui";
-import type { ControlPlaneNavigationProps } from "../../control-plane/routesConsts";
+import type { DataPlaneNavigationProps } from "../routesConsts";
 import { useDataPlaneGate } from "../useDataPlaneGate";
 import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
-import { useHistory } from "react-router-dom";
-import { instanceConsumerGroupsHref } from "../DataPlaneRoutes";
 
 export const ConsumerGroupsRoute: VoidFunctionComponent<
-  ControlPlaneNavigationProps
-> = ({ instancesHref }) => {
+  DataPlaneNavigationProps
+> = ({ instancesHref, instanceConsumerGroupsHref }) => {
   const { instance } = useDataPlaneGate();
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -61,7 +60,7 @@ export const ConsumerGroupsRoute: VoidFunctionComponent<
         `${instanceConsumerGroupsHref(instance.id)}/${groupId}/delete`
       );
     },
-    [history, instance.id]
+    [history, instance.id, instanceConsumerGroupsHref]
   );
 
   const onViewPartition = useCallback(
@@ -72,7 +71,7 @@ export const ConsumerGroupsRoute: VoidFunctionComponent<
         `${instanceConsumerGroupsHref(instance.id)}/${groupId}/view-partition`
       );
     },
-    [history, instance.id]
+    [history, instance.id, instanceConsumerGroupsHref]
   );
 
   const onClickResetOffset = useCallback(
@@ -83,7 +82,7 @@ export const ConsumerGroupsRoute: VoidFunctionComponent<
         `${instanceConsumerGroupsHref(instance.id)}/${groupId}/reset-offset`
       );
     },
-    [history, instance.id]
+    [history, instance.id, instanceConsumerGroupsHref]
   );
   return (
     <>

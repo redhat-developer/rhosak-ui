@@ -9,16 +9,21 @@ import {
 } from "consoledot-api";
 import type { VoidFunctionComponent } from "react";
 import { useCallback } from "react";
+import { useHistory } from "react-router-dom";
 import { ConsumerGroups, useConsumerGroupLabels } from "ui";
+import { ControlPlaneRouteRoot } from "../../control-plane/routesConsts";
 import type { DataPlaneNavigationProps } from "../routesConsts";
 import { useTopicGate } from "../useTopicGate";
 import { DataPlaneTopicHeaderConnected } from "./DataPlaneTopicHeaderConnected";
-import { ControlPlaneRouteRoot } from "../../control-plane/routesConsts";
-import { useHistory } from "react-router-dom";
 
 export const TopicConsumerGroupsRoute: VoidFunctionComponent<
   DataPlaneNavigationProps
-> = ({ instanceDetailsHref, instanceTopicsHref, instancesHref }) => {
+> = ({
+  instanceDetailsHref,
+  instanceTopicsHref,
+  instancesHref,
+  instanceConsumerGroupsHref,
+}) => {
   const { instance, topic } = useTopicGate();
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -95,6 +100,7 @@ export const TopicConsumerGroupsRoute: VoidFunctionComponent<
         instancesHref={instancesHref}
         instanceDetailsHref={instanceDetailsHref}
         instanceTopicsHref={instanceTopicsHref}
+        instanceConsumerGroupsHref={instanceConsumerGroupsHref}
         activeSection={"consumer"}
       />
       <ConsumerGroups

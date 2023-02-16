@@ -4,6 +4,7 @@ import {
   Configuration,
   DefaultApi,
   SecurityApi,
+  EnterpriseDataplaneClustersApi
 } from "@rhoas/kafka-management-sdk";
 import {
   GroupsApi,
@@ -102,6 +103,17 @@ export const useApi = () => {
     [accessToken]
   );
 
+  const dedicatedClusters = useCallback(
+    () =>
+      new EnterpriseDataplaneClustersApi(
+        new Configuration({
+          accessToken,
+          basePath,
+        })
+      ),
+    [accessToken]
+  );
+
   return {
     kafkasFleet,
     account,
@@ -111,5 +123,6 @@ export const useApi = () => {
     userAccounts,
     acls,
     serviceAccount,
+    dedicatedClusters,
   };
 };
