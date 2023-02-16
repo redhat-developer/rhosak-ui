@@ -235,6 +235,7 @@
     "warning_title": "Turn off re-authentication?"
   },
   "short_description": "Short Description",
+  "standard_description": "Standard Kafka instances are provisioned in OpenShift clusters that Red Hat manages.",
   "status_created_shortly_help": "This will be ready shortly.",
   "status_warning_or_error_title": "This is taking longer than expected.",
   "statuses": {

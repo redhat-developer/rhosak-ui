@@ -13,8 +13,6 @@ import {
   ControlPlaneNewInstancePath,
   ControlPlaneRoutePath,
   ControlPlaneRouteRoot,
-  DedicatedControlPlaneClustersPath,
-  DedicatedControlPlaneRouteRoot,
 } from "./routesConsts";
 
 export const ControlPlaneRoutes: VoidFunctionComponent = () => {
@@ -34,8 +32,6 @@ export const ControlPlaneRoutes: VoidFunctionComponent = () => {
       <KafkaInstancesRoute
         activeSection={"standard"}
         instancesHref={ControlPlaneRouteRoot}
-        dedicatedHref={DedicatedControlPlaneRouteRoot}
-        clustersHref={DedicatedControlPlaneClustersPath}
         instanceSelectedHref={(id) => `${ControlPlaneRouteRoot}/${id}`}
         instanceCreationHref={`${ControlPlaneRouteRoot}/create`}
         instanceDeletionHref={(id) => `${ControlPlaneRouteRoot}/${id}/delete`}

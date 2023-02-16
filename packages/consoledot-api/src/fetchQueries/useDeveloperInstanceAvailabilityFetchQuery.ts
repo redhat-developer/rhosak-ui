@@ -1,22 +1,38 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { fetchKafkas } from "../fetchers";
+import { fetchDedicatedClusters, fetchKafkas } from "../fetchers";
 import { useKafkaInstanceTransformer } from "../queries";
 import { kafkaQueries, masQueries } from "../queryKeys";
 import { useApi } from "../useApi";
 
 export const useDeveloperInstanceAvailabilityFetchQuery = () => {
   const queryClient = useQueryClient();
-  const { kafkasFleet } = useApi();
+  const { kafkasFleet, dedicatedClusters } = useApi();
   const dataMapper = useKafkaInstanceTransformer();
 
   return (getUsername: () => Promise<string>) => {
-    const api = kafkasFleet();
+    const fleetApi = kafkasFleet();
+    const clustersApi = dedicatedClusters();
     return queryClient.fetchQuery({
       queryKey: masQueries.quota.developerAvailability(),
       queryFn: async () => {
         const username = await getUsername();
         if (!username) {
           return Promise.reject(new Error("Invalid username"));
+        }
+        let clusterIds: string[] = [];
+
+        try {
+          const clusterResponse = await queryClient.fetchQuery({
+            queryKey: masQueries.dedicatedClusters(),
+            queryFn: () =>
+              fetchDedicatedClusters({
+                getEnterpriseOsdClusters: (...args) =>
+                  clustersApi.getEnterpriseOsdClusters(...args),
+              }),
+          });
+          clusterIds = clusterResponse.clusters.map((c) => c.id);
+        } catch {
+          // noop
         }
 
         const { instances } = await queryClient.fetchQuery({
@@ -28,10 +44,12 @@ export const useDeveloperInstanceAvailabilityFetchQuery = () => {
             owner: [username],
             perPage: 1000,
             page: 1,
+            clusterIds,
+            deployment: "standard",
           }),
           queryFn: () =>
             fetchKafkas({
-              getKafkas: (...args) => api.getKafkas(...args),
+              getKafkas: (...args) => fleetApi.getKafkas(...args),
               dataMapper,
               direction: "desc",
               sort: "createdAt",
@@ -40,6 +58,8 @@ export const useDeveloperInstanceAvailabilityFetchQuery = () => {
               owner: [username],
               perPage: 1000,
               page: 1,
+              clusterIds,
+              deployment: "standard",
             }),
           staleTime: Infinity,
         });
