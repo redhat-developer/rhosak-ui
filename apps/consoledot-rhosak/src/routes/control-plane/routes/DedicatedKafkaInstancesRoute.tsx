@@ -16,7 +16,9 @@ export type KafkaInstancesRoute = {
   instanceChangeOwnerHref: (id: string) => string;
 } & Pick<KafkaInstancesProps<Kafka>, "getUrlForInstance">;
 
-export const KafkaInstancesRoute: FunctionComponent<KafkaInstancesRoute> = ({
+export const DedicatedKafkaInstancesRoute: FunctionComponent<
+  KafkaInstancesRoute
+> = ({
   activeSection,
   instancesHref,
   instanceDeletionHref,
@@ -59,7 +61,7 @@ export const KafkaInstancesRoute: FunctionComponent<KafkaInstancesRoute> = ({
     status: statusesChips.chips,
     sort: sort || "createdAt",
     direction: sortDirection,
-    deployment: "standard",
+    deployment: "clusters",
   });
 
   return (

@@ -24,6 +24,8 @@ export type FetchKafkasParams = {
   status: SimplifiedStatus[];
   sort: KafkaInstancesSortableColumn;
   direction: "asc" | "desc";
+  clusterIds: string[] | undefined;
+  deployment: "standard" | "clusters";
 };
 
 export async function fetchKafkas(params: FetchKafkasParams): Promise<{
@@ -38,10 +40,12 @@ export async function fetchKafkas(params: FetchKafkasParams): Promise<{
     direction,
     page,
     perPage,
+    clusterIds,
+    deployment,
     dataMapper,
     getKafkas,
   } = params;
-  const search = filtersToSearch(name, owner, status);
+  const search = filtersToSearch(name, owner, status, clusterIds, deployment);
 
   const res = await getKafkas(
     page.toString(10),
@@ -61,16 +65,27 @@ export async function fetchKafkas(params: FetchKafkasParams): Promise<{
 export function filtersToSearch(
   name: string[],
   owner: string[],
-  status: SimplifiedStatus[]
+  status: SimplifiedStatus[],
+  clusters: string[] | undefined,
+  deployment: "standard" | "clusters"
 ): string {
   const querystring = [
-    valuesToQuery("name", name, "%"),
-    valuesToQuery("owner", owner, "%"),
+    valuesToQuery("name", name, "%", "or"),
+    valuesToQuery("owner", owner, "%", "or"),
     valuesToQuery(
       "status",
       status.flatMap((s) => SimplifiedStatuses[s]),
-      "="
+      "=",
+      "or"
     ),
+    clusters
+      ? valuesToQuery(
+          "cluster_id",
+          clusters,
+          deployment === "standard" ? "<>" : "=",
+          deployment === "standard" ? "and" : "or"
+        )
+      : null,
   ]
     .filter(Boolean)
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

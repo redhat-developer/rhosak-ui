@@ -1,5 +1,5 @@
-import { EnterpriseCluster } from "@rhoas/kafka-management-sdk";
-import { DedicatedCluster } from "ui-models/src/models/dedicated-cluster";
+import type { EnterpriseCluster } from "@rhoas/kafka-management-sdk";
+import type { DedicatedCluster } from "ui-models/src/models/dedicated-cluster";
 
 export function dedicatedClusterTransformer(
   c: EnterpriseCluster
