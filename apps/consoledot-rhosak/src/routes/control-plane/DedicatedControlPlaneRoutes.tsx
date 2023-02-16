@@ -1,13 +1,10 @@
 import type { VoidFunctionComponent } from "react";
 import { Route, Switch } from "react-router-dom";
 import { RedirectOnGateError } from "../RedirectOnGateError";
-import {
-  CreateKafkaInstanceRoute,
-  DeleteKafkaInstanceRoute,
-  KafkaInstancesRoute,
-} from "./routes";
+import { CreateKafkaInstanceRoute, DeleteKafkaInstanceRoute } from "./routes";
 import { ChangeOwnerRoute } from "./routes/ChangeOwnerRoute";
 import { DedicatedClustersRoute } from "./routes/DedicatedClustersRoute";
+import { DedicatedKafkaInstancesRoute } from "./routes/DedicatedKafkaInstancesRoute";
 import {
   DedicatedControlPlaneChangeOwnerPath,
   DedicatedControlPlaneClustersPath,
@@ -42,11 +39,9 @@ export const DedicatedControlPlaneRoutes: VoidFunctionComponent = () => {
         </Route>
 
         <Route path={DedicatedControlPlaneRoutePath} exact>
-          <KafkaInstancesRoute
+          <DedicatedKafkaInstancesRoute
             activeSection={"dedicated"}
             instancesHref={DedicatedControlPlaneRouteRoot}
-            dedicatedHref={DedicatedControlPlaneRouteRoot}
-            clustersHref={DedicatedControlPlaneClustersPath}
             instanceSelectedHref={(id) =>
               `${DedicatedControlPlaneRouteRoot}/${id}`
             }

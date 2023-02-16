@@ -111,7 +111,7 @@ export const useApi = () => {
           basePath,
         })
       ),
-    [accessToken]
+    [accessToken, basePath]
   );
 
   return {

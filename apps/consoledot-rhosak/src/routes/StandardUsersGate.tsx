@@ -4,6 +4,8 @@ import { Redirect } from "react-router-dom";
 import { DedicatedControlPlaneRouteRoot } from "./control-plane/routesConsts";
 import { useDedicatedGate } from "./useDedicatedGate";
 
+let redirected = false;
+
 export const StandardUsersGate: FunctionComponent = ({ children }) => {
   const gate = useDedicatedGate();
 
@@ -11,7 +13,8 @@ export const StandardUsersGate: FunctionComponent = ({ children }) => {
     return <Loading />;
   }
 
-  if (gate === "dedicated-only") {
+  if (gate === "dedicated-only" && redirected === false) {
+    redirected = true;
     return <Redirect to={DedicatedControlPlaneRouteRoot} />;
   }
 
