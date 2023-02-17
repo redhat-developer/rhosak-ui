@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import type { Account } from "../types";
 import { PrincipalType } from "../types";
 import type { SelectProps } from "@patternfly/react-core";
+import { Button, Form, Modal } from "@patternfly/react-core";
 import { Skeleton } from "@patternfly/react-core";
 import { FormGroup, Popover } from "@patternfly/react-core";
 import {
@@ -17,21 +18,26 @@ import {
 import { HelpIcon } from "@patternfly/react-icons";
 
 export type SelectAccountProps = {
-  value: string | undefined;
   accounts: Account[];
   initialOpen?: boolean;
-  onChangeAccount: (value: string | undefined) => void;
+  kafkaName: string;
+  id?: string;
+  onNext: (selectedAccount: string | undefined) => void;
+  onClose: () => void;
 };
 
 export const SelectAccount: React.VFC<SelectAccountProps> = ({
-  value,
   accounts,
   initialOpen = false,
-  onChangeAccount,
+  kafkaName,
+  id,
+  onNext,
+  onClose,
 }) => {
   const { t } = useTranslation(["manage-kafka-permissions"]);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isDirty, setIsDirty] = useState<boolean>(false);
+  const [selectedAccount, setSelectedAccount] = useState<string>();
 
   // for Storybook, allows opening the select programmatically respecting the initialization needed by the modal and Popper.js
   useLayoutEffect(() => setIsOpen(initialOpen), [initialOpen]);
@@ -41,7 +47,7 @@ export const SelectAccount: React.VFC<SelectAccountProps> = ({
   };
 
   const clearSelection = () => {
-    onChangeAccount(undefined);
+    setSelectedAccount(undefined);
     setIsDirty(true);
     setIsOpen(false);
   };
@@ -139,7 +145,7 @@ export const SelectAccount: React.VFC<SelectAccountProps> = ({
   }
 
   const onSelect: SelectProps["onSelect"] = (_, value) => {
-    onChangeAccount(value as string);
+    setSelectedAccount(value as string);
     setIsDirty(false);
     setIsOpen(false);
   };
@@ -149,55 +155,102 @@ export const SelectAccount: React.VFC<SelectAccountProps> = ({
     : ValidatedOptions.default;
 
   return (
-    <FormGroup
-      fieldId="account-name"
-      validated={validated}
-      helperTextInvalid={t("common:required")}
-      isRequired
-      label={t("account_id_title")}
-      labelIcon={
-        <Popover bodyContent={t("account_id_help")}>
-          <button
-            type="button"
-            onClick={(e) => e.preventDefault()}
-            className="pf-c-form__group-label-help"
-            aria-label={t("account_help")}
-          >
-            <HelpIcon noVerticalAlign />
-          </button>
-        </Popover>
+    <Modal
+      id="manage-permissions-modal"
+      variant={"large"}
+      isOpen={true}
+      aria-label={t("dialog_aria_label")}
+      position="top"
+      title={t("dialog_title")}
+      showClose={true}
+      aria-describedby="modal-message"
+      onClose={onClose}
+      onEscapePress={onClose}
+      appendTo={() =>
+        id ? document.getElementById(id) || document.body : document.body
       }
-    >
-      {accounts ? (
-        <Select
-          id={"account-id"}
-          data-testid="acls-select-account"
-          className="kafka-ui--select--limit-height"
-          variant={SelectVariant.typeahead}
-          typeAheadAriaLabel={t("account_id_title")}
-          maxHeight={400}
-          onToggle={onToggle}
-          onSelect={onSelect}
-          onClear={clearSelection}
-          selections={value}
-          onFilter={(_, value) => makeOptions(value)}
-          isOpen={isOpen}
-          placeholderText={t("account_id_typeahead_placeholder")}
-          isCreatable
-          menuAppendTo="parent"
-          validated={validated}
-          createText={t("resourcePrefix.create_text")}
-          isGrouped
-          onCreateOption={() => {
-            setIsOpen(false);
-            setIsDirty(false);
-          }}
+      actions={[
+        <Button
+          key={1}
+          variant="primary"
+          isDisabled={
+            selectedAccount == "" || selectedAccount == undefined ? true : false
+          }
+          onClick={() => onNext(selectedAccount)}
+          aria-label={t("step_1_submit_button")}
         >
-          {makeOptions()}
-        </Select>
-      ) : (
-        <Skeleton width={"100%"} />
-      )}
-    </FormGroup>
+          {t("step_1_submit_button")}
+        </Button>,
+        <Button
+          onClick={onClose}
+          key={2}
+          variant="secondary"
+          aria-label={t("common:cancel")}
+        >
+          {t("common:cancel")}
+        </Button>,
+      ]}
+    >
+      <Form onSubmit={(e) => e.preventDefault()}>
+        <FormGroup
+          fieldId="kafka-instance-name"
+          label={t("kafka_instance")}
+          id="modal-message"
+        >
+          {kafkaName}
+        </FormGroup>
+
+        <FormGroup
+          fieldId="account-name"
+          validated={validated}
+          helperTextInvalid={t("common:required")}
+          isRequired
+          label={t("account_id_title")}
+          labelIcon={
+            <Popover bodyContent={t("account_id_help")}>
+              <button
+                type="button"
+                onClick={(e) => e.preventDefault()}
+                className="pf-c-form__group-label-help"
+                aria-label={t("account_help")}
+              >
+                <HelpIcon noVerticalAlign />
+              </button>
+            </Popover>
+          }
+        >
+          {accounts ? (
+            <Select
+              id={"account-id"}
+              data-testid="acls-select-account"
+              className="kafka-ui--select--limit-height"
+              variant={SelectVariant.typeahead}
+              typeAheadAriaLabel={t("account_id_title")}
+              maxHeight={400}
+              onToggle={onToggle}
+              onSelect={onSelect}
+              onClear={clearSelection}
+              selections={selectedAccount}
+              onFilter={(_, value) => makeOptions(value)}
+              isOpen={isOpen}
+              placeholderText={t("account_id_typeahead_placeholder")}
+              isCreatable
+              menuAppendTo="parent"
+              validated={validated}
+              createText={t("resourcePrefix.create_text")}
+              isGrouped
+              onCreateOption={() => {
+                setIsOpen(false);
+                setIsDirty(false);
+              }}
+            >
+              {makeOptions()}
+            </Select>
+          ) : (
+            <Skeleton width={"100%"} />
+          )}
+        </FormGroup>
+      </Form>
+    </Modal>
   );
 };

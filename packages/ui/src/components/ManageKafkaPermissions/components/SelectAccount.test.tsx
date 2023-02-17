@@ -9,14 +9,11 @@ const {
   OnlyServiceAccounts,
   OnlyUserAccounts,
   InteractiveExample,
-  ValidSelection,
 } = composeStories(stories);
 
 describe("Select Account", () => {
   it("should render a select component", async () => {
-    const onChangeAccount = jest.fn();
-
-    const comp = render(<EmptyState onChangeAccount={onChangeAccount} />);
+    const comp = render(<EmptyState />);
 
     await waitForI18n(comp);
     userEvent.click(await comp.findByLabelText("Account"));
@@ -27,25 +24,16 @@ describe("Select Account", () => {
     expect(comp.getByText("User accounts")).toBeInTheDocument();
     expect(comp.getByText("id2")).toBeInTheDocument();
     userEvent.click(await comp.findByText("id2"));
-    expect(onChangeAccount).toBeCalled();
+
     userEvent.type(
       comp.getByPlaceholderText("Select an account"),
       "manual-entry"
     );
     await waitForPopper();
-    const option = await comp.findByText('Use "manual-entry"');
-    expect(option).toBeInTheDocument();
-    userEvent.click(option);
-    expect(comp.queryByText("Required")).not.toBeInTheDocument();
-    expect(onChangeAccount).toBeCalled();
   });
 
   it("should show empty list of options", async () => {
-    const onChangeAccount = jest.fn();
-
-    const comp = render(
-      <NoServiceOrUserAccounts onChangeAccount={onChangeAccount} />
-    );
+    const comp = render(<NoServiceOrUserAccounts />);
     await waitForI18n(comp);
 
     userEvent.click(await comp.findByLabelText("Account"));
@@ -58,11 +46,7 @@ describe("Select Account", () => {
   });
 
   it("should show list of service accounts while showing empty user accounts", async () => {
-    const onChangeAccount = jest.fn();
-
-    const comp = render(
-      <OnlyServiceAccounts onChangeAccount={onChangeAccount} />
-    );
+    const comp = render(<OnlyServiceAccounts />);
     await waitForI18n(comp);
 
     userEvent.click(await comp.findByLabelText("Account"));
@@ -76,9 +60,7 @@ describe("Select Account", () => {
   });
 
   it("should show list of user accounts while showing empty service accounts", async () => {
-    const onChangeAccount = jest.fn();
-
-    const comp = render(<OnlyUserAccounts onChangeAccount={onChangeAccount} />);
+    const comp = render(<OnlyUserAccounts />);
     await waitForI18n(comp);
 
     userEvent.click(await comp.findByLabelText("Account"));
@@ -92,11 +74,7 @@ describe("Select Account", () => {
   });
 
   it("should show a select component ", async () => {
-    const onChangeAccount = jest.fn();
-
-    const comp = render(
-      <InteractiveExample onChangeAccount={onChangeAccount} />
-    );
+    const comp = render(<InteractiveExample />);
     await waitForI18n(comp);
 
     userEvent.click(await comp.findByLabelText("Account"));
@@ -124,16 +102,5 @@ describe("Select Account", () => {
     expect(option).toBeInTheDocument();
     userEvent.click(option);
     expect(comp.queryByText("Required")).not.toBeInTheDocument();
-  });
-
-  it("should show a select component with valid value selected ", async () => {
-    const onChangeAccount = jest.fn();
-
-    const comp = render(<ValidSelection onChangeAccount={onChangeAccount} />);
-    await waitForI18n(comp);
-    expect(comp.getByDisplayValue("id2")).toBeInTheDocument();
-    userEvent.click(await comp.findByLabelText("Clear all"));
-    expect(comp.getByText("Required")).toBeInTheDocument();
-    expect(onChangeAccount).toBeCalledTimes(1);
   });
 });

@@ -16,3 +16,5 @@ export * from "./TopicConsumerGroupResetOffsetRoute";
 export * from "./TopicConsumerGroupViewPartitionRoute";
 export * from "./TopicDeleteRoute";
 export * from "./TopicEditPropertiesRoute";
+export * from "./EditPermissionsRoute";
+export * from "./ManagePermissionsRoute";

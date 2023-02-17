@@ -9,7 +9,8 @@ export function useAcls(
   params: { id?: string; adminUrl?: string } & Omit<
     FetchPermissionsParams,
     "getAcls"
-  >
+  >,
+  suspense = false
 ) {
   const { refetchInterval } = useApiConfiguration();
   const { acls } = useApi();
@@ -31,5 +32,6 @@ export function useAcls(
     },
     enabled: Boolean(params.adminUrl),
     refetchInterval,
+    suspense,
   });
 }
