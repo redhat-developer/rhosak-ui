@@ -43,6 +43,7 @@ export function kafkaRequestToKafkaInstanceEnhanched(
     updatedAt: (instance.updated_at ||
       new Date().toISOString()) as DateIsoString,
     request: instance,
+    clusterId: instance.cluster_id ? instance.cluster_id : undefined,
     version: instance.version || "",
     bootstrapUrl: instance.bootstrap_server_host,
     adminUrl: instance.admin_api_server_url,

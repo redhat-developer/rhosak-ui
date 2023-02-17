@@ -166,6 +166,7 @@
     "region": "Region",
     "size": "Size",
     "status": "Status",
+    "clusterId": "Deployment",
     "storage": "Storage",
     "updatedAt": "Updated",
     "version": "Version"
