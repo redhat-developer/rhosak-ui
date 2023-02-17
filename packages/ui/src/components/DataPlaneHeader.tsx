@@ -42,8 +42,15 @@ export const DataPlaneHeader: VoidFunctionComponent<DataPlaneHeaderProps> = ({
 
   return (
     <>
-      <section className="pf-c-page__main-breadcrumb">
-        <Breadcrumb ouiaId={"breadcrumb"}>
+      <PageSection
+        variant={PageSectionVariants.light}
+        padding={{ default: "noPadding" }}
+        hasShadowBottom={true}
+      >
+        <Breadcrumb
+          ouiaId={"breadcrumb"}
+          className="pf-c-page__main-breadcrumb"
+        >
           <BreadcrumbItem
             render={() => (
               <Link to={instancesHref}>{t("common:kafka_instance")}</Link>
@@ -51,11 +58,9 @@ export const DataPlaneHeader: VoidFunctionComponent<DataPlaneHeaderProps> = ({
           />
           <BreadcrumbItem isActive={true}>{instanceName}</BreadcrumbItem>
         </Breadcrumb>
-      </section>
-      <PageSection variant={PageSectionVariants.light}>
         <Level>
           <LevelItem>
-            <TextContent>
+            <TextContent className={"pf-u-p-md pf-u-p-lg-on-xl"}>
               <Text component="h1">{instanceName}</Text>
             </TextContent>
           </LevelItem>
@@ -63,13 +68,6 @@ export const DataPlaneHeader: VoidFunctionComponent<DataPlaneHeaderProps> = ({
             <KafkaInstanceActions {...actionsProps} />
           </LevelItem>
         </Level>
-      </PageSection>
-      <PageSection
-        variant={PageSectionVariants.light}
-        padding={{ default: "noPadding" }}
-        className="pf-c-page__main-tabs"
-        hasShadowBottom={true}
-      >
         <Nav
           variant="tertiary"
           data-testid="pageKafka-tabProperties"

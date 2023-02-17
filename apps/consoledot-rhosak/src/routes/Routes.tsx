@@ -6,7 +6,6 @@ import {
   DrawerProvider,
 } from "./control-plane";
 import { DataPlaneRoutes, DedicatedDataPlaneRoutes } from "./data-plane";
-import { DedicatedUsersGate } from "./DedicatedUsersGate";
 import { OverviewRoute } from "./overview";
 import { StandardUsersGate } from "./StandardUsersGate";
 
@@ -27,13 +26,11 @@ export const Routes: VoidFunctionComponent = () => {
         </StandardUsersGate>
       </Route>
       <Route path={"/dedicated"}>
-        <DedicatedUsersGate>
-          <DrawerProvider>
-            {/* don't move these routes around! the order is important */}
-            <DedicatedControlPlaneRoutes />
-            <DedicatedDataPlaneRoutes />
-          </DrawerProvider>
-        </DedicatedUsersGate>
+        <DrawerProvider>
+          {/* don't move these routes around! the order is important */}
+          <DedicatedControlPlaneRoutes />
+          <DedicatedDataPlaneRoutes />
+        </DrawerProvider>
       </Route>
       <Route path={""} exact></Route>
     </Switch>
