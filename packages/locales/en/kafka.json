@@ -6,6 +6,7 @@
   "client_connections": "Client connections",
   "client_connections_value": "up to 500",
   "clientID": "Client ID",
+  "clusters_description": "OpenShift clusters that you own and manage are used for deploying Dedicated Kafka instances. <0>Learn more about the prerequisites</0>.",
   "connection_rate": "Connection rate",
   "connection_rate_value": "up to 100 connections/second",
   "connection_tab": {
@@ -123,6 +124,7 @@
     "properties": "Properties",
     "schemas": "Schemas"
   },
+  "dedicated_description": "Dedicated Kafka instances are provisioned in OpenShift clusters that you own and manage. <0>Learn more about the prerequisites</0>.",
   "delete_instance_message": "The <0>{{instanceName}}</0> Kafka instance and all topics will be deleted. Applications will no longer have access to the topics in this instance.",
   "delete_instance_title": "Delete instance?",
   "delete_topic_active_message": "One or more consumers are currently active in this topic, and will be removed at the time of deletion. ",
