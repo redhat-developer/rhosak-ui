@@ -22,7 +22,7 @@ export const InteractiveExampleAllAccountsSelected: ComponentStory<
     >
       <EditPermissions
         {...args}
-        acls={PermissionsForAllAccounts}
+        existingAcls={PermissionsForAllAccounts}
         selectedAccount={"All accounts"}
         topicsList={["topic-1", "my-topic", "test-topic"]}
         consumerGroupsList={["consumer", "my-consumer", "test-consumer"]}
@@ -41,7 +41,7 @@ export const InteractiveExampleSelectedAccount: ComponentStory<
     >
       <EditPermissions
         {...args}
-        acls={PermissionsForSelectedAccount}
+        existingAcls={PermissionsForSelectedAccount}
         topicsList={["topic-1", "my-topic", "test-topic"]}
         consumerGroupsList={["consumer", "my-consumer", "test-consumer"]}
       />
