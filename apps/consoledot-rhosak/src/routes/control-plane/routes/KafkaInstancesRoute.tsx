@@ -2,7 +2,6 @@ import { useKafkas } from "consoledot-api";
 import type { FunctionComponent } from "react";
 import type { ControlPlaneHeaderProps, KafkaInstancesProps } from "ui";
 import { KafkaInstances } from "ui";
-import type { Kafka } from "ui-models/src/models/kafka";
 import { ReadyStatuses } from "ui-models/src/models/kafka";
 import { ConnectedControlPlaneHeader } from "./ConnectedControlPlaneHeader";
 import { useKafkaInstancesTable } from "./useKafkaInstancesTable";
@@ -14,7 +13,7 @@ export type KafkaInstancesRoute = {
   instanceCreationHref: string;
   instanceDeletionHref: (id: string) => string;
   instanceChangeOwnerHref: (id: string) => string;
-} & Pick<KafkaInstancesProps<Kafka>, "getUrlForInstance">;
+} & Pick<KafkaInstancesProps, "getUrlForInstance">;
 
 export const KafkaInstancesRoute: FunctionComponent<KafkaInstancesRoute> = ({
   activeSection,
@@ -66,6 +65,7 @@ export const KafkaInstancesRoute: FunctionComponent<KafkaInstancesRoute> = ({
     <>
       <ConnectedControlPlaneHeader activeSection={activeSection} />
       <KafkaInstances
+        columns={"standard"}
         instances={data?.instances}
         itemCount={data?.count}
         page={page}

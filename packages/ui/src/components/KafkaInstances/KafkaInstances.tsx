@@ -19,7 +19,7 @@ import type {
 } from "./components";
 import { EmptyStateNoInstances, EmptyStateNoResults } from "./components";
 
-const Columns = [
+const StandardColumns = [
   "name",
   "owner",
   "createdAt",
@@ -28,9 +28,18 @@ const Columns = [
   "status",
 ] as const;
 
-export type KafkaInstancesProps<T extends Kafka = Kafka> = {
-  instances: Array<T> | undefined | null;
-  getUrlForInstance: (row: T) => string;
+const DedicatedColumns = [
+  "name",
+  "owner",
+  "createdAt",
+  "clusterId",
+  "status",
+] as const;
+
+export type KafkaInstancesProps = {
+  columns: "standard" | "dedicated";
+  instances: Array<Kafka> | undefined | null;
+  getUrlForInstance: (row: Kafka) => string;
   names: string[];
   owners: string[];
   statuses: string[];
@@ -44,19 +53,22 @@ export type KafkaInstancesProps<T extends Kafka = Kafka> = {
   onSearchStatus: (value: SimplifiedStatus) => void;
   onRemoveStatusChip: (value: SimplifiedStatus) => void;
   onRemoveStatusChips: () => void;
-  onDetails: (row: T) => void;
-  onConnection: (row: T) => void;
-  canChangeOwner: (row: T) => boolean;
-  onChangeOwner: (row: T) => void;
-  canDelete: (row: T) => boolean;
-  onDelete: (row: T) => void;
-  onClickConnectionTabLink: (row: T) => void;
+  onDetails: (row: Kafka) => void;
+  onConnection: (row: Kafka) => void;
+  canChangeOwner: (row: Kafka) => boolean;
+  onChangeOwner: (row: Kafka) => void;
+  canDelete: (row: Kafka) => boolean;
+  onDelete: (row: Kafka) => void;
+  onClickConnectionTabLink: (row: Kafka) => void;
   onClickSupportLink: () => void;
-  onInstanceLinkClick: (row: T) => void;
-  canHaveInstanceLink: (row: T) => boolean;
-  canOpenConnection: (row: T) => boolean;
+  onInstanceLinkClick: (row: Kafka) => void;
+  canHaveInstanceLink: (row: Kafka) => boolean;
+  canOpenConnection: (row: Kafka) => boolean;
 } & Pick<
-  TableViewProps<T, typeof Columns[number]>,
+  TableViewProps<
+    Kafka,
+    (typeof StandardColumns | typeof DedicatedColumns)[number]
+  >,
   | "itemCount"
   | "page"
   | "perPage"
@@ -68,7 +80,10 @@ export type KafkaInstancesProps<T extends Kafka = Kafka> = {
   EmptyStateNoInstancesProps &
   EmptyStateNoResultsProps;
 
-export const KafkaInstances = <T extends Kafka>({
+export const KafkaInstances = <
+  Columns extends typeof StandardColumns | typeof DedicatedColumns
+>({
+  columns,
   instances,
   itemCount,
   page,
@@ -104,7 +119,7 @@ export const KafkaInstances = <T extends Kafka>({
 
   canHaveInstanceLink,
   canOpenConnection,
-}: KafkaInstancesProps<T>) => {
+}: KafkaInstancesProps) => {
   const { t } = useTranslation("kafka");
   const labels = useKafkaLabels();
   const breakpoint = "lg";
@@ -116,7 +131,7 @@ export const KafkaInstances = <T extends Kafka>({
     <PageSection isFilled={true}>
       <TableView
         data={instances}
-        columns={Columns}
+        columns={columns === "standard" ? StandardColumns : DedicatedColumns}
         renderHeader={({ column, Th, key }) => (
           <Th key={key}>{labels.fields[column]}</Th>
         )}
@@ -182,6 +197,8 @@ export const KafkaInstances = <T extends Kafka>({
                         onClickSupportLink={onClickSupportLink}
                       />
                     );
+                  case "clusterId":
+                    return row.clusterId;
                   default:
                     return row[column];
                 }

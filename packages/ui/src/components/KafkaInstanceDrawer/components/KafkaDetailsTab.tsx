@@ -33,7 +33,7 @@ export type KafkaDetailsTabProps = {
   connections: number | undefined;
   connectionRate: number | undefined;
   messageSize: Bytes | undefined;
-  billing: "prepaid" | MarketplaceSubscription | undefined;
+  billing: "prepaid" | MarketplaceSubscription | "dedicated" | undefined;
   kafkaVersion: string;
 };
 
@@ -167,6 +167,8 @@ export const KafkaDetailsTab: VoidFunctionComponent<KafkaDetailsTabProps> = ({
                 return undefined;
               } else if (billing === "prepaid") {
                 return t("create-kafka-instance:billing.prepaid_option");
+              } else if (billing === "dedicated") {
+                return t("create-kafka-instance:billing.dedicate_optiom");
               } else {
                 switch (billing.marketplace) {
                   case "aws":
