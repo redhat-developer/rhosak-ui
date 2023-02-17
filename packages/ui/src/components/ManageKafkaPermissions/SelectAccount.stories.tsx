@@ -1,7 +1,7 @@
-import { SelectAccount } from "./SelectAccount";
+import { SelectAccount } from "./components/SelectAccount";
 import type { ComponentMeta, ComponentStory } from "@storybook/react";
 import { Form, Modal } from "@patternfly/react-core";
-import { PrincipalType } from "../types";
+import { PrincipalType } from "./types";
 
 const account = [
   {

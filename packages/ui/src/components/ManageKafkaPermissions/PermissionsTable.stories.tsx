@@ -1,7 +1,7 @@
 import type { ComponentMeta, ComponentStory } from "@storybook/react";
 
-import { PermissionsTable } from "./PermissionsTable";
-import type { Permissions } from "../types";
+import { PermissionsTable } from "./components/PermissionsTable";
+import type { Permissions } from "./types";
 
 const permissions: Permissions[] = [
   {
