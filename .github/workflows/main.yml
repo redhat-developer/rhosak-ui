@@ -28,7 +28,7 @@ jobs:
           npm run build-storybook -- --quiet --loglevel silent
 
       - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4.4.1
+        uses: JamesIves/github-pages-deploy-action@ba1486788b0490a235422264426c45848eac35c6 #v4.4.1
         with:
           branch: gh-pages # The branch the action should deploy to.
           folder: packages/ui/storybook-static # The folder the action should deploy.
