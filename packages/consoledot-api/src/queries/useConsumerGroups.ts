@@ -9,7 +9,8 @@ export function useConsumerGroups(
   params: { id?: string; adminUrl?: string } & Omit<
     FetchConsumerGroupsParams,
     "getConsumerGroups"
-  >
+  >,
+  suspense = false
 ) {
   const { refetchInterval } = useApiConfiguration();
   const { consumerGroups } = useApi();
@@ -32,5 +33,6 @@ export function useConsumerGroups(
     },
     enabled: Boolean(params.adminUrl) && Boolean(params.id),
     refetchInterval,
+    suspense,
   });
 }

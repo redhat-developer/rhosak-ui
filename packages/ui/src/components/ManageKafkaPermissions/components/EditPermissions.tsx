@@ -14,42 +14,47 @@ import {
 import { HelpIcon } from "@patternfly/react-icons";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { AssignPermissions } from "./components/AssignPermissions";
-import { PreCancelModal } from "./components/PreCancelModal";
-import { SelectAccount } from "./components/SelectAccount";
-import { ViewAccountDetails } from "./components/ViewAccountDetails";
-import type { Account, AddAclType } from "./types";
+import { AssignPermissions } from "./AssignPermissions";
+import { PreCancelModal } from "./PreCancelModal";
+import { ViewAccountDetails } from "./ViewAccountDetails";
+import type { AddAclType } from "../types";
 import type { AclBinding } from "@rhoas/kafka-instance-sdk";
+import type { Permissions } from "ui";
 import {
   createEmptyConsumeTopicAcl,
   createEmptyManageAccessAcl,
   createEmptyManualAcl,
   createEmptyProduceTopicAcl,
-} from "./types";
-import { transformPermissions } from "./utils";
+} from "../types";
+import { transformPermissions } from "../utils";
 
-export type ManageKafkaPermissionsProps = {
-  accounts: Account[];
+export type AclType = {
+  groups: Permissions[];
+  count: number;
+};
+
+export type EditPermissionsProps = {
   onCancel: () => void;
   kafkaName: string;
   onSave: (
     acls: AclBinding[] | undefined,
     deletedAcls: AclBinding[] | undefined
   ) => void;
-  acls: AclBinding[] | undefined;
+  existingAcls: AclBinding[];
   topicsList: string[];
   consumerGroupsList: string[];
   id?: string;
+  selectedAccount: string | undefined;
 };
 
-export const ManageKafkaPermissions: React.FC<ManageKafkaPermissionsProps> = ({
+export const EditPermissions: React.FC<EditPermissionsProps> = ({
   onCancel,
   kafkaName,
-  accounts,
-  acls,
+  existingAcls,
   onSave,
   topicsList,
   consumerGroupsList,
+  selectedAccount,
   id,
 }) => {
   const { t } = useTranslation([
@@ -63,7 +68,6 @@ export const ManageKafkaPermissions: React.FC<ManageKafkaPermissionsProps> = ({
     setIsExpandedExistingPermissionSection,
   ] = useState<boolean>(false);
   const [isAclDeleted, setIsAclDeleted] = useState<boolean>(false);
-  const [selectedAccount, setSelectedAccount] = useState<string | undefined>();
   const [
     isExpandedAssignPermissionsSection,
     setIsExpandedAssignPermissionsSection,
@@ -73,10 +77,7 @@ export const ManageKafkaPermissions: React.FC<ManageKafkaPermissionsProps> = ({
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [isOpenPreCancelModal, setIsOpenPreCancelModal] =
     useState<boolean>(false);
-  const [step, setStep] = useState<number>(1);
-  /*const [acls, setacls] = useState<AclBinding[] | undefined>(
-    acls
-  );*/
+  //const [existingAcls, setExistingAcls] = useState<AclBinding[]>(acls);
   const [newAcls, setNewAcls] = useState<AddAclType[]>();
   const [deletedAcls, setDeletedAcls] = useState<AclBinding[] | undefined>(
     undefined
@@ -111,22 +112,21 @@ export const ManageKafkaPermissions: React.FC<ManageKafkaPermissionsProps> = ({
     }
   };
   const topicFilter = (filter: string) => {
-    if (filter == "") return topicsList || [];
-    else return topicsList?.filter((v) => v.includes(filter)) || [];
+    if (filter == "" || filter == undefined) return topicsList;
+    else return topicsList.filter((v) => v.includes(filter));
   };
 
   const consumerGroupsFilter = (filter: string) => {
-    if (filter == "") return consumerGroupsList || [];
-    else return consumerGroupsList?.filter((v) => v.includes(filter)) || [];
+    if (filter == "" || filter == undefined) return consumerGroupsList;
+    else return consumerGroupsList.filter((v) => v.includes(filter));
   };
 
   const aclsToSave: AclBinding[] = [];
 
   const onClickSubmit = () => {
-    if (step == 1) setStep(2);
-    else if (
-      (newAcls && newAcls?.length > 0) ||
-      (deletedAcls && deletedAcls?.length > 0)
+    if (
+      (newAcls && newAcls.length > 0) ||
+      (deletedAcls && deletedAcls.length > 0)
     ) {
       setSubmitted(true);
       const isAclValid = checkValidation();
@@ -182,18 +182,13 @@ export const ManageKafkaPermissions: React.FC<ManageKafkaPermissionsProps> = ({
   };
 
   const isDisabled =
-    step == 1 && (selectedAccount === undefined || selectedAccount === "")
-      ? true
-      : step == 2 &&
-        ((submitted && !canSave) ||
-          ((newAcls == undefined || newAcls.length < 1) && !isAclDeleted) ||
-          !isNameValid)
+    (submitted && !canSave) ||
+    ((newAcls == undefined || newAcls.length < 1) && !isAclDeleted) ||
+    !isNameValid
       ? true
       : false;
   const onClose = () => {
-    step == 1
-      ? onCancel()
-      : step == 2 && (!isDisabled || (newAcls && newAcls?.length > 0))
+    !isDisabled || (newAcls && newAcls?.length > 0)
       ? setIsOpenPreCancelModal(true)
       : onCancel();
   };
@@ -208,14 +203,14 @@ export const ManageKafkaPermissions: React.FC<ManageKafkaPermissionsProps> = ({
   };
 
   const updateacls = (row: number) => {
-    acls?.splice(row, 1);
+    existingAcls?.splice(row, 1);
   };
 
   const onRemoveAcls = (row: number) => {
     setDeletedAcls((prevState) =>
-      acls && prevState != undefined
-        ? [...prevState, acls[row]]
-        : acls && [acls[row]]
+      existingAcls && prevState != undefined
+        ? [...prevState, existingAcls[row]]
+        : existingAcls && [existingAcls[row]]
     );
     setIsAclDeleted(true);
     updateacls(row);
@@ -241,11 +236,9 @@ export const ManageKafkaPermissions: React.FC<ManageKafkaPermissionsProps> = ({
           variant="primary"
           isDisabled={isDisabled}
           onClick={onClickSubmit}
-          aria-label={
-            step == 1 ? t("step_1_submit_button") : t("step_2_submit_button")
-          }
+          aria-label={t("step_2_submit_button")}
         >
-          {step === 1 ? t("step_1_submit_button") : t("step_2_submit_button")}
+          {t("step_2_submit_button")}
         </Button>,
         <Button
           onClick={onClose}
@@ -270,105 +263,95 @@ export const ManageKafkaPermissions: React.FC<ManageKafkaPermissionsProps> = ({
         >
           {kafkaName}
         </FormGroup>
-        {step == 1 ? (
-          <SelectAccount
-            value={selectedAccount}
-            onChangeAccount={setSelectedAccount}
-            accounts={accounts}
-          />
-        ) : (
-          <>
-            <FormGroup
-              fieldId="account-name"
-              label={t("account_id_title")}
-              labelIcon={
-                <Popover bodyContent={t("account_id_help")}>
-                  <button
-                    type="button"
-                    onClick={(e) => e.preventDefault()}
-                    className="pf-c-form__group-label-help"
-                    aria-label={t("account_help")}
-                  >
-                    <HelpIcon noVerticalAlign />
-                  </button>
-                </Popover>
-              }
-            >
-              {selectedAccount === "All accounts"
-                ? t("all_accounts_title")
-                : selectedAccount}
-            </FormGroup>
-            {(!canSave || !isNameValid) && submitted && (
-              <Alert
-                isInline
-                title={t("create-kafka-instance:form_errors.form_invalid")}
-                variant={"danger"}
-              />
-            )}
-            <ExpandableSection
-              isIndented={true}
-              isExpanded={isExpandedExistingPermissionSection}
-              onToggle={onChangeExpandedExistingPermissionsSection}
-              toggleContent={
-                <div>
-                  <span>{t("review_existing_title")}</span>{" "}
-                  <Badge
-                    isRead={
-                      acls == undefined || acls.length == 0 ? true : false
-                    }
-                  >
-                    {acls == undefined ? 0 : acls.length}
-                  </Badge>
-                </div>
-              }
-            >
-              <ViewAccountDetails
-                accountId={selectedAccount}
-                existingAcls={acls || []}
-                onRemoveAcl={onRemoveAcls}
-              />
-            </ExpandableSection>
-            <FormGroup>
-              <ExpandableSection
-                toggleText={t("assign_permissions_title")}
-                isIndented={true}
-                isExpanded={isExpandedAssignPermissionsSection}
-                onToggle={onChangeExpandedAssignPermissionsSection}
+
+        <FormGroup
+          fieldId="account-name"
+          label={t("account_id_title")}
+          labelIcon={
+            <Popover bodyContent={t("account_id_help")}>
+              <button
+                type="button"
+                onClick={(e) => e.preventDefault()}
+                className="pf-c-form__group-label-help"
+                aria-label={t("account_help")}
               >
-                <FormGroup>
-                  <TextContent>
-                    <Text component={TextVariants.small}>
-                      {selectedAccount === "All accounts"
-                        ? t("assign_permissions_all_description")
-                        : t("assign_permissions_description", {
-                            value: selectedAccount,
-                          })}
-                    </Text>
-                    {newAcls && newAcls?.length > 0 && (
-                      <Text component={TextVariants.small}>
-                        {t("all_fields_required")}
-                      </Text>
-                    )}
-                  </TextContent>
-                </FormGroup>
-                <AssignPermissions
-                  setIsNameValid={setIsNameValid}
-                  submitted={submitted}
-                  onAddManualPermissions={onAddManualPermissions}
-                  onAddProduceTopicShortcut={onAddProduceTopicShortcut}
-                  onConsumeTopicShortcut={onConsumeTopicShortcut}
-                  onManageAccessShortcut={onManageAccessShortcut}
-                  onDelete={onDeleteNewAcl}
-                  topicNameOptions={topicFilter}
-                  consumerGroupNameOptions={consumerGroupsFilter}
-                  addedAcls={newAcls}
-                  kafkaName={kafkaName}
-                  setAddedAcls={setNewAcls}
-                />
-              </ExpandableSection>
-            </FormGroup>
-          </>
+                <HelpIcon noVerticalAlign />
+              </button>
+            </Popover>
+          }
+        >
+          {
+            //The value received will have a prefix 'User:'.Remove the prefix when displaying value
+            selectedAccount === "All accounts"
+              ? t("all_accounts_title")
+              : selectedAccount?.split(":")[1]
+          }
+        </FormGroup>
+        {(!canSave || !isNameValid) && submitted && (
+          <Alert
+            isInline
+            title={t("create-kafka-instance:form_errors.form_invalid")}
+            variant={"danger"}
+          />
         )}
+        <ExpandableSection
+          isIndented={true}
+          isExpanded={isExpandedExistingPermissionSection}
+          onToggle={onChangeExpandedExistingPermissionsSection}
+          toggleContent={
+            <div>
+              <span>{t("review_existing_title")}</span>{" "}
+              <Badge isRead={existingAcls.length == 0 ? true : false}>
+                {existingAcls.length}
+              </Badge>
+            </div>
+          }
+        >
+          <ViewAccountDetails
+            accountId={selectedAccount}
+            existingAcls={existingAcls}
+            onRemoveAcl={onRemoveAcls}
+          />
+        </ExpandableSection>
+        <FormGroup>
+          <ExpandableSection
+            toggleText={t("assign_permissions_title")}
+            isIndented={true}
+            isExpanded={isExpandedAssignPermissionsSection}
+            onToggle={onChangeExpandedAssignPermissionsSection}
+          >
+            <FormGroup>
+              <TextContent>
+                <Text component={TextVariants.small}>
+                  {selectedAccount === "All accounts"
+                    ? t("assign_permissions_all_description")
+                    : t("assign_permissions_description", {
+                        value: selectedAccount?.split(":")[1],
+                      })}
+                </Text>
+                {newAcls && newAcls?.length > 0 && (
+                  <Text component={TextVariants.small}>
+                    {t("all_fields_required")}
+                  </Text>
+                )}
+              </TextContent>
+            </FormGroup>
+            <AssignPermissions
+              setIsNameValid={setIsNameValid}
+              submitted={submitted}
+              onAddManualPermissions={onAddManualPermissions}
+              onAddProduceTopicShortcut={onAddProduceTopicShortcut}
+              onConsumeTopicShortcut={onConsumeTopicShortcut}
+              onManageAccessShortcut={onManageAccessShortcut}
+              onDelete={onDeleteNewAcl}
+              topicNameOptions={topicFilter}
+              consumerGroupNameOptions={consumerGroupsFilter}
+              addedAcls={newAcls}
+              kafkaName={kafkaName}
+              setAddedAcls={setNewAcls}
+            />
+          </ExpandableSection>
+        </FormGroup>
       </Form>
     </Modal>
   );

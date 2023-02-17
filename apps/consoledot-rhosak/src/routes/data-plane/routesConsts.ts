@@ -16,14 +16,18 @@ export type DataPlaneTopicConsumerRouteParams = {
   consumerGroupId: string;
 };
 
-export const DataPlaneTopicRoutePath =
-  `${ControlPlaneRouteRoot}/:id/details/topics/:topicName` as const;
+export type DataPlanePermissionsRouteParams = {
+  selectedAccount: string;
+};
 
-export const DataPlaneConsumerGroupRoutePath =
-  `${ControlPlaneRouteRoot}/:id/details/consumer-groups/:consumerGroupId` as const;
+export const DataPlanePermissionsRoutePath =
+  `${ControlPlaneRouteRoot}/:id/details/acls/select-account/:selectedAccount` as const;
 
-export const DataPlaneTopicConsumerGroupRoutePath =
-  `${ControlPlaneRouteRoot}/:id/details/topics/:topicName/consumer-groups/:consumerGroupId` as const;
+export const DataPlaneSelectAccountsRoutePath =
+  `${ControlPlaneRouteRoot}/:id/details/acls/select-account` as const;
+
+export const DataPlanePermissionsTableRoutePath =
+  `${ControlPlaneRouteRoot}/:id/details/acls` as const;
 
 export type DataPlaneNavigationProps = {
   instanceDetailsHref: (instanceId: string) => string;

@@ -1,6 +1,5 @@
 import { SelectAccount } from "./SelectAccount";
 import type { ComponentMeta, ComponentStory } from "@storybook/react";
-import { useState } from "react";
 import { Form, Modal } from "@patternfly/react-core";
 import { PrincipalType } from "../types";
 
@@ -56,17 +55,9 @@ const Template: ComponentStory<typeof SelectAccount> = (args) => (
 export const InteractiveExample: ComponentStory<typeof SelectAccount> = (
   args
 ) => {
-  const [selectedAccount, setSelectedAccount] = useState<string | undefined>(
-    undefined
-  );
   return (
     <Form>
-      <SelectAccount
-        {...args}
-        value={selectedAccount}
-        onChangeAccount={setSelectedAccount}
-        accounts={account}
-      />
+      <SelectAccount {...args} accounts={account} />
     </Form>
   );
 };
@@ -154,17 +145,6 @@ CanExpandOverDialog.parameters = {
   docs: {
     description: {
       story: `When the select is the last element of a dialog, it should fully expand outside its borders`,
-    },
-  },
-};
-
-export const ValidSelection = Template.bind({});
-ValidSelection.args = { value: "id2" };
-
-ValidSelection.parameters = {
-  docs: {
-    description: {
-      story: `Valid value is selected`,
     },
   },
 };

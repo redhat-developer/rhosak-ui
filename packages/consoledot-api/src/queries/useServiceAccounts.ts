@@ -6,7 +6,8 @@ import { kafkaQueries } from "../queryKeys";
 import { useApi } from "../useApi";
 
 export function useServiceAccounts(
-  params: Omit<FetchServiceAccountsParams, "getServiceAccounts">
+  params: Omit<FetchServiceAccountsParams, "getServiceAccounts">,
+  suspense = false
 ) {
   const { refetchInterval } = useApiConfiguration();
   const { serviceAccount } = useApi();
@@ -22,5 +23,6 @@ export function useServiceAccounts(
       });
     },
     refetchInterval,
+    suspense,
   });
 }

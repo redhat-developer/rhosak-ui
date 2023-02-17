@@ -1,7 +1,12 @@
 import { composeStories } from "@storybook/testing-react";
-import * as stories from "./ManageKafkaPermissions.stories";
+import * as stories from "./EditPermissions.stories";
 import { userEvent } from "@storybook/testing-library";
-import { render, waitForI18n, waitForPopper, within } from "../../test-utils";
+import {
+  render,
+  waitForI18n,
+  waitForPopper,
+  within,
+} from "../../../test-utils";
 const {
   InteractiveExampleAllAccountsSelected,
   InteractiveExampleSelectedAccount,
@@ -16,27 +21,12 @@ describe("Manage Kafka Permissions Dialog", () => {
       <InteractiveExampleSelectedAccount onCancel={onCancel} onSave={onSave} />
     );
     await waitForI18n(comp);
-    userEvent.click(await comp.findByLabelText("Account"));
-    await waitForPopper();
-
-    expect(comp.getByText("All accounts")).toBeInTheDocument();
-    expect(comp.getByText("Service accounts")).toBeInTheDocument();
-    expect(comp.getByText("User accounts")).toBeInTheDocument();
-    expect(comp.getByText("id2")).toBeInTheDocument();
-    expect(comp.getByRole("button", { name: "Next" })).toBeDisabled();
-    userEvent.click(await comp.findByText("id2"));
-    expect(comp.getByRole("button", { name: "Next" })).toBeEnabled();
-    userEvent.click(await comp.findByLabelText("Cancel"));
-    expect(onCancel).toBeCalledTimes(1);
-    userEvent.click(await comp.findByLabelText("Next"));
-    expect(comp.getByText("Manage access")).toBeInTheDocument();
-    expect(comp.getByText("id2")).toBeInTheDocument();
     expect(comp.getByText("Review existing permissions")).toBeInTheDocument();
     expect(comp.getByText("6")).toBeInTheDocument();
     expect(comp.getByText("Assign permissions")).toBeInTheDocument();
     expect(comp.getByRole("button", { name: "Save" })).toBeDisabled();
     userEvent.click(await comp.findByLabelText("Cancel"));
-    expect(onCancel).toBeCalledTimes(2);
+    expect(onCancel).toBeCalledTimes(1);
     userEvent.click(await comp.findByText("Review existing permissions"));
     const deleteBtn = comp.getAllByRole("button");
     expect(deleteBtn[0]).toBeInTheDocument();
@@ -144,17 +134,7 @@ describe("Manage Kafka Permissions Dialog", () => {
       />
     );
     await waitForI18n(comp);
-    userEvent.click(await comp.findByLabelText("Account"));
     await waitForPopper();
-
-    expect(await comp.findByText("All accounts")).toBeInTheDocument();
-    expect(await comp.findByText("Service accounts")).toBeInTheDocument();
-    expect(await comp.findByText("User accounts")).toBeInTheDocument();
-    expect(await comp.findByText("All accounts")).toBeInTheDocument();
-    expect(await comp.findByRole("button", { name: "Next" })).toBeDisabled();
-    //Select "All accounts"
-    userEvent.click(await comp.findByText("All accounts"));
-    userEvent.click(await comp.findByLabelText("Next"));
 
     const allAccounts = await comp.findAllByText("All accounts");
     expect(allAccounts[0]).toBeInTheDocument();

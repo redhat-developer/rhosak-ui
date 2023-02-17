@@ -6,7 +6,8 @@ import { masQueries } from "../queryKeys";
 import { useApi } from "../useApi";
 
 export function useUserAccounts(
-  params: Omit<FetchUserAccountsParams, "getUserAccounts">
+  params: Omit<FetchUserAccountsParams, "getUserAccounts">,
+  suspense = false
 ) {
   const { refetchInterval } = useApiConfiguration();
   const { userAccounts } = useApi();
@@ -22,5 +23,6 @@ export function useUserAccounts(
       });
     },
     refetchInterval,
+    suspense,
   });
 }

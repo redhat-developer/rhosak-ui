@@ -3,79 +3,98 @@ import { useCallback } from "react";
 import type { VoidFunctionComponent } from "react";
 import { PermissionsTable } from "ui";
 import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
-import { useAcls, useDeletePermissionsMutation } from "consoledot-api";
-import { useDataPlaneGate } from "../useDataPlaneGate";
+import { useDeletePermissionsMutation } from "consoledot-api";
 import { useHistory } from "react-router-dom";
 import type { DataPlanePermissionsNavigationProps } from "../routesConsts";
+import { addNotification } from "@redhat-cloud-services/frontend-components-notifications";
+import { useDispatch } from "react-redux";
+import { editPermissionsHref } from "../DataPlaneRoutes";
+import { usePermissionsTableGate } from "../usePermissionsTableGate";
 
 export const AclsRoute: VoidFunctionComponent<
   DataPlanePermissionsNavigationProps
 > = ({ instancesHref, managePermissionsHref }) => {
   const { page, perPage, setPagination, setPaginationQuery } =
     usePaginationSearchParams();
-  const { instance } = useDataPlaneGate();
+  const { instance, acls } = usePermissionsTableGate();
   const { mutateAsync } = useDeletePermissionsMutation();
+  const dispatch = useDispatch();
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
 
-  const { data } = useAcls({
-    id: instance?.id,
-    adminUrl: instance?.adminUrl,
-    page,
-    perPage,
-  });
-
   const onDeleteSelected = useCallback(
     (rowIndex: number[]) => {
       rowIndex.map((value) => {
-        const rowToDelete = data?.groups[value];
+        const rowToDelete = acls.groups[value];
         void mutateAsync({
           instanceId: instance.id,
           adminUrl: instance.adminUrl || "",
           acl: {
-            patternType: rowToDelete?.resource.patternType,
-            permissionType: rowToDelete?.permission.permission,
-            principal: rowToDelete?.account,
-            resourceName: rowToDelete?.resource.resourceName,
-            operation: rowToDelete?.permission.operation,
-            resourceType: rowToDelete?.resource.resourceType,
+            patternType: rowToDelete.resource.patternType,
+            permissionType: rowToDelete.permission.permission,
+            principal: rowToDelete.account,
+            resourceName: rowToDelete.resource.resourceName,
+            operation: rowToDelete.permission.operation,
+            resourceType: rowToDelete.resource.resourceType,
           },
-          onError: () => {
-            // TODO: alert
+          onError: (_, message) => {
+            dispatch(
+              addNotification({
+                variant: "danger",
+                title: message,
+                dismissable: true,
+                id: "delete-error",
+              })
+            );
           },
           onSuccess: () => {
-            // No action
+            //We have no action yet to confirm if delete was successfull.
           },
         });
       });
     },
-    [data?.groups, mutateAsync, instance.id, instance.adminUrl]
+    [acls.groups, mutateAsync, instance.id, instance.adminUrl, dispatch]
   );
 
   const onDelete = useCallback(
     (rowIndex: number) => {
-      const rowToDelete = data?.groups[rowIndex];
+      const rowToDelete = acls.groups[rowIndex];
       void mutateAsync({
         instanceId: instance.id,
         adminUrl: instance.adminUrl || "",
         acl: {
-          patternType: rowToDelete?.resource.patternType,
-          permissionType: rowToDelete?.permission.permission,
-          principal: rowToDelete?.account,
-          resourceName: rowToDelete?.resource.resourceName,
-          operation: rowToDelete?.permission.operation,
-          resourceType: rowToDelete?.resource.resourceType,
+          patternType: rowToDelete.resource.patternType,
+          permissionType: rowToDelete.permission.permission,
+          principal: rowToDelete.account,
+          resourceName: rowToDelete.resource.resourceName,
+          operation: rowToDelete.permission.operation,
+          resourceType: rowToDelete.resource.resourceType,
         },
-        onError: () => {
-          // TODO: alert
+        onError: (_, message) => {
+          dispatch(
+            addNotification({
+              variant: "danger",
+              title: message,
+              dismissable: true,
+              id: "delete-error",
+            })
+          );
         },
         onSuccess: () => {
           // No action
         },
       });
     },
-    [data?.groups, mutateAsync, instance.id, instance.adminUrl]
+    [acls.groups, mutateAsync, instance.id, instance.adminUrl, dispatch]
+  );
+
+  const onManagePermissionsActionItem = useCallback(
+    (account: string) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+      history.push(editPermissionsHref(instance.id, account));
+    },
+    [history, instance.id]
   );
   const onManagePermission = useCallback(() => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
@@ -89,15 +108,16 @@ export const AclsRoute: VoidFunctionComponent<
         activeSection={"permissions"}
       />
       <PermissionsTable
-        permissions={data?.groups}
+        permissions={acls.groups}
         onDelete={onDelete}
         onDeleteSelected={onDeleteSelected}
         onManagePermissions={onManagePermission}
         onPerPageChange={setPaginationQuery}
-        itemCount={data?.count}
+        itemCount={acls.count}
         page={page}
         perPage={perPage}
         onPageChange={setPagination}
+        onManagePermissionsActionItem={onManagePermissionsActionItem}
       />
     </>
   );

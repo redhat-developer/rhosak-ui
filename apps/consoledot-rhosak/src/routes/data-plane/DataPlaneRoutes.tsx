@@ -21,8 +21,9 @@ import {
   TopicConsumerGroupViewPartitionRoute,
   TopicDeleteRoute,
   TopicEditPropertiesRoute,
+  EditPermissionsRoute,
+  ManagePermissionsRoute,
 } from "./routes";
-import { ManagePermissionsRoute } from "./routes/ManagePermissionsRoute";
 
 import { DataPlaneRoutePath, DataPlaneTopicRoutePath } from "./routesConsts";
 
@@ -61,7 +62,12 @@ const viewTopicPartitionConsumerGroupHref = (
     id
   )}/topics/${topic}/consumer-groups/${consumerGroupId}/view-partition`;
 export const managePermissionsHref = (id: string) =>
-  `${instanceDetailsHref(id)}/acls/manage-permissions`;
+  `${instanceDetailsHref(id)}/acls/select-account`;
+
+export const editPermissionsHref = (id: string, selectedAccount: string) =>
+  `${instanceDetailsHref(
+    id
+  )}/acls/select-account/${selectedAccount}/edit-permissions`;
 
 export const permissionsModalHref = (id: string) =>
   `${instanceDetailsHref(id)}/acls`;
@@ -84,8 +90,16 @@ export const DataPlaneRoutes: VoidFunctionComponent = () => {
           </Route>
 
           <Route path={`${DataPlaneRoutePath}/acls`}>
-            <Route path={`${DataPlaneRoutePath}/acls/manage-permissions`}>
+            <Route path={`${DataPlaneRoutePath}/acls/select-account`}>
               <ManagePermissionsRoute
+                instancesHref={"/kafkas"}
+                managePermissionsHref={permissionsModalHref}
+              />
+            </Route>
+            <Route
+              path={`${DataPlaneRoutePath}/acls/select-account/:selectedAccount/edit-permissions`}
+            >
+              <EditPermissionsRoute
                 instancesHref={"/kafkas"}
                 managePermissionsHref={permissionsModalHref}
               />
