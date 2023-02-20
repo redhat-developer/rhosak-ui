@@ -40,7 +40,7 @@ export type EditPermissionsProps = {
     acls: AclBinding[] | undefined,
     deletedAcls: AclBinding[] | undefined
   ) => void;
-  existingAcls: AclBinding[];
+  acls: AclBinding[];
   topicsList: string[];
   consumerGroupsList: string[];
   id?: string;
@@ -50,7 +50,7 @@ export type EditPermissionsProps = {
 export const EditPermissions: React.FC<EditPermissionsProps> = ({
   onCancel,
   kafkaName,
-  existingAcls,
+  acls,
   onSave,
   topicsList,
   consumerGroupsList,
@@ -77,7 +77,7 @@ export const EditPermissions: React.FC<EditPermissionsProps> = ({
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [isOpenPreCancelModal, setIsOpenPreCancelModal] =
     useState<boolean>(false);
-  //const [existingAcls, setExistingAcls] = useState<AclBinding[]>(acls);
+  const [existingAcls, setExistingAcls] = useState<AclBinding[]>(acls);
   const [newAcls, setNewAcls] = useState<AddAclType[]>();
   const [deletedAcls, setDeletedAcls] = useState<AclBinding[] | undefined>(
     undefined
@@ -105,6 +105,11 @@ export const EditPermissions: React.FC<EditPermissionsProps> = ({
   useEffect(() => {
     checkValidation();
   }, [checkValidation, newAcls]);
+
+  useEffect(() => {
+    //Fetch the latest table for exiting acls, only when no row is scheduled for deletion
+    if (deletedAcls == undefined) setExistingAcls(acls);
+  }, [acls, deletedAcls]);
 
   const onEscapePress = () => {
     if (escapeClosesModal.current) {
@@ -202,8 +207,8 @@ export const EditPermissions: React.FC<EditPermissionsProps> = ({
     setIsOpenPreCancelModal(false);
   };
 
-  const updateacls = (row: number) => {
-    existingAcls?.splice(row, 1);
+  const updateExistingAcls = (row: number) => {
+    setExistingAcls((existingAcls || []).filter((_, index) => index != row));
   };
 
   const onRemoveAcls = (row: number) => {
@@ -213,7 +218,7 @@ export const EditPermissions: React.FC<EditPermissionsProps> = ({
         : existingAcls && [existingAcls[row]]
     );
     setIsAclDeleted(true);
-    updateacls(row);
+    updateExistingAcls(row);
   };
   return (
     <Modal
