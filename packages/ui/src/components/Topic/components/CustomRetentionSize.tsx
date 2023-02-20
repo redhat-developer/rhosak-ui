@@ -11,6 +11,7 @@ import type React from "react";
 import type { Topic } from "ui-models/src/models/topic";
 import { RetentionSizeUnits } from "../../KafkaTopics/types";
 import type { SelectOptions } from "./types";
+import { Bytes } from "ui-models/src/types";
 
 export type CustomRetentionSizeProps = NumberInputProps &
   SelectProps & {
@@ -28,10 +29,10 @@ const CustomRetentionSize: React.FC<CustomRetentionSizeProps> = ({
   setTopicData,
 }) => {
   const onSelect: SelectProps["onSelect"] = (event, value) => {
-    // setTopicData({
-    //   ...topicData,
-    //   customRetentionSizeUnit: value as RetentionSizeUnits,
-    // });
+    setTopicData({
+      ...topicData,
+      "retention.ms": { type: "ms", value: BigInt(1) },
+    });
 
     //}
 
@@ -40,23 +41,37 @@ const CustomRetentionSize: React.FC<CustomRetentionSizeProps> = ({
 
   const handleTouchSpin = (operator: string) => {
     if (operator === "+") {
-      // setTopicData({
-      //   ...topicData,
-      //   retentionBytes: topicData.retentionBytes + 1,
-      // });
+      const currentValue = topicData["retention.bytes"].value;
+      const newValue: Bytes = {
+        type: "bytes",
+        value: currentValue + BigInt(1),
+      };
+
+      setTopicData({
+        ...topicData,
+        "retention.bytes": newValue,
+      });
     } else if (operator === "-") {
-      // setTopicData({
-      //   ...topicData,
-      //   retentionBytes: topicData.retentionBytes - 1,
-      // });
+      const currentValue = topicData["retention.bytes"].value;
+      const newValue: Bytes = {
+        type: "bytes",
+        value: currentValue - BigInt(1),
+      };
+      setTopicData({
+        ...topicData,
+        "retention.bytes": newValue,
+      });
     }
   };
 
   const onChangeTouchSpin = (event: React.FormEvent<HTMLInputElement>) => {
-    // setTopicData({
-    //   ...topicData,
-    //   retentionBytes: Number(event.currentTarget.value),
-    // });
+    setTopicData({
+      ...topicData,
+      "retention.bytes": {
+        type: "bytes",
+        value: BigInt(event.currentTarget.value),
+      },
+    });
   };
 
   return (
