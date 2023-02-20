@@ -26,30 +26,41 @@ export const StepPartitions: React.FC<StepPartitionsProps> = ({
   const { t } = useTranslation(["create-topic"]);
 
   const handleOnPlus = () => {
-    // onPartitionsChange({
-    //   ...newTopicData,
-    //   partitions.length: newTopicData.partitions.length + 1,
-    // });
+    const newPartitions = [
+      ...newTopicData.partitions,
+      { partition: newTopicData.partitions.length },
+    ];
+    onPartitionsChange({
+      ...newTopicData,
+      partitions: newPartitions,
+    });
   };
 
   const handleOnMinus = () => {
-    // onPartitionsChange({
-    //   ...newTopicData,
-    //   partitions.length: newTopicData.partitions.length - 1,
-    // });
+    const { partitions } = newTopicData;
+    const newPartitions = partitions.slice(0, partitions.length - 1);
+    onPartitionsChange({
+      ...newTopicData,
+      partitions: newPartitions,
+    });
   };
 
   const handlePartitionTouchspinChange: NumberInputProps["onChange"] = (
     event
   ) => {
-    // onPartitionsChange({
-    //   ...newTopicData,
-    //   partitions.length: Number((event.target as HTMLInputElement).value),
-    // });
+    const newPartitionCount = Number((event.target as HTMLInputElement).value);
+    const newPartitions = Array.from(
+      { length: newPartitionCount },
+      (_, i) => newTopicData.partitions[i] ?? { partition: i }
+    );
+    onPartitionsChange({
+      ...newTopicData,
+      partitions: newPartitions,
+    });
   };
   const onBlur = () => {
     if (newTopicData.partitions.length < 1) {
-      // onPartitionsChange({ ...newTopicData, partitions: 1 });
+      onPartitionsChange({ ...newTopicData, partitions: [{ partition: 1 }] });
     }
   };
 

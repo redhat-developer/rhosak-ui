@@ -11,6 +11,7 @@ import type React from "react";
 import type { Topic } from "ui-models/src/models/topic";
 import { RetentionTimeUnits } from "../../KafkaTopics/types";
 import type { SelectOptions } from "./types";
+import { Bytes, Milliseconds } from "ui-models/src/types";
 
 export type CustomRetentionMessageProps = NumberInputProps &
   SelectProps & {
@@ -40,23 +41,33 @@ const CustomRetentionMessage: React.FC<CustomRetentionMessageProps> = ({
 
   const handleTouchSpin = (operator: string) => {
     if (operator === "+") {
-      // setTopicData({
-      //   ...topicData,
-      //   retentionTime: topicData.retentionTime + 1,
-      // });
+      const cuurentTime = topicData["retention.ms"].value;
+      const newTime: Milliseconds = {
+        type: "ms",
+        value: cuurentTime + BigInt(1),
+      };
+      setTopicData({
+        ...topicData,
+        "retention.ms": newTime,
+      });
     } else if (operator === "-") {
-      // setTopicData({
-      //   ...topicData,
-      //   retentionTime: topicData.retentionTime - 1,
-      // });
+      const cuurentTime = topicData["retention.ms"].value;
+      const newTime: Milliseconds = {
+        type: "ms",
+        value: cuurentTime - BigInt(1),
+      };
+      setTopicData({
+        ...topicData,
+        "retention.ms": newTime,
+      });
     }
   };
 
   const onChangeTouchSpin = (event: React.FormEvent<HTMLInputElement>) => {
-    // setTopicData({
-    //   ...topicData,
-    //   retentionTime: Number(event.currentTarget.value),
-    // });
+    setTopicData({
+      ...topicData,
+      "retention.ms": { type: "ms", value: BigInt(event.currentTarget.value) },
+    });
   };
 
   return (
