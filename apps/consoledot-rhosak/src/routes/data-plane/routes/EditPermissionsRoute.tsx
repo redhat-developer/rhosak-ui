@@ -134,7 +134,7 @@ export const EditPermissionsRoute: VoidFunctionComponent<
       topicsList={topicsList}
       consumerGroupsList={consumerGroupsList}
       selectedAccount={match.params.selectedAccount}
-      existingAcls={existingAcls}
+      acls={existingAcls}
     />
   );
 };

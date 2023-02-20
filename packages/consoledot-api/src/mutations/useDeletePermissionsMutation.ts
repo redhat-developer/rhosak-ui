@@ -40,7 +40,7 @@ export function useDeletePermissionsMutation() {
     {
       onSuccess: (_, { adminUrl, instanceId }) => {
         void queryClient.invalidateQueries([
-          kafkaQueries.instance._root({
+          kafkaQueries.instance.permissions({
             id: instanceId,
             adminUrl,
           }),

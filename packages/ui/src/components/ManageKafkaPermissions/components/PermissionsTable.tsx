@@ -8,7 +8,7 @@ import { TableView, Pagination } from "@rhoas/app-services-ui-components";
 import { useTranslation } from "react-i18next";
 import type { Permissions } from "../types";
 import { PrincipalCell, PermissionOperationCell, ResourceCell } from "./Cells";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PageSection } from "@patternfly/react-core";
 import { PermissionsTableEmptyState } from "./EmptyPermissionsTable";
 
@@ -51,6 +51,11 @@ export const PermissionsTable = <T extends Permissions>({
   const { t } = useTranslation("manage-kafka-permissions");
   const [checkedRows, setCheckedRows] = useState<number[]>([]);
 
+  useEffect(() => {
+    //Only clear all the checked row when they are deleted
+    setCheckedRows([]);
+  }, [permissions]);
+
   const labels: { [field in (typeof Columns)[number]]: string } = {
     account: t("account_id_title"),
     permission: t("table.permissions_column_title"),
@@ -72,7 +77,6 @@ export const PermissionsTable = <T extends Permissions>({
 
   const onBulkDelete = () => {
     onDeleteSelected(checkedRows);
-    setCheckedRows([]);
   };
 
   return (
