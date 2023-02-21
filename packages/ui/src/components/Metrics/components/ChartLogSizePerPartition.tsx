@@ -60,77 +60,77 @@ export const ChartLogSizePerPartition: FunctionComponent<
   emptyState,
   selectedPartition,
 }) => {
-  const { t } = useTranslation();
-  const [containerRef, width] = useChartWidth();
+    const { t } = useTranslation();
+    const [containerRef, width] = useChartWidth();
 
-  const { chartData, legendData, tickValues } = getChartData(
-    partitions,
-    topic,
-    duration,
-    selectedPartition
-  );
+    const { chartData, legendData, tickValues } = getChartData(
+      partitions,
+      topic,
+      duration,
+      selectedPartition
+    );
 
-  const hasMetrics = Object.keys(partitions).length > 0;
+    const hasMetrics = Object.keys(partitions).length > 0;
 
-  const showDate = shouldShowDate(duration);
+    const showDate = shouldShowDate(duration);
 
-  return (
-    <div ref={containerRef} style={{ marginTop: "-30px", height: "700px" }}>
-      {(() => {
-        switch (true) {
-          case isLoading:
-            return <ChartSkeletonLoader />;
-          case !hasMetrics:
-            return emptyState;
-          default: {
-            const labels: ChartVoronoiContainerProps["labels"] = ({ datum }) =>
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/restrict-template-expressions,@typescript-eslint/no-unsafe-argument
-              `${datum.name}: ${formatBytes(datum.y)}`;
+    return (
+      <div ref={containerRef} style={{ marginTop: "-30px", height: "700px", width: "650px" }}>
+        {(() => {
+          switch (true) {
+            case isLoading:
+              return <ChartSkeletonLoader />;
+            case !hasMetrics:
+              return emptyState;
+            default: {
+              const labels: ChartVoronoiContainerProps["labels"] = ({ datum }) =>
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/restrict-template-expressions,@typescript-eslint/no-unsafe-argument
+                `${datum.name}: ${formatBytes(datum.y)}`;
 
-            return (
-              <Chart
-                ariaTitle={t("metrics:log_size_per_partition")}
-                containerComponent={
-                  <ChartVoronoiContainer
-                    labels={labels}
-                    constrainToVisibleArea
-                  />
-                }
-                legendPosition="bottom-left"
-                legendComponent={<ChartLegend data={legendData} />}
-                height={chartHeight}
-                padding={chartPadding}
-                themeColor={ChartThemeColor.multiOrdered}
-                width={width}
-                legendAllowWrap={true}
-              >
-                <ChartAxis
-                  label={"\n" + t("metrics:axis-label-time")}
-                  tickValues={tickValues}
-                  tickFormat={(d: number) =>
-                    dateToChartValue(d, {
-                      showDate,
-                    })
+              return (
+                <Chart
+                  ariaTitle={t("metrics:log_size_per_partition")}
+                  containerComponent={
+                    <ChartVoronoiContainer
+                      labels={labels}
+                      constrainToVisibleArea
+                    />
                   }
-                />
-                <ChartAxis
-                  label={"\n\n\n\n\n" + t("metrics:axis-label-bytes")}
-                  dependentAxis
-                  tickFormat={formatBytes}
-                />
-                <ChartGroup>
-                  {chartData.map((value, index) => (
-                    <ChartLine key={`chart-area-${index}`} data={value.area} />
-                  ))}
-                </ChartGroup>
-              </Chart>
-            );
+                  legendPosition="bottom-left"
+                  legendComponent={<ChartLegend data={legendData} />}
+                  height={chartHeight}
+                  padding={chartPadding}
+                  themeColor={ChartThemeColor.multiOrdered}
+                  width={width}
+                  legendAllowWrap={true}
+                >
+                  <ChartAxis
+                    label={"\n" + t("metrics:axis-label-time")}
+                    tickValues={tickValues}
+                    tickFormat={(d: number) =>
+                      dateToChartValue(d, {
+                        showDate,
+                      })
+                    }
+                  />
+                  <ChartAxis
+                    label={"\n\n\n\n\n" + t("metrics:axis-label-bytes")}
+                    dependentAxis
+                    tickFormat={formatBytes}
+                  />
+                  <ChartGroup>
+                    {chartData.map((value, index) => (
+                      <ChartLine key={`chart-area-${index}`} data={value.area} />
+                    ))}
+                  </ChartGroup>
+                </Chart>
+              );
+            }
           }
-        }
-      })()}
-    </div>
-  );
-};
+        })()}
+      </div>
+    );
+  };
 
 export function getChartData(
   partitions: PartitionBytesMetric,
@@ -153,6 +153,30 @@ export function getChartData(
 
   selectedPartition === "Top10"
     ? top50Partition.slice(0, 10).map(([partition, dataMap], index) => {
+      const name = topic ? `${topic} / ${partition}` : partition;
+      const color = colors[index];
+      legendData.push({
+        name,
+      });
+      const area: Array<PartitionChartData> = [];
+
+      Object.entries(dataMap).map(([timestamp, value]) => {
+        area.push({ name, x: parseInt(timestamp, 10), y: value });
+      });
+      chartData.push({ color, area });
+    })
+    : top50Partition
+      .slice(0, 20)
+      .sort((a, b) => {
+        const dataMapAValues = Object.values(a[1]);
+        const dataMapBValues = Object.values(b[1]);
+        const aValueSum = dataMapAValues.reduce((sum, val) => sum + val, 0);
+        const bValueSum = dataMapBValues.reduce((sum, val) => sum + val, 0);
+        return bValueSum - aValueSum;
+      })
+      .sort((a, b) => b[1][1] - a[1][1])
+      .slice(0, 20)
+      .map(([partition, dataMap], index) => {
         const name = topic ? `${topic} / ${partition}` : partition;
         const color = colors[index];
         legendData.push({
@@ -164,31 +188,7 @@ export function getChartData(
           area.push({ name, x: parseInt(timestamp, 10), y: value });
         });
         chartData.push({ color, area });
-      })
-    : top50Partition
-        .slice(0, 20)
-        .sort((a, b) => {
-          const dataMapAValues = Object.values(a[1]);
-          const dataMapBValues = Object.values(b[1]);
-          const aValueSum = dataMapAValues.reduce((sum, val) => sum + val, 0);
-          const bValueSum = dataMapBValues.reduce((sum, val) => sum + val, 0);
-          return bValueSum - aValueSum;
-        })
-        .sort((a, b) => b[1][1] - a[1][1])
-        .slice(0, 20)
-        .map(([partition, dataMap], index) => {
-          const name = topic ? `${topic} / ${partition}` : partition;
-          const color = colors[index];
-          legendData.push({
-            name,
-          });
-          const area: Array<PartitionChartData> = [];
-
-          Object.entries(dataMap).map(([timestamp, value]) => {
-            area.push({ name, x: parseInt(timestamp, 10), y: value });
-          });
-          chartData.push({ color, area });
-        });
+      });
 
   const allTimestamps = Array.from(
     new Set(Object.values(partitions).flatMap((m) => Object.keys(m)))
