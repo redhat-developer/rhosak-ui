@@ -1,7 +1,8 @@
 import { usePaginationSearchParams } from "@rhoas/app-services-ui-components";
 import { useCallback } from "react";
 import type { VoidFunctionComponent } from "react";
-import { PermissionsTable } from "ui";
+import type { Account } from "ui";
+import { PermissionsTable, PrincipalType } from "ui";
 import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
 import { useDeletePermissionsMutation } from "consoledot-api";
 import { useHistory } from "react-router-dom";
@@ -16,9 +17,31 @@ export const AclsRoute: VoidFunctionComponent<
 > = ({ instancesHref, managePermissionsHref }) => {
   const { page, perPage, setPagination, setPaginationQuery } =
     usePaginationSearchParams();
-  const { instance, acls } = usePermissionsTableGate();
+  const { instance, acls, accounts, serviceAccounts } =
+    usePermissionsTableGate();
   const { mutateAsync } = useDeletePermissionsMutation();
   const dispatch = useDispatch();
+
+  const userAccounts: Account[] = accounts.accounts.map((userAccount) => {
+    return {
+      id: userAccount.username,
+      displayName: userAccount.displayName,
+      email: userAccount.email,
+      principalType: PrincipalType.UserAccount,
+    };
+  });
+
+  const serviceAccountList: Account[] = serviceAccounts.serviceAccounts.map(
+    (serviceAccount) => {
+      return {
+        id: serviceAccount.id,
+        displayName: serviceAccount.displayName,
+        principalType: PrincipalType.ServiceAccount,
+      };
+    }
+  );
+
+  const allAccounts = [...serviceAccountList, ...userAccounts];
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
@@ -108,6 +131,7 @@ export const AclsRoute: VoidFunctionComponent<
         activeSection={"permissions"}
       />
       <PermissionsTable
+        allAccounts={allAccounts}
         permissions={acls.groups}
         onDelete={onDelete}
         onDeleteSelected={onDeleteSelected}

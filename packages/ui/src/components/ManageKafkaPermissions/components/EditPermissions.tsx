@@ -220,6 +220,13 @@ export const EditPermissions: React.FC<EditPermissionsProps> = ({
     setIsAclDeleted(true);
     updateExistingAcls(row);
   };
+  //The value received will have a prefix 'User:'.Remove the prefix when displaying value
+  const accountDisplayName =
+    selectedAccount === "All accounts"
+      ? t("all_accounts_title")
+      : selectedAccount?.includes("User:")
+      ? selectedAccount?.split(":")[1]
+      : selectedAccount;
   return (
     <Modal
       id="manage-permissions-modal"
@@ -285,12 +292,7 @@ export const EditPermissions: React.FC<EditPermissionsProps> = ({
             </Popover>
           }
         >
-          {
-            //The value received will have a prefix 'User:'.Remove the prefix when displaying value
-            selectedAccount === "All accounts"
-              ? t("all_accounts_title")
-              : selectedAccount?.split(":")[1]
-          }
+          {accountDisplayName}
         </FormGroup>
         {(!canSave || !isNameValid) && submitted && (
           <Alert
@@ -331,7 +333,7 @@ export const EditPermissions: React.FC<EditPermissionsProps> = ({
                   {selectedAccount === "All accounts"
                     ? t("assign_permissions_all_description")
                     : t("assign_permissions_description", {
-                        value: selectedAccount?.split(":")[1],
+                        value: accountDisplayName,
                       })}
                 </Text>
                 {newAcls && newAcls?.length > 0 && (

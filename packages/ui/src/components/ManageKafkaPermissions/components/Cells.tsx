@@ -1,9 +1,10 @@
 import type { FunctionComponent, VFC } from "react";
 import { useTranslation } from "react-i18next";
 
-import { Label, LabelGroup } from "@patternfly/react-core";
+import { Label, LabelGroup, Tooltip } from "@patternfly/react-core";
 
 import type {
+  Account,
   AclOperation,
   AclPatternType,
   AclPermissionType,
@@ -11,6 +12,8 @@ import type {
 } from "../types";
 import { ResourceTypeLabel } from "./ResourceTypeLabel";
 import { RemoveButton } from "@rhoas/app-services-ui-components";
+import { InfoCircleIcon } from "@patternfly/react-icons";
+import { PrincipalType } from "..";
 
 export const DisplayResourceName: VFC<{ resourceType: AclResourceType }> = ({
   resourceType,
@@ -72,10 +75,9 @@ export type PermissionOperationCellProps = {
   operation: AclOperation | AclOperation[];
 };
 
-export const PermissionOperationCell: FunctionComponent<PermissionOperationCellProps> = ({
-  permission,
-  operation,
-}) => {
+export const PermissionOperationCell: FunctionComponent<
+  PermissionOperationCellProps
+> = ({ permission, operation }) => {
   const { t } = useTranslation("manage-kafka-permissions");
   const permissions: { [key in AclPermissionType]: string } = {
     ALLOW: t("permissions.allow"),
@@ -119,26 +121,72 @@ export type PrincipalCellProps = {
   isDeleteEnabled: boolean;
   isAllAccounts?: boolean;
   onRemoveAcl?: () => void;
-  isReviewTable?:boolean
-  principal?:string
+  isReviewTable?: boolean;
+  principal?: string;
+  allAccounts?: Account;
 };
 
 export const PrincipalCell: VFC<PrincipalCellProps> = ({
   isDeleteEnabled,
   isAllAccounts,
   onRemoveAcl,
-  isReviewTable=true,
-  principal
+  isReviewTable = true,
+  principal,
+  allAccounts,
 }) => {
   const { t } = useTranslation(["manage-kafka-permissions"]);
 
+  const principalWithTooltip = () => {
+    return allAccounts?.principalType == PrincipalType.ServiceAccount &&
+      !isReviewTable ? (
+      <Tooltip
+        content={
+          <div>
+            Type: {allAccounts && allAccounts.principalType} <br />
+          </div>
+        }
+      >
+        <span tabIndex={0}>
+          {" "}
+          {principal?.split(":")[1]} <InfoCircleIcon color="grey" />
+        </span>
+      </Tooltip>
+    ) : (
+      !isReviewTable && (
+        <Tooltip
+          content={
+            <div>
+              Type: {allAccounts?.principalType} <br />
+              Name: {allAccounts?.displayName} <br />
+              Email: {allAccounts?.email}
+            </div>
+          }
+        >
+          <span tabIndex={0}>
+            {principal?.split(":")[1]} <InfoCircleIcon color="grey" />
+          </span>
+        </Tooltip>
+      )
+    );
+  };
+
   return (
-    <div className={isReviewTable?"pf-u-display-flex pf-u-justify-content-space-between pf-u-justify-content-flex-end-on-lg pf-u-align-items-center":''}>
-      {isAllAccounts && isReviewTable?(
+    <div
+      className={
+        isReviewTable
+          ? "pf-u-display-flex pf-u-justify-content-space-between pf-u-justify-content-flex-end-on-lg pf-u-align-items-center"
+          : ""
+      }
+    >
+      {isAllAccounts && isReviewTable ? (
         <Label variant="outline">{t("table.all_accounts")}</Label>
-      ):!isReviewTable&&principal&&  <Label variant="outline">{principal=="User:*"?t("table.all_accounts"):principal.substring(principal.lastIndexOf(':') + 1).split(' ')[0]}</Label>}
-      
-      {isDeleteEnabled &&onRemoveAcl!=undefined&& (
+      ) : !isReviewTable && principal == "User:*" ? (
+        <Label variant={"outline"}>{t("table.all_accounts")}</Label>
+      ) : (
+        principalWithTooltip()
+      )}
+
+      {isDeleteEnabled && onRemoveAcl != undefined && (
         <RemoveButton
           variant="link"
           tooltip={t("remove_permission_tooltip")}

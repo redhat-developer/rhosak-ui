@@ -85,6 +85,7 @@ export type Account = {
   id: string;
   principalType: PrincipalType;
   displayName: string;
+  email?: string;
 };
 
 type ManualAcl = {
