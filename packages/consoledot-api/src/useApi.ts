@@ -4,7 +4,6 @@ import {
   Configuration,
   DefaultApi,
   SecurityApi,
-  EnterpriseDataplaneClustersApi,
 } from "@rhoas/kafka-management-sdk";
 import {
   GroupsApi,
@@ -110,7 +109,6 @@ export const useApi = () => {
     consumerGroups,
     records,
     userAccounts,
-    dedicatedClusters,
     acls,
     serviceAccount,
   };
