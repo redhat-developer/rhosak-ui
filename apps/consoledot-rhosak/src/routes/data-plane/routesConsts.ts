@@ -15,6 +15,11 @@ export type DataPlaneTopicConsumerRouteParams = {
   topicName: string;
   consumerGroupId: string;
 };
+export const DataPlaneTopicRoutePath =
+  `${ControlPlaneRouteRoot}/:id/details/topics/:topicName` as const;
+
+export const DataPlaneConsumerGroupRoutePath =
+  `${ControlPlaneRouteRoot}/:id/details/consumer-groups/:consumerGroupId` as const;
 
 export type DataPlanePermissionsRouteParams = {
   selectedAccount: string;
