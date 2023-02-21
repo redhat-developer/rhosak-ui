@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { VoidFunctionComponent } from "react";
 import type { Account } from "ui";
 import { PrincipalType } from "ui";
@@ -7,11 +7,23 @@ import type { DataPlanePermissionsNavigationProps } from "../routesConsts";
 import { SelectAccount } from "ui";
 import { editPermissionsHref } from "../DataPlaneRoutes";
 import { useSelectAccountsGate } from "../useSelectAccountsGate";
-
+import { useChrome } from "@redhat-cloud-services/frontend-components/useChrome";
 export const ManagePermissionsRoute: VoidFunctionComponent<
   DataPlanePermissionsNavigationProps
 > = ({ managePermissionsHref }) => {
+  const [loggedInUser, setCurrentlyLoggedInUser] = useState<
+    string | undefined
+  >();
   const { instance, accounts, serviceAccounts } = useSelectAccountsGate();
+  const { auth } = useChrome();
+
+  useEffect(() => {
+    const getUsername = async () => {
+      const username = (await auth.getUser())?.identity.user?.username;
+      setCurrentlyLoggedInUser(username);
+    };
+    void getUsername();
+  }, [auth]);
 
   const userAccounts: Account[] = accounts.accounts.map((userAccount) => {
     return {
@@ -33,7 +45,7 @@ export const ManagePermissionsRoute: VoidFunctionComponent<
 
   const allAccounts = [...serviceAccountList, ...userAccounts];
   const filteredAccounts = allAccounts.filter(
-    (value) => value.id != instance.owner
+    (value) => value.id !== instance.owner && value.id !== loggedInUser
   );
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
