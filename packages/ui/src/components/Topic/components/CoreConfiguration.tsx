@@ -140,7 +140,6 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
       setTopicData={setTopicData}
       onToggle={onRetentionTimeToggle}
       isOpen={isRetentionTimeSelectOpen}
-      selectOptions={retentionTimeSelectOptions}
     />
   );
 
@@ -152,7 +151,6 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
       setTopicData={setTopicData}
       onToggle={onRetentionSizeToggle}
       isOpen={isRetentionSizeSelectOpen}
-      selectOptions={retentionSizeSelectOptions}
     />
   );
 

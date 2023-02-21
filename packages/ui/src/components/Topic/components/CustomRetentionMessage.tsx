@@ -9,14 +9,13 @@ import {
 } from "@patternfly/react-core";
 import type React from "react";
 import type { Topic } from "ui-models/src/models/topic";
-import { RetentionTimeUnits } from "../../KafkaTopics/types";
-import type { SelectOptions } from "./types";
-import { Bytes, Milliseconds } from "ui-models/src/types";
+import { retentionTimeSelectOptions } from "./types";
+import { Milliseconds } from "ui-models/src/types";
+import { useState } from 'react';
 
 export type CustomRetentionMessageProps = NumberInputProps &
   SelectProps & {
     id?: string;
-    selectOptions: SelectOptions[];
     topicData: Topic;
     setTopicData: (data: Topic) => void;
   };
@@ -24,18 +23,13 @@ export type CustomRetentionMessageProps = NumberInputProps &
 const CustomRetentionMessage: React.FC<CustomRetentionMessageProps> = ({
   onToggle,
   isOpen,
-  selectOptions,
   topicData,
   setTopicData,
 }) => {
+  const [unit, setUnit] = useState<string>("days");
+
   const onSelect: SelectProps["onSelect"] = (event, value) => {
-    // setTopicData({
-    //   ...topicData,
-    //   customRetentionTimeUnit: value as RetentionTimeUnits,
-    // });
-
-    //}
-
+    setUnit(value as string);
     onToggle(false, event);
   };
 
@@ -70,6 +64,8 @@ const CustomRetentionMessage: React.FC<CustomRetentionMessageProps> = ({
     });
   };
 
+
+
   return (
     <div className="kafka-ui--radio__parameters">
       <Flex>
@@ -91,16 +87,19 @@ const CustomRetentionMessage: React.FC<CustomRetentionMessageProps> = ({
             variant={SelectVariant.single}
             aria-label="Select Input"
             onToggle={onToggle}
-            onSelect={onSelect}
-            selections={RetentionTimeUnits.MILLISECOND /* TODO */}
+            onSelect={(event, value) => onSelect(event, value as string)}
+            placeholder='days'
+            selections={unit}
             isOpen={isOpen}
           >
-            {selectOptions?.map((s) => (
+            {retentionTimeSelectOptions?.map((s) => (
               <SelectOption
                 key={s.key}
                 value={s.value}
                 isPlaceholder={s.isPlaceholder}
-              />
+              >
+                {s.value}
+              </SelectOption>
             ))}
           </Select>
         </FlexItem>
