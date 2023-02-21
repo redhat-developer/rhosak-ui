@@ -1,12 +1,8 @@
-import {
-  InnerScrollContainer,
-  OuterScrollContainer,
-  TableVariant,
-} from "@patternfly/react-table";
+import { TableVariant } from "@patternfly/react-table";
 import type { TableViewProps } from "@rhoas/app-services-ui-components";
-import { TableView, Pagination } from "@rhoas/app-services-ui-components";
+import { TableView } from "@rhoas/app-services-ui-components";
 import { useTranslation } from "react-i18next";
-import type { Permissions } from "../types";
+import type { Account, Permissions } from "../types";
 import { PrincipalCell, PermissionOperationCell, ResourceCell } from "./Cells";
 import { useEffect, useState } from "react";
 import { PageSection } from "@patternfly/react-core";
@@ -20,6 +16,7 @@ const Columns: SubUnion<
 >[] = ["account", "permission", "resource"];
 
 export type PermissionsTableProps<T extends Permissions> = {
+  allAccounts: Account[];
   permissions: Array<T> | undefined;
   onDelete: (rowIndex: number) => void;
   onDeleteSelected: (rowIndex: number[]) => void;
@@ -37,6 +34,7 @@ export type PermissionsTableProps<T extends Permissions> = {
 >;
 
 export const PermissionsTable = <T extends Permissions>({
+  allAccounts,
   permissions,
   onDelete,
   itemCount,
@@ -45,7 +43,6 @@ export const PermissionsTable = <T extends Permissions>({
   onDeleteSelected,
   onPageChange,
   onManagePermissions,
-  onPerPageChange,
   onManagePermissionsActionItem,
 }: PermissionsTableProps<T>) => {
   const { t } = useTranslation("manage-kafka-permissions");
@@ -81,111 +78,103 @@ export const PermissionsTable = <T extends Permissions>({
 
   return (
     <PageSection hasOverflowScroll={true}>
-      <OuterScrollContainer className={"pf-u-h-100"}>
-        <InnerScrollContainer>
-          <TableView
-            variant={TableVariant.compact}
-            tableOuiaId={"card-table"}
-            ariaLabel={t("consumerGroup.consumer_group_list")}
-            actions={[
+      <TableView
+        variant={TableVariant.compact}
+        tableOuiaId={"card-table"}
+        ariaLabel={t("consumerGroup.consumer_group_list")}
+        actions={[
+          {
+            onClick: onManagePermissions,
+            label: t("dialog_title"),
+            isPrimary: true,
+          },
+        ]}
+        kebabActions={[
+          {
+            onClick: onBulkDelete,
+            label: t("delete_selected"),
+            isDisabled: checkedRows.length > 0 ? false : true,
+          },
+        ]}
+        data={permissions}
+        columns={Columns}
+        onCheck={onCheck}
+        isRowChecked={({ rowIndex }) => isRowChecked(rowIndex)}
+        renderHeader={({ column, Th, key }) => (
+          <Th key={key}>{labels[column]}</Th>
+        )}
+        renderCell={({ column, row, Td, key }) => {
+          return (
+            <Td key={key} dataLabel={labels[column]}>
+              {(() => {
+                switch (column) {
+                  case "account":
+                    return (
+                      <PrincipalCell
+                        isReviewTable={false}
+                        principal={row.account}
+                        isDeleteEnabled={false}
+                        allAccounts={
+                          allAccounts.filter(
+                            (value) => `User:${value.id}` == row.account
+                          )[0]
+                        }
+                      />
+                    );
+                  case "permission":
+                    return (
+                      <PermissionOperationCell
+                        permission={row.permission.permission}
+                        operation={row.permission.operation}
+                      />
+                    );
+                  case "resource":
+                    return (
+                      <ResourceCell
+                        patternType={row.resource.patternType}
+                        resourceType={row.resource.resourceType}
+                        resourceName={row.resource.resourceName}
+                      />
+                    );
+                }
+              })()}
+            </Td>
+          );
+        }}
+        renderActions={({ ActionsColumn, rowIndex, row }) => (
+          <ActionsColumn
+            items={[
               {
-                onClick: onManagePermissions,
-                label: t("dialog_title"),
-                isPrimary: true,
+                title: t("manage"),
+                onClick: () =>
+                  onManagePermissionsActionItem(
+                    row.account == "User:*"
+                      ? "all-accounts"
+                      : row.account?.split(":")[1]
+                  ),
+              },
+              {
+                title: t("common:delete"),
+                onClick: () => onDelete(rowIndex),
               },
             ]}
-            kebabActions={[
-              {
-                onClick: onBulkDelete,
-                label: t("delete_selected"),
-                isDisabled: checkedRows.length > 0 ? false : true,
-              },
-            ]}
-            data={permissions}
-            columns={Columns}
-            onCheck={onCheck}
-            isRowChecked={({ rowIndex }) => isRowChecked(rowIndex)}
-            renderHeader={({ column, Th, key }) => (
-              <Th key={key}>{labels[column]}</Th>
-            )}
-            renderCell={({ column, row, Td, key }) => {
-              return (
-                <Td key={key} dataLabel={labels[column]}>
-                  {(() => {
-                    switch (column) {
-                      case "account":
-                        return (
-                          <PrincipalCell
-                            isReviewTable={false}
-                            principal={row.account}
-                            isDeleteEnabled={false}
-                          />
-                        );
-                      case "permission":
-                        return (
-                          <PermissionOperationCell
-                            permission={row.permission.permission}
-                            operation={row.permission.operation}
-                          />
-                        );
-                      case "resource":
-                        return (
-                          <ResourceCell
-                            patternType={row.resource.patternType}
-                            resourceType={row.resource.resourceType}
-                            resourceName={row.resource.resourceName}
-                          />
-                        );
-                    }
-                  })()}
-                </Td>
-              );
-            }}
-            renderActions={({ ActionsColumn, rowIndex, row }) => (
-              <ActionsColumn
-                items={[
-                  {
-                    title: t("manage"),
-                    onClick: () =>
-                      onManagePermissionsActionItem(
-                        row.account == "User:*" ? "All accounts" : row.account
-                      ),
-                  },
-                  {
-                    title: t("common:delete"),
-                    onClick: () => onDelete(rowIndex),
-                  },
-                ]}
-              />
-            )}
-            itemCount={itemCount}
-            page={page}
-            onPageChange={onPageChange}
-            perPage={perPage}
-            emptyStateNoData={
-              <PermissionsTableEmptyState
-                openManagePermissions={onManagePermissions}
-              />
-            }
-            emptyStateNoResults={
-              <PermissionsTableEmptyState
-                openManagePermissions={onManagePermissions}
-              />
-            }
           />
-        </InnerScrollContainer>
-
-        {itemCount != undefined && itemCount > 20 ? (
-          <Pagination
-            isCompact
-            itemCount={itemCount || 0}
-            page={page}
-            perPage={perPage || 10}
-            onChange={onPerPageChange}
-            variant={"bottom"}
+        )}
+        itemCount={itemCount}
+        page={page}
+        onPageChange={onPageChange}
+        perPage={perPage}
+        emptyStateNoData={
+          <PermissionsTableEmptyState
+            openManagePermissions={onManagePermissions}
           />
-        ) : null}
-      </OuterScrollContainer>
+        }
+        emptyStateNoResults={
+          <PermissionsTableEmptyState
+            openManagePermissions={onManagePermissions}
+          />
+        }
+      />
     </PageSection>
   );
 };

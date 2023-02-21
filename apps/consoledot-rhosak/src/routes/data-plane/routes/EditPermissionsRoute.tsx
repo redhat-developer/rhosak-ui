@@ -121,6 +121,12 @@ export const EditPermissionsRoute: VoidFunctionComponent<
     };
   });
 
+  const aclsForSelectedAccount = existingAcls.filter(
+    (value) =>
+      value.principal == `User:${match.params.selectedAccount}` ||
+      value.principal == "User:*"
+  );
+
   const onClose = useCallback(() => {
     //eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(managePermissionsHref(instance.id));
@@ -133,8 +139,16 @@ export const EditPermissionsRoute: VoidFunctionComponent<
       onSave={onSaveAcls}
       topicsList={topicsList}
       consumerGroupsList={consumerGroupsList}
-      selectedAccount={match.params.selectedAccount}
-      acls={existingAcls}
+      selectedAccount={
+        match.params.selectedAccount == "all-accounts"
+          ? "All accounts"
+          : match.params.selectedAccount
+      }
+      acls={
+        match.params.selectedAccount == "all-accounts"
+          ? existingAcls
+          : aclsForSelectedAccount
+      }
     />
   );
 };

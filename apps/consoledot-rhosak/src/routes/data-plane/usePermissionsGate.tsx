@@ -26,6 +26,14 @@ export function usePermissionsGate() {
     true
   );
 
+  const { data: serviceAccounts } = useServiceAccounts(
+    {
+      id: instance.id,
+      adminUrl: instance.adminUrl,
+    },
+    true
+  );
+
   const { data: acls } = useAcls(
     {
       id: instance.id,
@@ -44,14 +52,6 @@ export function usePermissionsGate() {
   );
 
   const { data: consumerGroups } = useConsumerGroups(
-    {
-      id: instance.id,
-      adminUrl: instance.adminUrl,
-    },
-    true
-  );
-
-  const { data: serviceAccounts } = useServiceAccounts(
     {
       id: instance.id,
       adminUrl: instance.adminUrl,

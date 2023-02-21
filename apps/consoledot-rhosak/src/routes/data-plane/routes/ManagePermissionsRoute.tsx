@@ -32,6 +32,9 @@ export const ManagePermissionsRoute: VoidFunctionComponent<
   );
 
   const allAccounts = [...serviceAccountList, ...userAccounts];
+  const filteredAccounts = allAccounts.filter(
+    (value) => value.id != instance.owner
+  );
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
@@ -39,7 +42,14 @@ export const ManagePermissionsRoute: VoidFunctionComponent<
   const onNext = useCallback(
     (selectedAccount: string | undefined) => {
       //eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      history.push(editPermissionsHref(instance.id, selectedAccount || ""));
+      history.push(
+        editPermissionsHref(
+          instance.id,
+          selectedAccount === "All accounts"
+            ? "all-accounts"
+            : selectedAccount || ""
+        )
+      );
     },
     [history, instance.id]
   );
@@ -51,7 +61,7 @@ export const ManagePermissionsRoute: VoidFunctionComponent<
 
   return (
     <SelectAccount
-      accounts={allAccounts}
+      accounts={filteredAccounts}
       kafkaName={instance.name}
       onNext={onNext}
       onClose={onClose}
