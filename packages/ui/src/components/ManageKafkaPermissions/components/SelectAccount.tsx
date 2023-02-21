@@ -71,12 +71,13 @@ export const SelectAccount: React.VFC<SelectAccountProps> = ({
     </SelectOption>,
   ];
 
-  function makeOptions(filter = "") {
+  function makeOptions(filterValue = "") {
+    const filter = filterValue.toLowerCase();
     const filteredAccounts =
       filter !== ""
         ? accounts.filter(
             (principal) =>
-              principal.displayName.includes(filter) ||
+              principal.displayName.toLowerCase().includes(filter) ||
               principal.id.includes(filter)
           )
         : accounts;
