@@ -64,7 +64,7 @@ export async function fetchTopicsMetrics({
     }
 
     function addAggregatePartitionBytes() {
-      const partitionKey = `${topic} / ${partition_id}`;
+      const partitionKey = `${partition_id}`;
       const partition = bytesPerPartition[partitionKey] || {};
       m.values.forEach(
         ({ value, timestamp }) =>
