@@ -7,14 +7,19 @@ import { KafkaTopicsSortableColumns, useTopics } from "consoledot-api";
 import type { VoidFunctionComponent } from "react";
 import { useCallback } from "react";
 import { KafkaTopics, useTopicLabels } from "ui";
-import type { ControlPlaneNavigationProps } from "../../control-plane/routesConsts";
+import { ControlPlaneNavigationProps, ControlPlaneRouteRoot } from "../../control-plane/routesConsts";
 import { useDataPlaneGate } from "../useDataPlaneGate";
 import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
+import { useHistory } from 'react-router-dom';
+import { DataPlaneRoutePath } from '../routesConsts';
+
 
 export const TopicsRoute: VoidFunctionComponent<
   ControlPlaneNavigationProps
 > = ({ instancesHref }) => {
   const labels = useTopicLabels();
+
+  const history = useHistory();
 
   const { instance } = useDataPlaneGate();
   const { page, perPage, setPagination, setPaginationQuery } =
@@ -23,6 +28,11 @@ export const TopicsRoute: VoidFunctionComponent<
     () => setPaginationQuery(1, perPage),
     [perPage, setPaginationQuery]
   );
+
+  const onCreate = useCallback(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+    history.push(`${DataPlaneRoutePath}/topics/create`);
+  }, [history]);
 
   const topicChips = useURLSearchParamsChips("topic", resetPaginationQuery);
   const [isColumnSortable, sort, sortDirection] = useSortableSearchParams(
@@ -39,6 +49,24 @@ export const TopicsRoute: VoidFunctionComponent<
     filter: topicChips.chips[0],
     plan: instance.plan,
   });
+
+  const onDeleteTopic = useCallback(
+    (topicName: string) => {
+      //TODO: remove hardcode value
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+      history.push(`${ControlPlaneRouteRoot}/${instance.id}/details/topics/${topicName}/delete`);
+    },
+    [history, instance.id]
+  );
+
+  const onEditTopic = useCallback(
+    (topicName: string) => {
+      //TODO: remove hardcode value
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+      history.push(`${ControlPlaneRouteRoot}/${instance.id}/details/topics/${topicName}/edit`);
+    },
+    [history, instance.id]
+  )
   return (
     <>
       <DataPlaneHeaderConnected
@@ -53,26 +81,18 @@ export const TopicsRoute: VoidFunctionComponent<
         topicName={topicChips.chips}
         getUrlFortopic={(row) => `./topics/${row.name}`}
         isColumnSortable={isColumnSortable}
-        onDelete={() => {
-          /* TODO */
-        }}
-        onEdit={() => {
-          /* TODO */
-        }}
+        onDelete={(row) => onDeleteTopic(row.name)}
+        onEdit={(row) => onEditTopic(row.name)}
         onSearchTopic={(value) => {
           topicChips.clear();
           topicChips.toggle(value);
         }}
         onClearAllFilters={topicChips.clear}
-        onCreateTopic={() => {
-          /* TODO */
-        }}
+        onCreateTopic={onCreate}
         onPageChange={setPagination}
         onRemoveTopicChip={topicChips.clear}
         onRemoveTopicChips={topicChips.clear}
-        onTopicLinkClick={() => {
-          /* TODO */
-        }}
+
       />
     </>
   );

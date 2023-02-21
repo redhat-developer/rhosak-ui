@@ -10,13 +10,14 @@ import {
 import type React from "react";
 import type { Topic } from "ui-models/src/models/topic";
 import { RetentionSizeUnits } from "../../KafkaTopics/types";
-import type { SelectOptions } from "./types";
+import { SelectOptions, retentionSizeSelectOptions } from "./types";
 import { Bytes } from "ui-models/src/types";
+import { useState } from 'react';
+
 
 export type CustomRetentionSizeProps = NumberInputProps &
   SelectProps & {
     id?: string;
-    selectOptions: SelectOptions[];
     topicData: Topic;
     setTopicData: (data: Topic) => void;
   };
@@ -24,20 +25,17 @@ export type CustomRetentionSizeProps = NumberInputProps &
 const CustomRetentionSize: React.FC<CustomRetentionSizeProps> = ({
   onToggle,
   isOpen,
-  selectOptions,
   topicData,
   setTopicData,
 }) => {
+
+  const [unit, setUnit] = useState<string>("bytes");
+
   const onSelect: SelectProps["onSelect"] = (event, value) => {
-    setTopicData({
-      ...topicData,
-      "retention.ms": { type: "ms", value: BigInt(1) },
-    });
-
-    //}
-
+    setUnit(value as string);
     onToggle(false, event);
   };
+
 
   const handleTouchSpin = (operator: string) => {
     if (operator === "+") {
@@ -95,11 +93,11 @@ const CustomRetentionSize: React.FC<CustomRetentionSizeProps> = ({
             variant={SelectVariant.single}
             aria-label="Select Input"
             onToggle={onToggle}
-            onSelect={onSelect}
-            selections={RetentionSizeUnits.BYTE /* TODO */}
+            onSelect={(event, value) => onSelect(event, value as string)}
+            selections={unit}
             isOpen={isOpen}
           >
-            {selectOptions?.map((s) => (
+            {retentionSizeSelectOptions?.map((s) => (
               <SelectOption
                 key={s.key}
                 value={s.value}

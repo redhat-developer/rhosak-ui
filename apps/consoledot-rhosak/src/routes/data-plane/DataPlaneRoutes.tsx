@@ -26,6 +26,7 @@ import {
 } from "./routes";
 
 import { DataPlaneRoutePath, DataPlaneTopicRoutePath } from "./routesConsts";
+import { CreateTopicRoute } from './routes/CreateTopicRoute';
 
 const instanceDetailsHref = (id: string) =>
   `${ControlPlaneRouteRoot}/${id}/details`;
@@ -33,8 +34,10 @@ const instanceDetailsHref = (id: string) =>
 const instanceTopicsHref = (id: string) =>
   `${ControlPlaneRouteRoot}/${id}/details/topics`;
 
-const topicHref = (id: string, topic: string) =>
+const topicPropertyHref = (id: string, topic: string) =>
   `${instanceDetailsHref(id)}/topics/${topic}/properties`;
+
+const topicHref = (id: string, topic: string) => `${instanceDetailsHref(id)}/topics/${topic}`;
 
 const updateTopicHref = (id: string, topic: string) =>
   `${topicHref(id, topic)}/edit`;
@@ -82,6 +85,10 @@ export const DataPlaneRoutes: VoidFunctionComponent = () => {
           </Route>
 
           <Route path={`${DataPlaneRoutePath}/topics`} exact>
+            <Route path={`${DataPlaneRoutePath}/topics/create`} exact>
+              <CreateTopicRoute
+                instancesHref={"/kafkas"} />
+            </Route>
             <TopicsRoute instancesHref={"/kafkas"} />
           </Route>
 
@@ -253,7 +260,7 @@ export const DataPlaneRoutes: VoidFunctionComponent = () => {
                       instancesHref={"/kafkas"}
                       instanceDetailsHref={instanceDetailsHref}
                       instanceTopicsHref={instanceTopicsHref}
-                      topicHref={topicHref}
+                      topicHref={topicPropertyHref}
                       updateTopicHref={updateTopicHref}
                       deleteTopicHref={deleteTopicHref}
                     />
@@ -263,6 +270,27 @@ export const DataPlaneRoutes: VoidFunctionComponent = () => {
                     exact
                   >
                     <TopicSchemasRoute
+                      instancesHref={"/kafkas"}
+                      instanceDetailsHref={instanceDetailsHref}
+                      instanceTopicsHref={instanceTopicsHref}
+                    />
+                  </Route>
+                  <Route
+                    path={`${DataPlaneRoutePath}/topics/:topicName/delete`} exact>
+                    <TopicDeleteRoute
+                      instancesHref={"/kafkas"}
+                      instanceDetailsHref={instanceDetailsHref}
+                      instanceTopicsHref={instanceTopicsHref}
+                      topicHref={topicHref}
+                      updateTopicHref={updateTopicHref}
+                      deleteTopicHref={deleteTopicHref}
+                    />
+                  </Route>
+                  <Route
+                    path={`${DataPlaneRoutePath}/topics/:topicName/edit`}
+                    exact
+                  >
+                    <TopicEditPropertiesRoute
                       instancesHref={"/kafkas"}
                       instanceDetailsHref={instanceDetailsHref}
                       instanceTopicsHref={instanceTopicsHref}

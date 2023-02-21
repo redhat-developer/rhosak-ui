@@ -18,10 +18,6 @@ import {
 } from "../../KafkaTopics/types";
 import { CustomRetentionMessage } from "./CustomRetentionMessage";
 import { CustomRetentionSize } from "./CustomRetentionSize";
-import {
-  retentionSizeSelectOptions,
-  retentionTimeSelectOptions,
-} from "./types";
 
 export type StepMessageRetentionProps = {
   newTopicData: Topic;
@@ -87,7 +83,7 @@ export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
       case RetentionTimeUnits.CUSTOM:
         onChangeMessageRetention({
           ...newTopicData,
-          "retention.ms": { type: "ms", value: BigInt(604800000) },
+          "retention.ms": { type: "ms", value: BigInt(7) },
         });
         break;
     }
@@ -97,12 +93,12 @@ export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
     if (value == RetentionSizeUnits.CUSTOM) {
       onChangeMessageRetention({
         ...newTopicData,
-        "retention.ms": { type: "ms", value: BigInt(1) },
+        "retention.bytes": { type: "bytes", value: BigInt(1) },
       });
     } else {
       onChangeMessageRetention({
         ...newTopicData,
-        "retention.ms": { type: "ms", value: BigInt(1) },
+        "retention.bytes": { type: "bytes", value: BigInt(-1) },
       });
     }
   };
@@ -165,7 +161,7 @@ export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
               />
               <Radio
                 isChecked={
-                  newTopicData["retention.ms"].value === BigInt(604800000)
+                  newTopicData["retention.ms"].value === BigInt(7)
                 }
                 name="radioCustomTime"
                 onChange={() =>
@@ -176,14 +172,13 @@ export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
                 id="radio-controlled-4"
                 value={RetentionTimeUnits.CUSTOM}
               />
-              {newTopicData["retention.ms"].value === BigInt(604800000) && (
+              {newTopicData["retention.ms"].value === BigInt(7) && (
                 <CustomRetentionMessage
                   name="retention-ms"
                   topicData={newTopicData}
                   setTopicData={onChangeMessageRetention}
                   onToggle={onRetentionTimeToggle}
                   isOpen={isRetentionTimeSelectOpen}
-                  selectOptions={retentionTimeSelectOptions}
                 />
               )}
               <Radio
@@ -205,7 +200,9 @@ export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
           >
             <Stack hasGutter>
               <Radio
-                isChecked={newTopicData["retention.ms"].value === BigInt(-1)}
+                isChecked={
+                  newTopicData['retention.bytes'].value === BigInt(-1)
+                }
                 name="radioUnlimitedSize"
                 onChange={() =>
                   handleRetentionMessageSize(RetentionSizeUnits.UNLIMITED)
@@ -217,8 +214,7 @@ export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
               />
               <Radio
                 isChecked={
-                  // newTopicData['retention.ms'].type === RetentionSizeUnits.CUSTOM
-                  false
+                  newTopicData['retention.bytes'].value === BigInt(1)
                 }
                 name="radioCustomSize"
                 onChange={() =>
@@ -230,16 +226,13 @@ export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
                 value={RetentionSizeUnits.CUSTOM}
               />
               {
-                // newTopicData['retention.ms'].type ===
-                // RetentionSizeUnits.CUSTOM &&
-                false && (
+                newTopicData['retention.bytes'].value === BigInt(1) && (
                   <CustomRetentionSize
                     name="retention-bytes"
                     topicData={newTopicData}
                     setTopicData={onChangeMessageRetention}
                     onToggle={onRetentionSizeToggle}
                     isOpen={isRetentionSizeSelectOpen}
-                    selectOptions={retentionSizeSelectOptions}
                   />
                 )
               }

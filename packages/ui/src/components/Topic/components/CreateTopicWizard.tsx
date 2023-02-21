@@ -125,7 +125,6 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
     }
   };
   const onSaveTopic = () => {
-    console.log(topicData.partitions.length);
     if (topicData.partitions.length >= availablePartitionLimit)
       setWarningModalOpen(true);
     else onSave(topicData);
@@ -154,7 +153,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
             {warningModalOpen && (
               <PartitionLimitWarning
                 topicData={topicData}
-                onSave={onSave}
+                onSave={onSaveTopic}
                 isModalOpen={warningModalOpen}
                 setIsModalOpen={setWarningModalOpen}
               />
