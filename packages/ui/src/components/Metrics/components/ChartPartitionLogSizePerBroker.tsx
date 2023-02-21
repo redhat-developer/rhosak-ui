@@ -42,7 +42,7 @@ type LegendData = {
   name: string;
 };
 
-export type ChartPartitionSizePerBrokerProps = {
+export type ChartPartitionLogSizePerBrokerProps = {
   partitions: PartitionBytesMetric;
   broker: string | undefined;
   duration: number;
@@ -50,8 +50,8 @@ export type ChartPartitionSizePerBrokerProps = {
   emptyState: ReactElement;
   selectedPartition: PartitionSelect;
 };
-export const ChartPartitionSizePerBroker: FunctionComponent<
-  ChartPartitionSizePerBrokerProps
+export const ChartPartitionLogSizePerBroker: FunctionComponent<
+  ChartPartitionLogSizePerBrokerProps
 > = ({
   partitions,
   broker,
@@ -75,7 +75,7 @@ export const ChartPartitionSizePerBroker: FunctionComponent<
   const showDate = shouldShowDate(duration);
 
   return (
-    <div ref={containerRef} style={{ marginTop: "-30px", height: "700px" }}>
+    <div ref={containerRef} style={{ marginTop: "-50px", height: "700px" }}>
       {(() => {
         switch (true) {
           case isLoading:

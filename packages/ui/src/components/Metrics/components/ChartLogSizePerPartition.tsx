@@ -24,7 +24,6 @@ import {
   shouldShowDate,
   timestampsToTicks,
 } from "./utils";
-import { partition } from "xstate/lib/utils";
 
 const colors = [chart_color_cyan_300.value, chart_color_blue_300.value];
 
@@ -154,7 +153,7 @@ export function getChartData(
 
   selectedPartition === "Top10"
     ? top50Partition.slice(0, 10).map(([partition, dataMap], index) => {
-        const name = topic ? `${partition}` : partition;
+        const name = topic ? `${topic} / ${partition}` : partition;
         const color = colors[index];
         legendData.push({
           name,
@@ -178,7 +177,7 @@ export function getChartData(
         .sort((a, b) => b[1][1] - a[1][1])
         .slice(0, 20)
         .map(([partition, dataMap], index) => {
-          const name = topic ? `${partition}` : partition;
+          const name = topic ? `${topic} / ${partition}` : partition;
           const color = colors[index];
           legendData.push({
             name,

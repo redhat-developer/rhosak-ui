@@ -27,7 +27,7 @@ import { ToolbarKafkaInstanceMetric } from "./ToolbarKafkaInstanceMetric";
 import { EmptyStateNoMetricsData } from "./EmptyStateNoMetricsData";
 import type { ToolbarRefreshProps } from "./ToolbarRefresh";
 import { BrokerToggle } from "./BrokerToggle";
-import { ChartPartitionSizePerBroker } from "./ChartPartitionSizePerBroker";
+import { ChartPartitionLogSizePerBroker } from "./ChartPartitionLogSizePerBroker";
 import { FilterByPartition } from "./FilterByPartition";
 import { ChartUsedDiskSpace } from "./CardUsedDiskSpaceMetrics";
 
@@ -162,15 +162,15 @@ export const CardKafkaInstanceMetrics: FunctionComponent<
                         partitionValue={selectedPartition}
                       />
                     </ToolbarContent>
+                    <ChartPartitionLogSizePerBroker
+                      partitions={bytesPerPartitions}
+                      broker={selectedBroker}
+                      duration={duration}
+                      isLoading={isLoading}
+                      selectedPartition={selectedPartition}
+                      emptyState={<EmptyStateNoMetricsData />}
+                    />
                   </Toolbar>
-                  <ChartPartitionSizePerBroker
-                    partitions={bytesPerPartitions}
-                    broker={selectedBroker}
-                    duration={duration}
-                    isLoading={isLoading}
-                    selectedPartition={selectedPartition}
-                    emptyState={<EmptyStateNoMetricsData />}
-                  />
                 </CardBody>
                 <Divider />
                 <ChartTitle

@@ -89,15 +89,14 @@ export async function fetchKafkaMetrics({
     }
 
     function addAggregatePartitionBytes() {
+      const partitionKey = selectedBroker
+        ? topic + " / " + partition_id
+        : broker_id + " , " + topic + " / " + partition_id;
       const partition = bytesPerPartitionMetrics[broker_id] || {};
       m.values.forEach(({ value, timestamp }) => {
         partition[timestamp] = value + (partition[timestamp] || 0);
       });
-      bytesPerPartitionMetrics[
-        selectedBroker
-          ? topic + "/" + partition_id
-          : broker_id + ", " + topic + "/" + partition_id
-      ] = partition;
+      bytesPerPartitionMetrics[partitionKey] = partition;
     }
     switch (name) {
       case "kubelet_volume_stats_used_bytes":
