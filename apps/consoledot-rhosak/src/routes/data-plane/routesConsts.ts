@@ -25,6 +25,9 @@ export type DataPlanePermissionsRouteParams = {
   selectedAccount: string;
 };
 
+export const DataPlaneTopicConsumerGroupRoutePath =
+  `${ControlPlaneRouteRoot}/:id/details/topics/:topicName/consumer-groups/:consumerGroupId` as const;
+
 export const DataPlanePermissionsRoutePath =
   `${ControlPlaneRouteRoot}/:id/details/acls/select-account/:selectedAccount` as const;
 
