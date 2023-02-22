@@ -56,7 +56,7 @@ export const CreateTopicRoute: VoidFunctionComponent<
     return (
       <>
         <CreateTopic
-          kafkaName={''}
+          kafkaName={instance.name}
           kafkaPageLink={''}
           kafkaInstanceLink={''}
           onSave={() => { }}
