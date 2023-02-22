@@ -1,4 +1,4 @@
-import { CreateKafkaInstance } from "../CreateKafkaInstance";
+import { CreateKafkaInstance } from "../../CreateKafkaInstance";
 import type { StoryMeta } from "./storiesHelpers";
 import {
   argTypes,

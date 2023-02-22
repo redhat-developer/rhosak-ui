@@ -5,12 +5,19 @@ import {
   Button,
   ButtonVariant,
 } from "@patternfly/react-core";
-import type { VoidFunctionComponent } from "react";
 import { Trans, useTranslation } from "@rhoas/app-services-ui-components";
-import type { CreateKafkaInstanceError } from "../types";
+import type { VoidFunctionComponent } from "react";
+import type {
+  CreateDedicatedKafkaInstanceError,
+  CreateKafkaInstanceError,
+} from "../types";
 
 export type FormAlertsProps = {
-  error: CreateKafkaInstanceError | "form-invalid" | undefined;
+  error:
+    | CreateKafkaInstanceError
+    | CreateDedicatedKafkaInstanceError
+    | "form-invalid"
+    | undefined;
   onClickContactUS: () => void;
 };
 

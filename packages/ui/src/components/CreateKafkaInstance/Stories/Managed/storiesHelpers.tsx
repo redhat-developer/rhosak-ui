@@ -11,17 +11,17 @@ import type {
   MarketPlace,
   MarketPlaceSubscriptions,
 } from "ui-models/src/models/kafka";
-import { apiError, fakeApi } from "../../storiesHelpers";
-import type { CreateKafkaInstanceProps } from "../CreateKafkaInstance";
-import { CreateKafkaInstance } from "../CreateKafkaInstance";
-import type { CreateKafkaInstanceServices } from "../machines";
+import { apiError, fakeApi } from "../../../storiesHelpers";
+import type { CreateKafkaInstanceProps } from "../../CreateKafkaInstance";
+import { CreateKafkaInstance } from "../../CreateKafkaInstance";
+import type { CreateKafkaInstanceServices } from "../../machines";
 import type {
   CloudProviderInfo,
   StandardPlanAvailability,
   StandardSizes,
   TrialPlanAvailability,
   TrialSizes,
-} from "../types";
+} from "../../types";
 
 const AWS: CloudProviderInfo = {
   id: "aws",

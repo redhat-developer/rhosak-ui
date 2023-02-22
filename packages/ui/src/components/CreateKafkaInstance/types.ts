@@ -1,3 +1,4 @@
+import type { DedicatedCluster } from "ui-models/src/models/dedicated-cluster";
 import type {
   CloudProvider,
   CloudRegion,
@@ -14,17 +15,32 @@ export type CreateKafkaInstanceError =
   | "developer-unavailable"
   | "region-unavailable"
   | "unknown";
+
+export type CreateDedicatedKafkaInstanceError =
+  | "insufficient-quota"
+  | "name-taken"
+  | "cluster-unavailable"
+  | "unknown";
+
 export type StandardPlanAvailability =
   | "available"
   | "out-of-quota"
   | "instance-unavailable"
   | "regions-unavailable";
+
+export type DedicatedPlanAvailability =
+  | "available"
+  | "out-of-quota"
+  | "clusters-unavailable";
+
 export type TrialPlanAvailability = "available" | "used" | "unavailable";
+
 export type RegionInfo = {
   id: CloudRegion;
   displayName: string;
   isDisabled: boolean;
 };
+
 export type CloudProviderInfo = {
   id: CloudProvider;
   displayName: string;
@@ -32,6 +48,9 @@ export type CloudProviderInfo = {
   defaultRegion?: CloudRegion;
 };
 export type CloudProvidersInfo = Array<CloudProviderInfo>;
+
+export type DedicatedClustersInfo = Array<DedicatedCluster>;
+
 export type StandardPlanInitializationData = {
   defaultProvider: CloudProvider | undefined;
   availableProviders: CloudProvidersInfo;
@@ -41,15 +60,26 @@ export type StandardPlanInitializationData = {
   marketplaceSubscriptions: MarketPlaceSubscriptions[];
   plan: "standard";
 };
+
 export type TrialPlanInitializationData = {
   defaultProvider: CloudProvider | undefined;
   availableProviders: CloudProvidersInfo;
   instanceAvailability: TrialPlanAvailability;
   plan: "developer";
 };
+
+export type DedicatedPlanInitializationData = {
+  defaultCluster: DedicatedCluster | undefined;
+  availableClusters: DedicatedClustersInfo;
+  instanceAvailability: DedicatedPlanAvailability;
+  remainingDedicatedQuota: Quota | undefined;
+  plan: "dedicated";
+};
+
 export type CreateKafkaInitializationData =
   | StandardPlanInitializationData
   | TrialPlanInitializationData;
+
 export type StandardSizes = Size[];
 export type TrialSizes = {
   standard: Size[];
@@ -57,6 +87,8 @@ export type TrialSizes = {
     trialDurationHours: number;
   };
 };
+export type DedicatedSizes = Size[];
+
 export type CreateKafkaFormData = {
   plan: Plan;
   name: string;
@@ -64,4 +96,12 @@ export type CreateKafkaFormData = {
   region: CloudRegion;
   sizeId: string;
   billing: MarketplaceSubscription | "prepaid" | undefined;
+};
+
+export type CreateDedicatedKafkaFormData = {
+  plan: "dedicated";
+  name: string;
+  cluster: DedicatedCluster;
+  sizeId: string;
+  billing: "dedicated";
 };

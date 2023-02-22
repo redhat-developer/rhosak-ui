@@ -50,7 +50,7 @@ export const CloudProvidersTiles: VoidFunctionComponent<
                   isDisabled={providerDisabled || isDisabled}
                   onClick={() => onChange(id)}
                 >
-                  {(providerDisabled || isDisabled) &&
+                  {providerDisabled &&
                     t("billing.provider_incompatible_with_current_billing")}
                   &nbsp;
                 </Tile>

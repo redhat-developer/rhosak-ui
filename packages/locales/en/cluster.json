@@ -1,6 +1,10 @@
 {
   "fields": {
+    "az": "Availability zones",
+    "cloudProvider": "Cloud Provider",
+    "cloudRegion": "Region",
     "id": "Cluster ID",
+    "requiresPrivateNetwork": "Requires private network",
     "status": "Status"
   }
 }

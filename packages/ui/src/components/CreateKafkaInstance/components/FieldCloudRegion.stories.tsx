@@ -1,6 +1,6 @@
 import { Form } from "@patternfly/react-core";
 import type { ComponentMeta, ComponentStory } from "@storybook/react";
-import { PROVIDERS } from "../Stories/storiesHelpers";
+import { PROVIDERS } from "../Stories/Managed/storiesHelpers";
 
 import { FieldCloudRegion as FieldCloudRegionComp } from "./FieldCloudRegion";
 

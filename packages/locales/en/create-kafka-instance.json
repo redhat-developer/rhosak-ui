@@ -8,6 +8,8 @@
     "single": "Single"
   },
   "billing": {
+    "dedicate_optiom": "",
+    "dedicated_option": "",
     "field_label": "Billing",
     "field_popover_external_marketplace": "Billing indicates which subscription is used to pay for the instance. When using a subscription purchased through  another marketplace, the cloud provider associated with the marketplace must be selected. <0>See subscription options</0>",
     "field_popover_rh_only": "Billing indicates which subscription is used to pay for the instance. <0>See subscription options</0>",
@@ -33,6 +35,7 @@
   "create_instance_name_helper_text": "Must start with a letter and end with a letter or number. Valid characters include lowercase letters from a to z, numbers from 0 to 9, and hyphens ( - ).",
   "create_instance_name_helper_text_name_taken": "{{name}} already exists. Please try a different name.",
   "create_instance_title": "Create a $t(common:kafka) instance",
+  "dedicated_cluster_disabled": "",
   "duration_value": "{{value}} hours",
   "egress_value": "up to {{value}} MiB/second",
   "form_errors": {
@@ -75,6 +78,8 @@
   "learn_about_sizes": "Learn more about sizes",
   "message_size_value": "up to {{value}} MiB",
   "modal_alerts": {
+    "cluster_unavailable_message": "",
+    "cluster_unavailable_title": "",
     "instance_unavailable_message": "$t(common:kafka) instances are temporarily available. Please try again in a few hours.",
     "instance_unavailable_title": "$t(common:kafka) instances are unavailable for creation",
     "out_of_quota_message": "To deploy a new instance, delete an existing one first or <0>contact us</0> to add more quota to your account.",
@@ -90,6 +95,7 @@
     "trial_used_title": "You already have an instance running"
   },
   "no_regions_available": "No regions available",
+  "openshift_cluster": "",
   "partitions_value": "up to {{value}}",
   "provider_incompatible_with_billing": "",
   "quick_start_guide_message": "Need help getting started? Follow our quick start guide.",
@@ -98,6 +104,7 @@
   "regions_temporarily_unavailable": "Regions temporarily unavailable",
   "select_billing": "",
   "select_cloud_provider": "Select cloud provider",
+  "select_dedicated_cluster": "",
   "select_region": "Select region",
   "size_field_aria": "More info for Size field",
   "size_help_content": "Size of a $t(common:kafka) instance is based on streaming units. The number of streaming units defines the capacity, resources, and limits of an instance. An instance with a larger size can handle higher loads and process larger amounts of events, has more storage, and can handle more clients and connections.",
