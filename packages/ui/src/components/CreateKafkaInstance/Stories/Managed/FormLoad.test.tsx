@@ -6,7 +6,7 @@ import {
   waitForI18n,
   waitForPopper,
   within,
-} from "../../../test-utils";
+} from "../../../../test-utils";
 import * as stories from "./FormLoad.stories";
 
 const {

@@ -1,7 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { fetchDedicatedClusters, fetchKafkas } from "../fetchers";
 import { useKafkaInstanceTransformer } from "../queries";
-import { kafkaQueries, masQueries } from "../queryKeys";
+import { dedicatedQueries, kafkaQueries, masQueries } from "../queryKeys";
 import { useApi } from "../useApi";
 
 export const useDeveloperInstanceAvailabilityFetchQuery = () => {
@@ -23,7 +23,7 @@ export const useDeveloperInstanceAvailabilityFetchQuery = () => {
 
         try {
           const clusterResponse = await queryClient.fetchQuery({
-            queryKey: masQueries.dedicatedClusters(),
+            queryKey: dedicatedQueries.clusters(),
             queryFn: () =>
               fetchDedicatedClusters({
                 getEnterpriseOsdClusters: (...args) =>

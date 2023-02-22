@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useApiConfiguration } from "../ApiProvider";
 import { fetchDedicatedClusters } from "../fetchers";
-import { masQueries } from "../queryKeys";
+import { dedicatedQueries } from "../queryKeys";
 import { useApi } from "../useApi";
 
 export function useDedicatedClusters(
@@ -11,7 +11,7 @@ export function useDedicatedClusters(
   const { dedicatedClusters } = useApi();
 
   return useQuery({
-    queryKey: masQueries.dedicatedClusters(),
+    queryKey: dedicatedQueries.clusters(),
     queryFn: () => {
       const api = dedicatedClusters();
 

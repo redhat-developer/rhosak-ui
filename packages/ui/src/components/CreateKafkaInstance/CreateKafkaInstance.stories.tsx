@@ -5,7 +5,7 @@ import {
   defaultStoryArgs,
   parameters,
   Template,
-} from "./Stories/storiesHelpers";
+} from "./Stories/Managed/storiesHelpers";
 
 export default {
   component: CreateKafkaInstanceComponent,

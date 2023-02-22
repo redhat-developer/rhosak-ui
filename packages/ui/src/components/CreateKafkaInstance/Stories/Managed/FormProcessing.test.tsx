@@ -1,6 +1,6 @@
 import { userEvent } from "@storybook/testing-library";
 import { composeStories } from "@storybook/testing-react";
-import { renderDialog, waitForI18n } from "../../../test-utils";
+import { renderDialog, waitForI18n } from "../../../../test-utils";
 import * as stories from "./FormProcessing.stories";
 
 const { LoadingData, CreationInProgress } = composeStories(stories);

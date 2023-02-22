@@ -18,6 +18,7 @@ import type {
   EmptyStateNoResultsProps,
 } from "./components";
 import { EmptyStateNoInstances, EmptyStateNoResults } from "./components";
+import { EmptyStateNoDedicatedInstances } from "./components/EmptyStateNoDedicatedInstances";
 
 const StandardColumns = [
   "name",
@@ -270,10 +271,17 @@ export const KafkaInstances = <
         ariaLabel={t("table.title")}
         isFiltered={isFiltered}
         emptyStateNoData={
-          <EmptyStateNoInstances
-            onCreate={onCreate}
-            onQuickstartGuide={onQuickstartGuide}
-          />
+          columns === "standard" ? (
+            <EmptyStateNoInstances
+              onCreate={onCreate}
+              onQuickstartGuide={onQuickstartGuide}
+            />
+          ) : (
+            <EmptyStateNoDedicatedInstances
+              onCreate={onCreate}
+              onQuickstartGuide={onQuickstartGuide}
+            />
+          )
         }
         emptyStateNoResults={
           <EmptyStateNoResults onClearAllFilters={onClearAllFilters} />

@@ -29,6 +29,7 @@ export const instances: Kafka[] = [
     version: "1.2.3",
     bootstrapUrl: undefined,
     adminUrl: undefined,
+    clusterId: undefined,
   },
   {
     id: "2",
@@ -53,6 +54,7 @@ export const instances: Kafka[] = [
     version: "1.2.3",
     bootstrapUrl: undefined,
     adminUrl: undefined,
+    clusterId: undefined,
   },
   {
     id: "3",
@@ -77,6 +79,7 @@ export const instances: Kafka[] = [
     version: "1.2.3",
     bootstrapUrl: undefined,
     adminUrl: undefined,
+    clusterId: undefined,
   },
   {
     id: "4",
@@ -101,5 +104,6 @@ export const instances: Kafka[] = [
     version: "1.2.3",
     bootstrapUrl: undefined,
     adminUrl: undefined,
+    clusterId: undefined,
   },
 ];

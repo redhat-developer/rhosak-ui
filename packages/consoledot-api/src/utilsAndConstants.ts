@@ -2,6 +2,7 @@ import type { QuotaCost } from "@rhoas/account-management-sdk";
 
 export const standardId = "RHOSAK" as const;
 export const developerId = "RHOSAKTrial" as const;
+export const dedicatedId = "RHOSAKCC" as const;
 export const resourceName = "rhosak" as const;
 
 export function isStandardQuota(q: QuotaCost) {

@@ -1,6 +1,7 @@
 import type {
   FetchConsumerGroupParams,
   FetchConsumerGroupsParams,
+  FetchDedicatedClusterSizesParams,
   FetchKafkaMetricsProps,
   FetchKafkasParams,
   FetchMessagesParams,
@@ -21,8 +22,14 @@ export const masQueries = {
 
   quota: {
     _root: () => ({ ...masQueries._root(), entity: "quota" } as const),
-    available: () =>
-      [{ ...masQueries.quota._root(), subentity: "available" }] as const,
+    standardAvailable: () =>
+      [
+        { ...masQueries.quota._root(), subentity: "standardAvailable" },
+      ] as const,
+    dedicatedAvailable: () =>
+      [
+        { ...masQueries.quota._root(), subentity: "dedicatedAvailable" },
+      ] as const,
     developerAvailability: () =>
       [
         { ...masQueries.quota._root(), subentity: "developerAvailability" },
@@ -32,9 +39,20 @@ export const masQueries = {
         { ...masQueries.quota._root(), subentity: "standardAvailability" },
       ] as const,
   },
-  dedicatedClusters: () =>
-    [{ ...masQueries._root(), subentity: "dedicatedClusters" }] as const,
 } as const;
+
+export const dedicatedQueries = {
+  _root: () => ({ ...masQueries._root(), entity: "dedicated" } as const),
+  clusters: () =>
+    [{ ...dedicatedQueries._root(), subentity: "clusters" }] as const,
+  clusterSizes: (
+    params: Omit<FetchDedicatedClusterSizesParams, "getEnterpriseClusterById">
+  ) =>
+    [
+      { ...dedicatedQueries._root(), subentity: "clusterSize" },
+      params,
+    ] as const,
+};
 
 export const kafkaQueries = {
   _root: () => ({ scope: "kafka" } as const),
