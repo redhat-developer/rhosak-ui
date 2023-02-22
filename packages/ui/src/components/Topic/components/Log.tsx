@@ -53,8 +53,12 @@ const Log: React.FC<LogProps> = ({
     },
   ];
 
-  const onSelectOption = (value: string) => {
-    // setTopicData({ ...topicData, cleanupPolicy: value });
+  console.log(topicData)
+  const onSelectOption = (value: string, name: string) => {
+    setTopicData({
+      ...topicData,
+      ...{ cleanupPolicy: value as "delete" | "compact" | "delete,compact" }
+    });
   };
 
   return (
@@ -80,6 +84,7 @@ const Log: React.FC<LogProps> = ({
           name="cleanup-policy"
           value={topicData["cleanup.policy"]}
           isLabelAndValueNotSame={true}
+          key={topicData["cleanup.policy"]}
         />
       </FormGroupWithPopover>
 

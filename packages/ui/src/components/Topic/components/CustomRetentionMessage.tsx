@@ -1,86 +1,67 @@
-import type { NumberInputProps, SelectProps } from "@patternfly/react-core";
+import { NumberInputProps, SelectProps, TextInput } from "@patternfly/react-core";
 import {
   Flex,
   FlexItem,
-  NumberInput,
   Select,
   SelectOption,
   SelectVariant,
 } from "@patternfly/react-core";
 import type React from "react";
-import type { Topic } from "ui-models/src/models/topic";
-import { retentionTimeSelectOptions } from "./types";
-import { Milliseconds } from "ui-models/src/types";
-import { useState } from 'react';
+import { CustomSelect, TimeUnit, retentionTimeSelectOptions } from "./types";
+
+
 
 export type CustomRetentionMessageProps = NumberInputProps &
   SelectProps & {
     id?: string;
-    topicData: Topic;
-    setTopicData: (data: Topic) => void;
+    customValue: CustomSelect;
+    setCustomValue: (data: CustomSelect) => void;
   };
 
 const CustomRetentionMessage: React.FC<CustomRetentionMessageProps> = ({
   onToggle,
   isOpen,
-  topicData,
-  setTopicData,
+  customValue,
+  setCustomValue,
 }) => {
-  const [unit, setUnit] = useState<string>("days");
 
+
+  // const [unit, setUnit] = useState<"days" | "hours" | "minutes" | "seconds" | "ms">("days")
   const onSelect: SelectProps["onSelect"] = (event, value) => {
-    setUnit(value as string);
+    const inputUnit: CustomSelect = { unit: value as TimeUnit, value: undefined }
+    setCustomValue(inputUnit);
     onToggle(false, event);
   };
 
-  const handleTouchSpin = (operator: string) => {
-    if (operator === "+") {
-      const cuurentTime = topicData["retention.ms"].value;
-      const newTime: Milliseconds = {
-        type: "ms",
-        value: cuurentTime + BigInt(1),
-      };
-      setTopicData({
-        ...topicData,
-        "retention.ms": newTime,
-      });
-    } else if (operator === "-") {
-      const cuurentTime = topicData["retention.ms"].value;
-      const newTime: Milliseconds = {
-        type: "ms",
-        value: cuurentTime - BigInt(1),
-      };
-      setTopicData({
-        ...topicData,
-        "retention.ms": newTime,
-      });
-    }
-  };
 
-  const onChangeTouchSpin = (event: React.FormEvent<HTMLInputElement>) => {
-    setTopicData({
-      ...topicData,
-      "retention.ms": { type: "ms", value: BigInt(event.currentTarget.value) },
-    });
-  };
+  // const handleTouchSpin = (operator: string) => {
+  //   if (operator === "+") {
+  //     const inputUnit: CustomSelect = { ...customValue, value: customValue.value + 1 }
+  //     setCustomValue(inputUnit);
+  //   } else if (operator === "-") {
+  //     const inputUnit: CustomSelect = { ...customValue, value: customValue.value - 1 }
+  //     setCustomValue(inputUnit);
+  //   }
+  // }
 
+
+
+  // const onChangeTouchSpin = (event: React.FormEvent<HTMLInputElement>) => {
+  //   const inputUnit: CustomSelect = { ...customValue, value: BigInt(event.currentTarget.value) }
+  //   setCustomValue(inputUnit)
+  // };
+
+  const onChange = (input: string) => {
+    const inputValue: CustomSelect = { ...customValue, value: Number(input) }
+    setCustomValue(inputValue)
+  }
 
 
   return (
     <div className="kafka-ui--radio__parameters">
       <Flex>
         <FlexItem>
-          <NumberInput
-            onMinus={() => handleTouchSpin("-")}
-            onPlus={() => handleTouchSpin("+")}
-            value={
-              Number(
-                topicData["retention.ms"].value
-              ) /* TODO precision loss from BigInt to Number, handle this as a string */
-            }
-            onChange={(event) => onChangeTouchSpin(event)}
-            min={0}
-          />
+          <TextInput type="number" value={customValue.value} onChange={onChange} />
         </FlexItem>
         <FlexItem>
           <Select
@@ -89,7 +70,7 @@ const CustomRetentionMessage: React.FC<CustomRetentionMessageProps> = ({
             onToggle={onToggle}
             onSelect={(event, value) => onSelect(event, value as string)}
             placeholder='days'
-            selections={unit}
+            selections={customValue.unit}
             isOpen={isOpen}
           >
             {retentionTimeSelectOptions?.map((s) => (

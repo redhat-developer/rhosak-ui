@@ -18,16 +18,23 @@ import {
 } from "../../KafkaTopics/types";
 import { CustomRetentionMessage } from "./CustomRetentionMessage";
 import { CustomRetentionSize } from "./CustomRetentionSize";
+import { CustomSelect } from './types';
 
 export type StepMessageRetentionProps = {
   newTopicData: Topic;
   onChangeMessageRetention: (topic: Topic) => void;
+  customValue: CustomSelect;
+  setCustomValue: (data: CustomSelect) => void;
 };
 
 export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
   newTopicData,
   onChangeMessageRetention,
+  customValue,
+  setCustomValue
 }) => {
+
+  console.log(newTopicData)
   const { t } = useTranslation(["create-topic"]);
 
   const [isRetentionTimeSelectOpen, setIsRetentionTimeSelectOpen] =
@@ -35,9 +42,14 @@ export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
   const [isRetentionSizeSelectOpen, setIsRetentionSizeSelectOpen] =
     useState<boolean>(false);
 
+  const [isCustomTimeSelectOpen, setIsCustomTimeSelectOpen] =
+    useState<boolean>(false);
+
+
   const handleRetentionMessageTime = (value: RetentionTimeUnits) => {
     switch (value) {
       case RetentionTimeUnits.DAY:
+        setIsCustomTimeSelectOpen(false)
         onChangeMessageRetention({
           ...newTopicData,
           "retention.ms": { type: "ms", value: BigInt(86400000) },
@@ -45,42 +57,49 @@ export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
         break;
 
       case RetentionTimeUnits.HOUR:
+        setIsCustomTimeSelectOpen(false)
         onChangeMessageRetention({
           ...newTopicData,
           "retention.ms": { type: "ms", value: BigInt(3600000) },
         });
         break;
       case RetentionTimeUnits.MILLISECOND:
+        setIsCustomTimeSelectOpen(false)
         onChangeMessageRetention({
           ...newTopicData,
           "retention.ms": { type: "ms", value: BigInt(1) },
         });
         break;
       case RetentionTimeUnits.MINUTE:
+        setIsCustomTimeSelectOpen(false)
         onChangeMessageRetention({
           ...newTopicData,
           "retention.ms": { type: "ms", value: BigInt(6000) },
         });
         break;
       case RetentionTimeUnits.SECOND:
+        setIsCustomTimeSelectOpen(false)
         onChangeMessageRetention({
           ...newTopicData,
           "retention.ms": { type: "ms", value: BigInt(1000) },
         });
         break;
       case RetentionTimeUnits.WEEK:
+        setIsCustomTimeSelectOpen(false)
         onChangeMessageRetention({
           ...newTopicData,
           "retention.ms": { type: "ms", value: BigInt(604800000) },
         });
         break;
       case RetentionTimeUnits.UNLIMITED:
+        setIsCustomTimeSelectOpen(false)
         onChangeMessageRetention({
           ...newTopicData,
           "retention.ms": { type: "ms", value: BigInt(-1) },
         });
         break;
       case RetentionTimeUnits.CUSTOM:
+        setIsCustomTimeSelectOpen(true)
         onChangeMessageRetention({
           ...newTopicData,
           "retention.ms": { type: "ms", value: BigInt(7) },
@@ -161,7 +180,7 @@ export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
               />
               <Radio
                 isChecked={
-                  newTopicData["retention.ms"].value === BigInt(7)
+                  isCustomTimeSelectOpen
                 }
                 name="radioCustomTime"
                 onChange={() =>
@@ -172,14 +191,13 @@ export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
                 id="radio-controlled-4"
                 value={RetentionTimeUnits.CUSTOM}
               />
-              {newTopicData["retention.ms"].value === BigInt(7) && (
+              {isCustomTimeSelectOpen && (
                 <CustomRetentionMessage
                   name="retention-ms"
-                  topicData={newTopicData}
-                  setTopicData={onChangeMessageRetention}
                   onToggle={onRetentionTimeToggle}
                   isOpen={isRetentionTimeSelectOpen}
-                />
+                  customValue={customValue}
+                  setCustomValue={setCustomValue} />
               )}
               <Radio
                 isChecked={newTopicData["retention.ms"].value === BigInt(-1)}
@@ -226,13 +244,11 @@ export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
                 value={RetentionSizeUnits.CUSTOM}
               />
               {
-                newTopicData['retention.bytes'].value === BigInt(1) && (
+                newTopicData['retention.bytes'].value !== BigInt(-1) && (
                   <CustomRetentionSize
                     name="retention-bytes"
                     topicData={newTopicData}
                     setTopicData={onChangeMessageRetention}
-                    onToggle={onRetentionSizeToggle}
-                    isOpen={isRetentionSizeSelectOpen}
                   />
                 )
               }

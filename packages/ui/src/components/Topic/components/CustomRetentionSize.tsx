@@ -15,26 +15,30 @@ import { Bytes } from "ui-models/src/types";
 import { useState } from 'react';
 
 
-export type CustomRetentionSizeProps = NumberInputProps &
-  SelectProps & {
-    id?: string;
-    topicData: Topic;
-    setTopicData: (data: Topic) => void;
-  };
+export type CustomRetentionSizeProps = NumberInputProps & {
+  id?: string;
+  topicData: Topic;
+  setTopicData: (data: Topic) => void;
+};
 
 const CustomRetentionSize: React.FC<CustomRetentionSizeProps> = ({
-  onToggle,
-  isOpen,
   topicData,
   setTopicData,
 }) => {
 
   const [unit, setUnit] = useState<string>("bytes");
 
+  const [isRetentionTimeSelectOpen, setIsRetentionTimeSelectOpen] =
+    useState<boolean>(false);
+
   const onSelect: SelectProps["onSelect"] = (event, value) => {
     setUnit(value as string);
-    onToggle(false, event);
+
   };
+
+  const onToggle = (isOpen: boolean) => {
+    setIsRetentionTimeSelectOpen(isOpen);
+  }
 
 
   const handleTouchSpin = (operator: string) => {
@@ -72,6 +76,8 @@ const CustomRetentionSize: React.FC<CustomRetentionSizeProps> = ({
     });
   };
 
+
+
   return (
     <div className="kafka-ui--radio__parameters">
       <Flex>
@@ -86,6 +92,7 @@ const CustomRetentionSize: React.FC<CustomRetentionSizeProps> = ({
             }
             onChange={(event) => onChangeTouchSpin(event)}
             min={0}
+
           />
         </FlexItem>
         <FlexItem>
@@ -95,7 +102,7 @@ const CustomRetentionSize: React.FC<CustomRetentionSizeProps> = ({
             onToggle={onToggle}
             onSelect={(event, value) => onSelect(event, value as string)}
             selections={unit}
-            isOpen={isOpen}
+            isOpen={isRetentionTimeSelectOpen}
           >
             {retentionSizeSelectOptions?.map((s) => (
               <SelectOption
