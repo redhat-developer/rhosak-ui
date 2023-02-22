@@ -25,6 +25,7 @@ import { CustomRetentionMessage } from "./CustomRetentionMessage";
 import { CustomRetentionSize } from "./CustomRetentionSize";
 import { TextWithLabelPopover } from "./TextWithLabelPopover";
 import {
+  CustomSelect,
   retentionSizeSelectOptions,
   retentionTimeSelectOptions,
 } from "./types";
@@ -113,44 +114,53 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
   };
 
   const onPartitionsChange: NumberInputProps["onChange"] = (event) => {
-    // setTopicData({
-    //   ...topicData,
-    //   partitions.length: Number((event.target as HTMLInputElement).value),
-    // });
+    const partitions = Number((event.target as HTMLInputElement).value);
+    const updatedPartitions = Array(partitions)
+      .fill(null)
+      .map((_, index) => ({ partition: index }));
+    setTopicData({
+      ...topicData,
+      partitions: updatedPartitions,
+    });
   };
+
   const handleOnPlus = () => {
-    // setTopicData({
-    //   ...topicData,
-    //   partitions.length: topicData.partitions.length + 1,
-    // });
+    const currentPartitions = topicData.partitions;
+    const updatedPartitions = [...currentPartitions, { partition: currentPartitions.length }];
+    setTopicData({
+      ...topicData,
+      partitions: updatedPartitions,
+    });
   };
 
   const handleOnMinus = () => {
-    // setTopicData({
-    //   ...topicData,
-    //   partitions.length: topicData.partitions.length - 1,
-    // });
+    const { partitions } = topicData;
+    const newPartitions = partitions.slice(0, partitions.length - 1);
+    setTopicData({
+      ...topicData,
+      partitions: newPartitions,
+    });
   };
 
   const retentionTimeInput = (
     <CustomRetentionMessage
       toggleId="core-config-retention-dropdowntoggle"
       name="retention-ms"
-      topicData={topicData}
-      setTopicData={setTopicData}
       onToggle={onRetentionTimeToggle}
-      isOpen={isRetentionTimeSelectOpen}
-    />
+      isOpen={isRetentionTimeSelectOpen} customValue={{
+        unit: 'days',
+        value: undefined
+      }} setCustomValue={function (data: CustomSelect): void {
+        throw new Error('Function not implemented.');
+      }} />
   );
 
   const retentionSizeInput = (
     <CustomRetentionSize
-      toggleId="core-config-retention-size-dropdowntoggle"
+
       name="retention-bytes"
       topicData={topicData}
       setTopicData={setTopicData}
-      onToggle={onRetentionSizeToggle}
-      isOpen={isRetentionSizeSelectOpen}
     />
   );
 

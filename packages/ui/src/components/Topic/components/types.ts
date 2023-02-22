@@ -27,3 +27,11 @@ export type IDropdownOption = {
   key?: string;
   isDisabled?: boolean;
 };
+
+
+export type TimeUnit = "days" | "hours" | "minutes" | "seconds" | "milliseconds" | "weeks" | "unlimited"
+
+export type CustomSelect = {
+  unit: TimeUnit;
+  value: number | undefined;
+}

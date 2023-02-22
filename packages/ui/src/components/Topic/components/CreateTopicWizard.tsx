@@ -21,6 +21,8 @@ import {
 } from "./index";
 import { PartitionLimitWarning } from "./PartitionLimitWarning";
 import { TopicAdvancePage } from "./TopicAdvancePage";
+import { CustomSelect } from './types';
+
 
 export type CreateTopicWizardProps = {
   isSwitchChecked: boolean;
@@ -42,6 +44,8 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
 }) => {
   const { t } = useTranslation(["create-topic", "common"]);
 
+  const [customValue, setCustomValue] = useState<CustomSelect>({ unit: "days", value: 7 });
+
   const [topicNameValidated, setTopicNameValidated] =
     useState<ValidatedOptions>(ValidatedOptions.default);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -52,6 +56,49 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
   const closeWizard = () => {
     onCloseCreateTopic && onCloseCreateTopic();
   };
+
+  // const convertToMilliseconds = () => {
+  //   switch (customValue.unit) {
+  //     case "days": {
+  //       const convertedValue = convert(customValue.value, "days").to("ms")
+  //       setTopicData({
+  //         ...topicData,
+  //         "retention.ms": { type: "ms", value: convertedValue },
+  //       })
+  //     }
+  //       break;
+  //     case "hours": {
+  //       const convertedValue = convert(customValue.value, "hours").to("ms")
+  //       setTopicData({
+  //         ...topicData,
+  //         "retention.ms": { type: "ms", value: convertedValue },
+  //       })
+  //     }
+  //       break;
+  //     case "minutes": {
+  //       const convertedValue = convert(customValue.value, "minutes").to("ms")
+  //       setTopicData({
+  //         ...topicData,
+  //         "retention.ms": { type: "ms", value: convertedValue },
+  //       })
+  //     }
+  //       break;
+  //     case "seconds": {
+  //       const convertedValue = convert(customValue.value, "seconds").to("ms")
+  //       setTopicData({
+  //         ...topicData,
+  //         "retention.ms": { type: "ms", value: convertedValue },
+  //       })
+  //     }
+  //       break;
+  //     case "milliseconds": setTopicData({
+  //       ...topicData,
+  //       "retention.ms": { type: "ms", value: customValue.value },
+  //     })
+  //       break;
+  //   }
+  // }
+
 
   const steps: WizardStep[] = [
     {
@@ -86,9 +133,10 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
       canJumpTo: topicData?.name.trim() !== "",
       component: (
         <StepMessageRetention
+          customValue={customValue}
+          setCustomValue={setCustomValue}
           newTopicData={topicData}
-          onChangeMessageRetention={setTopicData}
-        />
+          onChangeMessageRetention={setTopicData} />
       ),
     },
     {
