@@ -29,9 +29,8 @@ export type KafkaTopicsProps<T extends Topic> = {
   onSearchTopic: (value: string) => void;
   onRemoveTopicChip: (value: string) => void;
   onRemoveTopicChips: () => void;
-  onTopicLinkClick: (row: T) => void;
 } & Pick<
-  TableViewProps<T, typeof Columns[number]>,
+  TableViewProps<T, (typeof Columns)[number]>,
   | "itemCount"
   | "page"
   | "perPage"
@@ -58,7 +57,6 @@ export const KafkaTopics = <T extends Topic>({
   onRemoveTopicChip,
   onRemoveTopicChips,
   getUrlFortopic,
-  onTopicLinkClick,
 }: KafkaTopicsProps<T>) => {
   const { t } = useTranslation("topic");
 
@@ -83,21 +81,13 @@ export const KafkaTopics = <T extends Topic>({
                 switch (column) {
                   case "name":
                     return (
-                      <Button
-                        variant="link"
-                        component={(props) => (
-                          <Link
-                            to={getUrlFortopic(row)}
-                            {...props}
-                            data-testid="tableTopics-linkTopic"
-                            data-ouia-component-id="table-link"
-                          >
-                            {row.name}
-                          </Link>
-                        )}
-                        onClick={() => onTopicLinkClick(row)}
-                        isInline
-                      />
+                      <Link
+                        to={getUrlFortopic(row)}
+                        data-testid="tableTopics-linkTopic"
+                        data-ouia-component-id="table-link"
+                      >
+                        {row.name}
+                      </Link>
                     );
                   case "partitions":
                     return row.partitions.length;
