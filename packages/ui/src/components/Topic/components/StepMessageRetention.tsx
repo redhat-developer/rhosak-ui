@@ -14,38 +14,38 @@ import type { Topic } from "ui-models/src/models/topic";
 import { RetentionSizeUnits } from "../../KafkaTopics/types";
 import { CustomRetentionMessage } from "./CustomRetentionMessage";
 import { CustomRetentionSize } from "./CustomRetentionSize";
-import type { CustomSelect, RadioSelectType } from "./types";
+import type { CustomRetentionSizeSelect, CustomSelect, RadioSelectType, RetentionSizeRadioSelect } from "./types";
 
 export type StepMessageRetentionProps = {
-  newTopicData: Topic;
-  onChangeMessageRetention: (topic: Topic) => void;
+  customRetentionSizeValue: CustomRetentionSizeSelect;
+  setCustomRetentionSizeValue: (data: CustomRetentionSizeSelect) => void
   customValue: CustomSelect;
   setCustomValue: (data: CustomSelect) => void;
   radioSelectValue: RadioSelectType;
   setRadioSelectValue: (value: RadioSelectType) => void;
+  customRetentionRadioSelect: RetentionSizeRadioSelect;
+  setCustomRetentionRadioSelect: (data: RetentionSizeRadioSelect) => void
 };
 
 export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
-  newTopicData,
-  onChangeMessageRetention,
   customValue,
   setCustomValue,
   radioSelectValue,
   setRadioSelectValue,
+  setCustomRetentionSizeValue,
+  customRetentionSizeValue,
+  customRetentionRadioSelect,
+  setCustomRetentionRadioSelect
 }) => {
   const { t } = useTranslation(["create-topic"]);
 
-  const handleRetentionMessageSize = (value: RetentionSizeUnits) => {
-    if (value == RetentionSizeUnits.CUSTOM) {
-      onChangeMessageRetention({
-        ...newTopicData,
-        "retention.bytes": { type: "bytes", value: BigInt(1) },
-      });
+  const handleRetentionMessageSize = (value: RetentionSizeRadioSelect) => {
+    if (value === "unlimited") {
+      setCustomRetentionSizeValue({ value: -1, unit: "unlimited" })
+      setCustomRetentionRadioSelect("unlimited")
     } else {
-      onChangeMessageRetention({
-        ...newTopicData,
-        "retention.bytes": { type: "bytes", value: BigInt(-1) },
-      });
+      setCustomRetentionSizeValue({ value: 1, unit: "bytes" })
+      setCustomRetentionRadioSelect("custom")
     }
   };
 
@@ -93,7 +93,7 @@ export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
           >
             <Stack hasGutter>
               <Radio
-                isChecked={radioSelectValue == "day"}
+                isChecked={radioSelectValue === "day"}
                 name="radioDay"
                 onChange={() => retentionTime("day")}
                 label="A day"
@@ -102,7 +102,7 @@ export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
                 value={radioSelectValue}
               />
               <Radio
-                isChecked={radioSelectValue == "week"}
+                isChecked={radioSelectValue === "week"}
                 name="radioWeek"
                 onChange={() => retentionTime("week")}
                 label="A week"
@@ -111,7 +111,7 @@ export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
                 value={radioSelectValue}
               />
               <Radio
-                isChecked={radioSelectValue == "custom"}
+                isChecked={radioSelectValue === "custom"}
                 name="radioCustomTime"
                 onChange={() => retentionTime("custom")}
                 label="Custom duration"
@@ -119,14 +119,14 @@ export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
                 id="radio-controlled-4"
                 value={radioSelectValue}
               />
-              {radioSelectValue == "custom" && (
+              {radioSelectValue === "custom" && (
                 <CustomRetentionMessage
                   customValue={customValue}
                   setCustomValue={setCustomValue}
                 />
               )}
               <Radio
-                isChecked={radioSelectValue == "unlimited"}
+                isChecked={radioSelectValue === "unlimited"}
                 name="radioUnlimitedTime"
                 onChange={() => retentionTime("unlimited")}
                 label="Unlimited time"
@@ -142,33 +142,31 @@ export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
           >
             <Stack hasGutter>
               <Radio
-                isChecked={newTopicData["retention.bytes"].value === BigInt(-1)}
+                isChecked={customRetentionRadioSelect === "unlimited"}
                 name="radioUnlimitedSize"
                 onChange={() =>
-                  handleRetentionMessageSize(RetentionSizeUnits.UNLIMITED)
+                  handleRetentionMessageSize("unlimited")
                 }
                 label="Unlimited size"
                 aria-label="Unlimited"
                 id="radio-controlled-6"
-                value={RetentionSizeUnits.UNLIMITED}
+                value={customRetentionRadioSelect}
               />
               <Radio
-                isChecked={newTopicData["retention.bytes"].value === BigInt(1)}
+                isChecked={customRetentionRadioSelect === "custom"}
                 name="radioCustomSize"
                 onChange={() =>
-                  handleRetentionMessageSize(RetentionSizeUnits.CUSTOM)
+                  handleRetentionMessageSize("custom")
                 }
                 label="Custom size"
                 aria-label="custom size"
                 id="radio-controlled-5"
-                value={RetentionSizeUnits.CUSTOM}
+                value={customRetentionRadioSelect}
               />
-              {newTopicData["retention.bytes"].value !== BigInt(-1) && (
+              {customRetentionRadioSelect === "custom" && (
                 <CustomRetentionSize
-                  name="retention-bytes"
-                  topicData={newTopicData}
-                  setTopicData={onChangeMessageRetention}
-                />
+                  customRetentionSizeValue={customRetentionSizeValue}
+                  setCustomRetentionSizeValue={setCustomRetentionSizeValue} />
               )}
             </Stack>
           </FormGroup>

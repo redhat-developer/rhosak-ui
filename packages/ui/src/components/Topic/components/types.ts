@@ -42,4 +42,13 @@ export type CustomSelect = {
   value: number;
 };
 
+export type CustomRetentionSizeSelect = {
+  unit: CustomRetentionUnit
+  value: number;
+}
+
+export type CustomRetentionUnit = "bytes" | "kibibytes" | "mebibytes" | "gibibytes" | "tebibytes" | "unlimited";
+
 export type RadioSelectType = "day" | "week" | "custom" | "unlimited";
+
+export type RetentionSizeRadioSelect = "unlimited" | "custom";

@@ -1,108 +1,65 @@
-import type { NumberInputProps, SelectProps } from "@patternfly/react-core";
+import { SelectProps, TextInput } from "@patternfly/react-core";
 import {
   Flex,
   FlexItem,
-  NumberInput,
   Select,
   SelectOption,
   SelectVariant,
 } from "@patternfly/react-core";
 import type React from "react";
-import type { Topic } from "ui-models/src/models/topic";
-import { RetentionSizeUnits } from "../../KafkaTopics/types";
-import { SelectOptions, retentionSizeSelectOptions } from "./types";
-import { Bytes } from "ui-models/src/types";
+import { CustomRetentionSizeSelect, CustomRetentionUnit, retentionSizeSelectOptions } from "./types";
 import { useState } from 'react';
 
 
-export type CustomRetentionSizeProps = NumberInputProps & {
+export type CustomRetentionSizeProps = {
   id?: string;
-  topicData: Topic;
-  setTopicData: (data: Topic) => void;
+  customRetentionSizeValue: CustomRetentionSizeSelect;
+  setCustomRetentionSizeValue: (data: CustomRetentionSizeSelect) => void
 };
 
 const CustomRetentionSize: React.FC<CustomRetentionSizeProps> = ({
-  topicData,
-  setTopicData,
+  customRetentionSizeValue,
+  setCustomRetentionSizeValue
 }) => {
 
-  const [unit, setUnit] = useState<string>("bytes");
-
-  const [isRetentionTimeSelectOpen, setIsRetentionTimeSelectOpen] =
+  const [isRetentionSizeSelectOpen, setIsRetentionSizeSelectOpen] =
     useState<boolean>(false);
 
+  const onRetentionSizeToggle = (isOpen: boolean) => {
+    setIsRetentionSizeSelectOpen(isOpen);
+  };
+
   const onSelect: SelectProps["onSelect"] = (event, value) => {
-    setUnit(value as string);
-
-  };
-
-  const onToggle = (isOpen: boolean) => {
-    setIsRetentionTimeSelectOpen(isOpen);
-  }
-
-
-  const handleTouchSpin = (operator: string) => {
-    if (operator === "+") {
-      const currentValue = topicData["retention.bytes"].value;
-      const newValue: Bytes = {
-        type: "bytes",
-        value: currentValue + BigInt(1),
-      };
-
-      setTopicData({
-        ...topicData,
-        "retention.bytes": newValue,
-      });
-    } else if (operator === "-") {
-      const currentValue = topicData["retention.bytes"].value;
-      const newValue: Bytes = {
-        type: "bytes",
-        value: currentValue - BigInt(1),
-      };
-      setTopicData({
-        ...topicData,
-        "retention.bytes": newValue,
-      });
+    const inputUnit: CustomRetentionSizeSelect = {
+      unit: value as CustomRetentionUnit,
+      value: 0
     }
+    setCustomRetentionSizeValue(inputUnit);
+    onRetentionSizeToggle(false);
   };
 
-  const onChangeTouchSpin = (event: React.FormEvent<HTMLInputElement>) => {
-    setTopicData({
-      ...topicData,
-      "retention.bytes": {
-        type: "bytes",
-        value: BigInt(event.currentTarget.value),
-      },
-    });
+  const onChange = (input: string) => {
+    const inputValue: CustomRetentionSizeSelect = { ...customRetentionSizeValue, value: Number(input) };
+    setCustomRetentionSizeValue(inputValue);
   };
-
-
-
   return (
     <div className="kafka-ui--radio__parameters">
       <Flex>
         <FlexItem>
-          <NumberInput
-            onMinus={() => handleTouchSpin("-")}
-            onPlus={() => handleTouchSpin("+")}
-            value={
-              Number(
-                topicData["retention.bytes"].value
-              ) /* TODO precision loss from BigInt to Number */
-            }
-            onChange={(event) => onChangeTouchSpin(event)}
-            min={0}
-
+          <TextInput
+            type="number"
+            value={customRetentionSizeValue.value}
+            onChange={onChange}
           />
         </FlexItem>
         <FlexItem>
           <Select
             variant={SelectVariant.single}
             aria-label="Select Input"
-            onToggle={onToggle}
+            onToggle={onRetentionSizeToggle}
             onSelect={(event, value) => onSelect(event, value as string)}
-            selections={unit}
-            isOpen={isRetentionTimeSelectOpen}
+            selections={customRetentionSizeValue.unit}
+            isOpen={isRetentionSizeSelectOpen}
           >
             {retentionSizeSelectOptions?.map((s) => (
               <SelectOption
