@@ -1,7 +1,7 @@
 import { expect } from "@storybook/jest";
 import type { ComponentMeta } from "@storybook/react";
 import { userEvent, waitFor, within } from "@storybook/testing-library";
-import { CreateKafkaInstance } from "../CreateKafkaInstance";
+import { CreateKafkaInstance } from "../../CreateKafkaInstance";
 import {
   argTypes,
   defaultStoryArgs,

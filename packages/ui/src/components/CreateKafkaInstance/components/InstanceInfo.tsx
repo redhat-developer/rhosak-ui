@@ -46,7 +46,7 @@ export type InstanceInfoProps = {
 
   billing:
     | ({
-        value: "prepaid" | MarketplaceSubscription;
+        value: "prepaid" | "dedicated" | MarketplaceSubscription;
       } & BillingHelpProps)
     | undefined;
 };
@@ -184,6 +184,8 @@ export const InstanceInfo: VoidFunctionComponent<InstanceInfoProps> = ({
                         {(() => {
                           if (billing.value === "prepaid") {
                             return t("billing.prepaid_option");
+                          } else if (billing.value === "dedicated") {
+                            return t("billing.dedicated_option");
                           }
                           switch (billing.value.marketplace) {
                             case "aws":

@@ -3,6 +3,8 @@ import type { TableViewProps } from "@rhoas/app-services-ui-components";
 import { TableView } from "@rhoas/app-services-ui-components";
 import type { DedicatedCluster } from "ui-models/src/models/dedicated-cluster";
 import { useDedicatedClusterLabels } from "../../hooks";
+import type { EmptyStateNoDedicatedClustersProps } from "./components";
+import { EmptyStateNoDedicatedClusters } from "./components";
 
 const Columns = ["id", "status"] as const;
 
@@ -13,13 +15,15 @@ export type DedicatedClustersProps<
 } & Pick<
   TableViewProps<T, (typeof Columns)[number]>,
   "itemCount" | "page" | "onPageChange"
->;
+> &
+  EmptyStateNoDedicatedClustersProps;
 
 export const DedicatedClusters = <T extends DedicatedCluster>({
   clusters,
   itemCount,
   page,
   onPageChange,
+  onQuickstartGuide,
 }: DedicatedClustersProps<T>) => {
   const labels = useDedicatedClusterLabels();
   const breakpoint = "lg";
@@ -51,8 +55,14 @@ export const DedicatedClusters = <T extends DedicatedCluster>({
         itemCount={itemCount}
         page={page}
         onPageChange={onPageChange}
-        emptyStateNoData={<div>TODO</div>}
-        emptyStateNoResults={<div>TODO</div>}
+        emptyStateNoData={
+          <EmptyStateNoDedicatedClusters
+            onQuickstartGuide={onQuickstartGuide}
+          />
+        }
+        emptyStateNoResults={
+          <div>&bsp; {/* as users can't filter this is not needed */}</div>
+        }
       />
     </PageSection>
   );

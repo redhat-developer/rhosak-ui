@@ -1,6 +1,6 @@
 import { composeStories } from "@storybook/testing-react";
 import { waitFor } from "@testing-library/react";
-import { renderDialog, waitForI18n, within } from "../../../test-utils";
+import { renderDialog, waitForI18n, within } from "../../../../test-utils";
 
 import * as stories from "./Variants.stories";
 

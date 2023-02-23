@@ -10,7 +10,7 @@ export function useStandardQuota() {
   const ams = account();
 
   return useQuery({
-    queryKey: masQueries.quota.available(),
+    queryKey: masQueries.quota.standardAvailable(),
     queryFn: async () => {
       const organization = await fetchOrganization((...args) =>
         ams.apiAccountsMgmtV1CurrentAccountGet(...args)

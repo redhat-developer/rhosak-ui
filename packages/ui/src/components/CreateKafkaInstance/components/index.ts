@@ -16,5 +16,6 @@ export * from "./InstanceInfo";
 export * from "./InstanceInfoSkeleton";
 export * from "./ModalAlertsLoading";
 export * from "./ModalAlertsStandardPlan";
+export * from "./ModalAlertsDedicatedPlan";
 export * from "./ModalAlertsSystemUnavailable";
 export * from "./ModalAlertsTrialPlan";

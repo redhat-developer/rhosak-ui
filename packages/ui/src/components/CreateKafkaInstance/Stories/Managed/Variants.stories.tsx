@@ -1,5 +1,5 @@
 import type { ComponentMeta } from "@storybook/react";
-import { CreateKafkaInstance } from "../CreateKafkaInstance";
+import { CreateKafkaInstance } from "../../CreateKafkaInstance";
 import {
   argTypes,
   defaultStoryArgs,

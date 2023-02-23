@@ -5,7 +5,7 @@ import { CreateKafkaInstanceContext } from "./CreateKafkaInstanceProvider";
 import type { StandardPlanMachine } from "./StandardPlanMachine";
 import type { TrialPlanMachine } from "./TrialPlanMachine";
 
-export type SelectorReturn = {
+export type UseCreateKafkaInstanceSelectorReturn = {
   standardPlanMachine: ActorRefFrom<typeof StandardPlanMachine> | undefined;
   trialPlanMachine: ActorRefFrom<typeof TrialPlanMachine> | undefined;
   isLoading: boolean;
@@ -18,7 +18,7 @@ export type SelectorReturn = {
 
 export function useCreateKafkaInstance() {
   const { service } = useContext(CreateKafkaInstanceContext);
-  return useSelector<typeof service, SelectorReturn>(
+  return useSelector<typeof service, UseCreateKafkaInstanceSelectorReturn>(
     service,
     useCallback((state) => {
       const standardPlanMachine = state.children["standardPlanService"] as

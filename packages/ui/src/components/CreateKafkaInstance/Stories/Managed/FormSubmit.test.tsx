@@ -1,5 +1,9 @@
 import { composeStories } from "@storybook/testing-react";
-import { renderDialog, waitForI18n, waitForPopper } from "../../../test-utils";
+import {
+  renderDialog,
+  waitForI18n,
+  waitForPopper,
+} from "../../../../test-utils";
 import * as stories from "./FormSubmit.stories";
 
 const {

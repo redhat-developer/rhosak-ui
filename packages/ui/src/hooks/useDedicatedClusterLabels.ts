@@ -9,6 +9,10 @@ export function useDedicatedClusterLabels() {
   } = {
     id: t("fields.id"),
     status: t("fields.status"),
+    cloudProvider: t("fields.cloudProvider"),
+    az: t("fields.az"),
+    cloudRegion: t("fields.cloudRegion"),
+    requiresPrivateNetwork: t("fields.requiresPrivateNetwork"),
   };
   return {
     fields,

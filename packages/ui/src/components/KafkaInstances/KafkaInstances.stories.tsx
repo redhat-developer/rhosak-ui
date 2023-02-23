@@ -4,6 +4,7 @@ import { KafkaInstances as InstancesTableComp } from "./KafkaInstances";
 export default {
   component: InstancesTableComp,
   args: {
+    columns: "standard",
     getUrlForInstance: () => "",
     names: [],
     owners: [],
@@ -36,4 +37,9 @@ export const NoDataWithAFilterShowsTheRightEmptyState = Template.bind({});
 NoDataWithAFilterShowsTheRightEmptyState.args = {
   instances: [],
   names: ["foo"],
+};
+
+export const DedicateInstances = Template.bind({});
+DedicateInstances.args = {
+  columns: "dedicated",
 };

@@ -25,10 +25,9 @@ export type Kafka = {
   connections: number | undefined;
   connectionRate: number | undefined;
   messageSize: Bytes | undefined;
-  billing: "prepaid" | MarketplaceSubscription | undefined;
-
+  billing: "prepaid" | MarketplaceSubscription | "dedicated" | undefined;
+  clusterId: string | undefined;
   version: string;
-
   bootstrapUrl: string | undefined;
   adminUrl: string | undefined;
 };
@@ -80,10 +79,13 @@ export type Size = {
  * single, smaller size option than `standard` ones, and they expire after a
  * few hours.
  *
+ * Plan `enterprise` is the equivalent of `standard` instances but for dedicated
+ * clusters.
+ *
  * Note: a new kind of evaluation instance is being studied. They will have a
  * long expiration period and bigger sizes.
  */
-export type Plan = "standard" | "developer";
+export type Plan = "standard" | "developer" | "dedicated";
 /**
  * All the statuses an instance can be. If new statuses are added, ensure to
  * add them to the relevant status group (`ReadyStatuses` etc.).
@@ -101,7 +103,7 @@ export const Statuses = [
   "resuming",
 ] as const;
 
-export type Status = typeof Statuses[number];
+export type Status = (typeof Statuses)[number];
 
 export const CreatingStatuses: readonly Status[] = [
   "accepted",
