@@ -171,11 +171,7 @@ export const EditPermissionsRoute: VoidFunctionComponent<
           ? "All accounts"
           : match.params.selectedAccount
       }
-      acls={
-        match.params.selectedAccount == "all-accounts"
-          ? existingAcls || []
-          : aclsForSelectedAccount || []
-      }
+      acls={aclsForSelectedAccount || []}
     />
   );
 };
