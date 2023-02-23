@@ -47,32 +47,28 @@ export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
   const handleRetentionMessageSize = (value: RetentionSizeRadioSelect) => {
     if (value === "unlimited") {
       setCustomRetentionSizeValue({ value: -1, unit: "unlimited" });
-      setCustomRetentionRadioSelect("unlimited");
     } else {
       setCustomRetentionSizeValue({ value: 1, unit: "bytes" });
-      setCustomRetentionRadioSelect("custom");
     }
+    setCustomRetentionRadioSelect(value)
   };
 
   const retentionTime = (value: RadioSelectType) => {
     switch (value) {
       case "day":
         setCustomValue({ value: 1, unit: "days" });
-        setRadioSelectValue("day");
         break;
       case "week":
         setCustomValue({ value: 1, unit: "weeks" });
-        setRadioSelectValue("week");
         break;
       case "custom":
         setCustomValue({ value: 7, unit: "days" });
-        setRadioSelectValue("custom");
         break;
       case "unlimited":
         setCustomValue({ value: -1, unit: "unlimited" });
-        setRadioSelectValue("unlimited");
         break;
     }
+    setRadioSelectValue(value)
   };
 
   return (

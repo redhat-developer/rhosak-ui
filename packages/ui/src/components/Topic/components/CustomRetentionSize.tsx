@@ -62,7 +62,7 @@ const CustomRetentionSize: React.FC<CustomRetentionSizeProps> = ({
             variant={SelectVariant.single}
             aria-label="Select Input"
             onToggle={onRetentionSizeToggle}
-            onSelect={(event, value) => onSelect(event, value as string)}
+            onSelect={onSelect}
             selections={customRetentionSizeValue.unit}
             isOpen={isRetentionSizeSelectOpen}
           >
