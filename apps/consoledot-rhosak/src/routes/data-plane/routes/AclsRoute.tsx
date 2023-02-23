@@ -1,8 +1,11 @@
-import { usePaginationSearchParams } from "@rhoas/app-services-ui-components";
+import {
+  Loading,
+  usePaginationSearchParams,
+} from "@rhoas/app-services-ui-components";
 import { useCallback } from "react";
 import type { VoidFunctionComponent } from "react";
 import type { Account } from "ui";
-import { PermissionsTable, PrincipalType } from "ui";
+import { PermissionsTable } from "ui";
 import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
 import { useDeletePermissionsMutation } from "consoledot-api";
 import { useHistory } from "react-router-dom";
@@ -17,31 +20,9 @@ export const AclsRoute: VoidFunctionComponent<
 > = ({ instancesHref, managePermissionsHref }) => {
   const { page, perPage, setPagination, setPaginationQuery } =
     usePaginationSearchParams();
-  const { instance, acls, accounts, serviceAccounts } =
-    usePermissionsTableGate();
+  const { instance, acls, allAccounts } = usePermissionsTableGate();
   const { mutateAsync } = useDeletePermissionsMutation();
   const dispatch = useDispatch();
-
-  const userAccounts: Account[] = accounts.accounts.map((userAccount) => {
-    return {
-      id: userAccount.username,
-      displayName: userAccount.displayName,
-      email: userAccount.email,
-      principalType: PrincipalType.UserAccount,
-    };
-  });
-
-  const serviceAccountList: Account[] = serviceAccounts.serviceAccounts.map(
-    (serviceAccount) => {
-      return {
-        id: serviceAccount.id,
-        displayName: serviceAccount.displayName,
-        principalType: PrincipalType.ServiceAccount,
-      };
-    }
-  );
-
-  const allAccounts = [...serviceAccountList, ...userAccounts];
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
@@ -49,17 +30,17 @@ export const AclsRoute: VoidFunctionComponent<
   const onDeleteSelected = useCallback(
     (rowIndex: number[]) => {
       rowIndex.map((value) => {
-        const rowToDelete = acls.groups[value];
+        const rowToDelete = acls?.groups[value];
         void mutateAsync({
           instanceId: instance.id,
           adminUrl: instance.adminUrl || "",
           acl: {
-            patternType: rowToDelete.resource.patternType,
-            permissionType: rowToDelete.permission.permission,
-            principal: rowToDelete.account,
-            resourceName: rowToDelete.resource.resourceName,
-            operation: rowToDelete.permission.operation,
-            resourceType: rowToDelete.resource.resourceType,
+            patternType: rowToDelete?.resource.patternType,
+            permissionType: rowToDelete?.permission.permission,
+            principal: rowToDelete?.account,
+            resourceName: rowToDelete?.resource.resourceName,
+            operation: rowToDelete?.permission.operation,
+            resourceType: rowToDelete?.resource.resourceType,
           },
           onError: (_, message) => {
             dispatch(
@@ -77,22 +58,22 @@ export const AclsRoute: VoidFunctionComponent<
         });
       });
     },
-    [acls.groups, mutateAsync, instance.id, instance.adminUrl, dispatch]
+    [acls?.groups, mutateAsync, instance.id, instance.adminUrl, dispatch]
   );
 
   const onDelete = useCallback(
     (rowIndex: number) => {
-      const rowToDelete = acls.groups[rowIndex];
+      const rowToDelete = acls?.groups[rowIndex];
       void mutateAsync({
         instanceId: instance.id,
         adminUrl: instance.adminUrl || "",
         acl: {
-          patternType: rowToDelete.resource.patternType,
-          permissionType: rowToDelete.permission.permission,
-          principal: rowToDelete.account,
-          resourceName: rowToDelete.resource.resourceName,
-          operation: rowToDelete.permission.operation,
-          resourceType: rowToDelete.resource.resourceType,
+          patternType: rowToDelete?.resource.patternType,
+          permissionType: rowToDelete?.permission.permission,
+          principal: rowToDelete?.account,
+          resourceName: rowToDelete?.resource.resourceName,
+          operation: rowToDelete?.permission.operation,
+          resourceType: rowToDelete?.resource.resourceType,
         },
         onError: (_, message) => {
           dispatch(
@@ -109,7 +90,7 @@ export const AclsRoute: VoidFunctionComponent<
         },
       });
     },
-    [acls.groups, mutateAsync, instance.id, instance.adminUrl, dispatch]
+    [acls?.groups, mutateAsync, instance.id, instance.adminUrl, dispatch]
   );
 
   const onManagePermissionsActionItem = useCallback(
@@ -130,19 +111,23 @@ export const AclsRoute: VoidFunctionComponent<
         instancesHref={instancesHref}
         activeSection={"permissions"}
       />
-      <PermissionsTable
-        allAccounts={allAccounts}
-        permissions={acls.groups}
-        onDelete={onDelete}
-        onDeleteSelected={onDeleteSelected}
-        onManagePermissions={onManagePermission}
-        onPerPageChange={setPaginationQuery}
-        itemCount={acls.count}
-        page={page}
-        perPage={perPage}
-        onPageChange={setPagination}
-        onManagePermissionsActionItem={onManagePermissionsActionItem}
-      />
+      {acls?.groups != undefined &&allAccounts!=undefined? (
+        <PermissionsTable
+          allAccounts={allAccounts as Account[]}
+          permissions={acls.groups}
+          onDelete={onDelete}
+          onDeleteSelected={onDeleteSelected}
+          onManagePermissions={onManagePermission}
+          onPerPageChange={setPaginationQuery}
+          itemCount={acls.count}
+          page={page}
+          perPage={perPage}
+          onPageChange={setPagination}
+          onManagePermissionsActionItem={onManagePermissionsActionItem}
+        />
+      ) : (
+        <Loading />
+      )}
     </>
   );
 };

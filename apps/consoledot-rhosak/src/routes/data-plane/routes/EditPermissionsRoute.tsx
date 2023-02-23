@@ -11,6 +11,7 @@ import { usePermissionsGate } from "../usePermissionsGate";
 import { useHistory } from "react-router-dom";
 import type { AclBinding } from "@rhoas/kafka-instance-sdk";
 import type { DataPlanePermissionsNavigationProps } from "../routesConsts";
+import { Loading } from "@rhoas/app-services-ui-components";
 
 export const EditPermissionsRoute: VoidFunctionComponent<
   DataPlanePermissionsNavigationProps
@@ -20,10 +21,10 @@ export const EditPermissionsRoute: VoidFunctionComponent<
 
   const dispatch = useDispatch();
 
-  const consumerGroupsList = consumerGroups.groups.map(
+  const consumerGroupsList = consumerGroups?.groups.map(
     (consumer) => consumer.groupId
   );
-  const topicsList = topics.topics.map((topic) => topic.name);
+  const topicsList = topics?.topics.map((topic) => topic.name);
   const { mutateAsync } = useDeletePermissionsMutation();
   const updatePermissions = useUpdatePermissionsMutation();
 
@@ -110,7 +111,7 @@ export const EditPermissionsRoute: VoidFunctionComponent<
     ]
   );
 
-  const existingAcls: AclBinding[] = acls.groups.map((acl) => {
+  const existingAcls: AclBinding[] | undefined = acls?.groups.map((acl) => {
     return {
       resourceName: acl.resource.resourceName,
       patternType: acl.resource.patternType,
@@ -121,7 +122,7 @@ export const EditPermissionsRoute: VoidFunctionComponent<
     };
   });
 
-  const aclsForSelectedAccount = existingAcls.filter(
+  const aclsForSelectedAccount = existingAcls?.filter(
     (value) =>
       value.principal == `User:${match.params.selectedAccount}` ||
       value.principal == "User:*"
@@ -133,22 +134,29 @@ export const EditPermissionsRoute: VoidFunctionComponent<
   }, [history, instance.id, managePermissionsHref]);
 
   return (
-    <EditPermissions
-      onCancel={onClose}
-      kafkaName={instance.name}
-      onSave={onSaveAcls}
-      topicsList={topicsList}
-      consumerGroupsList={consumerGroupsList}
-      selectedAccount={
-        match.params.selectedAccount == "all-accounts"
-          ? "All accounts"
-          : match.params.selectedAccount
-      }
-      acls={
-        match.params.selectedAccount == "all-accounts"
-          ? existingAcls
-          : aclsForSelectedAccount
-      }
-    />
+    <>
+      {topicsList != undefined &&
+        consumerGroupsList != undefined &&
+        aclsForSelectedAccount != undefined &&
+        existingAcls != undefined && (
+          <EditPermissions
+            onCancel={onClose}
+            kafkaName={instance.name}
+            onSave={onSaveAcls}
+            topicsList={topicsList}
+            consumerGroupsList={consumerGroupsList}
+            selectedAccount={
+              match.params.selectedAccount == "all-accounts"
+                ? "All accounts"
+                : match.params.selectedAccount
+            }
+            acls={
+              match.params.selectedAccount == "all-accounts"
+                ? existingAcls
+                : aclsForSelectedAccount
+            }
+          />
+        )}
+    </>
   );
 };
