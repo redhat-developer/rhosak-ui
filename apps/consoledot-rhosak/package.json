@@ -72,7 +72,7 @@
     "@redhat-cloud-services/frontend-components-config": "4.7.0",
     "@testing-library/jest-dom": "5.16.5",
     "@testing-library/react": "12.1.5",
-    "@types/react": "17.0.52",
+    "@types/react": "17.0.53",
     "@types/react-dom": "18.0.5",
     "@types/react-router-dom": "5.3.3",
     "@types/redux-logger": "3.0.9",
