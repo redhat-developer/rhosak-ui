@@ -6,16 +6,32 @@ import { useHistory } from "react-router-dom";
 import type { DataPlanePermissionsNavigationProps } from "../routesConsts";
 import { SelectAccount } from "ui";
 import { editPermissionsHref } from "../DataPlaneRoutes";
-import { useSelectAccountsGate } from "../useSelectAccountsGate";
 import { useChrome } from "@redhat-cloud-services/frontend-components/useChrome";
+import { useServiceAccounts, useUserAccounts } from "consoledot-api";
+import { useDataPlaneGate } from "../useDataPlaneGate";
 export const ManagePermissionsRoute: VoidFunctionComponent<
   DataPlanePermissionsNavigationProps
 > = ({ managePermissionsHref }) => {
   const [loggedInUser, setCurrentlyLoggedInUser] = useState<
     string | undefined
   >();
-  const { instance, accounts, serviceAccounts } = useSelectAccountsGate();
   const { auth } = useChrome();
+  const { instance } = useDataPlaneGate();
+  const { data: accounts } = useUserAccounts(
+    {
+      id: instance.id,
+      adminUrl: instance.adminUrl,
+    },
+    true
+  );
+
+  const { data: serviceAccounts } = useServiceAccounts(
+    {
+      id: instance.id,
+      adminUrl: instance.adminUrl,
+    },
+    true
+  );
 
   useEffect(() => {
     const getUsername = async () => {
@@ -25,26 +41,30 @@ export const ManagePermissionsRoute: VoidFunctionComponent<
     void getUsername();
   }, [auth]);
 
-  const userAccounts: Account[] = accounts.accounts.map((userAccount) => {
-    return {
-      displayName: userAccount.displayName,
-      id: userAccount.username,
-      principalType: PrincipalType.UserAccount,
-    };
-  });
-
-  const serviceAccountList: Account[] = serviceAccounts.serviceAccounts.map(
+  const userAccounts: Account[] | undefined = accounts?.accounts.map(
     (userAccount) => {
+      return {
+        displayName: userAccount.displayName,
+        id: userAccount.username,
+        principalType: PrincipalType.UserAccount,
+      };
+    }
+  );
+
+  const serviceAccountList: Account[] | undefined =
+    serviceAccounts?.serviceAccounts.map((userAccount) => {
       return {
         displayName: userAccount.displayName,
         id: userAccount.id,
         principalType: PrincipalType.ServiceAccount,
       };
-    }
-  );
+    });
 
-  const allAccounts = [...serviceAccountList, ...userAccounts];
-  const filteredAccounts = allAccounts.filter(
+  const allAccounts =
+    userAccounts != undefined && serviceAccountList != undefined
+      ? [...serviceAccountList, ...userAccounts]
+      : undefined;
+  const filteredAccounts = allAccounts?.filter(
     (value) => value.id !== instance.owner && value.id !== loggedInUser
   );
 
