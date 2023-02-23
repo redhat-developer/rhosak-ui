@@ -1,31 +1,76 @@
-import {
-  Loading,
-  usePaginationSearchParams,
-} from "@rhoas/app-services-ui-components";
+import { usePaginationSearchParams } from "@rhoas/app-services-ui-components";
 import { useCallback } from "react";
 import type { VoidFunctionComponent } from "react";
 import type { Account } from "ui";
+import { PrincipalType } from "ui";
 import { PermissionsTable } from "ui";
 import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
-import { useDeletePermissionsMutation } from "consoledot-api";
+import {
+  useAcls,
+  useDeletePermissionsMutation,
+  useServiceAccounts,
+  useUserAccounts,
+} from "consoledot-api";
 import { useHistory } from "react-router-dom";
 import type { DataPlanePermissionsNavigationProps } from "../routesConsts";
 import { addNotification } from "@redhat-cloud-services/frontend-components-notifications";
 import { useDispatch } from "react-redux";
 import { editPermissionsHref } from "../DataPlaneRoutes";
-import { usePermissionsTableGate } from "../usePermissionsTableGate";
+import { useDataPlaneGate } from "../useDataPlaneGate";
 
 export const AclsRoute: VoidFunctionComponent<
   DataPlanePermissionsNavigationProps
 > = ({ instancesHref, managePermissionsHref }) => {
   const { page, perPage, setPagination, setPaginationQuery } =
     usePaginationSearchParams();
-  const { instance, acls, allAccounts } = usePermissionsTableGate();
+  const { instance } = useDataPlaneGate();
   const { mutateAsync } = useDeletePermissionsMutation();
   const dispatch = useDispatch();
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
+
+  const { data: acls } = useAcls({
+    id: instance.id,
+    adminUrl: instance.adminUrl,
+    page,
+    perPage,
+  });
+
+  const { data: accounts } = useUserAccounts({
+    id: instance.id,
+    adminUrl: instance.adminUrl,
+  });
+
+  const { data: serviceAccounts } = useServiceAccounts({
+    id: instance.id,
+    adminUrl: instance.adminUrl,
+  });
+
+  const userAccounts: Account[] | undefined = accounts?.accounts.map(
+    (userAccount) => {
+      return {
+        id: userAccount.username,
+        displayName: userAccount.displayName,
+        email: userAccount.email,
+        principalType: PrincipalType.UserAccount,
+      };
+    }
+  );
+
+  const serviceAccountList: Account[] | undefined =
+    serviceAccounts?.serviceAccounts.map((serviceAccount) => {
+      return {
+        id: serviceAccount.id,
+        displayName: serviceAccount.displayName,
+        principalType: PrincipalType.ServiceAccount,
+      };
+    });
+
+  const allAccounts =
+    serviceAccountList != undefined && userAccounts != undefined
+      ? [...serviceAccountList, ...userAccounts]
+      : undefined;
 
   const onDeleteSelected = useCallback(
     (rowIndex: number[]) => {
@@ -111,23 +156,20 @@ export const AclsRoute: VoidFunctionComponent<
         instancesHref={instancesHref}
         activeSection={"permissions"}
       />
-      {acls?.groups != undefined &&allAccounts!=undefined? (
-        <PermissionsTable
-          allAccounts={allAccounts as Account[]}
-          permissions={acls.groups}
-          onDelete={onDelete}
-          onDeleteSelected={onDeleteSelected}
-          onManagePermissions={onManagePermission}
-          onPerPageChange={setPaginationQuery}
-          itemCount={acls.count}
-          page={page}
-          perPage={perPage}
-          onPageChange={setPagination}
-          onManagePermissionsActionItem={onManagePermissionsActionItem}
-        />
-      ) : (
-        <Loading />
-      )}
+
+      <PermissionsTable
+        allAccounts={allAccounts}
+        permissions={acls?.groups}
+        onDelete={onDelete}
+        onDeleteSelected={onDeleteSelected}
+        onManagePermissions={onManagePermission}
+        onPerPageChange={setPaginationQuery}
+        itemCount={acls?.count}
+        page={page}
+        perPage={perPage}
+        onPageChange={setPagination}
+        onManagePermissionsActionItem={onManagePermissionsActionItem}
+      />
     </>
   );
 };
