@@ -7,21 +7,23 @@ import {
   SelectVariant,
 } from "@patternfly/react-core";
 import type React from "react";
-import { CustomRetentionSizeSelect, CustomRetentionUnit, retentionSizeSelectOptions } from "./types";
-import { useState } from 'react';
-
+import {
+  CustomRetentionSizeSelect,
+  CustomRetentionUnit,
+  retentionSizeSelectOptions,
+} from "./types";
+import { useState } from "react";
 
 export type CustomRetentionSizeProps = {
   id?: string;
   customRetentionSizeValue: CustomRetentionSizeSelect;
-  setCustomRetentionSizeValue: (data: CustomRetentionSizeSelect) => void
+  setCustomRetentionSizeValue: (data: CustomRetentionSizeSelect) => void;
 };
 
 const CustomRetentionSize: React.FC<CustomRetentionSizeProps> = ({
   customRetentionSizeValue,
-  setCustomRetentionSizeValue
+  setCustomRetentionSizeValue,
 }) => {
-
   const [isRetentionSizeSelectOpen, setIsRetentionSizeSelectOpen] =
     useState<boolean>(false);
 
@@ -32,14 +34,17 @@ const CustomRetentionSize: React.FC<CustomRetentionSizeProps> = ({
   const onSelect: SelectProps["onSelect"] = (event, value) => {
     const inputUnit: CustomRetentionSizeSelect = {
       unit: value as CustomRetentionUnit,
-      value: 0
-    }
+      value: 0,
+    };
     setCustomRetentionSizeValue(inputUnit);
     onRetentionSizeToggle(false);
   };
 
   const onChange = (input: string) => {
-    const inputValue: CustomRetentionSizeSelect = { ...customRetentionSizeValue, value: Number(input) };
+    const inputValue: CustomRetentionSizeSelect = {
+      ...customRetentionSizeValue,
+      value: Number(input),
+    };
     setCustomRetentionSizeValue(inputValue);
   };
   return (

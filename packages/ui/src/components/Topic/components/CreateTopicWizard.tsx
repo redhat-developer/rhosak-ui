@@ -22,8 +22,13 @@ import {
 import { PartitionLimitWarning } from "./PartitionLimitWarning";
 import { retentionTimeTransformer } from "./retentionTimeTransformer";
 import { TopicAdvancePage } from "./TopicAdvancePage";
-import { CustomRetentionSizeSelect, CustomSelect, RadioSelectType, RetentionSizeRadioSelect } from "./types";
-import { retentionSizeTransformer } from './retentionSizeTransformer';
+import {
+  CustomRetentionSizeSelect,
+  CustomSelect,
+  RadioSelectType,
+  RetentionSizeRadioSelect,
+} from "./types";
+import { retentionSizeTransformer } from "./retentionSizeTransformer";
 
 export type CreateTopicWizardProps = {
   isSwitchChecked: boolean;
@@ -50,7 +55,8 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
     value: 7,
   });
 
-  const [customRetentionSizeValue, setCustomRetentionSizeValue] = useState<CustomRetentionSizeSelect>({ unit: "bytes", value: 1 })
+  const [customRetentionSizeValue, setCustomRetentionSizeValue] =
+    useState<CustomRetentionSizeSelect>({ unit: "bytes", value: 1 });
 
   const [topicNameValidated, setTopicNameValidated] =
     useState<ValidatedOptions>(ValidatedOptions.default);
@@ -61,7 +67,8 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
   const [radioSelectValue, setRadioSelectValue] =
     useState<RadioSelectType>("week");
 
-  const [customRetentionRadioSelect, setCustomRetentionRadioSelect] = useState<RetentionSizeRadioSelect>("unlimited")
+  const [customRetentionRadioSelect, setCustomRetentionRadioSelect] =
+    useState<RetentionSizeRadioSelect>("unlimited");
 
   const closeWizard = () => {
     onCloseCreateTopic && onCloseCreateTopic();
@@ -127,15 +134,15 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
 
   const title = t("wizard_title");
 
-
-
   const onTransform = () => {
     const tranformedValueInMilliseconds = retentionTimeTransformer(customValue);
-    const tranformedValueInBytes = retentionSizeTransformer(customRetentionSizeValue)
+    const tranformedValueInBytes = retentionSizeTransformer(
+      customRetentionSizeValue
+    );
     const transformedTopic: Topic = {
       ...topicData,
       "retention.ms": { type: "ms", value: tranformedValueInMilliseconds },
-      "retention.bytes": { type: "bytes", value: tranformedValueInBytes }
+      "retention.bytes": { type: "bytes", value: tranformedValueInBytes },
     };
     onSaveTopic(transformedTopic);
   };
