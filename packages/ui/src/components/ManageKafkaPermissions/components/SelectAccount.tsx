@@ -18,7 +18,7 @@ import {
 import { HelpIcon } from "@patternfly/react-icons";
 
 export type SelectAccountProps = {
-  accounts: Account[];
+  accounts: Account[] | undefined;
   initialOpen?: boolean;
   kafkaName: string;
   id?: string;
@@ -75,7 +75,7 @@ export const SelectAccount: React.VFC<SelectAccountProps> = ({
     const filter = filterValue.toLowerCase();
     const filteredAccounts =
       filter !== ""
-        ? accounts.filter(
+        ? accounts?.filter(
             (principal) =>
               principal.displayName.toLowerCase().includes(filter) ||
               principal.id.includes(filter)
@@ -83,7 +83,7 @@ export const SelectAccount: React.VFC<SelectAccountProps> = ({
         : accounts;
 
     const serviceAccountOptions = filteredAccounts
-      .filter(
+      ?.filter(
         (principal) => principal.principalType === PrincipalType.ServiceAccount
       )
       .sort((a, b) =>
@@ -102,7 +102,7 @@ export const SelectAccount: React.VFC<SelectAccountProps> = ({
       ));
 
     const userAccountOperations = filteredAccounts
-      .filter(
+      ?.filter(
         (principal) => principal.principalType === PrincipalType.UserAccount
       )
       .map((principal, index) => (
@@ -131,7 +131,7 @@ export const SelectAccount: React.VFC<SelectAccountProps> = ({
         label={t("all_accounts_service_account_group")}
         key="service_accounts_group"
       >
-        {serviceAccountOptions.length
+        {serviceAccountOptions?.length
           ? serviceAccountOptions
           : noServiceAccounts}
       </SelectGroup>,
@@ -140,7 +140,7 @@ export const SelectAccount: React.VFC<SelectAccountProps> = ({
         label={t("all_accounts_user_account_group")}
         key="user_accounts_group"
       >
-        {userAccountOperations.length ? userAccountOperations : noUserAccounts}
+        {userAccountOperations?.length ? userAccountOperations : noUserAccounts}
       </SelectGroup>,
     ];
   }

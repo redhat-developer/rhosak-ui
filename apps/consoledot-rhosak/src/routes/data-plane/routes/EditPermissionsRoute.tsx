@@ -4,20 +4,46 @@ import { EditPermissions } from "ui";
 import { addNotification } from "@redhat-cloud-services/frontend-components-notifications";
 import { useDispatch } from "react-redux";
 import {
+  useAcls,
+  useConsumerGroups,
   useDeletePermissionsMutation,
+  useTopics,
   useUpdatePermissionsMutation,
 } from "consoledot-api";
-import { usePermissionsGate } from "../usePermissionsGate";
-import { useHistory } from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import type { AclBinding } from "@rhoas/kafka-instance-sdk";
-import type { DataPlanePermissionsNavigationProps } from "../routesConsts";
-import { Loading } from "@rhoas/app-services-ui-components";
-
+import type {
+  DataPlanePermissionsNavigationProps,
+  DataPlanePermissionsRouteParams,
+} from "../routesConsts";
+import { DataPlanePermissionsRoutePath } from "../routesConsts";
+import { useDataPlaneGate } from "../useDataPlaneGate";
 export const EditPermissionsRoute: VoidFunctionComponent<
   DataPlanePermissionsNavigationProps
 > = ({ managePermissionsHref }) => {
-  const { instance, match, topics, consumerGroups, acls } =
-    usePermissionsGate();
+  const { instance } = useDataPlaneGate();
+  const match = useRouteMatch<DataPlanePermissionsRouteParams>(
+    DataPlanePermissionsRoutePath
+  );
+  if (!match) {
+    throw Error("EditPermissions used outside the expected route");
+  }
+
+  const { data: acls } = useAcls({
+    id: instance.id,
+    adminUrl: instance.adminUrl,
+  });
+
+  const { data: topics } = useTopics({
+    id: instance.id,
+    adminUrl: instance.adminUrl,
+    plan: instance.plan,
+  });
+
+  const { data: consumerGroups } = useConsumerGroups({
+    id: instance.id,
+    adminUrl: instance.adminUrl,
+  });
 
   const dispatch = useDispatch();
 
@@ -134,29 +160,22 @@ export const EditPermissionsRoute: VoidFunctionComponent<
   }, [history, instance.id, managePermissionsHref]);
 
   return (
-    <>
-      {topicsList != undefined &&
-        consumerGroupsList != undefined &&
-        aclsForSelectedAccount != undefined &&
-        existingAcls != undefined && (
-          <EditPermissions
-            onCancel={onClose}
-            kafkaName={instance.name}
-            onSave={onSaveAcls}
-            topicsList={topicsList}
-            consumerGroupsList={consumerGroupsList}
-            selectedAccount={
-              match.params.selectedAccount == "all-accounts"
-                ? "All accounts"
-                : match.params.selectedAccount
-            }
-            acls={
-              match.params.selectedAccount == "all-accounts"
-                ? existingAcls
-                : aclsForSelectedAccount
-            }
-          />
-        )}
-    </>
+    <EditPermissions
+      onCancel={onClose}
+      kafkaName={instance.name}
+      onSave={onSaveAcls}
+      topicsList={topicsList || []}
+      consumerGroupsList={consumerGroupsList || []}
+      selectedAccount={
+        match.params.selectedAccount == "all-accounts"
+          ? "All accounts"
+          : match.params.selectedAccount
+      }
+      acls={
+        match.params.selectedAccount == "all-accounts"
+          ? existingAcls || []
+          : aclsForSelectedAccount || []
+      }
+    />
   );
 };

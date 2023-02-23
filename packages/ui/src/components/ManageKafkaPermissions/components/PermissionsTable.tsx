@@ -16,7 +16,7 @@ const Columns: SubUnion<
 >[] = ["account", "permission", "resource"];
 
 export type PermissionsTableProps<T extends Permissions> = {
-  allAccounts: Account[];
+  allAccounts: Account[] | undefined;
   permissions: Array<T> | undefined;
   onDelete: (rowIndex: number) => void;
   onDeleteSelected: (rowIndex: number[]) => void;
@@ -115,7 +115,7 @@ export const PermissionsTable = <T extends Permissions>({
                         principal={row.account}
                         isDeleteEnabled={false}
                         allAccounts={
-                          allAccounts.filter(
+                          allAccounts?.filter(
                             (value) => `User:${value.id}` == row.account
                           )[0]
                         }
