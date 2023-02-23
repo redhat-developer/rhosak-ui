@@ -1,5 +1,5 @@
 import { PageSection } from "@patternfly/react-core";
-import type { FunctionComponent } from "react";
+import { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { Topic } from "ui-models/src/models/topic";
 import { TopicAdvancePage } from "../components/TopicAdvancePage";
@@ -7,12 +7,17 @@ import { TopicAdvancePage } from "../components/TopicAdvancePage";
 export type EditTopicPropertiesProps = {
   topic: Topic;
   onCancel: () => void;
+  checkTopicName: (value: string) => Promise<boolean>;
+  onConfirm: () => void
 };
 
 export const EditTopicProperties: FunctionComponent<
   EditTopicPropertiesProps
-> = ({ topic }) => {
+> = ({ topic, onCancel, checkTopicName, onConfirm }) => {
   const { t } = useTranslation(["create-topic"]);
+
+  const [topicData, setTopicData] = useState<Topic>(topic);
+
   return (
     <PageSection
       variant={"light"}
@@ -22,11 +27,11 @@ export const EditTopicProperties: FunctionComponent<
     >
       <TopicAdvancePage
         isCreate={false}
-        onConfirm={() => {}}
-        handleCancel={() => {}}
-        topicData={topic}
-        setTopicData={() => {}}
-        checkTopicName={() => Promise.resolve(true)}
+        onConfirm={onConfirm}
+        handleCancel={onCancel}
+        topicData={topicData}
+        setTopicData={setTopicData}
+        checkTopicName={checkTopicName}
         availablePartitionLimit={3}
       />
     </PageSection>

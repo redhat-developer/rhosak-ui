@@ -14,6 +14,7 @@ import type React from "react";
 import type { Topic } from "ui-models/src/models/topic";
 import { TextWithLabelPopover } from "./TextWithLabelPopover";
 import type { IDropdownOption } from "./types";
+import { TopicConfig } from 'ui-models/src/models/topic-config';
 
 export type LogProps = {
   topicData: Topic;
@@ -46,18 +47,17 @@ const Log: React.FC<LogProps> = ({
       isDisabled: false,
     },
     {
-      key: "compact-delete",
+      key: "delete, compact",
       value: "compact,delete",
       label: `${t("compact")},${t("common:delete")}`,
       isDisabled: false,
     },
   ];
 
-  console.log(topicData)
-  const onSelectOption = (value: string, name: string) => {
+  const onSelectOption = (value: string) => {
     setTopicData({
       ...topicData,
-      ...{ cleanupPolicy: value as "delete" | "compact" | "delete,compact" }
+      "cleanup.policy": value as TopicConfig["cleanup.policy"],
     });
   };
 
