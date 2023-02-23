@@ -17,21 +17,15 @@ export const ManagePermissionsRoute: VoidFunctionComponent<
   >();
   const { auth } = useChrome();
   const { instance } = useDataPlaneGate();
-  const { data: accounts } = useUserAccounts(
-    {
-      id: instance.id,
-      adminUrl: instance.adminUrl,
-    },
-    true
-  );
+  const { data: accounts } = useUserAccounts({
+    id: instance.id,
+    adminUrl: instance.adminUrl,
+  });
 
-  const { data: serviceAccounts } = useServiceAccounts(
-    {
-      id: instance.id,
-      adminUrl: instance.adminUrl,
-    },
-    true
-  );
+  const { data: serviceAccounts } = useServiceAccounts({
+    id: instance.id,
+    adminUrl: instance.adminUrl,
+  });
 
   useEffect(() => {
     const getUsername = async () => {
