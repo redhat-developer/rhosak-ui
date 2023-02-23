@@ -20,9 +20,9 @@ import {
   WizardCustomFooter,
 } from "./index";
 import { PartitionLimitWarning } from "./PartitionLimitWarning";
+import { retentionTimeTransformer } from "./retentionTimeTransformer";
 import { TopicAdvancePage } from "./TopicAdvancePage";
-import { CustomSelect } from './types';
-
+import type { CustomSelect, RadioSelectType } from "./types";
 
 export type CreateTopicWizardProps = {
   isSwitchChecked: boolean;
@@ -44,7 +44,10 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
 }) => {
   const { t } = useTranslation(["create-topic", "common"]);
 
-  const [customValue, setCustomValue] = useState<CustomSelect>({ unit: "days", value: 7 });
+  const [customValue, setCustomValue] = useState<CustomSelect>({
+    unit: "days",
+    value: 7,
+  });
 
   const [topicNameValidated, setTopicNameValidated] =
     useState<ValidatedOptions>(ValidatedOptions.default);
@@ -52,53 +55,12 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
   const [invalidText, setInvalidText] = useState<string>("");
   const [topicData, setTopicData] = useState<Topic>(initialFieldsValue);
   const [warningModalOpen, setWarningModalOpen] = useState<boolean>(false);
+  const [radioSelectValue, setRadioSelectValue] =
+    useState<RadioSelectType>("week");
 
   const closeWizard = () => {
     onCloseCreateTopic && onCloseCreateTopic();
   };
-
-  // const convertToMilliseconds = () => {
-  //   switch (customValue.unit) {
-  //     case "days": {
-  //       const convertedValue = convert(customValue.value, "days").to("ms")
-  //       setTopicData({
-  //         ...topicData,
-  //         "retention.ms": { type: "ms", value: convertedValue },
-  //       })
-  //     }
-  //       break;
-  //     case "hours": {
-  //       const convertedValue = convert(customValue.value, "hours").to("ms")
-  //       setTopicData({
-  //         ...topicData,
-  //         "retention.ms": { type: "ms", value: convertedValue },
-  //       })
-  //     }
-  //       break;
-  //     case "minutes": {
-  //       const convertedValue = convert(customValue.value, "minutes").to("ms")
-  //       setTopicData({
-  //         ...topicData,
-  //         "retention.ms": { type: "ms", value: convertedValue },
-  //       })
-  //     }
-  //       break;
-  //     case "seconds": {
-  //       const convertedValue = convert(customValue.value, "seconds").to("ms")
-  //       setTopicData({
-  //         ...topicData,
-  //         "retention.ms": { type: "ms", value: convertedValue },
-  //       })
-  //     }
-  //       break;
-  //     case "milliseconds": setTopicData({
-  //       ...topicData,
-  //       "retention.ms": { type: "ms", value: customValue.value },
-  //     })
-  //       break;
-  //   }
-  // }
-
 
   const steps: WizardStep[] = [
     {
@@ -136,7 +98,10 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
           customValue={customValue}
           setCustomValue={setCustomValue}
           newTopicData={topicData}
-          onChangeMessageRetention={setTopicData} />
+          onChangeMessageRetention={setTopicData}
+          radioSelectValue={radioSelectValue}
+          setRadioSelectValue={setRadioSelectValue}
+        />
       ),
     },
     {
@@ -155,6 +120,14 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
 
   const title = t("wizard_title");
 
+  const onTransform = () => {
+    const tranformedValueInMilliseconds = retentionTimeTransformer(customValue);
+    const transformedTopic: Topic = {
+      ...topicData,
+      "retention.ms": { type: "ms", value: tranformedValueInMilliseconds },
+    };
+    onSaveTopic(transformedTopic);
+  };
   const onValidate: IWizardFooter["onValidate"] = (onNext) => {
     if (topicData?.name.length < 1) {
       setInvalidText(t("common:required"));
@@ -172,10 +145,10 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
         .finally(() => setIsLoading(false));
     }
   };
-  const onSaveTopic = () => {
+  const onSaveTopic = (transformedTopic: Topic) => {
     if (topicData.partitions.length >= availablePartitionLimit)
       setWarningModalOpen(true);
-    else onSave(topicData);
+    else onSave(transformedTopic);
   };
   return (
     <>
@@ -190,7 +163,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
             {
               <TopicAdvancePage
                 isCreate={true}
-                onConfirm={onSaveTopic}
+                onConfirm={onTransform}
                 handleCancel={onCloseCreateTopic}
                 topicData={topicData}
                 setTopicData={setTopicData}
@@ -220,7 +193,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
             mainAriaLabel={`${title} content`}
             steps={steps}
             onClose={closeWizard}
-            onSave={onSaveTopic}
+            onSave={onTransform}
             data-testid="topicBasicCreate-Wizard"
             footer={
               <WizardCustomFooter

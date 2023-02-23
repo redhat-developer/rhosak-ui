@@ -1,4 +1,5 @@
-import { NumberInputProps, SelectProps, TextInput } from "@patternfly/react-core";
+import type { SelectProps } from "@patternfly/react-core";
+import { TextInput } from "@patternfly/react-core";
 import {
   Flex,
   FlexItem,
@@ -7,71 +8,66 @@ import {
   SelectVariant,
 } from "@patternfly/react-core";
 import type React from "react";
-import { CustomSelect, TimeUnit, retentionTimeSelectOptions } from "./types";
+import { useState } from "react";
+import type { CustomSelect, TimeUnit } from "./types";
+import { retentionTimeSelectOptions } from "./types";
 
-
-
-export type CustomRetentionMessageProps = NumberInputProps &
-  SelectProps & {
-    id?: string;
-    customValue: CustomSelect;
-    setCustomValue: (data: CustomSelect) => void;
-  };
+export type CustomRetentionMessageProps = {
+  id?: string;
+  customValue: CustomSelect;
+  setCustomValue: (data: CustomSelect) => void;
+};
 
 const CustomRetentionMessage: React.FC<CustomRetentionMessageProps> = ({
-  onToggle,
-  isOpen,
   customValue,
   setCustomValue,
 }) => {
+  const [isRetentionTimeSelectOpen, setIsRetentionTimeSelectOpen] =
+    useState<boolean>(false);
 
-
-  // const [unit, setUnit] = useState<"days" | "hours" | "minutes" | "seconds" | "ms">("days")
-  const onSelect: SelectProps["onSelect"] = (event, value) => {
-    const inputUnit: CustomSelect = { unit: value as TimeUnit, value: undefined }
-    setCustomValue(inputUnit);
-    onToggle(false, event);
+  const onRetentionTimeToggle = (isOpen: boolean) => {
+    setIsRetentionTimeSelectOpen(isOpen);
   };
 
-
-  // const handleTouchSpin = (operator: string) => {
-  //   if (operator === "+") {
-  //     const inputUnit: CustomSelect = { ...customValue, value: customValue.value + 1 }
-  //     setCustomValue(inputUnit);
-  //   } else if (operator === "-") {
-  //     const inputUnit: CustomSelect = { ...customValue, value: customValue.value - 1 }
-  //     setCustomValue(inputUnit);
-  //   }
-  // }
-
-
-
-  // const onChangeTouchSpin = (event: React.FormEvent<HTMLInputElement>) => {
-  //   const inputUnit: CustomSelect = { ...customValue, value: BigInt(event.currentTarget.value) }
-  //   setCustomValue(inputUnit)
-  // };
+  const onSelect: SelectProps["onSelect"] = (event, value) => {
+    if (value === "days") {
+      const inputUnit: CustomSelect = { unit: value as TimeUnit, value: 7 };
+      setCustomValue(inputUnit);
+    } else {
+      const inputUnit: CustomSelect = {
+        unit: value as TimeUnit,
+        value: 0,
+      };
+      setCustomValue(inputUnit);
+    }
+    onRetentionTimeToggle(false);
+  };
 
   const onChange = (input: string) => {
-    const inputValue: CustomSelect = { ...customValue, value: Number(input) }
-    setCustomValue(inputValue)
-  }
-
+    const inputValue: CustomSelect = { ...customValue, value: Number(input) };
+    setCustomValue(inputValue);
+  };
 
   return (
     <div className="kafka-ui--radio__parameters">
       <Flex>
         <FlexItem>
-          <TextInput type="number" value={customValue.value} onChange={onChange} />
+          <TextInput
+            type="number"
+            value={customValue.value}
+            onChange={onChange}
+            min={1}
+          />
         </FlexItem>
         <FlexItem>
           <Select
             variant={SelectVariant.single}
             aria-label="Select Input"
-            onToggle={onToggle}
+            onToggle={onRetentionTimeToggle}
             onSelect={(event, value) => onSelect(event, value as string)}
-            placeholder='days'
+            placeholder="days"
             selections={customValue.unit}
-            isOpen={isOpen}
+            isOpen={isRetentionTimeSelectOpen}
           >
             {retentionTimeSelectOptions?.map((s) => (
               <SelectOption

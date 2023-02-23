@@ -28,10 +28,18 @@ export type IDropdownOption = {
   isDisabled?: boolean;
 };
 
-
-export type TimeUnit = "days" | "hours" | "minutes" | "seconds" | "milliseconds" | "weeks" | "unlimited"
+export type TimeUnit =
+  | "days"
+  | "hours"
+  | "minutes"
+  | "seconds"
+  | "milliseconds"
+  | "weeks"
+  | "unlimited";
 
 export type CustomSelect = {
   unit: TimeUnit;
-  value: number | undefined;
-}
+  value: number;
+};
+
+export type RadioSelectType = "day" | "week" | "custom" | "unlimited";
