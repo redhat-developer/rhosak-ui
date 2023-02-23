@@ -1,8 +1,8 @@
 import type { ComponentMeta, ComponentStory } from "@storybook/react";
 import { userEvent, within } from "@storybook/testing-library";
-import { TopicPartition } from "ui-models/src/models/topic-partition";
+import type { Topic } from "ui-models/src/models/topic";
+import type { TopicPartition } from "ui-models/src/models/topic-partition";
 import { fakeApi } from "../../storiesHelpers";
-import { constantValues } from "../components/storiesHelpers";
 import { CreateTopic } from "./CreateTopic";
 
 export default {
@@ -12,6 +12,7 @@ export default {
     kafkaPageLink: "kafka-link",
     kafkaInstanceLink: "kafka-instance-link",
     availablePartitionLimit: 10,
+    onSave: (value: Topic) => console.log("topic value", value),
     checkTopicName: (topicName) =>
       fakeApi<boolean>(
         !["test", "my-test", "test-topic"].some((m) => m == topicName)
