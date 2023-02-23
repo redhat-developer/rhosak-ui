@@ -43,11 +43,17 @@ export type CustomSelect = {
 };
 
 export type CustomRetentionSizeSelect = {
-  unit: CustomRetentionUnit
+  unit: CustomRetentionUnit;
   value: number;
-}
+};
 
-export type CustomRetentionUnit = "bytes" | "kibibytes" | "mebibytes" | "gibibytes" | "tebibytes" | "unlimited";
+export type CustomRetentionUnit =
+  | "bytes"
+  | "kibibytes"
+  | "mebibytes"
+  | "gibibytes"
+  | "tebibytes"
+  | "unlimited";
 
 export type RadioSelectType = "day" | "week" | "custom" | "unlimited";
 

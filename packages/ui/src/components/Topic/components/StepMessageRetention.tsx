@@ -14,17 +14,22 @@ import type { Topic } from "ui-models/src/models/topic";
 import { RetentionSizeUnits } from "../../KafkaTopics/types";
 import { CustomRetentionMessage } from "./CustomRetentionMessage";
 import { CustomRetentionSize } from "./CustomRetentionSize";
-import type { CustomRetentionSizeSelect, CustomSelect, RadioSelectType, RetentionSizeRadioSelect } from "./types";
+import type {
+  CustomRetentionSizeSelect,
+  CustomSelect,
+  RadioSelectType,
+  RetentionSizeRadioSelect,
+} from "./types";
 
 export type StepMessageRetentionProps = {
   customRetentionSizeValue: CustomRetentionSizeSelect;
-  setCustomRetentionSizeValue: (data: CustomRetentionSizeSelect) => void
+  setCustomRetentionSizeValue: (data: CustomRetentionSizeSelect) => void;
   customValue: CustomSelect;
   setCustomValue: (data: CustomSelect) => void;
   radioSelectValue: RadioSelectType;
   setRadioSelectValue: (value: RadioSelectType) => void;
   customRetentionRadioSelect: RetentionSizeRadioSelect;
-  setCustomRetentionRadioSelect: (data: RetentionSizeRadioSelect) => void
+  setCustomRetentionRadioSelect: (data: RetentionSizeRadioSelect) => void;
 };
 
 export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
@@ -35,17 +40,17 @@ export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
   setCustomRetentionSizeValue,
   customRetentionSizeValue,
   customRetentionRadioSelect,
-  setCustomRetentionRadioSelect
+  setCustomRetentionRadioSelect,
 }) => {
   const { t } = useTranslation(["create-topic"]);
 
   const handleRetentionMessageSize = (value: RetentionSizeRadioSelect) => {
     if (value === "unlimited") {
-      setCustomRetentionSizeValue({ value: -1, unit: "unlimited" })
-      setCustomRetentionRadioSelect("unlimited")
+      setCustomRetentionSizeValue({ value: -1, unit: "unlimited" });
+      setCustomRetentionRadioSelect("unlimited");
     } else {
-      setCustomRetentionSizeValue({ value: 1, unit: "bytes" })
-      setCustomRetentionRadioSelect("custom")
+      setCustomRetentionSizeValue({ value: 1, unit: "bytes" });
+      setCustomRetentionRadioSelect("custom");
     }
   };
 
@@ -144,9 +149,7 @@ export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
               <Radio
                 isChecked={customRetentionRadioSelect === "unlimited"}
                 name="radioUnlimitedSize"
-                onChange={() =>
-                  handleRetentionMessageSize("unlimited")
-                }
+                onChange={() => handleRetentionMessageSize("unlimited")}
                 label="Unlimited size"
                 aria-label="Unlimited"
                 id="radio-controlled-6"
@@ -155,9 +158,7 @@ export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
               <Radio
                 isChecked={customRetentionRadioSelect === "custom"}
                 name="radioCustomSize"
-                onChange={() =>
-                  handleRetentionMessageSize("custom")
-                }
+                onChange={() => handleRetentionMessageSize("custom")}
                 label="Custom size"
                 aria-label="custom size"
                 id="radio-controlled-5"
@@ -166,7 +167,8 @@ export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
               {customRetentionRadioSelect === "custom" && (
                 <CustomRetentionSize
                   customRetentionSizeValue={customRetentionSizeValue}
-                  setCustomRetentionSizeValue={setCustomRetentionSizeValue} />
+                  setCustomRetentionSizeValue={setCustomRetentionSizeValue}
+                />
               )}
             </Stack>
           </FormGroup>
