@@ -11,7 +11,6 @@ import {
 import { useTranslation } from "@rhoas/app-services-ui-components";
 import type React from "react";
 import type { Topic } from "ui-models/src/models/topic";
-import { RetentionSizeUnits } from "../../KafkaTopics/types";
 import { CustomRetentionMessage } from "./CustomRetentionMessage";
 import { CustomRetentionSize } from "./CustomRetentionSize";
 import type {
@@ -30,6 +29,8 @@ export type StepMessageRetentionProps = {
   setRadioSelectValue: (value: RadioSelectType) => void;
   customRetentionRadioSelect: RetentionSizeRadioSelect;
   setCustomRetentionRadioSelect: (data: RetentionSizeRadioSelect) => void;
+  setTopicData: (value: Topic) => void;
+  topicData: Topic;
 };
 
 export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
@@ -41,16 +42,21 @@ export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
   customRetentionSizeValue,
   customRetentionRadioSelect,
   setCustomRetentionRadioSelect,
+  setTopicData,
+  topicData,
 }) => {
   const { t } = useTranslation(["create-topic"]);
 
   const handleRetentionMessageSize = (value: RetentionSizeRadioSelect) => {
     if (value === "unlimited") {
-      setCustomRetentionSizeValue({ value: -1, unit: "unlimited" });
+      setTopicData({
+        ...topicData,
+        "retention.bytes": { value: BigInt(-1), type: "bytes" },
+      });
     } else {
       setCustomRetentionSizeValue({ value: 1, unit: "bytes" });
     }
-    setCustomRetentionRadioSelect(value)
+    setCustomRetentionRadioSelect(value);
   };
 
   const retentionTime = (value: RadioSelectType) => {
@@ -62,13 +68,16 @@ export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
         setCustomValue({ value: 1, unit: "weeks" });
         break;
       case "custom":
-        setCustomValue({ value: 7, unit: "days" });
+        setCustomValue({ value: null, unit: "days" });
         break;
       case "unlimited":
-        setCustomValue({ value: -1, unit: "unlimited" });
+        setTopicData({
+          ...topicData,
+          "retention.ms": { value: BigInt(-1), type: "ms" },
+        });
         break;
     }
-    setRadioSelectValue(value)
+    setRadioSelectValue(value);
   };
 
   return (
@@ -91,6 +100,7 @@ export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
           <FormGroup
             fieldId="form-group-retention-time-in-wizard"
             label={t("retention_time")}
+            isRequired
           >
             <Stack hasGutter>
               <Radio

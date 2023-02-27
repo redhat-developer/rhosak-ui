@@ -13,6 +13,12 @@ import { useTranslation } from "@rhoas/app-services-ui-components";
 import type React from "react";
 import { useState } from "react";
 import type { Topic } from "ui-models/src/models/topic";
+import type {
+  CustomRetentionSizeSelect,
+  CustomSelect,
+  RadioSelectType,
+  RetentionSizeRadioSelect,
+} from "..";
 import { Cleanup } from "./Cleanup";
 import { CoreConfiguration } from "./CoreConfiguration";
 import { Flush } from "./Flush";
@@ -30,6 +36,14 @@ export type TopicAdvancePageProps = {
   setTopicData: (val: Topic) => void;
   checkTopicName?: (value: string) => boolean;
   availablePartitionLimit: number;
+  customRetentionSizeValue: CustomRetentionSizeSelect;
+  setCustomRetentionSizeValue: (data: CustomRetentionSizeSelect) => void;
+  customValue: CustomSelect;
+  setCustomValue: (data: CustomSelect) => void;
+  radioSelectValue: RadioSelectType;
+  setRadioSelectValue: (value: RadioSelectType) => void;
+  customRetentionRadioSelect: RetentionSizeRadioSelect;
+  setCustomRetentionRadioSelect: (data: RetentionSizeRadioSelect) => void;
 };
 
 export const TopicAdvancePage: React.FunctionComponent<
@@ -42,6 +56,14 @@ export const TopicAdvancePage: React.FunctionComponent<
   setTopicData,
   checkTopicName,
   availablePartitionLimit,
+  customValue,
+  setCustomValue,
+  radioSelectValue,
+  setRadioSelectValue,
+  setCustomRetentionSizeValue,
+  customRetentionSizeValue,
+  customRetentionRadioSelect,
+  setCustomRetentionRadioSelect,
 }) => {
   const { t } = useTranslation(["create-topic", "common"]);
   const actionText = isCreate ? t("create_topic") : t("common:save");
@@ -98,6 +120,14 @@ export const TopicAdvancePage: React.FunctionComponent<
                   topicValidated={topicValidated}
                   setWarning={setWarning}
                   warning={warning}
+                  customRetentionSizeValue={customRetentionSizeValue}
+                  setCustomRetentionSizeValue={setCustomRetentionSizeValue}
+                  customValue={customValue}
+                  setCustomValue={setCustomValue}
+                  radioSelectValue={radioSelectValue}
+                  setRadioSelectValue={setRadioSelectValue}
+                  customRetentionRadioSelect={customRetentionRadioSelect}
+                  setCustomRetentionRadioSelect={setCustomRetentionRadioSelect}
                 />
                 <Message
                   defaultMaximumMessageBytes={
