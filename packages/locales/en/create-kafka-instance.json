@@ -8,8 +8,7 @@
     "single": "Single"
   },
   "billing": {
-    "dedicate_optiom": "",
-    "dedicated_option": "",
+    "dedicated_option": "Dedicated",
     "field_label": "Billing",
     "field_popover_external_marketplace": "Billing indicates which subscription is used to pay for the instance. When using a subscription purchased through  another marketplace, the cloud provider associated with the marketplace must be selected. <0>See subscription options</0>",
     "field_popover_rh_only": "Billing indicates which subscription is used to pay for the instance. <0>See subscription options</0>",
@@ -35,7 +34,6 @@
   "create_instance_name_helper_text": "Must start with a letter and end with a letter or number. Valid characters include lowercase letters from a to z, numbers from 0 to 9, and hyphens ( - ).",
   "create_instance_name_helper_text_name_taken": "{{name}} already exists. Please try a different name.",
   "create_instance_title": "Create a $t(common:kafka) instance",
-  "dedicated_cluster_disabled": "",
   "duration_value": "{{value}} hours",
   "egress_value": "up to {{value}} MiB/second",
   "form_errors": {
@@ -95,7 +93,7 @@
     "trial_used_title": "You already have an instance running"
   },
   "no_regions_available": "No regions available",
-  "openshift_cluster": "",
+  "openshift_cluster": "OpenShift Cluster",
   "partitions_value": "up to {{value}}",
   "provider_incompatible_with_billing": "",
   "quick_start_guide_message": "Need help getting started? Follow our quick start guide.",

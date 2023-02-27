@@ -56,7 +56,9 @@ export function kafkaRequestToKafkaInstanceEnhanched(
     )?.marketplace;
 
     const billing: KafkaInstanceEnhanced["billing"] =
-      instance.billing_model === "standard"
+      instance.billing_model === "enterprise"
+        ? "dedicated"
+        : instance.billing_model === "standard"
         ? "prepaid"
         : marketplaceForBilling && instance.billing_cloud_account_id
         ? {

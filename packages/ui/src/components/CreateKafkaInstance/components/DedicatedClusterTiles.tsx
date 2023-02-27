@@ -48,7 +48,7 @@ export const DedicatedClusterTiles: VoidFunctionComponent<
                 hasSelectableInput={true}
                 isSelected={value === c}
                 isSelectableRaised={true}
-                isDisabledRaised={isDisabled}
+                isDisabledRaised={isDisabled || c.status !== "ready"}
                 onSelectableInputChange={() => onChange(c)}
               >
                 <CardTitle>{t("openshift_cluster")}</CardTitle>
@@ -67,9 +67,6 @@ export const DedicatedClusterTiles: VoidFunctionComponent<
                   &nbsp;
                   {c.status}
                 </CardFooter>
-                {c.isDisabled && (
-                  <CardFooter>{t("dedicated_cluster_disabled")}</CardFooter>
-                )}
               </Card>
             </FlexItem>
           ))}

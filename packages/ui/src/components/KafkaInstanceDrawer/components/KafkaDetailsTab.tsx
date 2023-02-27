@@ -168,7 +168,7 @@ export const KafkaDetailsTab: VoidFunctionComponent<KafkaDetailsTabProps> = ({
               } else if (billing === "prepaid") {
                 return t("create-kafka-instance:billing.prepaid_option");
               } else if (billing === "dedicated") {
-                return t("create-kafka-instance:billing.dedicate_optiom");
+                return t("create-kafka-instance:billing.dedicated_option");
               } else {
                 switch (billing.marketplace) {
                   case "aws":
