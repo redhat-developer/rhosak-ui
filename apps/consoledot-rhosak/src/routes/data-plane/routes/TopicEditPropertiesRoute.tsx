@@ -28,7 +28,7 @@ export const TopicEditPropertiesRoute: VoidFunctionComponent<
 
         onSuccess: () => {
           //eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-          history.push(instancesHref);
+          history.push(instanceTopicsHref(instance.id));
         },
         onError: (_, message) => {
           dispatch(
