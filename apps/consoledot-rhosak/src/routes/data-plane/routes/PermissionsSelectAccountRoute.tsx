@@ -5,13 +5,13 @@ import { PrincipalType } from "ui";
 import { useHistory } from "react-router-dom";
 import type { DataPlanePermissionsNavigationProps } from "../routesConsts";
 import { SelectAccount } from "ui";
-import { editPermissionsHref } from "../DataPlaneRoutes";
 import { useChrome } from "@redhat-cloud-services/frontend-components/useChrome";
 import { useServiceAccounts, useUserAccounts } from "consoledot-api";
 import { useDataPlaneGate } from "../useDataPlaneGate";
-export const ManagePermissionsRoute: VoidFunctionComponent<
+
+export const PermissionsSelectAccountRoute: VoidFunctionComponent<
   DataPlanePermissionsNavigationProps
-> = ({ managePermissionsHref }) => {
+> = ({ managePermissionsHref, editPermissionsHref }) => {
   const [loggedInUser, setCurrentlyLoggedInUser] = useState<
     string | undefined
   >();
