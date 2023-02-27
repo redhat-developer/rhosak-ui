@@ -7,3 +7,4 @@ export * from "./useResetConsumerGroupMutation";
 export * from "./useDeletePermissionsMutation";
 export * from "./useUpdatePermissionsMutation";
 export * from "./useCreateTopicMutation";
+export * from "./useUpdateTopicMutation";

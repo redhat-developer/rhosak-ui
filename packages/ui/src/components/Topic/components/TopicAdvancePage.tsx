@@ -24,11 +24,11 @@ import { TopicAdvanceJumpLinks } from "./TopicAdvanceJumpLinks";
 
 export type TopicAdvancePageProps = {
   isCreate: boolean;
-  onConfirm: () => void;
+  onConfirm: (data: Topic) => void;
   handleCancel?: () => void;
   topicData: Topic;
   setTopicData: (val: Topic) => void;
-  checkTopicName: (value: string) => boolean;
+  checkTopicName?: (value: string) => boolean;
   availablePartitionLimit: number;
 };
 
@@ -55,18 +55,23 @@ export const TopicAdvancePage: React.FunctionComponent<
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [warning, setWarning] = useState<boolean>(false);
   const onValidateTopic = () => {
-    if (topicData?.name.length < 1) {
-      setInvalidText(t("common:required"));
-      setTopicValidated(ValidatedOptions.error);
-    } else {
-      setIsLoading(true);
+    if (isCreate) {
+      if (topicData?.name.length < 1) {
+        setInvalidText(t("common:required"));
+        setTopicValidated(ValidatedOptions.error);
+      } else {
+        setIsLoading(true);
 
-      const isTopicNameValid = checkTopicName(topicData?.name);
-      if (!isTopicNameValid) {
-        setIsLoading(false);
-        setInvalidText(t("already_exists", { name: topicData?.name })),
-          setTopicValidated(ValidatedOptions.error);
-      } else onConfirm();
+        const isTopicNameValid =
+          checkTopicName && checkTopicName(topicData?.name);
+        if (!isTopicNameValid) {
+          setIsLoading(false);
+          setInvalidText(t("already_exists", { name: topicData?.name })),
+            setTopicValidated(ValidatedOptions.error);
+        } else onConfirm(topicData);
+      }
+    } else {
+      onConfirm(topicData);
     }
   };
 
