@@ -77,7 +77,7 @@ export const PermissionsSelectAccountRoute: VoidFunctionComponent<
         )
       );
     },
-    [history, instance.id]
+    [history, instance.id, editPermissionsHref]
   );
 
   const onClose = useCallback(() => {
