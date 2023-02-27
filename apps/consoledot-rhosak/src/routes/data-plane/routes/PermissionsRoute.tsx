@@ -142,7 +142,7 @@ export const PermissionsRoute: VoidFunctionComponent<
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       history.push(editPermissionsHref(instance.id, account));
     },
-    [history, instance.id]
+    [history, instance.id, editPermissionsHref]
   );
   const onManagePermission = useCallback(() => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
