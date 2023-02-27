@@ -23,13 +23,13 @@ export function useUpdateTopicMutation() {
     }) {
       const api = topics(adminUrl);
       try {
-        await api.createTopic({
-          name: topic.name || "",
-          settings: {
+        await api.updateTopic(
+          topic.name || "",
+          {
             numPartitions: topic.partitions?.length,
             config: topic.config,
           },
-        });
+        );
         onSuccess();
       } catch (error) {
         if (isServiceApiError(error)) {
