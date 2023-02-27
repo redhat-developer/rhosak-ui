@@ -39,6 +39,7 @@ export default {
     },
     updateTopicHref: "#update",
     deleteTopicHref: "#delete",
+    availablePartitionLimit: 10,
   },
   parameters: {
     controls: {
