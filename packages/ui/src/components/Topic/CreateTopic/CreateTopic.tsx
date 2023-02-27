@@ -5,19 +5,19 @@ import { CreateTopicHead, CreateTopicWizard } from "../components";
 
 export type CreateTopicPageProps = {
   kafkaName: string;
-  kafkaPageLink: string;
-  kafkaInstanceLink: string;
+  onKafkaPageLink: () => void;
+  onKafkaInstanceLink: () => void;
   onSave: (topicData: Topic) => void;
   initialTopicValues: Topic;
   onCloseCreateTopic: () => void;
-  checkTopicName: (value: string) => Promise<boolean>;
+  checkTopicName: (value: string) => boolean;
   availablePartitionLimit: number;
 };
 
 export const CreateTopic: React.FC<CreateTopicPageProps> = ({
   kafkaName,
-  kafkaPageLink,
-  kafkaInstanceLink,
+  onKafkaPageLink,
+  onKafkaInstanceLink,
   onSave,
   initialTopicValues,
   onCloseCreateTopic,
@@ -31,8 +31,8 @@ export const CreateTopic: React.FC<CreateTopicPageProps> = ({
       <CreateTopicHead
         showAllOptions={isSwitchChecked}
         kafkaName={kafkaName}
-        kafkaPageLink={kafkaPageLink}
-        kafkaInstanceLink={kafkaInstanceLink}
+        onKafkaInstanceLink={onKafkaInstanceLink}
+        onKafkaPageLink={onKafkaPageLink}
         onShowAllOptions={setIsSwitchChecked}
       />
       <CreateTopicWizard

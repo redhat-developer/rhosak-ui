@@ -36,7 +36,6 @@ export type CoreConfigurationProps = {
   isCreate?: boolean;
   topicData: Topic;
   setTopicData: (data: Topic) => void;
-  checkTopicName: (value: string) => Promise<boolean>;
   //initialPartition: number | undefined;
   invalidText: string;
   setInvalidText: (message: string) => void;
@@ -111,9 +110,6 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
       setCustomRetentionRadioSelect("custom");
     }
   };
-
-
-
 
   const handleTextInputChange = (value: string) => {
     validationCheck(value);
@@ -274,9 +270,7 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
               radioSelectValue === "custom"
             }
             name="custom-retention-time"
-            onChange={() =>
-              handleRetentionMessageTime("custom")
-            }
+            onChange={() => handleRetentionMessageTime("custom")}
             label={retentionTimeInput}
             className="kafka-ui--radio-label__number-input"
             aria-label="custom duration"
@@ -286,9 +280,7 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
           <Radio
             isChecked={radioSelectValue === "unlimited"}
             name="unlimited-retention-time"
-            onChange={() =>
-              handleRetentionMessageTime("unlimited")
-            }
+            onChange={() => handleRetentionMessageTime("unlimited")}
             label="Unlimited time"
             aria-label="Unlimited"
             id="unlimited-retention-time"
@@ -307,9 +299,7 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
           <Radio
             isChecked={customRetentionRadioSelect === "custom"}
             name="custom-retention-size"
-            onChange={() =>
-              handleRetentionMessageSize("custom")
-            }
+            onChange={() => handleRetentionMessageSize("custom")}
             label={retentionSizeInput}
             className="kafka-ui--radio-label__number-input"
             aria-label="custom size"
@@ -319,9 +309,7 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
           <Radio
             isChecked={customRetentionRadioSelect === "unlimited"}
             name="unlimited-retention-size"
-            onChange={() =>
-              handleRetentionMessageSize("unlimited")
-            }
+            onChange={() => handleRetentionMessageSize("unlimited")}
             label="Unlimited size"
             aria-label="Unlimited"
             id="unlimited-retention-size"
