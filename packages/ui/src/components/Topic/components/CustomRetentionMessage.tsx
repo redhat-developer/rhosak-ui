@@ -9,14 +9,13 @@ import {
 } from "@patternfly/react-core";
 import type React from "react";
 import { useState } from "react";
-import type { CustomSelect, RadioSelectType, TimeUnit } from "./types";
+import type { CustomSelect, TimeUnit } from "./types";
 import { retentionTimeSelectOptions } from "./types";
 
 export type CustomRetentionMessageProps = {
   id?: string;
   customValue: CustomSelect;
   setCustomValue: (data: CustomSelect) => void;
-
 };
 
 const CustomRetentionMessage: React.FC<CustomRetentionMessageProps> = ({
@@ -31,20 +30,14 @@ const CustomRetentionMessage: React.FC<CustomRetentionMessageProps> = ({
   };
 
   const onSelect: SelectProps["onSelect"] = (event, value) => {
-    if (value === "days") {
-      const inputUnit: CustomSelect = { unit: value as TimeUnit, value: 7 };
-      setCustomValue(inputUnit);
-    } else {
-      const inputUnit: CustomSelect = {
-        unit: value as TimeUnit,
-        value: 0,
-      };
-      setCustomValue(inputUnit);
-    }
+    const inputUnit: CustomSelect = {
+      unit: value as TimeUnit,
+      value: null,
+    };
+    setCustomValue(inputUnit);
+
     onRetentionTimeToggle(false);
   };
-
-
 
   const onChange = (input: string) => {
     const inputValue: CustomSelect = { ...customValue, value: Number(input) };
@@ -57,7 +50,7 @@ const CustomRetentionMessage: React.FC<CustomRetentionMessageProps> = ({
         <FlexItem>
           <TextInput
             type="number"
-            value={customValue.value}
+            value={customValue.value == null ? "" : customValue.value}
             onChange={onChange}
             min={1}
           />
@@ -84,7 +77,7 @@ const CustomRetentionMessage: React.FC<CustomRetentionMessageProps> = ({
           </Select>
         </FlexItem>
       </Flex>
-    </div >
+    </div>
   );
 };
 

@@ -39,7 +39,7 @@ export type TimeUnit =
 
 export type CustomSelect = {
   unit: TimeUnit;
-  value: number;
+  value: number | null;
 };
 
 export type CustomRetentionSizeSelect = {

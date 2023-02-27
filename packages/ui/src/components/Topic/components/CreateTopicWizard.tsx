@@ -22,7 +22,7 @@ import {
 import { PartitionLimitWarning } from "./PartitionLimitWarning";
 import { retentionTimeTransformer } from "./retentionTimeTransformer";
 import { TopicAdvancePage } from "./TopicAdvancePage";
-import {
+import type {
   CustomRetentionSizeSelect,
   CustomSelect,
   RadioSelectType,
@@ -115,6 +115,8 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
           setRadioSelectValue={setRadioSelectValue}
           customRetentionRadioSelect={customRetentionRadioSelect}
           setCustomRetentionRadioSelect={setCustomRetentionRadioSelect}
+          setTopicData={setTopicData}
+          topicData={topicData}
         />
       ),
     },
@@ -141,7 +143,10 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
     );
     const transformedTopic: Topic = {
       ...topicData,
-      "retention.ms": { type: "ms", value: tranformedValueInMilliseconds },
+      "retention.ms": {
+        type: "ms",
+        value: tranformedValueInMilliseconds || BigInt(-1),
+      },
       "retention.bytes": { type: "bytes", value: tranformedValueInBytes },
     };
     onSaveTopic(transformedTopic);
@@ -185,6 +190,14 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
                 setTopicData={setTopicData}
                 checkTopicName={checkTopicName}
                 availablePartitionLimit={availablePartitionLimit}
+                customRetentionSizeValue={customRetentionSizeValue}
+                setCustomRetentionSizeValue={setCustomRetentionSizeValue}
+                customValue={customValue}
+                setCustomValue={setCustomValue}
+                radioSelectValue={radioSelectValue}
+                setRadioSelectValue={setRadioSelectValue}
+                customRetentionRadioSelect={customRetentionRadioSelect}
+                setCustomRetentionRadioSelect={setCustomRetentionRadioSelect}
               />
             }
             {warningModalOpen && (
