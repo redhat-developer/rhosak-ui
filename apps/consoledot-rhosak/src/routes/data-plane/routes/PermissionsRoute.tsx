@@ -15,12 +15,11 @@ import { useHistory } from "react-router-dom";
 import type { DataPlanePermissionsNavigationProps } from "../routesConsts";
 import { addNotification } from "@redhat-cloud-services/frontend-components-notifications";
 import { useDispatch } from "react-redux";
-import { editPermissionsHref } from "../DataPlaneRoutes";
 import { useDataPlaneGate } from "../useDataPlaneGate";
 
-export const AclsRoute: VoidFunctionComponent<
+export const PermissionsRoute: VoidFunctionComponent<
   DataPlanePermissionsNavigationProps
-> = ({ instancesHref, managePermissionsHref }) => {
+> = ({ instancesHref, managePermissionsHref, editPermissionsHref }) => {
   const { page, perPage, setPagination, setPaginationQuery } =
     usePaginationSearchParams();
   const { instance } = useDataPlaneGate();

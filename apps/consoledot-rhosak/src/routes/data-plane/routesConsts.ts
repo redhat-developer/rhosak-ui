@@ -31,12 +31,6 @@ export const DataPlaneTopicConsumerGroupRoutePath =
 export const DataPlanePermissionsRoutePath =
   `${ControlPlaneRouteRoot}/:id/details/acls/select-account/:selectedAccount` as const;
 
-export const DataPlaneSelectAccountsRoutePath =
-  `${ControlPlaneRouteRoot}/:id/details/acls/select-account` as const;
-
-export const DataPlanePermissionsTableRoutePath =
-  `${ControlPlaneRouteRoot}/:id/details/acls` as const;
-
 export type DataPlaneNavigationProps = {
   instanceDetailsHref: (instanceId: string) => string;
   instanceTopicsHref: (instanceId: string) => string;
@@ -75,4 +69,5 @@ export type DataPlaneTopicConsumerGroupNavigationsProps = {
 
 export type DataPlanePermissionsNavigationProps = {
   managePermissionsHref: (instanceId: string) => string;
+  editPermissionsHref: (instanceId: string, selectedAccount: string) => string;
 } & ControlPlaneNavigationProps;

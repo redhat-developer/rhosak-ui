@@ -4,7 +4,7 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import { ControlPlaneRouteRoot } from "../control-plane/routesConsts";
 import { RedirectOnGateError } from "../RedirectOnGateError";
 import {
-  AclsRoute,
+  PermissionsRoute,
   ConsumerGroupsRoute,
   DashboardRoute,
   SettingsRoute,
@@ -21,8 +21,8 @@ import {
   TopicConsumerGroupViewPartitionRoute,
   TopicDeleteRoute,
   TopicEditPropertiesRoute,
-  EditPermissionsRoute,
-  ManagePermissionsRoute,
+  PermissionsEditRoute,
+  PermissionsSelectAccountRoute,
 } from "./routes";
 
 import { DataPlaneRoutePath, DataPlaneTopicRoutePath } from "./routesConsts";
@@ -64,7 +64,7 @@ const viewTopicPartitionConsumerGroupHref = (
 export const managePermissionsHref = (id: string) =>
   `${instanceDetailsHref(id)}/acls/select-account`;
 
-export const editPermissionsHref = (id: string, selectedAccount: string) =>
+const editPermissionsHref = (id: string, selectedAccount: string) =>
   `${instanceDetailsHref(
     id
   )}/acls/select-account/${selectedAccount}/edit-permissions`;
@@ -91,7 +91,8 @@ export const DataPlaneRoutes: VoidFunctionComponent = () => {
 
           <Route path={`${DataPlaneRoutePath}/acls`}>
             <Route path={`${DataPlaneRoutePath}/acls/select-account`}>
-              <ManagePermissionsRoute
+              <PermissionsSelectAccountRoute
+                editPermissionsHref={editPermissionsHref}
                 instancesHref={"/kafkas"}
                 managePermissionsHref={permissionsModalHref}
               />
@@ -99,14 +100,16 @@ export const DataPlaneRoutes: VoidFunctionComponent = () => {
             <Route
               path={`${DataPlaneRoutePath}/acls/select-account/:selectedAccount/edit-permissions`}
             >
-              <EditPermissionsRoute
+              <PermissionsEditRoute
+                editPermissionsHref={editPermissionsHref}
                 instancesHref={"/kafkas"}
                 managePermissionsHref={permissionsModalHref}
               />
             </Route>
-            <AclsRoute
+            <PermissionsRoute
               instancesHref={"/kafkas"}
               managePermissionsHref={managePermissionsHref}
+              editPermissionsHref={editPermissionsHref}
             />
           </Route>
 

@@ -18,7 +18,8 @@ import type {
 } from "../routesConsts";
 import { DataPlanePermissionsRoutePath } from "../routesConsts";
 import { useDataPlaneGate } from "../useDataPlaneGate";
-export const EditPermissionsRoute: VoidFunctionComponent<
+
+export const PermissionsEditRoute: VoidFunctionComponent<
   DataPlanePermissionsNavigationProps
 > = ({ managePermissionsHref }) => {
   const { instance } = useDataPlaneGate();

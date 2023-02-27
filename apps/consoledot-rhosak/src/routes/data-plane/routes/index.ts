@@ -1,4 +1,4 @@
-export * from "./AclsRoute";
+export * from "./PermissionsRoute";
 export * from "./TopicsRoute";
 export * from "./SettingsRoute";
 export * from "./DashboardRoute";
@@ -16,5 +16,5 @@ export * from "./TopicConsumerGroupResetOffsetRoute";
 export * from "./TopicConsumerGroupViewPartitionRoute";
 export * from "./TopicDeleteRoute";
 export * from "./TopicEditPropertiesRoute";
-export * from "./EditPermissionsRoute";
-export * from "./ManagePermissionsRoute";
+export * from "./PermissionsEditRoute";
+export * from "./PermissionsSelectAccountRoute";
