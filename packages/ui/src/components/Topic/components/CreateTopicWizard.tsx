@@ -36,7 +36,7 @@ export type CreateTopicWizardProps = {
   onCloseCreateTopic: () => void;
   onSave: (topicData: Topic) => void;
   initialFieldsValue: Topic;
-  checkTopicName: (value: string) => Promise<boolean>;
+  checkTopicName: (value: string) => boolean;
   availablePartitionLimit: number;
 };
 
@@ -153,14 +153,12 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
     } else {
       setIsLoading(true);
 
-      checkTopicName(topicData?.name)
-        .then((value) =>
-          value == false
-            ? (setInvalidText(t("already_exists", { name: topicData?.name })),
-              setTopicNameValidated(ValidatedOptions.error))
-            : onNext()
-        )
-        .finally(() => setIsLoading(false));
+      const isTopicNameValid = checkTopicName(topicData?.name);
+      if (!isTopicNameValid) {
+        setIsLoading(false);
+        setInvalidText(t("already_exists", { name: topicData?.name })),
+          setTopicNameValidated(ValidatedOptions.error);
+      } else onNext();
     }
   };
   const onSaveTopic = (transformedTopic: Topic) => {
