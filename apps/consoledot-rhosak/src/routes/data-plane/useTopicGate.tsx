@@ -1,19 +1,20 @@
 import { useTopic } from "consoledot-api";
 import { useRouteMatch } from "react-router-dom";
-import type { DataPlaneTopicRouteParams } from "./routesConsts";
 import {
-  DataPlaneTopicRoutePath,
-  DedicatedDataPlaneTopicRoutePath,
-} from "./routesConsts";
+  ControlPlaneRouteRoot,
+  DedicatedControlPlaneRouteRoot,
+} from "../control-plane/routesConsts";
+import type { DataPlaneTopicRouteParams } from "./routesConsts";
+import { DataPlaneTopicRoutePath } from "./routesConsts";
 import { useDataPlaneGate } from "./useDataPlaneGate";
 
 export function useTopicGate() {
   const { instance } = useDataPlaneGate();
   const standardMatch = useRouteMatch<DataPlaneTopicRouteParams>(
-    DataPlaneTopicRoutePath
+    DataPlaneTopicRoutePath(ControlPlaneRouteRoot)
   );
   const dedicatedMatch = useRouteMatch<DataPlaneTopicRouteParams>(
-    DedicatedDataPlaneTopicRoutePath
+    DataPlaneTopicRoutePath(DedicatedControlPlaneRouteRoot)
   );
   const match = standardMatch || dedicatedMatch;
   if (!match) {

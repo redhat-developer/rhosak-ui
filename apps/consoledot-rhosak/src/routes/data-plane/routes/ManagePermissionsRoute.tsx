@@ -1,17 +1,16 @@
-import { useCallback, useEffect, useState } from "react";
-import type { VoidFunctionComponent } from "react";
-import type { Account } from "ui";
-import { PrincipalType } from "ui";
-import { useHistory } from "react-router-dom";
-import type { DataPlanePermissionsNavigationProps } from "../routesConsts";
-import { SelectAccount } from "ui";
-import { editPermissionsHref } from "../DataPlaneRoutes";
 import { useChrome } from "@redhat-cloud-services/frontend-components/useChrome";
 import { useServiceAccounts, useUserAccounts } from "consoledot-api";
+import type { VoidFunctionComponent } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import type { Account } from "ui";
+import { PrincipalType, SelectAccount } from "ui";
+import type { DataPlanePermissionsNavigationProps } from "../routesConsts";
 import { useDataPlaneGate } from "../useDataPlaneGate";
+
 export const ManagePermissionsRoute: VoidFunctionComponent<
   DataPlanePermissionsNavigationProps
-> = ({ managePermissionsHref }) => {
+> = ({ managePermissionsHref, editPermissionsHref }) => {
   const [loggedInUser, setCurrentlyLoggedInUser] = useState<
     string | undefined
   >();
@@ -77,7 +76,7 @@ export const ManagePermissionsRoute: VoidFunctionComponent<
         )
       );
     },
-    [history, instance.id]
+    [editPermissionsHref, history, instance.id]
   );
 
   const onClose = useCallback(() => {

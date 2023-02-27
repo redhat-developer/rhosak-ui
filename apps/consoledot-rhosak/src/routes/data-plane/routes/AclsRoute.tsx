@@ -1,26 +1,24 @@
+import { addNotification } from "@redhat-cloud-services/frontend-components-notifications";
 import { usePaginationSearchParams } from "@rhoas/app-services-ui-components";
-import { useCallback } from "react";
-import type { VoidFunctionComponent } from "react";
-import type { Account } from "ui";
-import { PrincipalType } from "ui";
-import { PermissionsTable } from "ui";
-import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
 import {
   useAcls,
   useDeletePermissionsMutation,
   useServiceAccounts,
   useUserAccounts,
 } from "consoledot-api";
-import { useHistory } from "react-router-dom";
-import type { DataPlanePermissionsNavigationProps } from "../routesConsts";
-import { addNotification } from "@redhat-cloud-services/frontend-components-notifications";
+import type { VoidFunctionComponent } from "react";
+import { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { editPermissionsHref } from "../DataPlaneRoutes";
+import { useHistory } from "react-router-dom";
+import type { Account } from "ui";
+import { PermissionsTable, PrincipalType } from "ui";
+import type { DataPlanePermissionsNavigationProps } from "../routesConsts";
 import { useDataPlaneGate } from "../useDataPlaneGate";
+import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
 
 export const AclsRoute: VoidFunctionComponent<
   DataPlanePermissionsNavigationProps
-> = ({ instancesHref, managePermissionsHref }) => {
+> = ({ instancesHref, managePermissionsHref, editPermissionsHref }) => {
   const { page, perPage, setPagination, setPaginationQuery } =
     usePaginationSearchParams();
   const { instance } = useDataPlaneGate();
@@ -143,7 +141,7 @@ export const AclsRoute: VoidFunctionComponent<
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       history.push(editPermissionsHref(instance.id, account));
     },
-    [history, instance.id]
+    [editPermissionsHref, history, instance.id]
   );
   const onManagePermission = useCallback(() => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access

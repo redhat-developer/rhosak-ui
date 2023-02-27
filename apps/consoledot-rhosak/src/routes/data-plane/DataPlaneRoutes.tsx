@@ -10,6 +10,8 @@ import {
   ConsumerGroupsRoute,
   ConsumerGroupViewPartitionRoute,
   DashboardRoute,
+  EditPermissionsRoute,
+  ManagePermissionsRoute,
   SettingsRoute,
   TopicConsumerGroupDeleteRoute,
   TopicConsumerGroupResetOffsetRoute,
@@ -17,15 +19,13 @@ import {
   TopicConsumerGroupViewPartitionRoute,
   TopicDeleteRoute,
   TopicEditPropertiesRoute,
-  EditPermissionsRoute,
-  ManagePermissionsRoute,
   TopicMessagesGroupsRoute,
   TopicPropertiesRoute,
   TopicSchemasRoute,
   TopicsRoute,
 } from "./routes";
 
-import { DataPlaneRoutePath, DataPlaneTopicRoutePath } from "./routesConsts";
+import { DataPlaneTopicRoutePath } from "./routesConsts";
 
 const instanceDetailsHref = (id: string) =>
   `${ControlPlaneRouteRoot}/${id}/details`;
@@ -73,20 +73,28 @@ const editPermissionsHref = (id: string, selectedAccount: string) =>
 export const permissionsModalHref = (id: string) =>
   `${instanceDetailsHref(id)}/acls`;
 
-export const DataPlaneRoutes: VoidFunctionComponent = () => {
+export type DataPlaneRoutesProps = {
+  root: string;
+  instanceId: string;
+};
+
+export const DataPlaneRoutes: VoidFunctionComponent<DataPlaneRoutesProps> = ({
+  root,
+  instanceId,
+}) => {
   return (
-    <Route path={DataPlaneRoutePath}>
+    <Route path={root}>
       <RedirectOnGateError redirectUrl={ControlPlaneRouteRoot}>
         <Switch>
-          <Route path={`${DataPlaneRoutePath}/dashboard`} exact>
+          <Route path={`${root}/dashboard`} exact>
             <DashboardRoute instancesHref={ControlPlaneRouteRoot} />
           </Route>
 
-          <Route path={`${DataPlaneRoutePath}/topics`} exact>
+          <Route path={`${root}/topics`} exact>
             <TopicsRoute instancesHref={ControlPlaneRouteRoot} />
           </Route>
 
-          <Route path={`${DataPlaneRoutePath}/consumer-groups`} exact>
+          <Route path={`${root}/consumer-groups`} exact>
             <ConsumerGroupsRoute
               instancesHref={ControlPlaneRouteRoot}
               instanceDetailsHref={instanceDetailsHref}
@@ -95,117 +103,50 @@ export const DataPlaneRoutes: VoidFunctionComponent = () => {
             />
           </Route>
 
-          <Route path={`${DataPlaneRoutePath}/acls`}>
-            <Route path={`${DataPlaneRoutePath}/acls/select-account`}>
+          <Route path={`${root}/acls`}>
+            <Route path={`${root}/acls/select-account`}>
               <ManagePermissionsRoute
                 instancesHref={ControlPlaneRouteRoot}
                 managePermissionsHref={permissionsModalHref}
+                editPermissionsHref={editPermissionsHref}
               />
             </Route>
             <Route
-              path={`${DataPlaneRoutePath}/acls/select-account/:selectedAccount/edit-permissions`}
+              path={`${root}/acls/select-account/:selectedAccount/edit-permissions`}
             >
               <EditPermissionsRoute
                 instancesHref={ControlPlaneRouteRoot}
                 managePermissionsHref={permissionsModalHref}
+                editPermissionsHref={editPermissionsHref}
               />
             </Route>
             <AclsRoute
               instancesHref={ControlPlaneRouteRoot}
+              managePermissionsHref={managePermissionsHref}
+              editPermissionsHref={editPermissionsHref}
             />
           </Route>
 
-          <Route path={`${DataPlaneRoutePath}/settings`} exact>
+          <Route path={`${root}/settings`} exact>
             <SettingsRoute instancesHref={ControlPlaneRouteRoot} />
           </Route>
-          <Route
-            path={`${DataPlaneRoutePath}/topics`}
-            render={({ match }) => (
-              <RedirectOnGateError
-                redirectUrl={instanceTopicsHref(match.params.id)}
-              >
-                <Switch>
-                  <Route
-                    path={`${DataPlaneRoutePath}/topics/:topicName/consumer-groups`}
+          <Route path={`${root}/topics`}>
+            <RedirectOnGateError redirectUrl={instanceTopicsHref(instanceId)}>
+              <Switch>
+                <Route path={`${root}/topics/:topicName/consumer-groups`}>
+                  <RedirectOnGateError
+                    redirectUrl={instanceTopicsHref(instanceId)}
                   >
-                    <RedirectOnGateError
-                      redirectUrl={instanceTopicsHref(match.params.id)}
-                    >
-                      <Switch>
+                    <Switch>
+                      <Route
+                        path={`${DataPlaneTopicRoutePath(
+                          root
+                        )}/consumer-groups/:consumerGroupId/view-partition`}
+                      >
                         <Route
-                          path={`${DataPlaneTopicRoutePath}/consumer-groups/:consumerGroupId/view-partition`}
-                        >
-                          <Route
-                            path={`${DataPlaneTopicRoutePath}/consumer-groups/:consumerGroupId/view-partition/delete`}
-                          >
-                            <TopicConsumerGroupDeleteRoute
-                              instancesHref={ControlPlaneRouteRoot}
-                              instanceTopicConsumerGroupsHref={
-                                instanceTopicConsumerGroupHref
-                              }
-                              viewTopicPartitionConsumerGroupHref={
-                                viewTopicPartitionConsumerGroupHref
-                              }
-                              instanceDetailsHref={instanceDetailsHref}
-                              instanceTopicsHref={instanceTopicsHref}
-                              instanceConsumerGroupsHref={
-                                instanceConsumerGroupsHref
-                              }
-                            />
-                          </Route>
-                          <Route
-                            path={`${DataPlaneTopicRoutePath}/consumer-groups/:consumerGroupId/view-partition/reset-offset`}
-                          >
-                            <TopicConsumerGroupResetOffsetRoute
-                              instancesHref={ControlPlaneRouteRoot}
-                              instanceTopicConsumerGroupsHref={
-                                instanceTopicConsumerGroupHref
-                              }
-                              viewTopicPartitionConsumerGroupHref={
-                                viewTopicPartitionConsumerGroupHref
-                              }
-                              instanceDetailsHref={instanceDetailsHref}
-                              instanceTopicsHref={instanceTopicsHref}
-                              instanceConsumerGroupsHref={
-                                instanceConsumerGroupsHref
-                              }
-                            />
-                          </Route>
-                          <TopicConsumerGroupViewPartitionRoute
-                            instancesHref={ControlPlaneRouteRoot}
-                            instanceTopicConsumerGroupsHref={
-                              instanceTopicConsumerGroupHref
-                            }
-                            viewTopicPartitionConsumerGroupHref={
-                              viewTopicPartitionConsumerGroupHref
-                            }
-                            instanceDetailsHref={instanceDetailsHref}
-                            instanceTopicsHref={instanceTopicsHref}
-                            instanceConsumerGroupsHref={
-                              instanceConsumerGroupsHref
-                            }
-                          />
-                        </Route>
-                        <Route
-                          path={`${DataPlaneTopicRoutePath}/consumer-groups/:consumerGroupId/reset-offset`}
-                        >
-                          <TopicConsumerGroupResetOffsetRoute
-                            instancesHref={ControlPlaneRouteRoot}
-                            instanceTopicConsumerGroupsHref={
-                              instanceTopicConsumerGroupHref
-                            }
-                            viewTopicPartitionConsumerGroupHref={
-                              viewTopicPartitionConsumerGroupHref
-                            }
-                            instanceDetailsHref={instanceDetailsHref}
-                            instanceTopicsHref={instanceTopicsHref}
-                            instanceConsumerGroupsHref={
-                              instanceConsumerGroupsHref
-                            }
-                          />
-                        </Route>
-                        <Route
-                          path={`${DataPlaneTopicRoutePath}/consumer-groups/:consumerGroupId/delete`}
+                          path={`${DataPlaneTopicRoutePath(
+                            root
+                          )}/consumer-groups/:consumerGroupId/view-partition/delete`}
                         >
                           <TopicConsumerGroupDeleteRoute
                             instancesHref={ControlPlaneRouteRoot}
@@ -222,55 +163,110 @@ export const DataPlaneRoutes: VoidFunctionComponent = () => {
                             }
                           />
                         </Route>
-                      </Switch>
-                    </RedirectOnGateError>
-                    <TopicConsumerGroupsRoute
-                      instancesHref={ControlPlaneRouteRoot}
-                      instanceDetailsHref={instanceDetailsHref}
-                      instanceTopicsHref={instanceTopicsHref}
-                      instanceConsumerGroupsHref={instanceConsumerGroupsHref}
-                    />
-                  </Route>
-                  <Route
-                    path={`${DataPlaneRoutePath}/topics/:topicName/messages`}
-                    exact
-                  >
-                    <TopicMessagesGroupsRoute
-                      instancesHref={ControlPlaneRouteRoot}
-                      instanceDetailsHref={instanceDetailsHref}
-                      instanceTopicsHref={instanceTopicsHref}
-                      instanceConsumerGroupsHref={instanceConsumerGroupsHref}
-                    />
-                  </Route>
+                        <Route
+                          path={`${DataPlaneTopicRoutePath(
+                            root
+                          )}/consumer-groups/:consumerGroupId/view-partition/reset-offset`}
+                        >
+                          <TopicConsumerGroupResetOffsetRoute
+                            instancesHref={ControlPlaneRouteRoot}
+                            instanceTopicConsumerGroupsHref={
+                              instanceTopicConsumerGroupHref
+                            }
+                            viewTopicPartitionConsumerGroupHref={
+                              viewTopicPartitionConsumerGroupHref
+                            }
+                            instanceDetailsHref={instanceDetailsHref}
+                            instanceTopicsHref={instanceTopicsHref}
+                            instanceConsumerGroupsHref={
+                              instanceConsumerGroupsHref
+                            }
+                          />
+                        </Route>
+                        <TopicConsumerGroupViewPartitionRoute
+                          instancesHref={ControlPlaneRouteRoot}
+                          instanceTopicConsumerGroupsHref={
+                            instanceTopicConsumerGroupHref
+                          }
+                          viewTopicPartitionConsumerGroupHref={
+                            viewTopicPartitionConsumerGroupHref
+                          }
+                          instanceDetailsHref={instanceDetailsHref}
+                          instanceTopicsHref={instanceTopicsHref}
+                          instanceConsumerGroupsHref={
+                            instanceConsumerGroupsHref
+                          }
+                        />
+                      </Route>
+                      <Route
+                        path={`${DataPlaneTopicRoutePath(
+                          root
+                        )}/consumer-groups/:consumerGroupId/reset-offset`}
+                      >
+                        <TopicConsumerGroupResetOffsetRoute
+                          instancesHref={ControlPlaneRouteRoot}
+                          instanceTopicConsumerGroupsHref={
+                            instanceTopicConsumerGroupHref
+                          }
+                          viewTopicPartitionConsumerGroupHref={
+                            viewTopicPartitionConsumerGroupHref
+                          }
+                          instanceDetailsHref={instanceDetailsHref}
+                          instanceTopicsHref={instanceTopicsHref}
+                          instanceConsumerGroupsHref={
+                            instanceConsumerGroupsHref
+                          }
+                        />
+                      </Route>
+                      <Route
+                        path={`${DataPlaneTopicRoutePath(
+                          root
+                        )}/consumer-groups/:consumerGroupId/delete`}
+                      >
+                        <TopicConsumerGroupDeleteRoute
+                          instancesHref={ControlPlaneRouteRoot}
+                          instanceTopicConsumerGroupsHref={
+                            instanceTopicConsumerGroupHref
+                          }
+                          viewTopicPartitionConsumerGroupHref={
+                            viewTopicPartitionConsumerGroupHref
+                          }
+                          instanceDetailsHref={instanceDetailsHref}
+                          instanceTopicsHref={instanceTopicsHref}
+                          instanceConsumerGroupsHref={
+                            instanceConsumerGroupsHref
+                          }
+                        />
+                      </Route>
+                    </Switch>
+                  </RedirectOnGateError>
+                  <TopicConsumerGroupsRoute
+                    instancesHref={ControlPlaneRouteRoot}
+                    instanceDetailsHref={instanceDetailsHref}
+                    instanceTopicsHref={instanceTopicsHref}
+                    instanceConsumerGroupsHref={instanceConsumerGroupsHref}
+                  />
+                </Route>
+                <Route path={`${root}/topics/:topicName/messages`} exact>
+                  <TopicMessagesGroupsRoute
+                    instancesHref={ControlPlaneRouteRoot}
+                    instanceDetailsHref={instanceDetailsHref}
+                    instanceTopicsHref={instanceTopicsHref}
+                    instanceConsumerGroupsHref={instanceConsumerGroupsHref}
+                  />
+                </Route>
 
-                  <Route
-                    path={`${DataPlaneRoutePath}/topics/:topicName/properties/edit`}
-                    exact
-                  >
-                    <TopicEditPropertiesRoute
-                      instancesHref={ControlPlaneRouteRoot}
-                      instanceDetailsHref={instanceDetailsHref}
-                      instanceTopicsHref={instanceTopicsHref}
-                      instanceConsumerGroupsHref={instanceConsumerGroupsHref}
-                    />
-                  </Route>
-                  <Route
-                    path={`${DataPlaneRoutePath}/topics/:topicName/properties`}
-                  >
-                    <Route
-                      path={`${DataPlaneRoutePath}/topics/:topicName/properties/delete`}
-                    >
-                      <TopicDeleteRoute
-                        instancesHref={ControlPlaneRouteRoot}
-                        instanceDetailsHref={instanceDetailsHref}
-                        instanceTopicsHref={instanceTopicsHref}
-                        instanceConsumerGroupsHref={instanceConsumerGroupsHref}
-                        topicHref={topicHref}
-                        updateTopicHref={updateTopicHref}
-                        deleteTopicHref={deleteTopicHref}
-                      />
-                    </Route>
-                    <TopicPropertiesRoute
+                <Route path={`${root}/topics/:topicName/properties/edit`} exact>
+                  <TopicEditPropertiesRoute
+                    instancesHref={ControlPlaneRouteRoot}
+                    instanceDetailsHref={instanceDetailsHref}
+                    instanceTopicsHref={instanceTopicsHref}
+                    instanceConsumerGroupsHref={instanceConsumerGroupsHref}
+                  />
+                </Route>
+                <Route path={`${root}/topics/:topicName/properties`}>
+                  <Route path={`${root}/topics/:topicName/properties/delete`}>
+                    <TopicDeleteRoute
                       instancesHref={ControlPlaneRouteRoot}
                       instanceDetailsHref={instanceDetailsHref}
                       instanceTopicsHref={instanceTopicsHref}
@@ -280,87 +276,42 @@ export const DataPlaneRoutes: VoidFunctionComponent = () => {
                       deleteTopicHref={deleteTopicHref}
                     />
                   </Route>
-                  <Route
-                    path={`${DataPlaneRoutePath}/topics/:topicName/schemas`}
-                    exact
-                  >
-                    <TopicSchemasRoute
-                      instancesHref={ControlPlaneRouteRoot}
-                      instanceDetailsHref={instanceDetailsHref}
-                      instanceTopicsHref={instanceTopicsHref}
-                      instanceConsumerGroupsHref={instanceConsumerGroupsHref}
-                    />
-                  </Route>
-                  <Redirect
-                    from={`${DataPlaneRoutePath}/topics/:topicName/`}
-                    to={`${DataPlaneRoutePath}/topics/:topicName/consumer-groups`}
-                    exact
+                  <TopicPropertiesRoute
+                    instancesHref={ControlPlaneRouteRoot}
+                    instanceDetailsHref={instanceDetailsHref}
+                    instanceTopicsHref={instanceTopicsHref}
+                    instanceConsumerGroupsHref={instanceConsumerGroupsHref}
+                    topicHref={topicHref}
+                    updateTopicHref={updateTopicHref}
+                    deleteTopicHref={deleteTopicHref}
                   />
-                </Switch>
-              </RedirectOnGateError>
-            )}
-          />
-          <Route
-            path={`${DataPlaneRoutePath}/consumer-groups`}
-            render={({ match }) => (
-              <RedirectOnGateError
-                redirectUrl={instanceConsumerGroupsHref(match.params.id)}
-              >
-                <Switch>
+                </Route>
+                <Route path={`${root}/topics/:topicName/schemas`} exact>
+                  <TopicSchemasRoute
+                    instancesHref={ControlPlaneRouteRoot}
+                    instanceDetailsHref={instanceDetailsHref}
+                    instanceTopicsHref={instanceTopicsHref}
+                    instanceConsumerGroupsHref={instanceConsumerGroupsHref}
+                  />
+                </Route>
+                <Redirect
+                  from={`${root}/topics/:topicName/`}
+                  to={`${root}/topics/:topicName/consumer-groups`}
+                  exact
+                />
+              </Switch>
+            </RedirectOnGateError>
+          </Route>
+          <Route path={`${root}/consumer-groups`}>
+            <RedirectOnGateError
+              redirectUrl={instanceConsumerGroupsHref(instanceId)}
+            >
+              <Switch>
+                <Route
+                  path={`${root}/consumer-groups/:consumerGroupId/view-partition`}
+                >
                   <Route
-                    path={`${DataPlaneRoutePath}/consumer-groups/:consumerGroupId/view-partition`}
-                  >
-                    <Route
-                      path={`${DataPlaneRoutePath}/consumer-groups/:consumerGroupId/view-partition/delete`}
-                    >
-                      <ConsumerGroupDeleteRoute
-                        instancesHref={ControlPlaneRouteRoot}
-                        instanceTopicsHref={instanceTopicsHref}
-                        instanceDetailsHref={instanceDetailsHref}
-                        instanceConsumerGroupsHref={instanceConsumerGroupsHref}
-                        viewPartitionConsumerGroupHref={
-                          viewPartitionConsumerGroupHref
-                        }
-                      />
-                    </Route>
-                    <Route
-                      path={`${DataPlaneRoutePath}/consumer-groups/:consumerGroupId/view-partition/reset-offset`}
-                    >
-                      <ConsumerGroupResetOffsetRoute
-                        instancesHref={ControlPlaneRouteRoot}
-                        instanceTopicsHref={instanceTopicsHref}
-                        instanceDetailsHref={instanceDetailsHref}
-                        instanceConsumerGroupsHref={instanceConsumerGroupsHref}
-                        viewPartitionConsumerGroupHref={
-                          viewPartitionConsumerGroupHref
-                        }
-                      />
-                    </Route>
-                    <ConsumerGroupViewPartitionRoute
-                      instancesHref={ControlPlaneRouteRoot}
-                      instanceTopicsHref={instanceTopicsHref}
-                      instanceDetailsHref={instanceDetailsHref}
-                      instanceConsumerGroupsHref={instanceConsumerGroupsHref}
-                      viewPartitionConsumerGroupHref={
-                        viewPartitionConsumerGroupHref
-                      }
-                    />
-                  </Route>
-                  <Route
-                    path={`${DataPlaneRoutePath}/consumer-groups/:consumerGroupId/reset-offset`}
-                  >
-                    <ConsumerGroupResetOffsetRoute
-                      instancesHref={ControlPlaneRouteRoot}
-                      instanceTopicsHref={instanceTopicsHref}
-                      instanceDetailsHref={instanceDetailsHref}
-                      instanceConsumerGroupsHref={instanceConsumerGroupsHref}
-                      viewPartitionConsumerGroupHref={
-                        viewPartitionConsumerGroupHref
-                      }
-                    />
-                  </Route>
-                  <Route
-                    path={`${DataPlaneRoutePath}/consumer-groups/:consumerGroupId/delete`}
+                    path={`${root}/consumer-groups/:consumerGroupId/view-partition/delete`}
                   >
                     <ConsumerGroupDeleteRoute
                       instancesHref={ControlPlaneRouteRoot}
@@ -372,15 +323,57 @@ export const DataPlaneRoutes: VoidFunctionComponent = () => {
                       }
                     />
                   </Route>
-                </Switch>
-              </RedirectOnGateError>
-            )}
-          />
-          <Redirect
-            from={`${DataPlaneRoutePath}`}
-            to={`${DataPlaneRoutePath}/dashboard`}
-            exact
-          />
+                  <Route
+                    path={`${root}/consumer-groups/:consumerGroupId/view-partition/reset-offset`}
+                  >
+                    <ConsumerGroupResetOffsetRoute
+                      instancesHref={ControlPlaneRouteRoot}
+                      instanceTopicsHref={instanceTopicsHref}
+                      instanceDetailsHref={instanceDetailsHref}
+                      instanceConsumerGroupsHref={instanceConsumerGroupsHref}
+                      viewPartitionConsumerGroupHref={
+                        viewPartitionConsumerGroupHref
+                      }
+                    />
+                  </Route>
+                  <ConsumerGroupViewPartitionRoute
+                    instancesHref={ControlPlaneRouteRoot}
+                    instanceTopicsHref={instanceTopicsHref}
+                    instanceDetailsHref={instanceDetailsHref}
+                    instanceConsumerGroupsHref={instanceConsumerGroupsHref}
+                    viewPartitionConsumerGroupHref={
+                      viewPartitionConsumerGroupHref
+                    }
+                  />
+                </Route>
+                <Route
+                  path={`${root}/consumer-groups/:consumerGroupId/reset-offset`}
+                >
+                  <ConsumerGroupResetOffsetRoute
+                    instancesHref={ControlPlaneRouteRoot}
+                    instanceTopicsHref={instanceTopicsHref}
+                    instanceDetailsHref={instanceDetailsHref}
+                    instanceConsumerGroupsHref={instanceConsumerGroupsHref}
+                    viewPartitionConsumerGroupHref={
+                      viewPartitionConsumerGroupHref
+                    }
+                  />
+                </Route>
+                <Route path={`${root}/consumer-groups/:consumerGroupId/delete`}>
+                  <ConsumerGroupDeleteRoute
+                    instancesHref={ControlPlaneRouteRoot}
+                    instanceTopicsHref={instanceTopicsHref}
+                    instanceDetailsHref={instanceDetailsHref}
+                    instanceConsumerGroupsHref={instanceConsumerGroupsHref}
+                    viewPartitionConsumerGroupHref={
+                      viewPartitionConsumerGroupHref
+                    }
+                  />
+                </Route>
+              </Switch>
+            </RedirectOnGateError>
+          </Route>
+          <Redirect from={`${root}`} to={`${root}/dashboard`} exact />
 
           <Route>
             <InvalidObject />

@@ -1,8 +1,5 @@
-import { useCallback } from "react";
-import type { VoidFunctionComponent } from "react";
-import { EditPermissions } from "ui";
 import { addNotification } from "@redhat-cloud-services/frontend-components-notifications";
-import { useDispatch } from "react-redux";
+import type { AclBinding } from "@rhoas/kafka-instance-sdk";
 import {
   useAcls,
   useConsumerGroups,
@@ -10,21 +7,33 @@ import {
   useTopics,
   useUpdatePermissionsMutation,
 } from "consoledot-api";
+import type { VoidFunctionComponent } from "react";
+import { useCallback } from "react";
+import { useDispatch } from "react-redux";
 import { useHistory, useRouteMatch } from "react-router-dom";
-import type { AclBinding } from "@rhoas/kafka-instance-sdk";
+import { EditPermissions } from "ui";
+import {
+  ControlPlaneRouteRoot,
+  DedicatedControlPlaneRouteRoot,
+} from "../../control-plane/routesConsts";
 import type {
   DataPlanePermissionsNavigationProps,
   DataPlanePermissionsRouteParams,
 } from "../routesConsts";
 import { DataPlanePermissionsRoutePath } from "../routesConsts";
 import { useDataPlaneGate } from "../useDataPlaneGate";
+
 export const EditPermissionsRoute: VoidFunctionComponent<
   DataPlanePermissionsNavigationProps
 > = ({ managePermissionsHref }) => {
   const { instance } = useDataPlaneGate();
-  const match = useRouteMatch<DataPlanePermissionsRouteParams>(
-    DataPlanePermissionsRoutePath
+  const standardMatch = useRouteMatch<DataPlanePermissionsRouteParams>(
+    DataPlanePermissionsRoutePath(ControlPlaneRouteRoot)
   );
+  const dedicatedMatch = useRouteMatch<DataPlanePermissionsRouteParams>(
+    DataPlanePermissionsRoutePath(DedicatedControlPlaneRouteRoot)
+  );
+  const match = standardMatch || dedicatedMatch;
   if (!match) {
     throw Error("EditPermissions used outside the expected route");
   }

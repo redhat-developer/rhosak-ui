@@ -5,7 +5,12 @@ import {
   DedicatedControlPlaneRoutes,
   DrawerProvider,
 } from "./control-plane";
-import { DataPlaneRoutes, DedicatedDataPlaneRoutes } from "./data-plane";
+import {
+  ControlPlaneRouteRoot,
+  DedicatedControlPlaneRouteRoot,
+} from "./control-plane/routesConsts";
+import { DataPlaneRoutes } from "./data-plane";
+import { DataPlaneRoutePath } from "./data-plane/routesConsts";
 import { DefaultServiceRedirect } from "./DefaultServiceRedirect";
 import { OverviewRoute } from "./overview";
 
@@ -18,18 +23,34 @@ export const Routes: VoidFunctionComponent = () => {
       <Route path={"/"} exact>
         <DefaultServiceRedirect />
       </Route>
-      <Route path={"/kafkas"}>
+      <Route path={ControlPlaneRouteRoot}>
         <DrawerProvider>
           {/* don't move these routes around! the order is important */}
           <ControlPlaneRoutes />
-          <DataPlaneRoutes />
+          <Route
+            path={DataPlaneRoutePath(ControlPlaneRouteRoot)}
+            render={({ match }) => (
+              <DataPlaneRoutes
+                root={DataPlaneRoutePath(ControlPlaneRouteRoot)}
+                instanceId={match.params.id}
+              />
+            )}
+          />
         </DrawerProvider>
       </Route>
-      <Route path={"/dedicated"}>
+      <Route path={DedicatedControlPlaneRouteRoot}>
         <DrawerProvider>
           {/* don't move these routes around! the order is important */}
           <DedicatedControlPlaneRoutes />
-          <DedicatedDataPlaneRoutes />
+          <Route
+            path={DataPlaneRoutePath(DedicatedControlPlaneRouteRoot)}
+            render={({ match }) => (
+              <DataPlaneRoutes
+                root={DataPlaneRoutePath(DedicatedControlPlaneRouteRoot)}
+                instanceId={match.params.id}
+              />
+            )}
+          />
         </DrawerProvider>
       </Route>
       <Route path={""} exact></Route>
