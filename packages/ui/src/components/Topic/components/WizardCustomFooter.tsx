@@ -68,7 +68,6 @@ export const WizardCustomFooter: React.FC<IWizardFooter> = ({
                   variant="primary"
                   type="submit"
                   onClick={onNext}
-                  isLoading={isLoading}
                   ouiaId={"button-finish"}
                 >
                   {t("common:finish")}

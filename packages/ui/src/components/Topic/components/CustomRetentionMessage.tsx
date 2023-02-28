@@ -14,13 +14,13 @@ import { retentionTimeSelectOptions } from "./types";
 
 export type CustomRetentionMessageProps = {
   id?: string;
-  customValue: CustomSelect;
-  setCustomValue: (data: CustomSelect) => void;
+  customTimeValue: CustomSelect;
+  setCustomTimeValue: (data: CustomSelect) => void;
 };
 
 const CustomRetentionMessage: React.FC<CustomRetentionMessageProps> = ({
-  customValue,
-  setCustomValue,
+  customTimeValue, 
+  setCustomTimeValue,
 }) => {
   const [isRetentionTimeSelectOpen, setIsRetentionTimeSelectOpen] =
     useState<boolean>(false);
@@ -34,14 +34,14 @@ const CustomRetentionMessage: React.FC<CustomRetentionMessageProps> = ({
       unit: value as TimeUnit,
       value: 1,
     };
-    setCustomValue(inputUnit);
+    setCustomTimeValue(inputUnit);
 
     onRetentionTimeToggle(false);
   };
 
   const onChange = (input: string) => {
-    const inputValue: CustomSelect = { ...customValue, value: Number(input) };
-    setCustomValue(inputValue);
+    const inputValue: CustomSelect = { ...customTimeValue, value: Number(input) };
+    setCustomTimeValue(inputValue);
   };
 
   return (
@@ -51,7 +51,7 @@ const CustomRetentionMessage: React.FC<CustomRetentionMessageProps> = ({
           <TextInput
             aria-label={"Retention time"}
             type="number"
-            value={customValue.value == null ? "" : customValue.value}
+            value={customTimeValue.value == null ? "" : customTimeValue.value}
             onChange={onChange}
             min={1}
           />
@@ -63,7 +63,7 @@ const CustomRetentionMessage: React.FC<CustomRetentionMessageProps> = ({
             onToggle={onRetentionTimeToggle}
             onSelect={(event, value) => onSelect(event, value as string)}
             placeholder="days"
-            selections={customValue.unit}
+            selections={customTimeValue.unit}
             isOpen={isRetentionTimeSelectOpen}
           >
             {retentionTimeSelectOptions?.map((s) => (

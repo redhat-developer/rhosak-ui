@@ -13,7 +13,7 @@ import {
   retentionSizeSelectOptions,
 } from "./types";
 import { useState } from "react";
-import { t } from 'xstate';
+import { t } from "xstate";
 
 export type CustomRetentionSizeProps = {
   id?: string;
@@ -35,7 +35,7 @@ const CustomRetentionSize: React.FC<CustomRetentionSizeProps> = ({
   const onSelect: SelectProps["onSelect"] = (event, value) => {
     const inputUnit: CustomRetentionSizeSelect = {
       unit: value as CustomRetentionUnit,
-      value: 0,
+      value: 1,
     };
     setCustomRetentionSizeValue(inputUnit);
     onRetentionSizeToggle(false);

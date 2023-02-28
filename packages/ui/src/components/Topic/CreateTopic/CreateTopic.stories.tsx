@@ -2,7 +2,6 @@ import type { ComponentMeta, ComponentStory } from "@storybook/react";
 import { userEvent, within } from "@storybook/testing-library";
 import type { Topic } from "ui-models/src/models/topic";
 import type { TopicPartition } from "ui-models/src/models/topic-partition";
-import { fakeApi } from "../../storiesHelpers";
 import { CreateTopic } from "./CreateTopic";
 
 export default {

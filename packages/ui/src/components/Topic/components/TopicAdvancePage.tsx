@@ -38,12 +38,12 @@ export type TopicAdvancePageProps = {
   availablePartitionLimit: number;
   customRetentionSizeValue: CustomRetentionSizeSelect;
   setCustomRetentionSizeValue: (data: CustomRetentionSizeSelect) => void;
-  customValue: CustomSelect;
-  setCustomValue: (data: CustomSelect) => void;
-  radioSelectValue: RadioSelectType;
-  setRadioSelectValue: (value: RadioSelectType) => void;
-  customRetentionRadioSelect: RetentionSizeRadioSelect;
-  setCustomRetentionRadioSelect: (data: RetentionSizeRadioSelect) => void;
+  customTimeValue: CustomSelect;
+  setCustomTimeValue: (data: CustomSelect) => void;
+  radioTimeSelectValue: RadioSelectType;
+  setRadioTimeSelectValue: (value: RadioSelectType) => void;
+  radioSizeSelectValue: RetentionSizeRadioSelect;
+  setRadioSizeSelectValue: (data: RetentionSizeRadioSelect) => void;
 };
 
 export const TopicAdvancePage: React.FunctionComponent<
@@ -56,14 +56,14 @@ export const TopicAdvancePage: React.FunctionComponent<
   setTopicData,
   checkTopicName,
   availablePartitionLimit,
-  customValue,
-  setCustomValue,
-  radioSelectValue,
-  setRadioSelectValue,
+  customTimeValue,
+  setCustomTimeValue,
+  radioTimeSelectValue,
+  setRadioTimeSelectValue,
   setCustomRetentionSizeValue,
   customRetentionSizeValue,
-  customRetentionRadioSelect,
-  setCustomRetentionRadioSelect,
+  radioSizeSelectValue,
+  setRadioSizeSelectValue,
 }) => {
   const { t } = useTranslation(["create-topic", "common"]);
   const actionText = isCreate ? t("create_topic") : t("common:save");
@@ -122,12 +122,12 @@ export const TopicAdvancePage: React.FunctionComponent<
                   warning={warning}
                   customRetentionSizeValue={customRetentionSizeValue}
                   setCustomRetentionSizeValue={setCustomRetentionSizeValue}
-                  customValue={customValue}
-                  setCustomValue={setCustomValue}
-                  radioSelectValue={radioSelectValue}
-                  setRadioSelectValue={setRadioSelectValue}
-                  customRetentionRadioSelect={customRetentionRadioSelect}
-                  setCustomRetentionRadioSelect={setCustomRetentionRadioSelect}
+                  customTimeValue={customTimeValue}
+                  setCustomTimeValue={setCustomTimeValue}
+                  radioTimeSelectValue={radioTimeSelectValue}
+                  setRadioTimeSelectValue={setRadioTimeSelectValue}
+                  radioSizeSelectValue={radioSizeSelectValue}
+                  setRadioSizeSelectValue={setRadioSizeSelectValue}
                 />
                 <Message
                   defaultMaximumMessageBytes={
