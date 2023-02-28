@@ -3,7 +3,7 @@ import type {
   SupportedKafkaSize,
 } from "@rhoas/kafka-management-sdk";
 import type { DedicatedSizes } from "ui";
-import { apiSizeToComponentSize } from "../transformer/apiSizeToComponentSize";
+import { apiSizeToComponentSize } from "../transformers/apiSizeToComponentSize";
 
 export type FetchDedicatedClusterSizesParams = {
   getEnterpriseClusterById: EnterpriseDataplaneClustersApi["getEnterpriseClusterById"];

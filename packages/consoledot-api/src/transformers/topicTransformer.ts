@@ -1,4 +1,4 @@
-import type { Topic as ApiTopic } from "@rhoas/kafka-instance-sdk/dist/generated/model/topic";
+import type { Topic as ApiTopic } from "@rhoas/kafka-instance-sdk";
 import type { Plan } from "ui-models/src/models/kafka";
 import type { Topic } from "ui-models/src/models/topic";
 import type {

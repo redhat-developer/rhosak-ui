@@ -16,7 +16,7 @@ import type { DataPlanePermissionsNavigationProps } from "../routesConsts";
 import { useDataPlaneGate } from "../useDataPlaneGate";
 import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
 
-export const AclsRoute: VoidFunctionComponent<
+export const PermissionsRoute: VoidFunctionComponent<
   DataPlanePermissionsNavigationProps
 > = ({ instancesHref, managePermissionsHref, editPermissionsHref }) => {
   const { page, perPage, setPagination, setPaginationQuery } =
@@ -141,7 +141,7 @@ export const AclsRoute: VoidFunctionComponent<
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       history.push(editPermissionsHref(instance.id, account));
     },
-    [editPermissionsHref, history, instance.id]
+    [history, instance.id, editPermissionsHref]
   );
   const onManagePermission = useCallback(() => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
