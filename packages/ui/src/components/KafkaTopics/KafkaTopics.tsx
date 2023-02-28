@@ -1,4 +1,4 @@
-import { Button, PageSection } from "@patternfly/react-core";
+import { PageSection } from "@patternfly/react-core";
 import { TableVariant } from "@patternfly/react-table";
 import type { TableViewProps } from "@rhoas/app-services-ui-components";
 import {

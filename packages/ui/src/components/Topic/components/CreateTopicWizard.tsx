@@ -29,7 +29,7 @@ import type {
   RetentionSizeRadioSelect,
 } from "./types";
 import { retentionSizeTransformer } from "./retentionSizeTransformer";
-import { top } from '@patternfly/react-core/dist/esm/helpers/Popper/thirdparty/popper-core';
+import { top } from "@patternfly/react-core/dist/esm/helpers/Popper/thirdparty/popper-core";
 
 export type CreateTopicWizardProps = {
   isSwitchChecked: boolean;
@@ -75,7 +75,6 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
     onCloseCreateTopic && onCloseCreateTopic();
   };
 
-  console.log(topicData["unclean.leader.election.enable"])
   const steps: WizardStep[] = [
     {
       name: t("topic_name"),

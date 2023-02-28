@@ -2,14 +2,9 @@ import { isServiceApiError } from "@rhoas/kafka-management-sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { kafkaQueries } from "../queryKeys";
 import { useApi } from "../useApi";
-import { Topic } from "ui-models/src/models/topic";
-import {
-  ConfigEntry,
-  NewTopicInput,
-  TopicSettings,
-} from "@rhoas/kafka-instance-sdk";
-import { TopicConfig } from "ui-models/src/models/topic-config";
-import { Bytes, Milliseconds } from "ui-models/src/types";
+import type { Topic } from "ui-models/src/models/topic";
+import type { NewTopicInput, TopicSettings } from "@rhoas/kafka-instance-sdk";
+import { convertToKeyValuePairs } from "consoledot-api/src/transformers/topicTransformer";
 
 export function useCreateTopicMutation() {
   const { topics } = useApi();
@@ -25,22 +20,6 @@ export function useCreateTopicMutation() {
     }) {
       const { adminUrl, topic, onSuccess, onError } = props;
       const api = topics(adminUrl);
-      const convertToKeyValuePairs = (inputObj: TopicConfig) => {
-        const pairs: ConfigEntry[] = [];
-        for (const [key, value] of Object.entries(inputObj)) {
-          if (key === "retention.ms") {
-            pairs.push({
-              key,
-              value: (value as Milliseconds).value.toString(),
-            });
-          } else if (key === "retention.bytes") {
-            pairs.push({ key, value: (value as Bytes).value.toString() });
-          } else if (key === "cleanup.policy") {
-            pairs.push({ key, value: value.toString() });
-          }
-        }
-        return pairs;
-      };
 
       const convertToNewTopicInput = (topic: Topic): NewTopicInput => {
         const { name, partitions, ...config } = topic;
