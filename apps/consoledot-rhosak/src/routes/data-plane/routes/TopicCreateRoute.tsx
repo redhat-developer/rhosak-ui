@@ -1,25 +1,38 @@
 import type { VoidFunctionComponent } from "react";
 import { useCallback } from "react";
 import { CreateTopic } from "ui";
-import { useTopicGate } from "../useTopicGate";
 import type { Topic } from "ui-models/src/models/topic";
-import type { ControlPlaneNavigationProps } from "../../control-plane/routesConsts";
 import { useHistory } from "react-router-dom";
 import { addNotification } from "@redhat-cloud-services/frontend-components-notifications";
 import { useDispatch } from "react-redux";
-import { useCreateTopicMutation } from "consoledot-api";
+import { useCreateTopicMutation, useTopics } from "consoledot-api";
+import { useDataPlaneGate } from "../useDataPlaneGate";
+import type { DataPlaneNavigationProps } from "../routesConsts";
 
-export const CreateTopicRoute: VoidFunctionComponent<
-  ControlPlaneNavigationProps
-> = ({ instancesHref }) => {
+export const TopicCreateRoute: VoidFunctionComponent<
+  DataPlaneNavigationProps
+> = ({ instancesHref, instanceTopicsHref }) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
-  const { instance, topic } = useTopicGate();
+  const { instance } = useDataPlaneGate();
   const createTopic = useCreateTopicMutation();
   const dispatch = useDispatch();
 
+  const { data: topics } = useTopics({
+    id: instance.id,
+    adminUrl: instance.adminUrl,
+    plan: instance.plan,
+  });
+
   const checkTopicName = (topicName: string) => {
-    return topicName == topic.name ? false : true;
+    const selectedTopic = topics?.topics.filter(
+      (topic) => topic.name === topicName
+    );
+    if (selectedTopic && selectedTopic?.length > 0) {
+      return false;
+    } else {
+      return true;
+    }
   };
 
   const onKafkaPageLink = () => {
@@ -32,10 +45,10 @@ export const CreateTopicRoute: VoidFunctionComponent<
     history.push(instancesHref);
   };
 
-  const onCloseCreateTopic = () => {
+  const onCloseCreateTopic = useCallback(() => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-    history.push(instancesHref);
-  };
+    history.push(instanceTopicsHref(instance.id));
+  }, [history, instance.id, instanceTopicsHref]);
 
   const onSave = useCallback(
     (topicData: Topic) => {
@@ -46,7 +59,7 @@ export const CreateTopicRoute: VoidFunctionComponent<
 
         onSuccess: () => {
           //eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-          history.push(instancesHref);
+          history.push(instanceTopicsHref(instance.id));
         },
         onError: (_, message) => {
           dispatch(
@@ -66,7 +79,7 @@ export const CreateTopicRoute: VoidFunctionComponent<
       history,
       instance?.adminUrl,
       instance.id,
-      instancesHref,
+      instanceTopicsHref,
     ]
   );
 
