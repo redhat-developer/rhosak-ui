@@ -1,5 +1,5 @@
 import { convert } from "convert";
-import { CustomRetentionSizeSelect } from "./types";
+import type { CustomRetentionSizeSelect } from "./types";
 
 export const retentionSizeTransformer = (size: CustomRetentionSizeSelect) => {
   switch (size.unit) {

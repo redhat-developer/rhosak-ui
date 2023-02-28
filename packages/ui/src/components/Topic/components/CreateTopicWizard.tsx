@@ -29,7 +29,6 @@ import type {
   RetentionSizeRadioSelect,
 } from "./types";
 import { retentionSizeTransformer } from "./retentionSizeTransformer";
-import { top } from "@patternfly/react-core/dist/esm/helpers/Popper/thirdparty/popper-core";
 
 export type CreateTopicWizardProps = {
   isSwitchChecked: boolean;
@@ -51,7 +50,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
 }) => {
   const { t } = useTranslation(["create-topic", "common"]);
 
-  const [customValue, setCustomValue] = useState<CustomSelect>({
+  const [customTimeValue, setCustomTimeValue] = useState<CustomSelect>({
     unit: "days",
     value: 7,
   });
@@ -65,10 +64,10 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
   const [invalidText, setInvalidText] = useState<string>("");
   const [topicData, setTopicData] = useState<Topic>(initialFieldsValue);
   const [warningModalOpen, setWarningModalOpen] = useState<boolean>(false);
-  const [radioSelectValue, setRadioSelectValue] =
+  const [radioTimeSelectValue, setRadioTimeSelectValue] =
     useState<RadioSelectType>("week");
 
-  const [customRetentionRadioSelect, setCustomRetentionRadioSelect] =
+  const [radioSizeSelectValue, setRadioSizeSelectValue] =
     useState<RetentionSizeRadioSelect>("unlimited");
 
   const closeWizard = () => {
@@ -110,12 +109,12 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
         <StepMessageRetention
           customRetentionSizeValue={customRetentionSizeValue}
           setCustomRetentionSizeValue={setCustomRetentionSizeValue}
-          customValue={customValue}
-          setCustomValue={setCustomValue}
-          radioSelectValue={radioSelectValue}
-          setRadioSelectValue={setRadioSelectValue}
-          customRetentionRadioSelect={customRetentionRadioSelect}
-          setCustomRetentionRadioSelect={setCustomRetentionRadioSelect}
+          customTimeValue={customTimeValue}
+          setCustomTimeValue={setCustomTimeValue}
+          radioTimeSelectValue={radioTimeSelectValue}
+          setRadioTimeSelectValue={setRadioTimeSelectValue}
+          radioSizeSelectValue={radioSizeSelectValue}
+          setRadioSizeSelectValue={setRadioSizeSelectValue}
           setTopicData={setTopicData}
           topicData={topicData}
         />
@@ -141,7 +140,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
     const tranformedValueInMilliseconds =
       topicData["retention.ms"].value == BigInt(-1)
         ? BigInt(-1)
-        : retentionTimeTransformer(customValue);
+        : retentionTimeTransformer(customTimeValue);
     const tranformedValueInBytes =
       topicData["retention.bytes"].value == BigInt(-1)
         ? BigInt(-1)
@@ -198,12 +197,12 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
                 availablePartitionLimit={availablePartitionLimit}
                 customRetentionSizeValue={customRetentionSizeValue}
                 setCustomRetentionSizeValue={setCustomRetentionSizeValue}
-                customValue={customValue}
-                setCustomValue={setCustomValue}
-                radioSelectValue={radioSelectValue}
-                setRadioSelectValue={setRadioSelectValue}
-                customRetentionRadioSelect={customRetentionRadioSelect}
-                setCustomRetentionRadioSelect={setCustomRetentionRadioSelect}
+                customTimeValue={customTimeValue}
+                setCustomTimeValue={setCustomTimeValue}
+                radioTimeSelectValue={radioTimeSelectValue}
+                setRadioTimeSelectValue={setRadioTimeSelectValue}
+                radioSizeSelectValue={radioSizeSelectValue}
+                setRadioSizeSelectValue={setRadioSizeSelectValue}
               />
             }
             {warningModalOpen && (

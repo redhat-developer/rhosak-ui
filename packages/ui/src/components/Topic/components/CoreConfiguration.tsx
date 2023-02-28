@@ -42,12 +42,12 @@ export type CoreConfigurationProps = {
   availablePartitionLimit: number;
   customRetentionSizeValue: CustomRetentionSizeSelect;
   setCustomRetentionSizeValue: (data: CustomRetentionSizeSelect) => void;
-  customValue: CustomSelect;
-  setCustomValue: (data: CustomSelect) => void;
-  radioSelectValue: RadioSelectType;
-  setRadioSelectValue: (value: RadioSelectType) => void;
-  customRetentionRadioSelect: RetentionSizeRadioSelect;
-  setCustomRetentionRadioSelect: (data: RetentionSizeRadioSelect) => void;
+  customTimeValue: CustomSelect;
+  setCustomTimeValue: (data: CustomSelect) => void;
+  radioTimeSelectValue: RadioSelectType;
+  setRadioTimeSelectValue: (value: RadioSelectType) => void;
+  radioSizeSelectValue: RetentionSizeRadioSelect;
+  setRadioSizeSelectValue: (data: RetentionSizeRadioSelect) => void;
 };
 
 const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
@@ -59,14 +59,14 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
   setTopicValidated,
   topicValidated,
   availablePartitionLimit,
-  customValue,
-  setCustomValue,
-  radioSelectValue,
-  setRadioSelectValue,
+  customTimeValue,
+  setCustomTimeValue,
+  radioTimeSelectValue,
+  setRadioTimeSelectValue,
   setCustomRetentionSizeValue,
   customRetentionSizeValue,
-  customRetentionRadioSelect,
-  setCustomRetentionRadioSelect,
+  radioSizeSelectValue,
+  setRadioSizeSelectValue,
 }) => {
   const { t } = useTranslation(["create-topic"]);
   const { validateName } = useValidateTopic();
@@ -95,7 +95,7 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
         ...topicData,
         "retention.ms": { value: BigInt(1), type: "ms" },
       });
-    setRadioSelectValue(value);
+    setRadioTimeSelectValue(value);
   };
 
   const handleRetentionMessageSize = (value: RetentionSizeRadioSelect) => {
@@ -109,7 +109,7 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
         ...topicData,
         "retention.bytes": { value: BigInt(1), type: "bytes" },
       });
-    setCustomRetentionRadioSelect(value);
+    setRadioSizeSelectValue(value);
   };
 
   const handleTextInputChange = (value: string) => {
@@ -151,8 +151,8 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
 
   const retentionTimeInput = (
     <CustomRetentionMessage
-      customValue={customValue}
-      setCustomValue={setCustomValue}
+      customTimeValue={customTimeValue}
+      setCustomTimeValue={setCustomTimeValue}
     />
   );
 
@@ -265,23 +265,23 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
       >
         <Stack hasGutter>
           <Radio
-            isChecked={radioSelectValue != "unlimited"}
+            isChecked={radioTimeSelectValue != "unlimited"}
             name="custom-retention-time"
             onChange={() => handleRetentionMessageTime("custom")}
             label={retentionTimeInput}
             className="kafka-ui--radio-label__number-input"
             aria-label="custom duration"
             id="custom-retention-time"
-            value={radioSelectValue}
+            value={radioTimeSelectValue}
           />
           <Radio
-            isChecked={radioSelectValue == "unlimited"}
+            isChecked={radioTimeSelectValue == "unlimited"}
             name="unlimited-retention-time"
             onChange={() => handleRetentionMessageTime("unlimited")}
             label="Unlimited time"
             aria-label="Unlimited"
             id="unlimited-retention-time"
-            value={radioSelectValue}
+            value={radioTimeSelectValue}
           />
         </Stack>
       </FormGroupWithPopover>
@@ -294,23 +294,23 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
       >
         <Stack hasGutter>
           <Radio
-            isChecked={customRetentionRadioSelect === "custom"}
+            isChecked={radioSizeSelectValue != "unlimited"}
             name="custom-retention-size"
             onChange={() => handleRetentionMessageSize("custom")}
             label={retentionSizeInput}
             className="kafka-ui--radio-label__number-input"
             aria-label="custom size"
             id="custom-retention-size"
-            value={customRetentionRadioSelect}
+            value={radioSizeSelectValue}
           />
           <Radio
-            isChecked={customRetentionRadioSelect === "unlimited"}
+            isChecked={radioSizeSelectValue === "unlimited"}
             name="unlimited-retention-size"
             onChange={() => handleRetentionMessageSize("unlimited")}
             label="Unlimited size"
             aria-label="Unlimited"
             id="unlimited-retention-size"
-            value={customRetentionRadioSelect}
+            value={radioSizeSelectValue}
           />
         </Stack>
       </FormGroupWithPopover>

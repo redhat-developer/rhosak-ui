@@ -13,6 +13,8 @@ import type {
 } from "../../";
 import { bytesToMemorySize, millisecondsToTime } from "../../KafkaTopics/types";
 import type { CustomRetentionUnit } from "../components/types";
+import { retentionSizeTransformer } from "../components/retentionSizeTransformer";
+import { retentionTimeTransformer } from "../components/retentionTimeTransformer";
 
 export type EditTopicPropertiesProps = {
   topic: Topic;
@@ -27,8 +29,9 @@ export const EditTopicProperties: FunctionComponent<
   const millisecondsToTimeValue = millisecondsToTime(
     topic["retention.ms"].value
   );
+
   const bytesToSizeValue = bytesToMemorySize(topic["retention.bytes"].value);
-  const [customValue, setCustomValue] = useState<CustomSelect>({
+  const [customTimeValue, setCustomTimeValue] = useState<CustomSelect>({
     unit:
       topic["retention.ms"].value != BigInt(-1)
         ? (millisecondsToTimeValue.unit as TimeUnit)
@@ -46,27 +49,51 @@ export const EditTopicProperties: FunctionComponent<
           ? (bytesToSizeValue.unit as CustomRetentionUnit)
           : "bytes",
       value:
-        topic["retention.ms"].value != BigInt(-1)
-          ? Number(millisecondsToTimeValue.value)
-          : 7,
+        topic["retention.bytes"].value != BigInt(-1)
+          ? Number(bytesToSizeValue.value)
+          : 1,
     });
 
-  const [radioSelectValue, setRadioSelectValue] = useState<RadioSelectType>(
-    topic["retention.ms"].value == BigInt(-1) ? "unlimited" : "custom"
-  );
+  const [radioTimeSelectValue, setRadioTimeSelectValue] =
+    useState<RadioSelectType>(
+      topic["retention.ms"].value == BigInt(-1) ? "unlimited" : "custom"
+    );
 
-  const [customRetentionRadioSelect, setCustomRetentionRadioSelect] =
-    useState<RetentionSizeRadioSelect>("unlimited");
+  const [radioSizeSelectValue, setRadioSizeSelectValue] =
+    useState<RetentionSizeRadioSelect>(
+      topic["retention.bytes"].value == BigInt(-1) ? "unlimited" : "custom"
+    );
 
   const [topicData, setTopicData] = useState<Topic>(topic);
 
   const [warningModalOpen, setWarningModalOpen] = useState<boolean>(false);
 
-  const onSaveTopic = () => {
+  const onSaveTopic = (transformedTopic: Topic) => {
     if (topicData.partitions.length >= availablePartitionLimit)
       setWarningModalOpen(true);
-    else onSave(topicData);
+    else onSave(transformedTopic);
   };
+
+  const onTransform = () => {
+    const tranformedValueInMilliseconds =
+      topicData["retention.ms"].value == BigInt(-1)
+        ? BigInt(-1)
+        : retentionTimeTransformer(customTimeValue);
+    const tranformedValueInBytes =
+      topicData["retention.bytes"].value == BigInt(-1)
+        ? BigInt(-1)
+        : retentionSizeTransformer(customRetentionSizeValue);
+    const transformedTopic: Topic = {
+      ...topicData,
+      "retention.ms": {
+        type: "ms",
+        value: tranformedValueInMilliseconds || BigInt(-1),
+      },
+      "retention.bytes": { type: "bytes", value: tranformedValueInBytes },
+    };
+    onSaveTopic(transformedTopic);
+  };
+
   return (
     <PageSection
       variant={"light"}
@@ -76,19 +103,19 @@ export const EditTopicProperties: FunctionComponent<
     >
       <TopicAdvancePage
         isCreate={false}
-        onConfirm={onSaveTopic}
+        onConfirm={onTransform}
         handleCancel={onCancel}
         topicData={topicData}
         setTopicData={setTopicData}
         availablePartitionLimit={availablePartitionLimit}
         customRetentionSizeValue={customRetentionSizeValue}
         setCustomRetentionSizeValue={setCustomRetentionSizeValue}
-        customValue={customValue}
-        setCustomValue={setCustomValue}
-        radioSelectValue={radioSelectValue}
-        setRadioSelectValue={setRadioSelectValue}
-        customRetentionRadioSelect={customRetentionRadioSelect}
-        setCustomRetentionRadioSelect={setCustomRetentionRadioSelect}
+        customTimeValue={customTimeValue}
+        setCustomTimeValue={setCustomTimeValue}
+        radioTimeSelectValue={radioTimeSelectValue}
+        setRadioTimeSelectValue={setRadioTimeSelectValue}
+        radioSizeSelectValue={radioSizeSelectValue}
+        setRadioSizeSelectValue={setRadioSizeSelectValue}
       />
       {warningModalOpen && (
         <PartitionLimitWarning
