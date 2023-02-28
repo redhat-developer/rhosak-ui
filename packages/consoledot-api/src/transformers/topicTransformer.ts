@@ -1,3 +1,4 @@
+import type { ConfigEntry } from "@rhoas/kafka-instance-sdk";
 import type { Topic as ApiTopic } from "@rhoas/kafka-instance-sdk/dist/generated/model/topic";
 import type { Plan } from "ui-models/src/models/kafka";
 import type { Topic } from "ui-models/src/models/topic";
@@ -203,3 +204,20 @@ function configValueToBoolean(value: string, defaultIfError: boolean): boolean {
   }
   return defaultIfError;
 }
+
+export const convertToKeyValuePairs = (inputObj: TopicConfig) => {
+  const keyValuePairs: ConfigEntry[] = [];
+  for (const [key, value] of Object.entries(inputObj)) {
+    if (key === "retention.ms") {
+      keyValuePairs.push({
+        key,
+        value: (value as Milliseconds).value.toString(),
+      });
+    } else if (key === "retention.bytes") {
+      keyValuePairs.push({ key, value: (value as Bytes).value.toString() });
+    } else if (key === "cleanup.policy") {
+      keyValuePairs.push({ key, value: value.toString() });
+    }
+  }
+  return keyValuePairs;
+};
