@@ -49,6 +49,7 @@ const CustomRetentionMessage: React.FC<CustomRetentionMessageProps> = ({
       <Flex>
         <FlexItem>
           <TextInput
+            aria-label={"Retention time"}
             type="number"
             value={customValue.value == null ? "" : customValue.value}
             onChange={onChange}

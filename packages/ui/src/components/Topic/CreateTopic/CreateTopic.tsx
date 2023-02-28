@@ -5,8 +5,8 @@ import { CreateTopicHead, CreateTopicWizard } from "../components";
 
 export type CreateTopicPageProps = {
   kafkaName: string;
-  onKafkaPageLink: () => void;
-  onKafkaInstanceLink: () => void;
+  onKafkaPageLink: string;
+  onKafkaInstanceLink: string;
   onSave: (topicData: Topic) => void;
   initialTopicValues: Topic;
   onCloseCreateTopic: () => void;

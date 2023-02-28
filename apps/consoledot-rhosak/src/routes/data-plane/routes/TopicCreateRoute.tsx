@@ -86,33 +86,31 @@ export const TopicCreateRoute: VoidFunctionComponent<
   const initialTopicValues: Topic = {
     name: "",
     partitions: [{ partition: 1, id: 1 }],
-    "cleanup.policy": "delete",
-    "delete.retention.ms": { type: "ms", value: BigInt("1") },
-    "max.compaction.lag.ms": { type: "ms", value: BigInt("1") },
-    "max.message.bytes": { type: "bytes", value: BigInt("9") },
-    "message.downconversion.enable": false,
+    "cleanup.policy": "compact",
+    "delete.retention.ms": { type: "ms", value: BigInt("86400000") },
+    "max.compaction.lag.ms": { type: "ms", value: BigInt("9223372036854775807") },
+    "max.message.bytes": { type: "bytes", value: BigInt("1048588") },
+    "message.downconversion.enable": true,
     "message.timestamp.difference.max.ms": {
       type: "ms",
-      value: BigInt("1"),
+      value: BigInt("9223372036854775807"),
     },
     "message.timestamp.type": "CreateTime",
-    "min.compaction.lag.ms": { type: "ms", value: BigInt("1") },
-    "retention.bytes": { type: "bytes", value: BigInt("9") },
-    "retention.ms": { type: "ms", value: BigInt("1") },
-    "segment.bytes": { type: "bytes", value: BigInt("9") },
-    "segment.ms": { type: "ms", value: BigInt("1") },
+    "min.compaction.lag.ms": { type: "ms", value: BigInt("0") },
+    "retention.bytes": { type: "bytes", value: BigInt("36000") },
+    "retention.ms": { type: "ms", value: BigInt("604800000") },
+    "segment.bytes": { type: "bytes", value: BigInt("1073741824") },
+    "segment.ms": { type: "ms", value: BigInt("604800000") },
     "compression.type": "producer",
-    "file.delete.delay.ms": { type: "ms", value: BigInt("1") },
-    "flush.messages": { type: "ms", value: BigInt("1") },
-    "flush.ms": { type: "ms", value: BigInt("1") },
-    "follower.replication.throttled.replicas": "optional",
-    "index.interval.bytes": { type: "bytes", value: BigInt("9") },
-    "leader.replication.throttled.replicas": "optional",
-    "message.format.version": "abc",
-    "min.cleanable.dirty.ratio": 678,
-    "min.insync.replicas": 345,
-    "segment.index.bytes": { type: "bytes", value: BigInt("9") },
-    "segment.jitter.ms": { type: "ms", value: BigInt("1") },
+    "file.delete.delay.ms": { type: "ms", value: BigInt("60000") },
+    "flush.messages": { type: "ms", value: BigInt("9223372036854775807") },
+    "flush.ms": { type: "ms", value: BigInt("9223372036854775807") },
+    "index.interval.bytes": { type: "bytes", value: BigInt("4096") },
+    "message.format.version": "3.0-IV1",
+    "min.cleanable.dirty.ratio": 0.5,
+    "min.insync.replicas": 1,
+    "segment.index.bytes": { type: "bytes", value: BigInt("10485760") },
+    "segment.jitter.ms": { type: "ms", value: BigInt("0") },
     "unclean.leader.election.enable": false,
     preallocate: false,
   };
@@ -121,8 +119,8 @@ export const TopicCreateRoute: VoidFunctionComponent<
     <>
       <CreateTopic
         kafkaName={instance.name}
-        onKafkaPageLink={onKafkaPageLink}
-        onKafkaInstanceLink={onKafkaInstanceLink}
+        onKafkaPageLink={instanceTopicsHref(instance.id)}
+        onKafkaInstanceLink={instancesHref}
         onSave={onSave}
         initialTopicValues={initialTopicValues}
         onCloseCreateTopic={onCloseCreateTopic}

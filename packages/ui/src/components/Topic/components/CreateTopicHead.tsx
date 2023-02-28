@@ -9,13 +9,14 @@ import {
   BreadcrumbItem,
   Button,
 } from "@patternfly/react-core";
+import { Link } from 'react-router-dom';
 
 export type CreateTopicProps = {
   showAllOptions: boolean;
   kafkaName: string;
   onShowAllOptions: (value: boolean) => void;
-  onKafkaInstanceLink: () => void;
-  onKafkaPageLink: () => void;
+  onKafkaInstanceLink: string;
+  onKafkaPageLink: string;
 };
 
 export const CreateTopicHead: VoidFunctionComponent<CreateTopicProps> = ({
@@ -31,16 +32,16 @@ export const CreateTopicHead: VoidFunctionComponent<CreateTopicProps> = ({
     <Breadcrumb ouiaId={"breadcrumb"}>
       <BreadcrumbItem
         render={() => (
-          <Button variant="link" onClick={onKafkaInstanceLink}>
+          <Link to={onKafkaInstanceLink}>
             {t("common:kafka_instance")}
-          </Button>
+          </Link>
         )}
       />
       <BreadcrumbItem
         render={() => (
-          <Button variant="link" onClick={onKafkaPageLink}>
+          <Link to={onKafkaPageLink}>
             {kafkaName}
-          </Button>
+          </Link>
         )}
       />
       <BreadcrumbItem isActive>{t("topic:create_topic")}</BreadcrumbItem>
