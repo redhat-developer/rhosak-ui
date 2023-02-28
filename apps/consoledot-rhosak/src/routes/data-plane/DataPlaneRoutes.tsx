@@ -23,10 +23,9 @@ import {
   TopicEditPropertiesRoute,
   PermissionsEditRoute,
   PermissionsSelectAccountRoute,
+  TopicCreateRoute,
 } from "./routes";
-
 import { DataPlaneRoutePath, DataPlaneTopicRoutePath } from "./routesConsts";
-import { CreateTopicRoute } from './routes/CreateTopicRoute';
 
 const instanceDetailsHref = (id: string) =>
   `${ControlPlaneRouteRoot}/${id}/details`;
@@ -37,7 +36,8 @@ const instanceTopicsHref = (id: string) =>
 const topicPropertyHref = (id: string, topic: string) =>
   `${instanceDetailsHref(id)}/topics/${topic}/properties`;
 
-const topicHref = (id: string, topic: string) => `${instanceDetailsHref(id)}/topics/${topic}`;
+const topicHref = (id: string, topic: string) =>
+  `${instanceDetailsHref(id)}/topics/${topic}`;
 
 const updateTopicHref = (id: string, topic: string) =>
   `${topicHref(id, topic)}/edit`;
@@ -85,10 +85,6 @@ export const DataPlaneRoutes: VoidFunctionComponent = () => {
           </Route>
 
           <Route path={`${DataPlaneRoutePath}/topics`} exact>
-            <Route path={`${DataPlaneRoutePath}/topics/create`} exact>
-              <CreateTopicRoute
-                instancesHref={"/kafkas"} />
-            </Route>
             <TopicsRoute instancesHref={"/kafkas"} />
           </Route>
 
@@ -130,6 +126,16 @@ export const DataPlaneRoutes: VoidFunctionComponent = () => {
                 redirectUrl={instanceTopicsHref(match.params.id)}
               >
                 <Switch>
+                  <Route
+                    path={`${DataPlaneRoutePath}/topics/create-topic/form`}
+                    exact
+                  >
+                    <TopicCreateRoute
+                      instancesHref={"/kafkas"}
+                      instanceDetailsHref={instanceDetailsHref}
+                      instanceTopicsHref={instanceTopicsHref}
+                    />
+                  </Route>
                   <Route
                     path={`${DataPlaneRoutePath}/topics/:topicName/consumer-groups`}
                   >
@@ -276,7 +282,9 @@ export const DataPlaneRoutes: VoidFunctionComponent = () => {
                     />
                   </Route>
                   <Route
-                    path={`${DataPlaneRoutePath}/topics/:topicName/delete`} exact>
+                    path={`${DataPlaneRoutePath}/topics/:topicName/delete`}
+                    exact
+                  >
                     <TopicDeleteRoute
                       instancesHref={"/kafkas"}
                       instanceDetailsHref={instanceDetailsHref}

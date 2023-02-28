@@ -14,9 +14,7 @@ export default {
     availablePartitionLimit: 10,
     onSave: (value: Topic) => console.log("topic value", value),
     checkTopicName: (topicName) =>
-      fakeApi<boolean>(
-        !["test", "my-test", "test-topic"].some((m) => m == topicName)
-      ),
+      !["test", "my-test", "test-topic"].some((m) => m == topicName),
     initialTopicValues: {
       name: "",
       partitions: [{ partition: 1, id: 1 }],

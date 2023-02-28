@@ -18,3 +18,4 @@ export * from "./TopicDeleteRoute";
 export * from "./TopicEditPropertiesRoute";
 export * from "./PermissionsEditRoute";
 export * from "./PermissionsSelectAccountRoute";
+export * from "./TopicCreateRoute";

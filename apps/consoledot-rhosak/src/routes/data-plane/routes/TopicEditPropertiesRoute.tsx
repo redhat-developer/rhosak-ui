@@ -1,8 +1,9 @@
-import { VoidFunctionComponent, useCallback } from "react";
+import type { VoidFunctionComponent } from "react";
+import { useCallback } from "react";
 import type { DataPlaneNavigationProps } from "../routesConsts";
 import { useTopicGate } from "../useTopicGate";
 import { useUpdateTopicMutation } from "consoledot-api";
-import { Topic } from "ui-models/src/models/topic";
+import type { Topic } from "ui-models/src/models/topic";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { DataPlaneTopicHeaderConnected } from "./DataPlaneTopicHeaderConnected";
@@ -12,6 +13,7 @@ import { addNotification } from "@redhat-cloud-services/frontend-components-noti
 export const TopicEditPropertiesRoute: VoidFunctionComponent<
   DataPlaneNavigationProps
 > = ({ instanceDetailsHref, instanceTopicsHref, instancesHref }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
   const { instance, topic } = useTopicGate();
 
@@ -44,18 +46,18 @@ export const TopicEditPropertiesRoute: VoidFunctionComponent<
     },
     [
       updateTopic,
-      dispatch,
-      history,
-      instance?.adminUrl,
       instance.id,
-      instancesHref,
+      instance?.adminUrl,
+      history,
+      instanceTopicsHref,
+      dispatch,
     ]
   );
 
   const onCancel = useCallback(() => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(instanceTopicsHref(instance.id));
-  }, [history, instance.id, topic.name]);
+  }, [history, instance.id, instanceTopicsHref]);
 
   return (
     <>

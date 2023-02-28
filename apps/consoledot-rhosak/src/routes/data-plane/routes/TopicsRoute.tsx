@@ -7,18 +7,18 @@ import { KafkaTopicsSortableColumns, useTopics } from "consoledot-api";
 import type { VoidFunctionComponent } from "react";
 import { useCallback } from "react";
 import { KafkaTopics, useTopicLabels } from "ui";
-import { ControlPlaneNavigationProps, ControlPlaneRouteRoot } from "../../control-plane/routesConsts";
+import type { ControlPlaneNavigationProps } from "../../control-plane/routesConsts";
+import { ControlPlaneRouteRoot } from "../../control-plane/routesConsts";
 import { useDataPlaneGate } from "../useDataPlaneGate";
 import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
-import { useHistory } from 'react-router-dom';
-import { DataPlaneRoutePath } from '../routesConsts';
-
+import { useHistory } from "react-router-dom";
 
 export const TopicsRoute: VoidFunctionComponent<
   ControlPlaneNavigationProps
 > = ({ instancesHref }) => {
   const labels = useTopicLabels();
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
 
   const { instance } = useDataPlaneGate();
@@ -31,8 +31,10 @@ export const TopicsRoute: VoidFunctionComponent<
 
   const onCreate = useCallback(() => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-    history.push(`${DataPlaneRoutePath}/topics/create`);
-  }, [history]);
+    history.push(
+      `${ControlPlaneRouteRoot}/${instance.id}/details/topics/create-topic/form`
+    );
+  }, [history, instance.id]);
 
   const topicChips = useURLSearchParamsChips("topic", resetPaginationQuery);
   const [isColumnSortable, sort, sortDirection] = useSortableSearchParams(
@@ -54,7 +56,9 @@ export const TopicsRoute: VoidFunctionComponent<
     (topicName: string) => {
       //TODO: remove hardcode value
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      history.push(`${ControlPlaneRouteRoot}/${instance.id}/details/topics/${topicName}/delete`);
+      history.push(
+        `${ControlPlaneRouteRoot}/${instance.id}/details/topics/${topicName}/delete`
+      );
     },
     [history, instance.id]
   );
@@ -63,10 +67,12 @@ export const TopicsRoute: VoidFunctionComponent<
     (topicName: string) => {
       //TODO: remove hardcode value
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      history.push(`${ControlPlaneRouteRoot}/${instance.id}/details/topics/${topicName}/edit`);
+      history.push(
+        `${ControlPlaneRouteRoot}/${instance.id}/details/topics/${topicName}/edit`
+      );
     },
     [history, instance.id]
-  )
+  );
   return (
     <>
       <DataPlaneHeaderConnected
@@ -92,7 +98,6 @@ export const TopicsRoute: VoidFunctionComponent<
         onPageChange={setPagination}
         onRemoveTopicChip={topicChips.clear}
         onRemoveTopicChips={topicChips.clear}
-
       />
     </>
   );
