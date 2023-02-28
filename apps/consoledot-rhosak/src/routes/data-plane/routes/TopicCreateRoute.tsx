@@ -8,6 +8,10 @@ import { useDispatch } from "react-redux";
 import { useCreateTopicMutation, useTopics } from "consoledot-api";
 import { useDataPlaneGate } from "../useDataPlaneGate";
 import type { DataPlaneNavigationProps } from "../routesConsts";
+import {
+  developerDefaults,
+  standardDefaults,
+} from "consoledot-api/src/transformers/topicTransformer";
 
 export const TopicCreateRoute: VoidFunctionComponent<
   DataPlaneNavigationProps
@@ -73,37 +77,18 @@ export const TopicCreateRoute: VoidFunctionComponent<
     ]
   );
 
-  const initialTopicValues: Topic = {
-    name: "",
-    partitions: [{ partition: 1, id: 1 }],
-    "cleanup.policy": "compact",
-    "delete.retention.ms": { type: "ms", value: BigInt("86400000") },
-    "max.compaction.lag.ms": { type: "ms", value: BigInt("9223372036854775807") },
-    "max.message.bytes": { type: "bytes", value: BigInt("1048588") },
-    "message.downconversion.enable": true,
-    "message.timestamp.difference.max.ms": {
-      type: "ms",
-      value: BigInt("9223372036854775807"),
-    },
-    "message.timestamp.type": "CreateTime",
-    "min.compaction.lag.ms": { type: "ms", value: BigInt("0") },
-    "retention.bytes": { type: "bytes", value: BigInt("36000") },
-    "retention.ms": { type: "ms", value: BigInt("604800000") },
-    "segment.bytes": { type: "bytes", value: BigInt("1073741824") },
-    "segment.ms": { type: "ms", value: BigInt("604800000") },
-    "compression.type": "producer",
-    "file.delete.delay.ms": { type: "ms", value: BigInt("60000") },
-    "flush.messages": { type: "ms", value: BigInt("9223372036854775807") },
-    "flush.ms": { type: "ms", value: BigInt("9223372036854775807") },
-    "index.interval.bytes": { type: "bytes", value: BigInt("4096") },
-    "message.format.version": "3.0-IV1",
-    "min.cleanable.dirty.ratio": 0.5,
-    "min.insync.replicas": 1,
-    "segment.index.bytes": { type: "bytes", value: BigInt("10485760") },
-    "segment.jitter.ms": { type: "ms", value: BigInt("0") },
-    "unclean.leader.election.enable": false,
-    preallocate: false,
-  };
+  const initialTopicValues: Topic =
+    instance.plan === "developer"
+      ? {
+          name: "",
+          partitions: [{ partition: 1, id: 1 }],
+          ...developerDefaults,
+        }
+      : {
+          name: "",
+          partitions: [{ partition: 1, id: 1 }],
+          ...standardDefaults,
+        };
 
   return (
     <>
