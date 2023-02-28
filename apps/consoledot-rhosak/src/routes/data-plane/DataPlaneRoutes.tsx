@@ -127,7 +127,7 @@ export const DataPlaneRoutes: VoidFunctionComponent = () => {
               >
                 <Switch>
                   <Route
-                    path={`${DataPlaneRoutePath}/topics/create-topic/form`}
+                    path={`${DataPlaneRoutePath}/topics/create-topic`}
                     exact
                   >
                     <TopicCreateRoute
