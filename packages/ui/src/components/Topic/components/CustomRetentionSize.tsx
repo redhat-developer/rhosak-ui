@@ -13,6 +13,7 @@ import {
   retentionSizeSelectOptions,
 } from "./types";
 import { useState } from "react";
+import { t } from 'xstate';
 
 export type CustomRetentionSizeProps = {
   id?: string;
@@ -52,6 +53,7 @@ const CustomRetentionSize: React.FC<CustomRetentionSizeProps> = ({
       <Flex>
         <FlexItem>
           <TextInput
+            aria-label="Retention size"
             type="number"
             value={customRetentionSizeValue.value}
             onChange={onChange}
