@@ -32,7 +32,7 @@ export const TopicsRoute: VoidFunctionComponent<
   const onCreate = useCallback(() => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(
-      `${ControlPlaneRouteRoot}/${instance.id}/details/topics/create-topic/form`
+      `${ControlPlaneRouteRoot}/${instance.id}/details/topics/create-topic`
     );
   }, [history, instance.id]);
 
