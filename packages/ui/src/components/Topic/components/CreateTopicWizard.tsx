@@ -137,10 +137,14 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
   const title = t("wizard_title");
 
   const onTransform = () => {
-    const tranformedValueInMilliseconds = retentionTimeTransformer(customValue);
-    const tranformedValueInBytes = retentionSizeTransformer(
-      customRetentionSizeValue
-    );
+    const tranformedValueInMilliseconds =
+      topicData["retention.ms"].value == BigInt(-1)
+        ? BigInt(-1)
+        : retentionTimeTransformer(customValue);
+    const tranformedValueInBytes =
+      topicData["retention.bytes"].value == BigInt(-1)
+        ? BigInt(-1)
+        : retentionSizeTransformer(customRetentionSizeValue);
     const transformedTopic: Topic = {
       ...topicData,
       "retention.ms": {
@@ -151,6 +155,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
     };
     onSaveTopic(transformedTopic);
   };
+
   const onValidate: IWizardFooter["onValidate"] = (onNext) => {
     if (topicData?.name.length < 1) {
       setInvalidText(t("common:required"));

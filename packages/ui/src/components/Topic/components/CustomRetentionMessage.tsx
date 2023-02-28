@@ -32,7 +32,7 @@ const CustomRetentionMessage: React.FC<CustomRetentionMessageProps> = ({
   const onSelect: SelectProps["onSelect"] = (event, value) => {
     const inputUnit: CustomSelect = {
       unit: value as TimeUnit,
-      value: null,
+      value: 1,
     };
     setCustomValue(inputUnit);
 
