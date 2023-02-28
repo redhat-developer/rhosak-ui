@@ -90,19 +90,27 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
         ...topicData,
         "retention.ms": { value: BigInt(-1), type: "ms" },
       });
-    }
+    } else
+      setTopicData({
+        ...topicData,
+        "retention.ms": { value: BigInt(1), type: "ms" },
+      });
     setRadioSelectValue(value);
   };
 
   const handleRetentionMessageSize = (value: RetentionSizeRadioSelect) => {
-    if (value === "unlimited") 
+    if (value === "unlimited")
       setTopicData({
         ...topicData,
-        "retention.bytes": { value: BigInt(-1), type:"bytes" },
+        "retention.bytes": { value: BigInt(-1), type: "bytes" },
       });
-      setCustomRetentionRadioSelect(value);
-    }
-  
+    else
+      setTopicData({
+        ...topicData,
+        "retention.bytes": { value: BigInt(1), type: "bytes" },
+      });
+    setCustomRetentionRadioSelect(value);
+  };
 
   const handleTextInputChange = (value: string) => {
     validationCheck(value);

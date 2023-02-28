@@ -55,6 +55,10 @@ export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
       });
     } else {
       setCustomRetentionSizeValue({ value: 1, unit: "bytes" });
+      setTopicData({
+        ...topicData,
+        "retention.bytes": { value: BigInt(1), type: "bytes" },
+      });
     }
     setCustomRetentionRadioSelect(value);
   };
@@ -63,12 +67,24 @@ export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
     switch (value) {
       case "day":
         setCustomValue({ value: 1, unit: "days" });
+        setTopicData({
+          ...topicData,
+          "retention.ms": { value: BigInt(1), type: "ms" },
+        });
         break;
       case "week":
         setCustomValue({ value: 1, unit: "weeks" });
+        setTopicData({
+          ...topicData,
+          "retention.ms": { value: BigInt(1), type: "ms" },
+        });
         break;
       case "custom":
-        setCustomValue({ value: null, unit: "days" });
+        setCustomValue({ value: 7, unit: "days" });
+        setTopicData({
+          ...topicData,
+          "retention.ms": { value: BigInt(1), type: "ms" },
+        });
         break;
       case "unlimited":
         setTopicData({

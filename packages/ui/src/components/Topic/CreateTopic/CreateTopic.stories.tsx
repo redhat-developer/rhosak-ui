@@ -29,7 +29,7 @@ export default {
       },
       "message.timestamp.type": "CreateTime",
       "min.compaction.lag.ms": { type: "ms", value: BigInt("1") },
-      "retention.bytes": { type: "bytes", value: BigInt("9") },
+      "retention.bytes": { type: "bytes", value: BigInt("-1") },
       "retention.ms": { type: "ms", value: BigInt("1") },
       "segment.bytes": { type: "bytes", value: BigInt("9") },
       "segment.ms": { type: "ms", value: BigInt("1") },
