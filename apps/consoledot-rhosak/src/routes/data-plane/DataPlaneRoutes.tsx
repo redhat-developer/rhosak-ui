@@ -4,14 +4,12 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import { ControlPlaneRouteRoot } from "../control-plane/routesConsts";
 import { RedirectOnGateError } from "../RedirectOnGateError";
 import {
-  AclsRoute,
+  PermissionsRoute,
   ConsumerGroupDeleteRoute,
   ConsumerGroupResetOffsetRoute,
   ConsumerGroupsRoute,
   ConsumerGroupViewPartitionRoute,
   DashboardRoute,
-  EditPermissionsRoute,
-  ManagePermissionsRoute,
   SettingsRoute,
   TopicConsumerGroupDeleteRoute,
   TopicConsumerGroupResetOffsetRoute,
@@ -19,6 +17,8 @@ import {
   TopicConsumerGroupViewPartitionRoute,
   TopicDeleteRoute,
   TopicEditPropertiesRoute,
+  PermissionsEditRoute,
+  PermissionsSelectAccountRoute,
   TopicMessagesGroupsRoute,
   TopicPropertiesRoute,
   TopicSchemasRoute,
@@ -105,7 +105,7 @@ export const DataPlaneRoutes: VoidFunctionComponent<DataPlaneRoutesProps> = ({
 
           <Route path={`${root}/acls`}>
             <Route path={`${root}/acls/select-account`}>
-              <ManagePermissionsRoute
+              <PermissionsSelectAccountRoute
                 instancesHref={ControlPlaneRouteRoot}
                 managePermissionsHref={permissionsModalHref}
                 editPermissionsHref={editPermissionsHref}
@@ -114,13 +114,13 @@ export const DataPlaneRoutes: VoidFunctionComponent<DataPlaneRoutesProps> = ({
             <Route
               path={`${root}/acls/select-account/:selectedAccount/edit-permissions`}
             >
-              <EditPermissionsRoute
+              <PermissionsEditRoute
                 instancesHref={ControlPlaneRouteRoot}
                 managePermissionsHref={permissionsModalHref}
                 editPermissionsHref={editPermissionsHref}
               />
             </Route>
-            <AclsRoute
+            <PermissionsRoute
               instancesHref={ControlPlaneRouteRoot}
               managePermissionsHref={managePermissionsHref}
               editPermissionsHref={editPermissionsHref}

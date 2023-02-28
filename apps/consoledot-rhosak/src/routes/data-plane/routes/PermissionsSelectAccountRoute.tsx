@@ -8,7 +8,7 @@ import { PrincipalType, SelectAccount } from "ui";
 import type { DataPlanePermissionsNavigationProps } from "../routesConsts";
 import { useDataPlaneGate } from "../useDataPlaneGate";
 
-export const ManagePermissionsRoute: VoidFunctionComponent<
+export const PermissionsSelectAccountRoute: VoidFunctionComponent<
   DataPlanePermissionsNavigationProps
 > = ({ managePermissionsHref, editPermissionsHref }) => {
   const [loggedInUser, setCurrentlyLoggedInUser] = useState<
@@ -76,7 +76,7 @@ export const ManagePermissionsRoute: VoidFunctionComponent<
         )
       );
     },
-    [editPermissionsHref, history, instance.id]
+    [history, instance.id, editPermissionsHref]
   );
 
   const onClose = useCallback(() => {
