@@ -34,7 +34,7 @@ export function kafkaRequestToKafkaInstanceEnhanched(
     messageSize: { type: "bytes", value: BigInt(0) },
     name: instance.name || "",
     owner: instance.owner || "",
-    plan: instance.billing_model as Plan,
+    plan: instance.instance_type as Plan,
     provider: instance.cloud_provider as CloudProvider,
     region: instance.region || "",
     size: "1",
