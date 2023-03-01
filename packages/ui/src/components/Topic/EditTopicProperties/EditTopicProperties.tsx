@@ -29,7 +29,6 @@ export const EditTopicProperties: FunctionComponent<
   const millisecondsToTimeValue = millisecondsToTime(
     topic["retention.ms"].value
   );
-
   const bytesToSizeValue = bytesToMemorySize(topic["retention.bytes"].value);
   const [customTimeValue, setCustomTimeValue] = useState<CustomSelect>({
     unit:

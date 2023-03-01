@@ -77,7 +77,7 @@ export const TopicProperties: React.FunctionComponent<TopicViewDetailProps> = ({
 
                       <TextWithLabelPopover
                         fieldId="topic-name"
-                        btnAriaLabel={t("name")}
+                        btnAriaLabel={t("topic_name")}
                         fieldLabel={t("topic_name")}
                         fieldValue={topic.name}
                         popoverBody={t("topic_name_description")}

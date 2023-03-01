@@ -90,11 +90,16 @@ export const StepPartitions: React.FC<StepPartitionsProps> = ({
           <NumberInput
             onPlus={handleOnPlus}
             onMinus={handleOnMinus}
-            value={Number(newTopicData.partitions.length)}
+            value={
+              Number(newTopicData.partitions.length) == 0
+                ? ""
+                : Number(newTopicData.partitions.length)
+            }
             inputName="input"
             onChange={handlePartitionTouchspinChange}
             widthChars={20}
             onBlur={onBlur}
+            min={1}
           />
         </FormGroup>
       </FormSection>

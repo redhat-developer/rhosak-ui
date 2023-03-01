@@ -1,4 +1,5 @@
-import { SelectProps, TextInput } from "@patternfly/react-core";
+import type { SelectProps } from "@patternfly/react-core";
+import { TextInput } from "@patternfly/react-core";
 import {
   Flex,
   FlexItem,
@@ -7,13 +8,9 @@ import {
   SelectVariant,
 } from "@patternfly/react-core";
 import type React from "react";
-import {
-  CustomRetentionSizeSelect,
-  CustomRetentionUnit,
-  retentionSizeSelectOptions,
-} from "./types";
+import type { CustomRetentionSizeSelect, CustomRetentionUnit } from "./types";
+import { retentionSizeSelectOptions } from "./types";
 import { useState } from "react";
-import { t } from "xstate";
 
 export type CustomRetentionSizeProps = {
   id?: string;
@@ -55,8 +52,13 @@ const CustomRetentionSize: React.FC<CustomRetentionSizeProps> = ({
           <TextInput
             aria-label="Retention size"
             type="number"
-            value={customRetentionSizeValue.value}
+            value={
+              customRetentionSizeValue.value == 0
+                ? ""
+                : customRetentionSizeValue.value
+            }
             onChange={onChange}
+            min={1}
           />
         </FlexItem>
         <FlexItem>

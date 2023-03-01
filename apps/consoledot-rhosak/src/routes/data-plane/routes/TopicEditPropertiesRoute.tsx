@@ -71,7 +71,7 @@ export const TopicEditPropertiesRoute: VoidFunctionComponent<
         topic={topic}
         onCancel={onCancel}
         onSave={onSave}
-        availablePartitionLimit={10}
+        availablePartitionLimit={1000}
       />
     </>
   );

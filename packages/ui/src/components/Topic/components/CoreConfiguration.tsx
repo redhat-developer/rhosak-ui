@@ -15,8 +15,10 @@ import {
   useTranslation,
 } from "@rhoas/app-services-ui-components";
 import type { FunctionComponent } from "react";
+import { useState } from "react";
 import { useCallback } from "react";
 import type { Topic } from "ui-models/src/models/topic";
+import type { TopicPartition } from "ui-models/src/models/topic-partition";
 import { CustomRetentionMessage } from "./CustomRetentionMessage";
 import { CustomRetentionSize } from "./CustomRetentionSize";
 import { TextWithLabelPopover } from "./TextWithLabelPopover";
@@ -69,8 +71,8 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
   setRadioSizeSelectValue,
 }) => {
   const { t } = useTranslation(["create-topic"]);
+  const [initialPartitions] = useState<TopicPartition[]>(topicData.partitions);
   const { validateName } = useValidateTopic();
-
   const validationCheck = useCallback(
     (value: string) => {
       const errorMessage = validateName(value);
@@ -119,12 +121,18 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
 
   const onPartitionsChange: NumberInputProps["onChange"] = (event) => {
     const partitions = Number((event.target as HTMLInputElement).value);
+
     const updatedPartitions = Array(partitions)
       .fill(null)
       .map((_, index) => ({ partition: index }));
+    //Donot allow to set a value below original value in case of edit topic
     setTopicData({
       ...topicData,
-      partitions: updatedPartitions,
+      partitions: isCreate
+        ? updatedPartitions
+        : updatedPartitions.length > initialPartitions.length
+        ? updatedPartitions
+        : initialPartitions,
     });
   };
 
@@ -233,10 +241,12 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
           data-testid={t("partitions")}
           onPlus={handleOnPlus}
           onMinus={handleOnMinus}
-          value={topicData.partitions.length}
+          value={
+            topicData.partitions.length == 0 ? "" : topicData.partitions.length
+          }
           plusBtnProps={{ name: "num-partitions" }}
           minusBtnProps={{ name: "num-partitions" }}
-          min={0}
+          min={isCreate ? 1 : initialPartitions.length}
         />
       </FormGroupWithPopover>
 
@@ -244,7 +254,7 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
         fieldId="replicas"
         btnAriaLabel={t("replicas")}
         fieldLabel={t("replicas")}
-        fieldValue={"3" /* TODO */}
+        fieldValue={"1"}
         popoverBody={t("replicas_description")}
         popoverHeader={t("replicas")}
       />
@@ -252,7 +262,7 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
         fieldId="min-insync-replicas"
         btnAriaLabel="topic detail min-in-sync replica"
         fieldLabel="Minimum in-sync replicas"
-        fieldValue={topicData["min.insync.replicas"].toString()}
+        fieldValue={"1"}
         popoverBody={t("min_insync_replicas_description")}
         popoverHeader={t("min_insync_replicas")}
       />
