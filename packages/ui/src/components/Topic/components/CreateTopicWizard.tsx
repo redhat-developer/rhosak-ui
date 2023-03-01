@@ -125,9 +125,9 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
       canJumpTo: topicData?.name.trim() !== "",
       component: (
         <StepReplicas
-          replicationFactor={3 /* TODO */}
-          minInSyncReplica={topicData["min.insync.replicas"]}
-          isMultiAZ={false /* TODO */}
+          replicationFactor={1}
+          minInSyncReplica={1}
+          isMultiAZ={false}
         />
       ),
       nextButtonText: t("finish"),

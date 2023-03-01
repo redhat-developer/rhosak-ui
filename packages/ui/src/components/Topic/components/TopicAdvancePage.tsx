@@ -96,7 +96,6 @@ export const TopicAdvancePage: React.FunctionComponent<
       onConfirm(topicData);
     }
   };
-
   return (
     <PageSection padding={{ default: "noPadding" }}>
       <Sidebar hasGutter>
