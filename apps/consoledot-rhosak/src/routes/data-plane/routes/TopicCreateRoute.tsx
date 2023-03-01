@@ -100,7 +100,9 @@ export const TopicCreateRoute: VoidFunctionComponent<
         initialTopicValues={initialTopicValues}
         onCloseCreateTopic={onCloseCreateTopic}
         checkTopicName={checkTopicName}
-        availablePartitionLimit={1000}
+        availablePartitionLimit={
+          instance.maxPartitions || instance.plan == "developer" ? 100 : 1000
+        }
       />
     </>
   );
