@@ -18,7 +18,6 @@ export type StepReplicasProps = {
 };
 
 export const StepReplicas: React.FC<StepReplicasProps> = ({
-  replicationFactor,
   minInSyncReplica,
   availabiltyZone,
 }) => {
@@ -49,7 +48,6 @@ export const StepReplicas: React.FC<StepReplicasProps> = ({
           fieldId="replicas"
           btnAriaLabel={t("replicas")}
           fieldLabel={t("replicas")}
-          fieldValue={replicationFactor.toString()}
           popoverBody={t("replicas_description")}
           popoverHeader={t("replicas")}
         />
