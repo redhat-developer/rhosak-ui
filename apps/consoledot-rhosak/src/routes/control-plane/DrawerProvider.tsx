@@ -47,17 +47,7 @@ export const DrawerProvider: FunctionComponent = ({ children }) => {
   const [activeTab, setActiveTab] = useState<KafkaInstanceDrawerTab>("details");
   const onClose = useRef<() => void | undefined>();
 
-  const [tokenEndPointUrl, setTokenEndPointUrl] = useState<string | undefined>(
-    undefined
-  );
-
-  const { data: ssoProviders } = useSSOProviders();
-
-  useEffect(() => {
-    if (ssoProviders) {
-      setTokenEndPointUrl(ssoProviders?.token_url);
-    }
-  }, [ssoProviders]);
+  const { tokenEndPointUrl } = useSSOProviders();
 
   const toggleExpanded = useCallback((newValue: boolean | undefined) => {
     setIsExpanded((prev) => {
