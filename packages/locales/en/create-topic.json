@@ -84,7 +84,7 @@
   "replicas": "Replicas",
   "replicas_description": "Replicas are copies of partitions in a topic. Partition replicas are distributed over multiple brokers in the cluster to ensure topic availability if a broker fails. When a follower replica is in sync with a partition leader, the follower replica can become the new partition leader if needed. (replication.factor)",
   "replicas_detail": "The partitions of each topic can be replicated across a configurable number of brokers.",
-  "replicas_helper_text_multi_az": "",
+  "replicas_helper_text_multi_az": "Streams for Apache Kafka only supports 3 replicas and a minimum in-sync replica factor of 2.",
   "replicas_helper_text_single_az": "This instance is a single broker instance. Streams for Apache Kafka only supports 1 replica and a minimum in-sync replica factor of 1 for single broker instances.",
   "replicas_info": "How many copies of a topic will be made for high availability.",
   "replication": "Replication",

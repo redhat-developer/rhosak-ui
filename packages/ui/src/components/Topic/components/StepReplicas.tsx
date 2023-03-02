@@ -8,18 +8,19 @@ import {
 } from "@patternfly/react-core";
 import { useTranslation } from "@rhoas/app-services-ui-components";
 import type React from "react";
+import type { AZ } from "ui-models/src/models/kafka";
 import { TextWithLabelPopover } from "./TextWithLabelPopover";
 
 export type StepReplicasProps = {
   replicationFactor: number;
   minInSyncReplica: number;
-  isMultiAZ: boolean | undefined;
+  availabiltyZone: AZ;
 };
 
 export const StepReplicas: React.FC<StepReplicasProps> = ({
   replicationFactor,
   minInSyncReplica,
-  isMultiAZ,
+  availabiltyZone,
 }) => {
   const { t } = useTranslation(["create-topic"]);
 
@@ -38,8 +39,8 @@ export const StepReplicas: React.FC<StepReplicasProps> = ({
           variant="info"
           isInline
           title={
-            isMultiAZ
-              ? t("replicas_helper_text_single_az")
+            availabiltyZone == "multi"
+              ? t("replicas_helper_text_multi_az")
               : t("replicas_helper_text_single_az")
           }
         />

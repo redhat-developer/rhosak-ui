@@ -21,7 +21,7 @@ export const TopicCreateRoute: VoidFunctionComponent<
   const { instance } = useDataPlaneGate();
   const createTopic = useCreateTopicMutation();
   const dispatch = useDispatch();
-
+  const availabiltyZone = instance.az;
   const { data: topics } = useTopics({
     id: instance.id,
     adminUrl: instance.adminUrl,
@@ -103,6 +103,7 @@ export const TopicCreateRoute: VoidFunctionComponent<
         availablePartitionLimit={
           instance.maxPartitions || instance.plan == "developer" ? 100 : 1000
         }
+        availabiltyZone={availabiltyZone}
       />
     </>
   );
