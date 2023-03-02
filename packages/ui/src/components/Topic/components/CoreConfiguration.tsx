@@ -34,7 +34,6 @@ export type CoreConfigurationProps = {
   isCreate?: boolean;
   topicData: Topic;
   setTopicData: (data: Topic) => void;
-  //initialPartition: number | undefined;
   invalidText: string;
   setInvalidText: (message: string) => void;
   setTopicValidated: (error: ValidatedOptions) => void;
@@ -254,7 +253,6 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
         fieldId="replicas"
         btnAriaLabel={t("replicas")}
         fieldLabel={t("replicas")}
-        fieldValue={""}
         popoverBody={t("replicas_description")}
         popoverHeader={t("replicas")}
       />
