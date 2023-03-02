@@ -254,7 +254,7 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
         fieldId="replicas"
         btnAriaLabel={t("replicas")}
         fieldLabel={t("replicas")}
-        fieldValue={"1"}
+        fieldValue={""}
         popoverBody={t("replicas_description")}
         popoverHeader={t("replicas")}
       />
@@ -262,7 +262,7 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
         fieldId="min-insync-replicas"
         btnAriaLabel="topic detail min-in-sync replica"
         fieldLabel="Minimum in-sync replicas"
-        fieldValue={"1"}
+        fieldValue={topicData["min.insync.replicas"].toString()}
         popoverBody={t("min_insync_replicas_description")}
         popoverHeader={t("min_insync_replicas")}
       />

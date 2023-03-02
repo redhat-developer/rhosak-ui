@@ -29,6 +29,7 @@ import type {
   RetentionSizeRadioSelect,
 } from "./types";
 import { retentionSizeTransformer } from "./retentionSizeTransformer";
+import type { AZ } from "ui-models/src/models/kafka";
 
 export type CreateTopicWizardProps = {
   isSwitchChecked: boolean;
@@ -38,6 +39,7 @@ export type CreateTopicWizardProps = {
   initialFieldsValue: Topic;
   checkTopicName: (value: string) => boolean;
   availablePartitionLimit: number;
+  availabiltyZone: AZ;
 };
 
 export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
@@ -47,6 +49,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
   initialFieldsValue,
   checkTopicName,
   availablePartitionLimit,
+  availabiltyZone,
 }) => {
   const { t } = useTranslation(["create-topic", "common"]);
 
@@ -127,7 +130,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
         <StepReplicas
           replicationFactor={1}
           minInSyncReplica={1}
-          isMultiAZ={false}
+          availabiltyZone={availabiltyZone}
         />
       ),
       nextButtonText: t("finish"),

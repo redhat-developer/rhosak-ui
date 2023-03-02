@@ -1,5 +1,6 @@
 import type React from "react";
 import { useState } from "react";
+import type { AZ } from "ui-models/src/models/kafka";
 import type { Topic } from "ui-models/src/models/topic";
 import { CreateTopicHead, CreateTopicWizard } from "../components";
 
@@ -12,6 +13,7 @@ export type CreateTopicPageProps = {
   onCloseCreateTopic: () => void;
   checkTopicName: (value: string) => boolean;
   availablePartitionLimit: number;
+  availabiltyZone: AZ;
 };
 
 export const CreateTopic: React.FC<CreateTopicPageProps> = ({
@@ -23,6 +25,7 @@ export const CreateTopic: React.FC<CreateTopicPageProps> = ({
   onCloseCreateTopic,
   checkTopicName,
   availablePartitionLimit,
+  availabiltyZone,
 }) => {
   const [isSwitchChecked, setIsSwitchChecked] = useState<boolean>(false);
 
@@ -42,6 +45,7 @@ export const CreateTopic: React.FC<CreateTopicPageProps> = ({
         initialFieldsValue={initialTopicValues}
         checkTopicName={checkTopicName}
         availablePartitionLimit={availablePartitionLimit}
+        availabiltyZone={availabiltyZone}
       />
     </>
   );
