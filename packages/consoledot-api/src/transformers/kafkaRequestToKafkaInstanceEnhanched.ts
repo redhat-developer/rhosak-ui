@@ -46,6 +46,7 @@ export function kafkaRequestToKafkaInstanceEnhanched(
     version: instance.version || "",
     bootstrapUrl: instance.bootstrap_server_host,
     adminUrl: instance.admin_api_server_url,
+    az: instance.multi_az == true ? "multi" : "single",
   };
 
   // update the billing info

@@ -26,6 +26,7 @@ export type Kafka = {
   connectionRate: number | undefined;
   messageSize: Bytes | undefined;
   billing: "prepaid" | MarketplaceSubscription | undefined;
+  az: AZ;
 
   version: string;
 
@@ -101,7 +102,7 @@ export const Statuses = [
   "resuming",
 ] as const;
 
-export type Status = typeof Statuses[number];
+export type Status = (typeof Statuses)[number];
 
 export const CreatingStatuses: readonly Status[] = [
   "accepted",

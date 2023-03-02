@@ -67,6 +67,7 @@ export function useKafkaLabels() {
     adminUrl: t("fields.adminUrl"),
     bootstrapUrl: t("fields.bootstrapUrl"),
     version: t("fields.version"),
+    az: t("fields.availabilityZone"),
   };
   return {
     fields,
