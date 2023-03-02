@@ -22,7 +22,6 @@
     "min_compaction_lag_ms": "Minimum compaction lag time",
     "min_insync_replicas": "Minimum in-sync replicas",
     "name": "Name",
-    "topic_name": "Topic name",
     "partitions": "Partitions",
     "preallocate": "Preallocate log segment files",
     "retention_bytes": "Retention size",
@@ -31,6 +30,7 @@
     "segment_index_bytes": "Segment index size",
     "segment_jitter_ms": "Segment jitter time",
     "segment_ms": "Segment time",
+    "topic_name": "Topic name",
     "unclean_leader_election_enable": "Unclean leader election"
   },
   "input_field_invalid_message": "Valid characters include letters from a to z, numbers from 0 to 9, and hyphens ( - ).",
