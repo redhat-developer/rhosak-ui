@@ -17,15 +17,26 @@ export const TopicEditPropertiesRoute: VoidFunctionComponent<
   const history = useHistory();
   const { instance, topic } = useTopicGate();
 
+  if (instance.maxPartitions === undefined) {
+    throw new Error(
+      `CreateTopicRoute, unexpected maxPartition undefined for instance ${instance.name}`
+    );
+  }
+
   const dispatch = useDispatch();
 
   const updateTopic = useUpdateTopicMutation();
 
   const onSave = useCallback(
     (topicData: Topic) => {
+      if (instance.adminUrl === undefined) {
+        throw new Error(
+          `EditTopicRoute, adminUrl undefined for instance ${instance.name}`
+        );
+      }
       void updateTopic.mutateAsync({
         instanceId: instance.id,
-        adminUrl: instance?.adminUrl || "",
+        adminUrl: instance.adminUrl,
         topic: topicData,
 
         onSuccess: () => {
@@ -45,9 +56,10 @@ export const TopicEditPropertiesRoute: VoidFunctionComponent<
       });
     },
     [
-      updateTopic,
+      instance.adminUrl,
       instance.id,
-      instance?.adminUrl,
+      instance.name,
+      updateTopic,
       history,
       instanceTopicsHref,
       dispatch,
@@ -71,9 +83,7 @@ export const TopicEditPropertiesRoute: VoidFunctionComponent<
         topic={topic}
         onCancel={onCancel}
         onSave={onSave}
-        availablePartitionLimit={
-          instance.maxPartitions || instance.plan == "developer" ? 100 : 1000
-        }
+        availablePartitionLimit={instance.maxPartitions}
       />
     </>
   );

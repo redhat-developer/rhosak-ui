@@ -12,7 +12,7 @@ import type { AZ } from "ui-models/src/models/kafka";
 import { TextWithLabelPopover } from "./TextWithLabelPopover";
 
 export type StepReplicasProps = {
-  replicationFactor: number;
+  //replicationFactor: number;
   minInSyncReplica: number;
   availabilityZone: AZ;
 };

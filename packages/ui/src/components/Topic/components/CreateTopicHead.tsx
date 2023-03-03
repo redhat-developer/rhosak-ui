@@ -14,16 +14,16 @@ export type CreateTopicHeadProps = {
   showAllOptions: boolean;
   kafkaName: string;
   onShowAllOptions: (value: boolean) => void;
-  onKafkaInstanceLink: string;
-  onKafkaPageLink: string;
+  kafkaInstanceLink: string;
+  kafkaPageLink: string;
 };
 
 export const CreateTopicHead: VoidFunctionComponent<CreateTopicHeadProps> = ({
   showAllOptions,
   onShowAllOptions,
   kafkaName,
-  onKafkaInstanceLink,
-  onKafkaPageLink,
+  kafkaInstanceLink,
+  kafkaPageLink,
 }) => {
   const { t } = useTranslation(["common", "topic"]);
 
@@ -31,11 +31,11 @@ export const CreateTopicHead: VoidFunctionComponent<CreateTopicHeadProps> = ({
     <Breadcrumb ouiaId={"breadcrumb"}>
       <BreadcrumbItem
         render={() => (
-          <Link to={onKafkaInstanceLink}>{t("common:kafka_instance")}</Link>
+          <Link to={kafkaInstanceLink}>{t("common:kafka_instance")}</Link>
         )}
       />
       <BreadcrumbItem
-        render={() => <Link to={onKafkaPageLink}>{kafkaName}</Link>}
+        render={() => <Link to={kafkaPageLink}>{kafkaName}</Link>}
       />
       <BreadcrumbItem isActive>{t("topic:create_topic")}</BreadcrumbItem>
     </Breadcrumb>

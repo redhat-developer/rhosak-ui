@@ -7,8 +7,8 @@ export default {
   component: CreateTopicHead,
   args: {
     kafkaName: "test-kafka",
-    onKafkaPageLink: "test-topics",
-    onKafkaInstanceLink: "test-instance",
+    kafkaPageLink: "test-topics",
+    kafkaInstanceLink: "test-instance",
   },
 } as ComponentMeta<typeof CreateTopicHead>;
 
