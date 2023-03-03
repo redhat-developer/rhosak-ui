@@ -35,18 +35,19 @@ export const TopicCreateRoute: VoidFunctionComponent<
     );
   }
 
-  const checkTopicName: CreateTopicPageProps["checkTopicName"] = (
-    topicName
-  ) => {
-    const selectedTopic = topics?.topics.filter(
-      (topic) => topic.name === topicName
-    );
-    if (selectedTopic && selectedTopic?.length > 0) {
-      return false;
-    } else {
-      return true;
-    }
-  };
+  const checkTopicName: CreateTopicPageProps["checkTopicName"] = useCallback(
+    (topicName) => {
+      const selectedTopic = topics?.topics.filter(
+        (topic) => topic.name === topicName
+      );
+      if (selectedTopic && selectedTopic?.length > 0) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    [topics?.topics]
+  );
 
   const onCloseCreateTopic = useCallback(() => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
@@ -104,8 +105,8 @@ export const TopicCreateRoute: VoidFunctionComponent<
     <>
       <CreateTopic
         kafkaName={instance.name}
-        onKafkaPageLink={instanceTopicsHref(instance.id)}
-        onKafkaInstanceLink={instancesHref}
+        kafkaPageLink={instanceTopicsHref(instance.id)}
+        kafkaInstanceLink={instancesHref}
         onSave={onSave}
         initialTopicValues={initialTopicValues}
         onCloseCreateTopic={onCloseCreateTopic}

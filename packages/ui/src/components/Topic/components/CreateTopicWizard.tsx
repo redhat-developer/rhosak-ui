@@ -128,8 +128,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
       canJumpTo: topicData?.name.trim() !== "",
       component: (
         <StepReplicas
-          replicationFactor={1}
-          minInSyncReplica={1}
+          minInSyncReplica={topicData["min.insync.replicas"]}
           availabilityZone={availabilityZone}
         />
       ),

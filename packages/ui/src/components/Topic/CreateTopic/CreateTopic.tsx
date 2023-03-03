@@ -6,8 +6,8 @@ import { CreateTopicHead, CreateTopicWizard } from "../components";
 
 export type CreateTopicPageProps = {
   kafkaName: string;
-  onKafkaPageLink: string;
-  onKafkaInstanceLink: string;
+  kafkaPageLink: string;
+  kafkaInstanceLink: string;
   onSave: (topicData: Topic) => void;
   initialTopicValues: Topic;
   onCloseCreateTopic: () => void;
@@ -18,8 +18,8 @@ export type CreateTopicPageProps = {
 
 export const CreateTopic: React.FC<CreateTopicPageProps> = ({
   kafkaName,
-  onKafkaPageLink,
-  onKafkaInstanceLink,
+  kafkaPageLink,
+  kafkaInstanceLink,
   onSave,
   initialTopicValues,
   onCloseCreateTopic,
@@ -34,8 +34,8 @@ export const CreateTopic: React.FC<CreateTopicPageProps> = ({
       <CreateTopicHead
         showAllOptions={isSwitchChecked}
         kafkaName={kafkaName}
-        onKafkaInstanceLink={onKafkaInstanceLink}
-        onKafkaPageLink={onKafkaPageLink}
+        kafkaInstanceLink={kafkaInstanceLink}
+        kafkaPageLink={kafkaPageLink}
         onShowAllOptions={setIsSwitchChecked}
       />
       <CreateTopicWizard
