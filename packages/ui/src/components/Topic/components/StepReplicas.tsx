@@ -14,12 +14,12 @@ import { TextWithLabelPopover } from "./TextWithLabelPopover";
 export type StepReplicasProps = {
   replicationFactor: number;
   minInSyncReplica: number;
-  availabiltyZone: AZ;
+  availabilityZone: AZ;
 };
 
 export const StepReplicas: React.FC<StepReplicasProps> = ({
   minInSyncReplica,
-  availabiltyZone,
+  availabilityZone,
 }) => {
   const { t } = useTranslation(["create-topic"]);
 
@@ -38,7 +38,7 @@ export const StepReplicas: React.FC<StepReplicasProps> = ({
           variant="info"
           isInline
           title={
-            availabiltyZone == "multi"
+            availabilityZone == "multi"
               ? t("replicas_helper_text_multi_az")
               : t("replicas_helper_text_single_az")
           }
