@@ -249,13 +249,13 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
         />
       </FormGroupWithPopover>
 
-      <TextWithLabelPopover
+      {/*<TextWithLabelPopover
         fieldId="replicas"
         btnAriaLabel={t("replicas")}
         fieldLabel={t("replicas")}
         popoverBody={t("replicas_description")}
         popoverHeader={t("replicas")}
-      />
+      />*/}
       <TextWithLabelPopover
         fieldId="min-insync-replicas"
         btnAriaLabel="topic detail min-in-sync replica"

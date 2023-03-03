@@ -43,7 +43,7 @@ const CustomRetentionSize: React.FC<CustomRetentionSizeProps> = ({
       ...customRetentionSizeValue,
       value: Number(input),
     };
-    setCustomRetentionSizeValue(inputValue);
+    if (inputValue.value > -1) setCustomRetentionSizeValue(inputValue);
   };
   return (
     <div className="kafka-ui--radio__parameters">

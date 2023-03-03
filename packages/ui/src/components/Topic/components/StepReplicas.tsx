@@ -44,13 +44,13 @@ export const StepReplicas: React.FC<StepReplicasProps> = ({
           }
         />
 
-        <TextWithLabelPopover
+        {/*<TextWithLabelPopover
           fieldId="replicas"
           btnAriaLabel={t("replicas")}
           fieldLabel={t("replicas")}
           popoverBody={t("replicas_description")}
           popoverHeader={t("replicas")}
-        />
+        />*/}
 
         <TextWithLabelPopover
           fieldId="min-insync-replicas"
