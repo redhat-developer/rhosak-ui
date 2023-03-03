@@ -58,12 +58,12 @@ export const PermissionsTable = <T extends Permissions>({
     permission: t("table.permissions_column_title"),
     resource: t("table.resource_column_title"),
   };
-  const onCheck = (isSelecting: boolean, rowIndex: number) => {
-    if (rowIndex != undefined) {
+  const onCheck = (row: { rowIndex: number }, isSelecting: boolean) => {
+    if (row.rowIndex != undefined) {
       setCheckedRows(
         isSelecting
-          ? [...checkedRows, rowIndex]
-          : checkedRows.filter((row) => row !== rowIndex)
+          ? [...checkedRows, row.rowIndex]
+          : checkedRows.filter((i) => i !== row.rowIndex)
       );
     }
   };
