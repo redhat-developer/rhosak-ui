@@ -44,7 +44,7 @@ const CustomRetentionMessage: React.FC<CustomRetentionMessageProps> = ({
       ...customTimeValue,
       value: Number(input),
     };
-    setCustomTimeValue(inputValue);
+    if (inputValue.value > -1) setCustomTimeValue(inputValue);
   };
 
   return (
