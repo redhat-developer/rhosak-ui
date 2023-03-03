@@ -10,7 +10,7 @@ import {
 } from "@patternfly/react-core";
 import { Link } from "react-router-dom";
 
-export type CreateTopicProps = {
+export type CreateTopicHeadProps = {
   showAllOptions: boolean;
   kafkaName: string;
   onShowAllOptions: (value: boolean) => void;
@@ -18,7 +18,7 @@ export type CreateTopicProps = {
   onKafkaPageLink: string;
 };
 
-export const CreateTopicHead: VoidFunctionComponent<CreateTopicProps> = ({
+export const CreateTopicHead: VoidFunctionComponent<CreateTopicHeadProps> = ({
   showAllOptions,
   onShowAllOptions,
   kafkaName,

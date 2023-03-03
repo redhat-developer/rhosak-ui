@@ -4,6 +4,7 @@ import { kafkaQueries } from "../queryKeys";
 import { useApi } from "../useApi";
 import type { Topic } from "ui-models/src/models/topic";
 import type { NewTopicInput, TopicSettings } from "@rhoas/kafka-instance-sdk";
+import type { UserEditable } from "consoledot-api/src/transformers/topicTransformer";
 import { convertToKeyValuePairs } from "consoledot-api/src/transformers/topicTransformer";
 
 export function useCreateTopicMutation() {
@@ -23,8 +24,13 @@ export function useCreateTopicMutation() {
 
       const convertToNewTopicInput = (topic: Topic): NewTopicInput => {
         const { name, partitions, ...config } = topic;
+        const editProperties: UserEditable = {
+          "retention.bytes": config["retention.bytes"],
+          "retention.ms": config["retention.ms"],
+          "cleanup.policy": config["cleanup.policy"],
+        };
 
-        const configEntries = convertToKeyValuePairs(config);
+        const configEntries = convertToKeyValuePairs(editProperties);
         const topicSettings: TopicSettings = {
           numPartitions: partitions.length,
           config: configEntries,

@@ -39,7 +39,7 @@ export type CreateTopicWizardProps = {
   initialFieldsValue: Topic;
   checkTopicName: (value: string) => boolean;
   availablePartitionLimit: number;
-  availabiltyZone: AZ;
+  availabilityZone: AZ;
 };
 
 export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
@@ -49,7 +49,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
   initialFieldsValue,
   checkTopicName,
   availablePartitionLimit,
-  availabiltyZone,
+  availabilityZone,
 }) => {
   const { t } = useTranslation(["create-topic", "common"]);
 
@@ -130,7 +130,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
         <StepReplicas
           replicationFactor={1}
           minInSyncReplica={1}
-          availabiltyZone={availabiltyZone}
+          availabilityZone={availabilityZone}
         />
       ),
       nextButtonText: t("finish"),

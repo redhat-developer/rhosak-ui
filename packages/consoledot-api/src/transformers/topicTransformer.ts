@@ -8,6 +8,12 @@ import type {
 } from "ui-models/src/models/topic-config";
 import type { Bytes, Milliseconds } from "ui-models/src/types";
 
+export type UserEditable = {
+  "retention.ms": Milliseconds;
+  "retention.bytes": Bytes;
+  "cleanup.policy": "delete" | "compact" | "delete,compact";
+};
+
 export const developerDefaults: TopicConfig = {
   "cleanup.policy": "delete",
   "delete.retention.ms": { type: "ms", value: BigInt("86400000") },
@@ -205,19 +211,28 @@ function configValueToBoolean(value: string, defaultIfError: boolean): boolean {
   return defaultIfError;
 }
 
-export const convertToKeyValuePairs = (inputObj: TopicConfig) => {
-  const keyValuePairs: ConfigEntry[] = [];
-  for (const [key, value] of Object.entries(inputObj)) {
-    if (key === "retention.ms") {
-      keyValuePairs.push({
-        key,
-        value: (value as Milliseconds).value.toString(),
-      });
-    } else if (key === "retention.bytes") {
-      keyValuePairs.push({ key, value: (value as Bytes).value.toString() });
-    } else if (key === "cleanup.policy") {
-      keyValuePairs.push({ key, value: value.toString() });
-    }
+export const convertToKeyValuePairs = (inputObj: UserEditable) => {
+  const keyValuePairs: Array<{ key: string; value: string }> = [];
+  if (inputObj["retention.ms"]) {
+    keyValuePairs.push({
+      key: "retention.ms",
+      value: inputObj["retention.ms"].value.toString(),
+    });
   }
+
+  if (inputObj["retention.bytes"]) {
+    keyValuePairs.push({
+      key: "retention.bytes",
+      value: inputObj["retention.bytes"].value.toString(),
+    });
+  }
+
+  if (inputObj["cleanup.policy"]) {
+    keyValuePairs.push({
+      key: "cleanup.policy",
+      value: inputObj["cleanup.policy"],
+    });
+  }
+
   return keyValuePairs;
 };

@@ -1,5 +1,6 @@
 import type { VoidFunctionComponent } from "react";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
+import type { CreateTopicPageProps } from "ui";
 import { CreateTopic } from "ui";
 import type { Topic } from "ui-models/src/models/topic";
 import { useHistory } from "react-router-dom";
@@ -21,14 +22,22 @@ export const TopicCreateRoute: VoidFunctionComponent<
   const { instance } = useDataPlaneGate();
   const createTopic = useCreateTopicMutation();
   const dispatch = useDispatch();
-  const availabiltyZone = instance.az;
+  const availabilityZone = instance.az;
   const { data: topics } = useTopics({
     id: instance.id,
     adminUrl: instance.adminUrl,
     plan: instance.plan,
   });
 
-  const checkTopicName = (topicName: string) => {
+  if (instance.maxPartitions === undefined) {
+    throw new Error(
+      `CreateTopicRoute, unexpected maxPartition undefined for instance ${instance.name}`
+    );
+  }
+
+  const checkTopicName: CreateTopicPageProps["checkTopicName"] = (
+    topicName
+  ) => {
     const selectedTopic = topics?.topics.filter(
       (topic) => topic.name === topicName
     );
@@ -77,8 +86,8 @@ export const TopicCreateRoute: VoidFunctionComponent<
     ]
   );
 
-  const initialTopicValues: Topic =
-    instance.plan === "developer"
+  const initialTopicValues = useMemo(() => {
+    return instance.plan === "developer"
       ? {
           name: "",
           partitions: [{ partition: 1, id: 1 }],
@@ -89,6 +98,7 @@ export const TopicCreateRoute: VoidFunctionComponent<
           partitions: [{ partition: 1, id: 1 }],
           ...standardDefaults,
         };
+  }, [instance.plan]);
 
   return (
     <>
@@ -100,10 +110,8 @@ export const TopicCreateRoute: VoidFunctionComponent<
         initialTopicValues={initialTopicValues}
         onCloseCreateTopic={onCloseCreateTopic}
         checkTopicName={checkTopicName}
-        availablePartitionLimit={
-          instance.maxPartitions || instance.plan == "developer" ? 100 : 1000
-        }
-        availabiltyZone={availabiltyZone}
+        availablePartitionLimit={instance.maxPartitions}
+        availabilityZone={availabilityZone}
       />
     </>
   );
