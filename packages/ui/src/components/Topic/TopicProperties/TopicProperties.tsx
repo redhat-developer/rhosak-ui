@@ -93,16 +93,14 @@ export const TopicProperties: React.FunctionComponent<TopicViewDetailProps> = ({
                         popoverHeader={t("partitions")}
                       />
 
-                      <TextWithLabelPopover
+                      {/*<TextWithLabelPopover
                         fieldId="replicas"
                         btnAriaLabel={t("replicas")}
                         fieldLabel={t("replicas")}
-                        fieldValue={
-                          "TODO" /* TODO this is a config from the Kafka instance itself, should we be showing it? */
-                        }
+                        fieldValue={}
                         popoverBody={t("replicas_description")}
                         popoverHeader={t("replicas")}
-                      />
+                      />*/}
 
                       <TextWithLabelPopover
                         fieldId="min-insync-replicas"
