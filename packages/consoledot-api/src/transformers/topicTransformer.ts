@@ -6,12 +6,12 @@ import type {
   TopicConfigField,
 } from "ui-models/src/models/topic-config";
 import type { Bytes, Milliseconds } from "ui-models/src/types";
+import type { TopicSettings } from "@rhoas/kafka-instance-sdk";
 
-export type UserEditable = {
-  "retention.ms": Milliseconds;
-  "retention.bytes": Bytes;
-  "cleanup.policy": "delete" | "compact" | "delete,compact";
-};
+export type UserEditable = Pick<
+  TopicConfig,
+  "retention.ms" | "retention.bytes" | "cleanup.policy"
+>;
 
 export const developerDefaults: TopicConfig = {
   "cleanup.policy": "delete",
@@ -234,4 +234,14 @@ export const convertToKeyValuePairs = (inputObj: UserEditable) => {
   }
 
   return keyValuePairs;
+};
+
+export const convertToTopicSettings = (topic: Topic): TopicSettings => {
+  const { partitions, ...config } = topic;
+  const configEntries = convertToKeyValuePairs(config);
+  const topicSettings: TopicSettings = {
+    numPartitions: partitions.length,
+    config: configEntries,
+  };
+  return topicSettings;
 };

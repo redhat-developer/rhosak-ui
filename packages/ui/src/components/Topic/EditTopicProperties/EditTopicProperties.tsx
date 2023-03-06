@@ -75,13 +75,10 @@ export const EditTopicProperties: FunctionComponent<
 
   const onTransform = () => {
     const tranformedValueInMilliseconds =
-      topicData["retention.ms"].value == BigInt(-1)
-        ? BigInt(-1)
-        : retentionTimeTransformer(customTimeValue);
-    const tranformedValueInBytes =
-      topicData["retention.bytes"].value == BigInt(-1)
-        ? BigInt(-1)
-        : retentionSizeTransformer(customRetentionSizeValue);
+      retentionTimeTransformer(customTimeValue);
+    const tranformedValueInBytes = retentionSizeTransformer(
+      customRetentionSizeValue
+    );
     const transformedTopic: Topic = {
       ...topicData,
       "retention.ms": {

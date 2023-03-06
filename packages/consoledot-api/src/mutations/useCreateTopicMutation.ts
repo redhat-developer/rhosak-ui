@@ -4,7 +4,10 @@ import { kafkaQueries } from "../queryKeys";
 import { useApi } from "../useApi";
 import type { Topic } from "ui-models/src/models/topic";
 import type { NewTopicInput, TopicSettings } from "@rhoas/kafka-instance-sdk";
-import type { UserEditable } from "consoledot-api/src/transformers/topicTransformer";
+import {
+  UserEditable,
+  convertToTopicSettings,
+} from "consoledot-api/src/transformers/topicTransformer";
 import { convertToKeyValuePairs } from "consoledot-api/src/transformers/topicTransformer";
 
 export function useCreateTopicMutation() {
@@ -22,19 +25,9 @@ export function useCreateTopicMutation() {
       const { adminUrl, topic, onSuccess, onError } = props;
       const api = topics(adminUrl);
 
-      const convertToNewTopicInput = (topic: Topic): NewTopicInput => {
-        const { name, partitions, ...config } = topic;
-        const editProperties: UserEditable = {
-          "retention.bytes": config["retention.bytes"],
-          "retention.ms": config["retention.ms"],
-          "cleanup.policy": config["cleanup.policy"],
-        };
-
-        const configEntries = convertToKeyValuePairs(editProperties);
-        const topicSettings: TopicSettings = {
-          numPartitions: partitions.length,
-          config: configEntries,
-        };
+      const createTopic = (topic: Topic): NewTopicInput => {
+        const { name } = topic;
+        const topicSettings = convertToTopicSettings(topic);
         return {
           name,
           settings: topicSettings,
@@ -42,7 +35,7 @@ export function useCreateTopicMutation() {
       };
 
       try {
-        await api.createTopic(convertToNewTopicInput(topic));
+        await api.createTopic(createTopic(topic));
         onSuccess();
       } catch (error) {
         if (isServiceApiError(error)) {

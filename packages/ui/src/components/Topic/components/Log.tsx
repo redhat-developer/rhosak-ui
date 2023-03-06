@@ -14,7 +14,7 @@ import type React from "react";
 import type { Topic } from "ui-models/src/models/topic";
 import { TextWithLabelPopover } from "./TextWithLabelPopover";
 import type { IDropdownOption } from "./types";
-import { TopicConfig } from 'ui-models/src/models/topic-config';
+import { TopicConfig } from "ui-models/src/models/topic-config";
 
 export type LogProps = {
   topicData: Topic;
