@@ -159,6 +159,7 @@
   "empty_state_no_results_found_title": "No results found",
   "fields": {
     "adminUrl": "URL for Kafka Instance API",
+    "availabilityZone": "Availability Zones",
     "billing": "Billing",
     "bootstrapUrl": "Bootstrap server",
     "clusterId": "Deployment",

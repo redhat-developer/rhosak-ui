@@ -1,95 +1,82 @@
-import type { NumberInputProps, SelectProps } from "@patternfly/react-core";
+import type { SelectProps } from "@patternfly/react-core";
+import { TextInput } from "@patternfly/react-core";
 import {
   Flex,
   FlexItem,
-  NumberInput,
   Select,
   SelectOption,
   SelectVariant,
 } from "@patternfly/react-core";
 import type React from "react";
-import type { Topic } from "ui-models/src/models/topic";
-import { RetentionTimeUnits } from "../../KafkaTopics/types";
-import type { SelectOptions } from "./types";
+import { useState } from "react";
+import type { CustomSelect, TimeUnit } from "./types";
+import { retentionTimeSelectOptions } from "./types";
 
-export type CustomRetentionMessageProps = NumberInputProps &
-  SelectProps & {
-    id?: string;
-    selectOptions: SelectOptions[];
-    topicData: Topic;
-    setTopicData: (data: Topic) => void;
-  };
+export type CustomRetentionMessageProps = {
+  id?: string;
+  customTimeValue: CustomSelect;
+  setCustomTimeValue: (data: CustomSelect) => void;
+};
 
 const CustomRetentionMessage: React.FC<CustomRetentionMessageProps> = ({
-  onToggle,
-  isOpen,
-  selectOptions,
-  topicData,
-  setTopicData,
+  customTimeValue,
+  setCustomTimeValue,
 }) => {
+  const [isRetentionTimeSelectOpen, setIsRetentionTimeSelectOpen] =
+    useState<boolean>(false);
+
+  const onRetentionTimeToggle = (isOpen: boolean) => {
+    setIsRetentionTimeSelectOpen(isOpen);
+  };
+
   const onSelect: SelectProps["onSelect"] = (event, value) => {
-    // setTopicData({
-    //   ...topicData,
-    //   customRetentionTimeUnit: value as RetentionTimeUnits,
-    // });
+    const inputUnit: CustomSelect = {
+      unit: value as TimeUnit,
+      value: 1,
+    };
+    setCustomTimeValue(inputUnit);
 
-    //}
-
-    onToggle(false, event);
+    onRetentionTimeToggle(false);
   };
 
-  const handleTouchSpin = (operator: string) => {
-    if (operator === "+") {
-      // setTopicData({
-      //   ...topicData,
-      //   retentionTime: topicData.retentionTime + 1,
-      // });
-    } else if (operator === "-") {
-      // setTopicData({
-      //   ...topicData,
-      //   retentionTime: topicData.retentionTime - 1,
-      // });
-    }
-  };
-
-  const onChangeTouchSpin = (event: React.FormEvent<HTMLInputElement>) => {
-    // setTopicData({
-    //   ...topicData,
-    //   retentionTime: Number(event.currentTarget.value),
-    // });
+  const onChange = (input: string) => {
+    const inputValue: CustomSelect = {
+      ...customTimeValue,
+      value: Number(input),
+    };
+    if (inputValue.value > -1) setCustomTimeValue(inputValue);
   };
 
   return (
     <div className="kafka-ui--radio__parameters">
       <Flex>
         <FlexItem>
-          <NumberInput
-            onMinus={() => handleTouchSpin("-")}
-            onPlus={() => handleTouchSpin("+")}
-            value={
-              Number(
-                topicData["retention.ms"].value
-              ) /* TODO precision loss from BigInt to Number, handle this as a string */
-            }
-            onChange={(event) => onChangeTouchSpin(event)}
-            min={0}
+          <TextInput
+            aria-label={"Retention time"}
+            type="number"
+            value={customTimeValue.value == 0 ? "" : customTimeValue.value}
+            onChange={onChange}
+            min={1}
           />
         </FlexItem>
         <FlexItem>
           <Select
             variant={SelectVariant.single}
             aria-label="Select Input"
-            onToggle={onToggle}
-            onSelect={onSelect}
-            selections={RetentionTimeUnits.MILLISECOND /* TODO */}
-            isOpen={isOpen}
+            onToggle={onRetentionTimeToggle}
+            onSelect={(event, value) => onSelect(event, value as string)}
+            placeholder="days"
+            selections={customTimeValue.unit}
+            isOpen={isRetentionTimeSelectOpen}
           >
-            {selectOptions?.map((s) => (
+            {retentionTimeSelectOptions?.map((s) => (
               <SelectOption
                 key={s.key}
                 value={s.value}
                 isPlaceholder={s.isPlaceholder}
-              />
+              >
+                {s.value}
+              </SelectOption>
             ))}
           </Select>
         </FlexItem>

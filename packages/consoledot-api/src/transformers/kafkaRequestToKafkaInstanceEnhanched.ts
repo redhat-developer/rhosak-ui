@@ -34,7 +34,7 @@ export function kafkaRequestToKafkaInstanceEnhanched(
     messageSize: { type: "bytes", value: BigInt(0) },
     name: instance.name || "",
     owner: instance.owner || "",
-    plan: instance.billing_model as Plan,
+    plan: instance.instance_type as Plan,
     provider: instance.cloud_provider as CloudProvider,
     region: instance.region || "",
     size: "1",
@@ -47,6 +47,7 @@ export function kafkaRequestToKafkaInstanceEnhanched(
     version: instance.version || "",
     bootstrapUrl: instance.bootstrap_server_host,
     adminUrl: instance.admin_api_server_url,
+    az: instance.multi_az == true ? "multi" : "single",
   };
 
   // update the billing info

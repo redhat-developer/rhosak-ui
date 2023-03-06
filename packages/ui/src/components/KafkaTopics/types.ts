@@ -24,7 +24,7 @@ export const unitsToBytes = {
   [RetentionSizeUnits.KIBIBYTE]: BigInt("1024"),
   [RetentionSizeUnits.MEBIBYTE]: BigInt("1048576"),
   [RetentionSizeUnits.GIBIBYTE]: BigInt("1073741824"),
-  [RetentionSizeUnits.TEBIBYTE]: BigInt("1099511600000"),
+  [RetentionSizeUnits.TEBIBYTE]: BigInt("1099511627776"),
 };
 
 export const unitsToMilliSecond = {

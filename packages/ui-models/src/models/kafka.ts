@@ -25,6 +25,7 @@ export type Kafka = {
   connections: number | undefined;
   connectionRate: number | undefined;
   messageSize: Bytes | undefined;
+  az: AZ;
   billing: "prepaid" | MarketplaceSubscription | "dedicated" | undefined;
   clusterId: string | undefined;
   version: string;
