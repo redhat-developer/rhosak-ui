@@ -87,32 +87,23 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
 
   const handleRetentionMessageTime = (value: RadioSelectType) => {
     if (value === "unlimited") {
-      setTopicData({
-        ...topicData,
-        "retention.ms": { value: BigInt(-1), type: "ms" },
-      });
-    } else
-      setTopicData({
-        ...topicData,
-        "retention.ms": { value: BigInt(1), type: "ms" },
-      });
-    setRadioTimeSelectValue(value);
+      setCustomTimeValue({ value: -1, unit: "unlimited" });
+      setRadioTimeSelectValue(value);
+    } else {
+      setCustomTimeValue({ value: 7, unit: "days" });
+      setRadioTimeSelectValue(value);
+    }
   };
 
   const handleRetentionMessageSize = (value: RetentionSizeRadioSelect) => {
-    if (value === "unlimited")
-      setTopicData({
-        ...topicData,
-        "retention.bytes": { value: BigInt(-1), type: "bytes" },
-      });
-    else
-      setTopicData({
-        ...topicData,
-        "retention.bytes": { value: BigInt(1), type: "bytes" },
-      });
-    setRadioSizeSelectValue(value);
+    if (value === "unlimited") {
+      setRadioSizeSelectValue(value);
+      setCustomRetentionSizeValue({ value: -1, unit: "unlimited" });
+    } else {
+      setCustomRetentionSizeValue({ value: 1, unit: "bytes" });
+      setRadioSizeSelectValue(value);
+    }
   };
-
   const handleTextInputChange = (value: string) => {
     validationCheck(value);
     setTopicData({ ...topicData, name: value });
@@ -273,7 +264,7 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
       >
         <Stack hasGutter>
           <Radio
-            isChecked={radioTimeSelectValue != "unlimited"}
+            isChecked={radioTimeSelectValue === "custom"}
             name="custom-retention-time"
             onChange={() => handleRetentionMessageTime("custom")}
             label={retentionTimeInput}
@@ -283,7 +274,7 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
             value={radioTimeSelectValue}
           />
           <Radio
-            isChecked={radioTimeSelectValue == "unlimited"}
+            isChecked={radioTimeSelectValue === "unlimited"}
             name="unlimited-retention-time"
             onChange={() => handleRetentionMessageTime("unlimited")}
             label="Unlimited time"
@@ -302,7 +293,7 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
       >
         <Stack hasGutter>
           <Radio
-            isChecked={radioSizeSelectValue != "unlimited"}
+            isChecked={radioSizeSelectValue === "custom"}
             name="custom-retention-size"
             onChange={() => handleRetentionMessageSize("custom")}
             label={retentionSizeInput}

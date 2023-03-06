@@ -4,7 +4,10 @@ import { kafkaQueries } from "../queryKeys";
 import { useApi } from "../useApi";
 import type { TopicSettings } from "@rhoas/kafka-instance-sdk";
 import type { Topic } from "ui-models/src/models/topic";
-import { convertToKeyValuePairs } from "consoledot-api/src/transformers/topicTransformer";
+import {
+  convertToKeyValuePairs,
+  convertToTopicSettings,
+} from "consoledot-api/src/transformers/topicTransformer";
 
 export function useUpdateTopicMutation() {
   const { topics } = useApi();
@@ -25,19 +28,13 @@ export function useUpdateTopicMutation() {
     }) {
       const api = topics(adminUrl);
 
-      const convertToNewTopicInput = (topic: Topic) => {
-        const { partitions, ...config } = topic;
-
-        const configEntries = convertToKeyValuePairs(config);
-        const topicSettings: TopicSettings = {
-          numPartitions: partitions.length,
-          config: configEntries,
-        };
+      const updateTopic = (topic: Topic) => {
+        const topicSettings = convertToTopicSettings(topic);
         return topicSettings;
       };
 
       try {
-        await api.updateTopic(topic.name || "", convertToNewTopicInput(topic));
+        await api.updateTopic(topic.name || "", updateTopic(topic));
         onSuccess();
       } catch (error) {
         if (isServiceApiError(error)) {

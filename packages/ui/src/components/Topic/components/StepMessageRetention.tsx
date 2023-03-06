@@ -10,7 +10,6 @@ import {
 } from "@patternfly/react-core";
 import { useTranslation } from "@rhoas/app-services-ui-components";
 import type React from "react";
-import type { Topic } from "ui-models/src/models/topic";
 import { CustomRetentionMessage } from "./CustomRetentionMessage";
 import { CustomRetentionSize } from "./CustomRetentionSize";
 import type {
@@ -29,8 +28,6 @@ export type StepMessageRetentionProps = {
   setRadioTimeSelectValue: (value: RadioSelectType) => void;
   radioSizeSelectValue: RetentionSizeRadioSelect;
   setRadioSizeSelectValue: (data: RetentionSizeRadioSelect) => void;
-  setTopicData: (value: Topic) => void;
-  topicData: Topic;
 };
 
 export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
@@ -42,55 +39,32 @@ export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
   customRetentionSizeValue,
   radioSizeSelectValue,
   setRadioSizeSelectValue,
-  setTopicData,
-  topicData,
 }) => {
   const { t } = useTranslation(["create-topic"]);
 
   const handleRetentionMessageSize = (value: RetentionSizeRadioSelect) => {
     if (value === "unlimited") {
-      setTopicData({
-        ...topicData,
-        "retention.bytes": { value: BigInt(-1), type: "bytes" },
-      });
+      setRadioSizeSelectValue(value);
+      setCustomRetentionSizeValue({ value: -1, unit: "unlimited" });
     } else {
       setCustomRetentionSizeValue({ value: 1, unit: "bytes" });
-      setTopicData({
-        ...topicData,
-        "retention.bytes": { value: BigInt(1), type: "bytes" },
-      });
+      setRadioSizeSelectValue(value);
     }
-    setRadioSizeSelectValue(value);
   };
 
   const retentionTime = (value: RadioSelectType) => {
     switch (value) {
       case "day":
         setCustomTimeValue({ value: 1, unit: "days" });
-        setTopicData({
-          ...topicData,
-          "retention.ms": { value: BigInt(1), type: "ms" },
-        });
         break;
       case "week":
         setCustomTimeValue({ value: 1, unit: "weeks" });
-        setTopicData({
-          ...topicData,
-          "retention.ms": { value: BigInt(1), type: "ms" },
-        });
         break;
       case "custom":
         setCustomTimeValue({ value: 7, unit: "days" });
-        setTopicData({
-          ...topicData,
-          "retention.ms": { value: BigInt(1), type: "ms" },
-        });
         break;
       case "unlimited":
-        setTopicData({
-          ...topicData,
-          "retention.ms": { value: BigInt(-1), type: "ms" },
-        });
+        setCustomTimeValue({ value: -1, unit: "unlimited" });
         break;
     }
     setRadioTimeSelectValue(value);

@@ -59,7 +59,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
   });
 
   const [customRetentionSizeValue, setCustomRetentionSizeValue] =
-    useState<CustomRetentionSizeSelect>({ unit: "bytes", value: 1 });
+    useState<CustomRetentionSizeSelect>({ unit: "unlimited", value: -1 });
 
   const [topicNameValidated, setTopicNameValidated] =
     useState<ValidatedOptions>(ValidatedOptions.default);
@@ -118,8 +118,6 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
           setRadioTimeSelectValue={setRadioTimeSelectValue}
           radioSizeSelectValue={radioSizeSelectValue}
           setRadioSizeSelectValue={setRadioSizeSelectValue}
-          setTopicData={setTopicData}
-          topicData={topicData}
         />
       ),
     },
@@ -140,13 +138,10 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
 
   const onTransform = () => {
     const tranformedValueInMilliseconds =
-      topicData["retention.ms"].value == BigInt(-1)
-        ? BigInt(-1)
-        : retentionTimeTransformer(customTimeValue);
-    const tranformedValueInBytes =
-      topicData["retention.bytes"].value == BigInt(-1)
-        ? BigInt(-1)
-        : retentionSizeTransformer(customRetentionSizeValue);
+      retentionTimeTransformer(customTimeValue);
+    const tranformedValueInBytes = retentionSizeTransformer(
+      customRetentionSizeValue
+    );
     const transformedTopic: Topic = {
       ...topicData,
       "retention.ms": {
