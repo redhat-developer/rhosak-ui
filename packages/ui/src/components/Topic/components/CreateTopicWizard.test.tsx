@@ -12,9 +12,7 @@ describe("Create advance topic", () => {
     const comp = render(
       <AdvanceTopic
         checkTopicName={(topicName) =>
-          fakeApi<boolean>(
-            !["test", "my-test", "test-topic"].some((m) => m == topicName)
-          )
+          !["test", "my-test", "test-topic"].some((m) => m == topicName)
         }
         onSave={onSave}
       />

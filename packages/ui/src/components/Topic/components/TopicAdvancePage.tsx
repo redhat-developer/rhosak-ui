@@ -13,6 +13,12 @@ import { useTranslation } from "@rhoas/app-services-ui-components";
 import type React from "react";
 import { useState } from "react";
 import type { Topic } from "ui-models/src/models/topic";
+import type {
+  CustomRetentionSizeSelect,
+  CustomSelect,
+  RadioSelectType,
+  RetentionSizeRadioSelect,
+} from "..";
 import { Cleanup } from "./Cleanup";
 import { CoreConfiguration } from "./CoreConfiguration";
 import { Flush } from "./Flush";
@@ -24,12 +30,20 @@ import { TopicAdvanceJumpLinks } from "./TopicAdvanceJumpLinks";
 
 export type TopicAdvancePageProps = {
   isCreate: boolean;
-  onConfirm: () => void;
+  onConfirm: (data: Topic) => void;
   handleCancel?: () => void;
   topicData: Topic;
   setTopicData: (val: Topic) => void;
-  checkTopicName: (value: string) => Promise<boolean>;
+  checkTopicName?: (value: string) => boolean;
   availablePartitionLimit: number;
+  customRetentionSizeValue: CustomRetentionSizeSelect;
+  setCustomRetentionSizeValue: (data: CustomRetentionSizeSelect) => void;
+  customTimeValue: CustomSelect;
+  setCustomTimeValue: (data: CustomSelect) => void;
+  radioTimeSelectValue: RadioSelectType;
+  setRadioTimeSelectValue: (value: RadioSelectType) => void;
+  radioSizeSelectValue: RetentionSizeRadioSelect;
+  setRadioSizeSelectValue: (data: RetentionSizeRadioSelect) => void;
 };
 
 export const TopicAdvancePage: React.FunctionComponent<
@@ -42,6 +56,14 @@ export const TopicAdvancePage: React.FunctionComponent<
   setTopicData,
   checkTopicName,
   availablePartitionLimit,
+  customTimeValue,
+  setCustomTimeValue,
+  radioTimeSelectValue,
+  setRadioTimeSelectValue,
+  setCustomRetentionSizeValue,
+  customRetentionSizeValue,
+  radioSizeSelectValue,
+  setRadioSizeSelectValue,
 }) => {
   const { t } = useTranslation(["create-topic", "common"]);
   const actionText = isCreate ? t("create_topic") : t("common:save");
@@ -55,23 +77,25 @@ export const TopicAdvancePage: React.FunctionComponent<
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [warning, setWarning] = useState<boolean>(false);
   const onValidateTopic = () => {
-    if (topicData?.name.length < 1) {
-      setInvalidText(t("common:required"));
-      setTopicValidated(ValidatedOptions.error);
-    } else {
-      setIsLoading(true);
+    if (isCreate) {
+      if (topicData?.name.length < 1) {
+        setInvalidText(t("common:required"));
+        setTopicValidated(ValidatedOptions.error);
+      } else {
+        setIsLoading(true);
 
-      checkTopicName(topicData?.name)
-        .then((value) =>
-          value == false
-            ? (setInvalidText(t("already_exists", { name: topicData?.name })),
-              setTopicValidated(ValidatedOptions.error))
-            : onConfirm()
-        )
-        .finally(() => setIsLoading(false));
+        const isTopicNameValid =
+          checkTopicName && checkTopicName(topicData?.name);
+        if (!isTopicNameValid) {
+          setIsLoading(false);
+          setInvalidText(t("already_exists", { name: topicData?.name })),
+            setTopicValidated(ValidatedOptions.error);
+        } else onConfirm(topicData);
+      }
+    } else {
+      onConfirm(topicData);
     }
   };
-
   return (
     <PageSection padding={{ default: "noPadding" }}>
       <Sidebar hasGutter>
@@ -88,7 +112,6 @@ export const TopicAdvancePage: React.FunctionComponent<
                   isCreate={isCreate}
                   topicData={topicData}
                   setTopicData={setTopicData}
-                  checkTopicName={checkTopicName}
                   availablePartitionLimit={availablePartitionLimit}
                   invalidText={invalidText}
                   setInvalidText={setInvalidText}
@@ -96,6 +119,14 @@ export const TopicAdvancePage: React.FunctionComponent<
                   topicValidated={topicValidated}
                   setWarning={setWarning}
                   warning={warning}
+                  customRetentionSizeValue={customRetentionSizeValue}
+                  setCustomRetentionSizeValue={setCustomRetentionSizeValue}
+                  customTimeValue={customTimeValue}
+                  setCustomTimeValue={setCustomTimeValue}
+                  radioTimeSelectValue={radioTimeSelectValue}
+                  setRadioTimeSelectValue={setRadioTimeSelectValue}
+                  radioSizeSelectValue={radioSizeSelectValue}
+                  setRadioSizeSelectValue={setRadioSizeSelectValue}
                 />
                 <Message
                   defaultMaximumMessageBytes={

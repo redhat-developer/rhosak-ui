@@ -8,18 +8,18 @@ import {
 } from "@patternfly/react-core";
 import { useTranslation } from "@rhoas/app-services-ui-components";
 import type React from "react";
+import type { AZ } from "ui-models/src/models/kafka";
 import { TextWithLabelPopover } from "./TextWithLabelPopover";
 
 export type StepReplicasProps = {
-  replicationFactor: number;
+  //replicationFactor: number;
   minInSyncReplica: number;
-  isMultiAZ: boolean | undefined;
+  availabilityZone: AZ;
 };
 
 export const StepReplicas: React.FC<StepReplicasProps> = ({
-  replicationFactor,
   minInSyncReplica,
-  isMultiAZ,
+  availabilityZone,
 }) => {
   const { t } = useTranslation(["create-topic"]);
 
@@ -38,20 +38,19 @@ export const StepReplicas: React.FC<StepReplicasProps> = ({
           variant="info"
           isInline
           title={
-            isMultiAZ
-              ? t("replicas_helper_text_single_az")
+            availabilityZone == "multi"
+              ? t("replicas_helper_text_multi_az")
               : t("replicas_helper_text_single_az")
           }
         />
 
-        <TextWithLabelPopover
+        {/*<TextWithLabelPopover
           fieldId="replicas"
           btnAriaLabel={t("replicas")}
           fieldLabel={t("replicas")}
-          fieldValue={replicationFactor.toString()}
           popoverBody={t("replicas_description")}
           popoverHeader={t("replicas")}
-        />
+        />*/}
 
         <TextWithLabelPopover
           fieldId="min-insync-replicas"

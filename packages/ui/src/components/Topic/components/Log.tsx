@@ -14,6 +14,7 @@ import type React from "react";
 import type { Topic } from "ui-models/src/models/topic";
 import { TextWithLabelPopover } from "./TextWithLabelPopover";
 import type { IDropdownOption } from "./types";
+import { TopicConfig } from "ui-models/src/models/topic-config";
 
 export type LogProps = {
   topicData: Topic;
@@ -46,7 +47,7 @@ const Log: React.FC<LogProps> = ({
       isDisabled: false,
     },
     {
-      key: "compact-delete",
+      key: "delete, compact",
       value: "compact,delete",
       label: `${t("compact")},${t("common:delete")}`,
       isDisabled: false,
@@ -54,7 +55,10 @@ const Log: React.FC<LogProps> = ({
   ];
 
   const onSelectOption = (value: string) => {
-    // setTopicData({ ...topicData, cleanupPolicy: value });
+    setTopicData({
+      ...topicData,
+      "cleanup.policy": value as TopicConfig["cleanup.policy"],
+    });
   };
 
   return (
@@ -80,6 +84,7 @@ const Log: React.FC<LogProps> = ({
           name="cleanup-policy"
           value={topicData["cleanup.policy"]}
           isLabelAndValueNotSame={true}
+          key={topicData["cleanup.policy"]}
         />
       </FormGroupWithPopover>
 

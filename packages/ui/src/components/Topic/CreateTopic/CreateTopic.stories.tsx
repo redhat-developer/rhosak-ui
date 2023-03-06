@@ -1,8 +1,7 @@
 import type { ComponentMeta, ComponentStory } from "@storybook/react";
 import { userEvent, within } from "@storybook/testing-library";
-import { TopicPartition } from "ui-models/src/models/topic-partition";
-import { fakeApi } from "../../storiesHelpers";
-import { constantValues } from "../components/storiesHelpers";
+import type { Topic } from "ui-models/src/models/topic";
+import type { TopicPartition } from "ui-models/src/models/topic-partition";
 import { CreateTopic } from "./CreateTopic";
 
 export default {
@@ -12,10 +11,9 @@ export default {
     kafkaPageLink: "kafka-link",
     kafkaInstanceLink: "kafka-instance-link",
     availablePartitionLimit: 10,
+    onSave: (value: Topic) => console.log("topic value", value),
     checkTopicName: (topicName) =>
-      fakeApi<boolean>(
-        !["test", "my-test", "test-topic"].some((m) => m == topicName)
-      ),
+      !["test", "my-test", "test-topic"].some((m) => m == topicName),
     initialTopicValues: {
       name: "",
       partitions: [{ partition: 1, id: 1 }],
@@ -30,7 +28,7 @@ export default {
       },
       "message.timestamp.type": "CreateTime",
       "min.compaction.lag.ms": { type: "ms", value: BigInt("1") },
-      "retention.bytes": { type: "bytes", value: BigInt("9") },
+      "retention.bytes": { type: "bytes", value: BigInt("-1") },
       "retention.ms": { type: "ms", value: BigInt("1") },
       "segment.bytes": { type: "bytes", value: BigInt("9") },
       "segment.ms": { type: "ms", value: BigInt("1") },
@@ -49,7 +47,11 @@ export default {
       "unclean.leader.election.enable": false,
       preallocate: false,
     },
-    constantValues: constantValues,
+  },
+  parameters: {
+    controls: {
+      exclude: /.*/g,
+    },
   },
 } as ComponentMeta<typeof CreateTopic>;
 

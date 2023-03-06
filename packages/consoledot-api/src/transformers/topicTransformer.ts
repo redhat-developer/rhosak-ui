@@ -6,6 +6,12 @@ import type {
   TopicConfigField,
 } from "ui-models/src/models/topic-config";
 import type { Bytes, Milliseconds } from "ui-models/src/types";
+import type { TopicSettings } from "@rhoas/kafka-instance-sdk";
+
+export type UserEditable = Pick<
+  TopicConfig,
+  "retention.ms" | "retention.bytes" | "cleanup.policy"
+>;
 
 export const developerDefaults: TopicConfig = {
   "cleanup.policy": "delete",
@@ -203,3 +209,39 @@ function configValueToBoolean(value: string, defaultIfError: boolean): boolean {
   }
   return defaultIfError;
 }
+
+export const convertToKeyValuePairs = (inputObj: UserEditable) => {
+  const keyValuePairs: Array<{ key: string; value: string }> = [];
+  if (inputObj["retention.ms"]) {
+    keyValuePairs.push({
+      key: "retention.ms",
+      value: inputObj["retention.ms"].value.toString(),
+    });
+  }
+
+  if (inputObj["retention.bytes"]) {
+    keyValuePairs.push({
+      key: "retention.bytes",
+      value: inputObj["retention.bytes"].value.toString(),
+    });
+  }
+
+  if (inputObj["cleanup.policy"]) {
+    keyValuePairs.push({
+      key: "cleanup.policy",
+      value: inputObj["cleanup.policy"],
+    });
+  }
+
+  return keyValuePairs;
+};
+
+export const convertToTopicSettings = (topic: Topic): TopicSettings => {
+  const { partitions, ...config } = topic;
+  const configEntries = convertToKeyValuePairs(config);
+  const topicSettings: TopicSettings = {
+    numPartitions: partitions.length,
+    config: configEntries,
+  };
+  return topicSettings;
+};

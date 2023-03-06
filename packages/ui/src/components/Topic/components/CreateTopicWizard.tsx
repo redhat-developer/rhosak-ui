@@ -20,7 +20,16 @@ import {
   WizardCustomFooter,
 } from "./index";
 import { PartitionLimitWarning } from "./PartitionLimitWarning";
+import { retentionTimeTransformer } from "./retentionTimeTransformer";
 import { TopicAdvancePage } from "./TopicAdvancePage";
+import type {
+  CustomRetentionSizeSelect,
+  CustomSelect,
+  RadioSelectType,
+  RetentionSizeRadioSelect,
+} from "./types";
+import { retentionSizeTransformer } from "./retentionSizeTransformer";
+import type { AZ } from "ui-models/src/models/kafka";
 
 export type CreateTopicWizardProps = {
   isSwitchChecked: boolean;
@@ -28,8 +37,9 @@ export type CreateTopicWizardProps = {
   onCloseCreateTopic: () => void;
   onSave: (topicData: Topic) => void;
   initialFieldsValue: Topic;
-  checkTopicName: (value: string) => Promise<boolean>;
+  checkTopicName: (value: string) => boolean;
   availablePartitionLimit: number;
+  availabilityZone: AZ;
 };
 
 export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
@@ -39,8 +49,17 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
   initialFieldsValue,
   checkTopicName,
   availablePartitionLimit,
+  availabilityZone,
 }) => {
   const { t } = useTranslation(["create-topic", "common"]);
+
+  const [customTimeValue, setCustomTimeValue] = useState<CustomSelect>({
+    unit: "days",
+    value: 7,
+  });
+
+  const [customRetentionSizeValue, setCustomRetentionSizeValue] =
+    useState<CustomRetentionSizeSelect>({ unit: "unlimited", value: -1 });
 
   const [topicNameValidated, setTopicNameValidated] =
     useState<ValidatedOptions>(ValidatedOptions.default);
@@ -48,6 +67,11 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
   const [invalidText, setInvalidText] = useState<string>("");
   const [topicData, setTopicData] = useState<Topic>(initialFieldsValue);
   const [warningModalOpen, setWarningModalOpen] = useState<boolean>(false);
+  const [radioTimeSelectValue, setRadioTimeSelectValue] =
+    useState<RadioSelectType>("week");
+
+  const [radioSizeSelectValue, setRadioSizeSelectValue] =
+    useState<RetentionSizeRadioSelect>("unlimited");
 
   const closeWizard = () => {
     onCloseCreateTopic && onCloseCreateTopic();
@@ -86,8 +110,14 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
       canJumpTo: topicData?.name.trim() !== "",
       component: (
         <StepMessageRetention
-          newTopicData={topicData}
-          onChangeMessageRetention={setTopicData}
+          customRetentionSizeValue={customRetentionSizeValue}
+          setCustomRetentionSizeValue={setCustomRetentionSizeValue}
+          customTimeValue={customTimeValue}
+          setCustomTimeValue={setCustomTimeValue}
+          radioTimeSelectValue={radioTimeSelectValue}
+          setRadioTimeSelectValue={setRadioTimeSelectValue}
+          radioSizeSelectValue={radioSizeSelectValue}
+          setRadioSizeSelectValue={setRadioSizeSelectValue}
         />
       ),
     },
@@ -96,9 +126,8 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
       canJumpTo: topicData?.name.trim() !== "",
       component: (
         <StepReplicas
-          replicationFactor={3 /* TODO */}
           minInSyncReplica={topicData["min.insync.replicas"]}
-          isMultiAZ={false /* TODO */}
+          availabilityZone={availabilityZone}
         />
       ),
       nextButtonText: t("finish"),
@@ -107,6 +136,23 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
 
   const title = t("wizard_title");
 
+  const onTransform = () => {
+    const tranformedValueInMilliseconds =
+      retentionTimeTransformer(customTimeValue);
+    const tranformedValueInBytes = retentionSizeTransformer(
+      customRetentionSizeValue
+    );
+    const transformedTopic: Topic = {
+      ...topicData,
+      "retention.ms": {
+        type: "ms",
+        value: tranformedValueInMilliseconds || BigInt(-1),
+      },
+      "retention.bytes": { type: "bytes", value: tranformedValueInBytes },
+    };
+    onSaveTopic(transformedTopic);
+  };
+
   const onValidate: IWizardFooter["onValidate"] = (onNext) => {
     if (topicData?.name.length < 1) {
       setInvalidText(t("common:required"));
@@ -114,20 +160,18 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
     } else {
       setIsLoading(true);
 
-      checkTopicName(topicData?.name)
-        .then((value) =>
-          value == false
-            ? (setInvalidText(t("already_exists", { name: topicData?.name })),
-              setTopicNameValidated(ValidatedOptions.error))
-            : onNext()
-        )
-        .finally(() => setIsLoading(false));
+      const isTopicNameValid = checkTopicName(topicData?.name);
+      if (!isTopicNameValid) {
+        setIsLoading(false);
+        setInvalidText(t("already_exists", { name: topicData?.name })),
+          setTopicNameValidated(ValidatedOptions.error);
+      } else onNext();
     }
   };
-  const onSaveTopic = () => {
+  const onSaveTopic = (transformedTopic: Topic) => {
     if (topicData.partitions.length >= availablePartitionLimit)
       setWarningModalOpen(true);
-    else onSave(topicData);
+    else onSave(transformedTopic);
   };
   return (
     <>
@@ -142,18 +186,26 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
             {
               <TopicAdvancePage
                 isCreate={true}
-                onConfirm={onSaveTopic}
+                onConfirm={onTransform}
                 handleCancel={onCloseCreateTopic}
                 topicData={topicData}
                 setTopicData={setTopicData}
                 checkTopicName={checkTopicName}
                 availablePartitionLimit={availablePartitionLimit}
+                customRetentionSizeValue={customRetentionSizeValue}
+                setCustomRetentionSizeValue={setCustomRetentionSizeValue}
+                customTimeValue={customTimeValue}
+                setCustomTimeValue={setCustomTimeValue}
+                radioTimeSelectValue={radioTimeSelectValue}
+                setRadioTimeSelectValue={setRadioTimeSelectValue}
+                radioSizeSelectValue={radioSizeSelectValue}
+                setRadioSizeSelectValue={setRadioSizeSelectValue}
               />
             }
             {warningModalOpen && (
               <PartitionLimitWarning
                 topicData={topicData}
-                onSave={onSave}
+                onSave={onSaveTopic}
                 isModalOpen={warningModalOpen}
                 setIsModalOpen={setWarningModalOpen}
               />
@@ -172,7 +224,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
             mainAriaLabel={`${title} content`}
             steps={steps}
             onClose={closeWizard}
-            onSave={onSaveTopic}
+            onSave={onTransform}
             data-testid="topicBasicCreate-Wizard"
             footer={
               <WizardCustomFooter

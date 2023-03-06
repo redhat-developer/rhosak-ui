@@ -8,7 +8,7 @@ import { useTopicGate } from "../useTopicGate";
 
 export const TopicDeleteRoute: VoidFunctionComponent<
   DataPlaneTopicNavigationProps
-> = ({ topicHref, instanceTopicsHref }) => {
+> = ({ instanceTopicsHref }) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
 
@@ -17,8 +17,8 @@ export const TopicDeleteRoute: VoidFunctionComponent<
 
   const onCancel = useCallback(() => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-    history.push(topicHref(instance.id, topic.name));
-  }, [history, instance.id, topic.name, topicHref]);
+    history.push(instanceTopicsHref(instance.id));
+  }, [history, instance.id, instanceTopicsHref]);
 
   const onDelete = useCallback(() => {
     if (!instance.adminUrl) {

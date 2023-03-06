@@ -7,3 +7,4 @@ export * from "./StepReplicas";
 export * from "./StepTopicName";
 export * from "./TextWithLabelPopover";
 export * from "./WizardCustomFooter";
+export * from "./PartitionLimitWarning";

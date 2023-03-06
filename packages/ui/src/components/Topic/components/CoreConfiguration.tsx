@@ -15,18 +15,18 @@ import {
   useTranslation,
 } from "@rhoas/app-services-ui-components";
 import type { FunctionComponent } from "react";
-import { useCallback, useState } from "react";
+import { useState } from "react";
+import { useCallback } from "react";
 import type { Topic } from "ui-models/src/models/topic";
-import {
-  RetentionSizeUnits,
-  RetentionTimeUnits,
-} from "../../KafkaTopics/types";
+import type { TopicPartition } from "ui-models/src/models/topic-partition";
 import { CustomRetentionMessage } from "./CustomRetentionMessage";
 import { CustomRetentionSize } from "./CustomRetentionSize";
 import { TextWithLabelPopover } from "./TextWithLabelPopover";
-import {
-  retentionSizeSelectOptions,
-  retentionTimeSelectOptions,
+import type {
+  CustomRetentionSizeSelect,
+  CustomSelect,
+  RadioSelectType,
+  RetentionSizeRadioSelect,
 } from "./types";
 import { useValidateTopic } from "./useValidateTopic";
 
@@ -34,8 +34,6 @@ export type CoreConfigurationProps = {
   isCreate?: boolean;
   topicData: Topic;
   setTopicData: (data: Topic) => void;
-  checkTopicName: (value: string) => Promise<boolean>;
-  //initialPartition: number | undefined;
   invalidText: string;
   setInvalidText: (message: string) => void;
   setTopicValidated: (error: ValidatedOptions) => void;
@@ -43,6 +41,14 @@ export type CoreConfigurationProps = {
   setWarning: (isWarning: boolean) => void;
   warning: boolean;
   availablePartitionLimit: number;
+  customRetentionSizeValue: CustomRetentionSizeSelect;
+  setCustomRetentionSizeValue: (data: CustomRetentionSizeSelect) => void;
+  customTimeValue: CustomSelect;
+  setCustomTimeValue: (data: CustomSelect) => void;
+  radioTimeSelectValue: RadioSelectType;
+  setRadioTimeSelectValue: (value: RadioSelectType) => void;
+  radioSizeSelectValue: RetentionSizeRadioSelect;
+  setRadioSizeSelectValue: (data: RetentionSizeRadioSelect) => void;
 };
 
 const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
@@ -54,18 +60,18 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
   setTopicValidated,
   topicValidated,
   availablePartitionLimit,
+  customTimeValue,
+  setCustomTimeValue,
+  radioTimeSelectValue,
+  setRadioTimeSelectValue,
+  setCustomRetentionSizeValue,
+  customRetentionSizeValue,
+  radioSizeSelectValue,
+  setRadioSizeSelectValue,
 }) => {
   const { t } = useTranslation(["create-topic"]);
+  const [initialPartitions] = useState<TopicPartition[]>(topicData.partitions);
   const { validateName } = useValidateTopic();
-  const [retentionSizeUnit, setRetentionSizeUnit] =
-    useState<RetentionSizeUnits>(RetentionSizeUnits.BYTE);
-  const [retentionTimeUnit, setRetentionTimeUnit] =
-    useState<RetentionTimeUnits>(RetentionTimeUnits.MILLISECOND);
-  const [isRetentionTimeSelectOpen, setIsRetentionTimeSelectOpen] =
-    useState<boolean>();
-  const [isRetentionSizeSelectOpen, setIsRetentionSizeSelectOpen] =
-    useState<boolean>();
-
   const validationCheck = useCallback(
     (value: string) => {
       const errorMessage = validateName(value);
@@ -79,80 +85,79 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
     [setInvalidText, setTopicValidated, validateName]
   );
 
-  const handleRetentionMessageSize = (value: string) => {
-    switch (value) {
-      case RetentionSizeUnits.CUSTOM:
-        setRetentionSizeUnit(RetentionSizeUnits.CUSTOM);
-        break;
-      case RetentionTimeUnits.UNLIMITED:
-        setRetentionSizeUnit(RetentionSizeUnits.UNLIMITED);
+  const handleRetentionMessageTime = (value: RadioSelectType) => {
+    if (value === "unlimited") {
+      setCustomTimeValue({ value: -1, unit: "unlimited" });
+      setRadioTimeSelectValue(value);
+    } else {
+      setCustomTimeValue({ value: 7, unit: "days" });
+      setRadioTimeSelectValue(value);
     }
   };
 
-  const onRetentionTimeToggle = (isOpen: boolean) => {
-    setIsRetentionTimeSelectOpen(isOpen);
-  };
-
-  const onRetentionSizeToggle = (isOpen: boolean) => {
-    setIsRetentionSizeSelectOpen(isOpen);
-  };
-
-  const handleRetentionMessageTime = (value: string) => {
-    switch (value) {
-      case RetentionTimeUnits.CUSTOM:
-        setRetentionTimeUnit(RetentionTimeUnits.CUSTOM);
-        break;
-      case RetentionTimeUnits.UNLIMITED:
-        setRetentionTimeUnit(RetentionTimeUnits.UNLIMITED);
+  const handleRetentionMessageSize = (value: RetentionSizeRadioSelect) => {
+    if (value === "unlimited") {
+      setRadioSizeSelectValue(value);
+      setCustomRetentionSizeValue({ value: -1, unit: "unlimited" });
+    } else {
+      setCustomRetentionSizeValue({ value: 1, unit: "bytes" });
+      setRadioSizeSelectValue(value);
     }
   };
-
   const handleTextInputChange = (value: string) => {
     validationCheck(value);
     setTopicData({ ...topicData, name: value });
   };
 
   const onPartitionsChange: NumberInputProps["onChange"] = (event) => {
-    // setTopicData({
-    //   ...topicData,
-    //   partitions.length: Number((event.target as HTMLInputElement).value),
-    // });
+    const partitions = Number((event.target as HTMLInputElement).value);
+
+    const updatedPartitions = Array(partitions)
+      .fill(null)
+      .map((_, index) => ({ partition: index }));
+    //Donot allow to set a value below original value in case of edit topic
+    setTopicData({
+      ...topicData,
+      partitions: isCreate
+        ? updatedPartitions
+        : updatedPartitions.length > initialPartitions.length
+        ? updatedPartitions
+        : initialPartitions,
+    });
   };
+
   const handleOnPlus = () => {
-    // setTopicData({
-    //   ...topicData,
-    //   partitions.length: topicData.partitions.length + 1,
-    // });
+    const currentPartitions = topicData.partitions;
+    const updatedPartitions = [
+      ...currentPartitions,
+      { partition: currentPartitions.length },
+    ];
+    setTopicData({
+      ...topicData,
+      partitions: updatedPartitions,
+    });
   };
 
   const handleOnMinus = () => {
-    // setTopicData({
-    //   ...topicData,
-    //   partitions.length: topicData.partitions.length - 1,
-    // });
+    const { partitions } = topicData;
+    const newPartitions = partitions.slice(0, partitions.length - 1);
+    setTopicData({
+      ...topicData,
+      partitions: newPartitions,
+    });
   };
 
   const retentionTimeInput = (
     <CustomRetentionMessage
-      toggleId="core-config-retention-dropdowntoggle"
-      name="retention-ms"
-      topicData={topicData}
-      setTopicData={setTopicData}
-      onToggle={onRetentionTimeToggle}
-      isOpen={isRetentionTimeSelectOpen}
-      selectOptions={retentionTimeSelectOptions}
+      customTimeValue={customTimeValue}
+      setCustomTimeValue={setCustomTimeValue}
     />
   );
 
   const retentionSizeInput = (
     <CustomRetentionSize
-      toggleId="core-config-retention-size-dropdowntoggle"
-      name="retention-bytes"
-      topicData={topicData}
-      setTopicData={setTopicData}
-      onToggle={onRetentionSizeToggle}
-      isOpen={isRetentionSizeSelectOpen}
-      selectOptions={retentionSizeSelectOptions}
+      customRetentionSizeValue={customRetentionSizeValue}
+      setCustomRetentionSizeValue={setCustomRetentionSizeValue}
     />
   );
 
@@ -226,21 +231,22 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
           data-testid={t("partitions")}
           onPlus={handleOnPlus}
           onMinus={handleOnMinus}
-          value={topicData.partitions.length}
+          value={
+            topicData.partitions.length == 0 ? "" : topicData.partitions.length
+          }
           plusBtnProps={{ name: "num-partitions" }}
           minusBtnProps={{ name: "num-partitions" }}
-          min={0}
+          min={isCreate ? 1 : initialPartitions.length}
         />
       </FormGroupWithPopover>
 
-      <TextWithLabelPopover
+      {/*<TextWithLabelPopover
         fieldId="replicas"
         btnAriaLabel={t("replicas")}
         fieldLabel={t("replicas")}
-        fieldValue={"3" /* TODO */}
         popoverBody={t("replicas_description")}
         popoverHeader={t("replicas")}
-      />
+      />*/}
       <TextWithLabelPopover
         fieldId="min-insync-replicas"
         btnAriaLabel="topic detail min-in-sync replica"
@@ -258,31 +264,23 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
       >
         <Stack hasGutter>
           <Radio
-            isChecked={
-              retentionTimeUnit === RetentionTimeUnits.DAY ||
-              retentionTimeUnit === RetentionTimeUnits.WEEK ||
-              retentionTimeUnit === RetentionTimeUnits.CUSTOM
-            }
+            isChecked={radioTimeSelectValue === "custom"}
             name="custom-retention-time"
-            onChange={() =>
-              handleRetentionMessageTime(RetentionTimeUnits.CUSTOM)
-            }
+            onChange={() => handleRetentionMessageTime("custom")}
             label={retentionTimeInput}
             className="kafka-ui--radio-label__number-input"
             aria-label="custom duration"
             id="custom-retention-time"
-            value={RetentionTimeUnits.CUSTOM}
+            value={radioTimeSelectValue}
           />
           <Radio
-            isChecked={retentionTimeUnit === RetentionTimeUnits.UNLIMITED}
+            isChecked={radioTimeSelectValue === "unlimited"}
             name="unlimited-retention-time"
-            onChange={() =>
-              handleRetentionMessageTime(RetentionTimeUnits.UNLIMITED)
-            }
+            onChange={() => handleRetentionMessageTime("unlimited")}
             label="Unlimited time"
             aria-label="Unlimited"
             id="unlimited-retention-time"
-            value={RetentionTimeUnits.UNLIMITED}
+            value={radioTimeSelectValue}
           />
         </Stack>
       </FormGroupWithPopover>
@@ -295,27 +293,23 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
       >
         <Stack hasGutter>
           <Radio
-            isChecked={retentionSizeUnit === RetentionSizeUnits.CUSTOM}
+            isChecked={radioSizeSelectValue === "custom"}
             name="custom-retention-size"
-            onChange={() =>
-              handleRetentionMessageSize(RetentionSizeUnits.CUSTOM)
-            }
+            onChange={() => handleRetentionMessageSize("custom")}
             label={retentionSizeInput}
             className="kafka-ui--radio-label__number-input"
             aria-label="custom size"
             id="custom-retention-size"
-            value={RetentionSizeUnits.CUSTOM}
+            value={radioSizeSelectValue}
           />
           <Radio
-            isChecked={retentionSizeUnit === RetentionSizeUnits.UNLIMITED}
+            isChecked={radioSizeSelectValue === "unlimited"}
             name="unlimited-retention-size"
-            onChange={() =>
-              handleRetentionMessageSize(RetentionSizeUnits.UNLIMITED)
-            }
+            onChange={() => handleRetentionMessageSize("unlimited")}
             label="Unlimited size"
             aria-label="Unlimited"
             id="unlimited-retention-size"
-            value={RetentionSizeUnits.UNLIMITED}
+            value={radioSizeSelectValue}
           />
         </Stack>
       </FormGroupWithPopover>

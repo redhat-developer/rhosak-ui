@@ -4,21 +4,22 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import { ControlPlaneRouteRoot } from "../control-plane/routesConsts";
 import { RedirectOnGateError } from "../RedirectOnGateError";
 import {
-  PermissionsRoute,
   ConsumerGroupDeleteRoute,
   ConsumerGroupResetOffsetRoute,
   ConsumerGroupsRoute,
   ConsumerGroupViewPartitionRoute,
   DashboardRoute,
+  PermissionsEditRoute,
+  PermissionsRoute,
+  PermissionsSelectAccountRoute,
   SettingsRoute,
   TopicConsumerGroupDeleteRoute,
   TopicConsumerGroupResetOffsetRoute,
   TopicConsumerGroupsRoute,
   TopicConsumerGroupViewPartitionRoute,
+  TopicCreateRoute,
   TopicDeleteRoute,
   TopicEditPropertiesRoute,
-  PermissionsEditRoute,
-  PermissionsSelectAccountRoute,
   TopicMessagesGroupsRoute,
   TopicPropertiesRoute,
   TopicSchemasRoute,
@@ -33,8 +34,11 @@ const instanceDetailsHref = (id: string) =>
 const instanceTopicsHref = (id: string) =>
   `${ControlPlaneRouteRoot}/${id}/details/topics`;
 
-const topicHref = (id: string, topic: string) =>
+const topicPropertyHref = (id: string, topic: string) =>
   `${instanceDetailsHref(id)}/topics/${topic}/properties`;
+
+const topicHref = (id: string, topic: string) =>
+  `${instanceDetailsHref(id)}/topics/${topic}`;
 
 const updateTopicHref = (id: string, topic: string) =>
   `${topicHref(id, topic)}/edit`;
@@ -133,6 +137,14 @@ export const DataPlaneRoutes: VoidFunctionComponent<DataPlaneRoutesProps> = ({
           <Route path={`${root}/topics`}>
             <RedirectOnGateError redirectUrl={instanceTopicsHref(instanceId)}>
               <Switch>
+                <Route path={`${root}/topics/create-topic`} exact>
+                  <TopicCreateRoute
+                    instancesHref={ControlPlaneRouteRoot}
+                    instanceDetailsHref={instanceDetailsHref}
+                    instanceTopicsHref={instanceTopicsHref}
+                    instanceConsumerGroupsHref={instanceConsumerGroupsHref}
+                  />
+                </Route>
                 <Route path={`${root}/topics/:topicName/consumer-groups`}>
                   <RedirectOnGateError
                     redirectUrl={instanceTopicsHref(instanceId)}
@@ -281,13 +293,32 @@ export const DataPlaneRoutes: VoidFunctionComponent<DataPlaneRoutesProps> = ({
                     instanceDetailsHref={instanceDetailsHref}
                     instanceTopicsHref={instanceTopicsHref}
                     instanceConsumerGroupsHref={instanceConsumerGroupsHref}
-                    topicHref={topicHref}
+                    topicHref={topicPropertyHref}
                     updateTopicHref={updateTopicHref}
                     deleteTopicHref={deleteTopicHref}
                   />
                 </Route>
                 <Route path={`${root}/topics/:topicName/schemas`} exact>
                   <TopicSchemasRoute
+                    instancesHref={ControlPlaneRouteRoot}
+                    instanceDetailsHref={instanceDetailsHref}
+                    instanceTopicsHref={instanceTopicsHref}
+                    instanceConsumerGroupsHref={instanceConsumerGroupsHref}
+                  />
+                </Route>
+                <Route path={`${root}/topics/:topicName/delete`} exact>
+                  <TopicDeleteRoute
+                    instancesHref={ControlPlaneRouteRoot}
+                    instanceDetailsHref={instanceDetailsHref}
+                    instanceTopicsHref={instanceTopicsHref}
+                    instanceConsumerGroupsHref={instanceConsumerGroupsHref}
+                    topicHref={topicHref}
+                    updateTopicHref={updateTopicHref}
+                    deleteTopicHref={deleteTopicHref}
+                  />
+                </Route>
+                <Route path={`${root}/topics/:topicName/edit`} exact>
+                  <TopicEditPropertiesRoute
                     instancesHref={ControlPlaneRouteRoot}
                     instanceDetailsHref={instanceDetailsHref}
                     instanceTopicsHref={instanceTopicsHref}
@@ -315,9 +346,9 @@ export const DataPlaneRoutes: VoidFunctionComponent<DataPlaneRoutesProps> = ({
                   >
                     <ConsumerGroupDeleteRoute
                       instancesHref={ControlPlaneRouteRoot}
-                      instanceTopicsHref={instanceTopicsHref}
                       instanceDetailsHref={instanceDetailsHref}
                       instanceConsumerGroupsHref={instanceConsumerGroupsHref}
+                      instanceTopicsHref={instanceTopicsHref}
                       viewPartitionConsumerGroupHref={
                         viewPartitionConsumerGroupHref
                       }
@@ -328,9 +359,9 @@ export const DataPlaneRoutes: VoidFunctionComponent<DataPlaneRoutesProps> = ({
                   >
                     <ConsumerGroupResetOffsetRoute
                       instancesHref={ControlPlaneRouteRoot}
-                      instanceTopicsHref={instanceTopicsHref}
                       instanceDetailsHref={instanceDetailsHref}
                       instanceConsumerGroupsHref={instanceConsumerGroupsHref}
+                      instanceTopicsHref={instanceTopicsHref}
                       viewPartitionConsumerGroupHref={
                         viewPartitionConsumerGroupHref
                       }
@@ -338,9 +369,9 @@ export const DataPlaneRoutes: VoidFunctionComponent<DataPlaneRoutesProps> = ({
                   </Route>
                   <ConsumerGroupViewPartitionRoute
                     instancesHref={ControlPlaneRouteRoot}
-                    instanceTopicsHref={instanceTopicsHref}
                     instanceDetailsHref={instanceDetailsHref}
                     instanceConsumerGroupsHref={instanceConsumerGroupsHref}
+                    instanceTopicsHref={instanceTopicsHref}
                     viewPartitionConsumerGroupHref={
                       viewPartitionConsumerGroupHref
                     }
@@ -351,9 +382,9 @@ export const DataPlaneRoutes: VoidFunctionComponent<DataPlaneRoutesProps> = ({
                 >
                   <ConsumerGroupResetOffsetRoute
                     instancesHref={ControlPlaneRouteRoot}
-                    instanceTopicsHref={instanceTopicsHref}
                     instanceDetailsHref={instanceDetailsHref}
                     instanceConsumerGroupsHref={instanceConsumerGroupsHref}
+                    instanceTopicsHref={instanceTopicsHref}
                     viewPartitionConsumerGroupHref={
                       viewPartitionConsumerGroupHref
                     }
@@ -362,9 +393,9 @@ export const DataPlaneRoutes: VoidFunctionComponent<DataPlaneRoutesProps> = ({
                 <Route path={`${root}/consumer-groups/:consumerGroupId/delete`}>
                   <ConsumerGroupDeleteRoute
                     instancesHref={ControlPlaneRouteRoot}
-                    instanceTopicsHref={instanceTopicsHref}
                     instanceDetailsHref={instanceDetailsHref}
                     instanceConsumerGroupsHref={instanceConsumerGroupsHref}
+                    instanceTopicsHref={instanceTopicsHref}
                     viewPartitionConsumerGroupHref={
                       viewPartitionConsumerGroupHref
                     }
