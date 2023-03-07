@@ -17,8 +17,10 @@ export const useSSOProvider = () => {
       );
       const providers = await response.json();
       const { token_url } = providers;
-      const ssoProvider: SsoProvider = { tokenEndPointUrl: token_url };
-      return ssoProvider;
+      if (token_url === undefined || token_url === "") {
+        return Promise.reject("Invalid SSO token URL");
+      }
+      return { tokenEndPointUrl: token_url };
     },
   });
   const tokenEndPointUrl = ssoProviders?.tokenEndPointUrl;
