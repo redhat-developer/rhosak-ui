@@ -19,6 +19,8 @@ export const masQueries = {
   userAccounts: (params: Omit<FetchUserAccountsParams, "getUserAccounts">) =>
     [{ ...masQueries._root(), entity: "userAccounts" }, params] as const,
   user: () => [{ ...masQueries._root(), entity: "user" }] as const,
+  tokenEndPointUrl: () =>
+    [{ ...masQueries._root(), entity: "tokenEndPointUrl" }] as const,
 
   quota: {
     _root: () => ({ ...masQueries._root(), entity: "quota" } as const),

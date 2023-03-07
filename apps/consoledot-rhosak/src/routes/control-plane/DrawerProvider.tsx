@@ -1,4 +1,4 @@
-import { useKafka } from "consoledot-api";
+import { useKafka, useSSOProviders } from "consoledot-api";
 import type { FunctionComponent, MutableRefObject } from "react";
 import {
   createContext,
@@ -47,6 +47,18 @@ export const DrawerProvider: FunctionComponent = ({ children }) => {
   const [activeTab, setActiveTab] = useState<KafkaInstanceDrawerTab>("details");
   const onClose = useRef<() => void | undefined>();
 
+  const [tokenEndPointUrl, setTokenEndPointUrl] = useState<string | undefined>(
+    undefined
+  );
+
+  const { data: ssoProviders } = useSSOProviders();
+
+  useEffect(() => {
+    if (ssoProviders) {
+      setTokenEndPointUrl(ssoProviders?.token_url);
+    }
+  }, [ssoProviders]);
+
   const toggleExpanded = useCallback((newValue: boolean | undefined) => {
     setIsExpanded((prev) => {
       const isExpanded = newValue !== undefined ? newValue : !prev;
@@ -84,6 +96,7 @@ export const DrawerProvider: FunctionComponent = ({ children }) => {
         onTabChange={setActiveTab}
         isExpanded={isExpanded}
         onClose={() => toggleExpanded(false)}
+        tokenEndpointUrl={tokenEndPointUrl || ""}
       >
         {children}
       </KafkaInstanceDrawer>
