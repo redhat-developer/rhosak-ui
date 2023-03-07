@@ -1,30 +1,33 @@
 import { useQuery } from "@tanstack/react-query";
-import { useConfig } from "@rhoas/app-services-ui-shared";
 import { masQueries } from "../queryKeys";
+import { useApiConfiguration } from "../ApiProvider";
 
-type SsoProvider = {
-  tokenEndPointUrl: string;
+type SSOProvider = {
+  token_url: string;
 };
 
-export const useSSOProviders = () => {
-  const config = useConfig();
+export const useSSOProvider = (): SSOProvider => {
+  const { basePath } = useApiConfiguration();
 
-  const { data: ssoProviders } = useQuery<SsoProvider[]>({
-    queryKey: masQueries.ssoProviders(),
+  const { data: SSOProvider } = useQuery<SSOProvider>({
+    queryKey: masQueries.tokenEndPointUrl(),
     queryFn: async () => {
       const response = await fetch(
-        `${config.kas.apiBasePath}/api/kafkas_mgmt/v1/sso_providers`
+        `${basePath}/api/kafkas_mgmt/v1/sso_providers`
       );
-      const providers = await response.json();
-      return providers.map(
-        (provider: { token_url: string }): SsoProvider => ({
-          tokenEndPointUrl: provider.token_url,
-        })
-      );
+
+      const providers: SSOProvider = await response.json();
+      const token_url = providers.token_url;
+
+      return { token_url };
     },
   });
 
-  const tokenEndPointUrl = ssoProviders?.[0]?.tokenEndPointUrl;
+  const token_url = SSOProvider?.token_url;
 
-  return { tokenEndPointUrl };
+  if (!token_url) {
+    throw new Error("Token URL is undefined");
+  }
+
+  return { token_url };
 };
