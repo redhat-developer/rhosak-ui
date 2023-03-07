@@ -2,10 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useApiConfiguration } from "../ApiProvider";
 import { masQueries } from "../queryKeys";
 
-// export type SsoProvider = {
-//   tokenEndPointUrl: string;
-// };
-
 export const useSSOProvider = () => {
   const { basePath } = useApiConfiguration();
 
@@ -15,7 +11,8 @@ export const useSSOProvider = () => {
       const response = await fetch(
         `${basePath}/api/kafkas_mgmt/v1/sso_providers`
       );
-      const providers = await response.json();
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const providers: { token_url?: string } = await response.json();
       const { token_url } = providers;
       if (token_url === undefined || token_url === "") {
         return Promise.reject("Invalid SSO token URL");
