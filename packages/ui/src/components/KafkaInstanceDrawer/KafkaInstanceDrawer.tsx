@@ -35,7 +35,7 @@ export type KafkaInstanceDrawerProps = {
   isExpanded: boolean;
   activeTab: KafkaInstanceDrawerTab;
   onTabChange: (tab: KafkaInstanceDrawerTab) => void;
-  tokenEndpointUrl: string;
+  tokenEndpointUrl: string | undefined;
   onClose: () => void;
 };
 

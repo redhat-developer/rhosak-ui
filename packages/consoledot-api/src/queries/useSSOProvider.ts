@@ -9,7 +9,7 @@ export type SsoProvider = {
 export const useSSOProvider = () => {
   const { basePath } = useApiConfiguration();
 
-  const { data: ssoProviders, isLoading } = useQuery<SsoProvider>({
+  const { data: ssoProviders } = useQuery<SsoProvider>({
     queryKey: masQueries.tokenEndPointUrl(),
     queryFn: async () => {
       const response = await fetch(
@@ -22,5 +22,5 @@ export const useSSOProvider = () => {
     },
   });
   const tokenEndPointUrl = ssoProviders?.tokenEndPointUrl;
-  return { tokenEndPointUrl, isLoading };
+  return { tokenEndPointUrl };
 };
