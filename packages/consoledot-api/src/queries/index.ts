@@ -11,3 +11,4 @@ export * from "./useAcls";
 export * from "./useServiceAccounts";
 export * from "./useUser";
 export * from "./useSSOProvider";
+export * from "./useSelfTermsReview";

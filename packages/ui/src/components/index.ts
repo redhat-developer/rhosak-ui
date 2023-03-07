@@ -18,3 +18,4 @@ export * from "./ServiceAccount";
 export * from "./Settings";
 export * from "./Topic";
 export * from "./ChangeKafkaOwner";
+export * from "./TermsAndConditionsDialog";

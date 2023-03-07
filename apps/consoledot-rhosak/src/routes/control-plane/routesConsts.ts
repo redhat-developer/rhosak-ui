@@ -1,10 +1,15 @@
 export const ControlPlaneRouteRoot = "/kafkas" as const;
 const NewInstanceSegment = "create";
-export const ControlPlaneSpecialSegments = [NewInstanceSegment];
+const TermsAndConditionsSegment = "terms-and-conditions";
+export const ControlPlaneSpecialSegments = [
+  NewInstanceSegment,
+  TermsAndConditionsSegment,
+];
 
 export const ControlPlaneRoutePath =
   `${ControlPlaneRouteRoot}/:id?/:section(delete|change-owner)?` as const;
 export const ControlPlaneNewInstancePath = `${ControlPlaneRouteRoot}/${NewInstanceSegment}`;
+export const ControlPlaneTermsAndConditionsPath = `${ControlPlaneRouteRoot}/${TermsAndConditionsSegment}`;
 export const ControlPlaneDeleteInstancePath = `${ControlPlaneRouteRoot}/:id/delete`;
 export const ControlPlaneChangeOwnerPath = `${ControlPlaneRouteRoot}/:id/change-owner`;
 export type ControlPlaneRouteParams = {
