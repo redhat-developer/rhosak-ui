@@ -4,12 +4,12 @@ import { masQueries } from "../queryKeys";
 
 export type SsoProvider = {
   tokenEndPointUrl: string;
-}
+};
 
 export const useSSOProvider = () => {
   const { basePath } = useApiConfiguration();
 
-  const { data: ssoProviders } = useQuery<SsoProvider>({
+  const { data: ssoProviders, isLoading } = useQuery<SsoProvider>({
     queryKey: masQueries.tokenEndPointUrl(),
     queryFn: async () => {
       const response = await fetch(
@@ -22,9 +22,5 @@ export const useSSOProvider = () => {
     },
   });
   const tokenEndPointUrl = ssoProviders?.tokenEndPointUrl;
-
-  if (!tokenEndPointUrl) {
-    throw new Error("Token URL is undefined");
-  }
-  return { tokenEndPointUrl };
+  return { tokenEndPointUrl, isLoading };
 };
