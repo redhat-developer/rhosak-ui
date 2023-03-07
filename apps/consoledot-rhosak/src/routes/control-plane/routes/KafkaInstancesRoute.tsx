@@ -17,6 +17,7 @@ import {
   ControlPlaneNewInstancePath,
   ControlPlaneRouteRoot,
 } from "../routesConsts";
+import { useUserControlGate } from "../../../useUserControlGate";
 
 export type KafkaInstancesRoute = Pick<
   KafkaInstancesProps<Kafka>,
@@ -37,6 +38,8 @@ export const KafkaInstancesRoute: FunctionComponent<KafkaInstancesRoute> = ({
         history.replace(`${ControlPlaneRouteRoot}`);
       }, [history])
     );
+
+  const { userData } = useUserControlGate();
 
   const labels = useKafkaLabels();
 
@@ -174,9 +177,11 @@ export const KafkaInstancesRoute: FunctionComponent<KafkaInstancesRoute> = ({
         }}
         onQuickstartGuide={onQuickstartGuide}
         canHaveInstanceLink={({ status }) => ReadyStatuses.includes(status)}
-        canOpenConnection={({ status }) => ReadyStatuses.includes(status)}
-        canChangeOwner={() => true}
-        canDelete={() => true}
+        canOpenConnection={(row) => userData.canOpenConnection(row)}
+        canChangeOwner={({ owner, status }) =>
+          userData.canChangeOwner(owner, status)
+        }
+        canDelete={({ owner }) => userData.isUserOwnerOrAdmin(owner)}
       />
     </>
   );

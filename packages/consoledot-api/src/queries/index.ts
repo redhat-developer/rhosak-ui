@@ -9,3 +9,4 @@ export * from "./useUserAccounts";
 export * from "./useConsumerGroup";
 export * from "./useAcls";
 export * from "./useServiceAccounts";
+export * from "./useUser";

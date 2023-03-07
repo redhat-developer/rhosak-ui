@@ -18,6 +18,7 @@ export const masQueries = {
     [{ ...masQueries._root(), entity: "organization" }] as const,
   userAccounts: (params: Omit<FetchUserAccountsParams, "getUserAccounts">) =>
     [{ ...masQueries._root(), entity: "userAccounts" }, params] as const,
+  user: () => [{ ...masQueries._root(), entity: "user" }] as const,
 
   quota: {
     _root: () => ({ ...masQueries._root(), entity: "quota" } as const),
@@ -125,7 +126,8 @@ export const kafkaQueries = {
           ...kafkaQueries.instance._root({ id, adminUrl }),
           subentity: "consumerGroup",
         },
-        { consumerGroupId },] as const,
+        { consumerGroupId },
+      ] as const,
     serviceAccounts: (
       params: Omit<FetchServiceAccountsParams, "getServiceAccounts">
     ) =>
