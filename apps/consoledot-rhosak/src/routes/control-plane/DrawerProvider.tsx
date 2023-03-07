@@ -47,7 +47,15 @@ export const DrawerProvider: FunctionComponent = ({ children }) => {
   const [activeTab, setActiveTab] = useState<KafkaInstanceDrawerTab>("details");
   const onClose = useRef<() => void | undefined>();
 
-  const { tokenEndPointUrl } = useSSOProvider();
+  const { tokenEndPointUrl, isLoading } = useSSOProvider();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!tokenEndPointUrl) {
+    throw new Error("Tokenendpoint url is undefined");
+  }
 
   const toggleExpanded = useCallback((newValue: boolean | undefined) => {
     setIsExpanded((prev) => {
