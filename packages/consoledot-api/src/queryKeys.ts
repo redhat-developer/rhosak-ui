@@ -16,6 +16,8 @@ export const masQueries = {
   _root: () => ({ scope: "mas" } as const),
   organization: () =>
     [{ ...masQueries._root(), entity: "organization" }] as const,
+  selfTermsReview: () =>
+    [{ ...masQueries._root(), entity: "selfTermsReview" }] as const,
   userAccounts: (params: Omit<FetchUserAccountsParams, "getUserAccounts">) =>
     [{ ...masQueries._root(), entity: "userAccounts" }, params] as const,
   user: () => [{ ...masQueries._root(), entity: "user" }] as const,
