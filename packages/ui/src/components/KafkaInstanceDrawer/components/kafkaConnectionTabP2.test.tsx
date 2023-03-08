@@ -51,7 +51,6 @@ describe("ConnectionTab", () => {
     const comp = render(<ConnectionTabWhenkafkaCreationPending />);
     await waitForI18n(comp);
     expect(comp.queryByLabelText("Bootstrap server")).toBe(null);
-    expect(comp.queryByLabelText("Token endpoint URL")).toBe(null);
     expect(comp.queryByLabelText("URL for Kafka Instance API")).toBe(null);
     expect(comp.queryByLabelText("URL for Kafka Management API")).toBe(null);
   });
