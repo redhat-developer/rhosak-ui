@@ -32,7 +32,6 @@ ConnectionTab.args = {
 export const ConnectionTabWhenkafkaCreationPending = Template.bind({});
 ConnectionTabWhenkafkaCreationPending.args = {
   isKafkaPending: true,
-  tokenEndPointUrl: undefined,
 };
 
 ConnectionTabWhenkafkaCreationPending.storyName =

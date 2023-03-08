@@ -4,6 +4,7 @@ import {
   Text,
   ToggleGroup,
   ToggleGroupItem,
+  Skeleton,
 } from "@patternfly/react-core";
 import { Trans, useTranslation } from "react-i18next";
 import type { VoidFunctionComponent } from "react";
@@ -43,7 +44,7 @@ export type ClientType = "java" | "python" | "quarkus" | "springboot";
 
 export type KafkaSampleCodeProps = {
   kafkaBootstrapUrl: string;
-  tokenEndpointUrl: string;
+  tokenEndpointUrl: string | undefined;
 };
 
 export const KafkaSampleCode: VoidFunctionComponent<KafkaSampleCodeProps> = ({
@@ -112,7 +113,7 @@ export const KafkaSampleCode: VoidFunctionComponent<KafkaSampleCodeProps> = ({
         {(() => {
           switch (clientSelect) {
             case "java":
-              return (
+              return tokenEndpointUrl ? (
                 <SampleCodeSnippet
                   codeBlockCode={javaConfigCodeBlock(
                     kafkaBootstrapUrl,
@@ -121,11 +122,13 @@ export const KafkaSampleCode: VoidFunctionComponent<KafkaSampleCodeProps> = ({
                   expandableCode={javaConfigExpandabledBlock}
                   codeSnippet={clientSelect}
                 />
+              ) : (
+                <Skeleton fontSize="4xl" />
               );
             case "python":
               return (
                 <SampleCodeSnippet
-                  codeBlockCode={pythonConfigCodeBlock(tokenEndpointUrl)}
+                  codeBlockCode={pythonConfigCodeBlock(tokenEndpointUrl || "")}
                   expandableCode={pythonConfigExpandabledBlock(
                     kafkaBootstrapUrl
                   )}
@@ -133,7 +136,7 @@ export const KafkaSampleCode: VoidFunctionComponent<KafkaSampleCodeProps> = ({
                 />
               );
             case "quarkus":
-              return (
+              return tokenEndpointUrl ? (
                 <SampleCodeSnippet
                   codeBlockCode={quarkusConfigCodeBlock}
                   expandableCode={quarkusConfigExpandableBlock(
@@ -142,9 +145,11 @@ export const KafkaSampleCode: VoidFunctionComponent<KafkaSampleCodeProps> = ({
                   )}
                   codeSnippet={clientSelect}
                 />
+              ) : (
+                <Skeleton fontSize="4xl" />
               );
             case "springboot":
-              return (
+              return tokenEndpointUrl ? (
                 <SampleCodeSnippet
                   codeBlockCode={springBootConfigCodeBlock(
                     kafkaBootstrapUrl,
@@ -153,6 +158,8 @@ export const KafkaSampleCode: VoidFunctionComponent<KafkaSampleCodeProps> = ({
                   expandableCode={springBootConfigExpandableBlock}
                   codeSnippet={clientSelect}
                 />
+              ) : (
+                <Skeleton fontSize="4xl" />
               );
             default:
               return null;
@@ -269,10 +276,11 @@ export const KafkaSampleCode: VoidFunctionComponent<KafkaSampleCodeProps> = ({
                 }}
               />
             </Text>
-            {clientSelect === "quarkus" ? null :
+            {clientSelect === "quarkus" ? null : (
               <Text component={TextVariants.small}>
                 {t("sample_code.bracket_text")}
-              </Text>}
+              </Text>
+            )}
             {(() => {
               switch (clientSelect) {
                 case "java":
