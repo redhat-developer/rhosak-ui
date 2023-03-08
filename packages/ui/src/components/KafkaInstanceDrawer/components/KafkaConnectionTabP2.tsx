@@ -287,7 +287,7 @@ export const KafkaConnectionTabP2: FunctionComponent<
           {t("connection-tab:sasl_oauthbearer_description")}
         </Text>
         <strong>{t("connection-tab:token_endpoint_url")}</strong>
-        {isKafkaPending && tokenEndPointUrl ? (
+        {isKafkaPending || tokenEndPointUrl === undefined ? (
           <Skeleton fontSize="2xl" />
         ) : (
           <ClipboardCopy
