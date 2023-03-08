@@ -32,7 +32,9 @@ ConnectionTab.args = {
 export const ConnectionTabWhenkafkaCreationPending = Template.bind({});
 ConnectionTabWhenkafkaCreationPending.args = {
   isKafkaPending: true,
+  tokenEndPointUrl: undefined,
 };
+
 ConnectionTabWhenkafkaCreationPending.storyName =
   "Connection tab when Kafka Creation pending";
 ConnectionTabWhenkafkaCreationPending.parameters = {
@@ -50,5 +52,12 @@ export const ConnectionTabWhenKafkaInstanceSuspended = Template.bind({});
 ConnectionTabWhenKafkaInstanceSuspended.args = {
   isKafkaSuspended: true,
   isKafkaPending: false,
+  adminAPIUrl: "https://admin-server-[name of instance]-[domain]/openapi",
+};
+
+export const ConnectionTabWhenTokenUrlIsUndefined = Template.bind({});
+ConnectionTabWhenTokenUrlIsUndefined.args = {
+  isKafkaPending: false,
+  tokenEndPointUrl: undefined,
   adminAPIUrl: "https://admin-server-[name of instance]-[domain]/openapi",
 };

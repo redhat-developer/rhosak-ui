@@ -2,8 +2,11 @@ import { composeStories } from "@storybook/testing-react";
 import { render, waitForI18n } from "../../../test-utils";
 import * as stories from "./KafkaConnectionTabP2.stories";
 
-const { ConnectionTab, ConnectionTabWhenkafkaCreationPending } =
-  composeStories(stories);
+const {
+  ConnectionTab,
+  ConnectionTabWhenkafkaCreationPending,
+  ConnectionTabWhenTokenUrlIsUndefined,
+} = composeStories(stories);
 
 describe("ConnectionTab", () => {
   it("renders", async () => {
@@ -51,5 +54,11 @@ describe("ConnectionTab", () => {
     expect(comp.queryByLabelText("Token endpoint URL")).toBe(null);
     expect(comp.queryByLabelText("URL for Kafka Instance API")).toBe(null);
     expect(comp.queryByLabelText("URL for Kafka Management API")).toBe(null);
+  });
+
+  it("Token endpoint URL should show skeleton when the token endpoint url is undefined", async () => {
+    const comp = render(<ConnectionTabWhenTokenUrlIsUndefined />);
+    await waitForI18n(comp);
+    expect(comp.queryByLabelText("Token endpoint URL")).toBe(null);
   });
 });
