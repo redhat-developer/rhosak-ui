@@ -8,12 +8,17 @@ export async function fetchSelfTermsReview(
     site_code: "ocm",
   });
   const { terms_required, terms_available, redirect_url } = response.data;
-  if (redirect_url === undefined) {
+  const areTermsAccepted =
+    terms_required === false && terms_available === false;
+  if (areTermsAccepted === false && redirect_url === undefined) {
     throw new Error("Invalid Terms and Conditions ");
   }
   return {
-    areTermsAccepted: terms_required === false && terms_available === false,
+    areTermsAccepted,
     termsUrl: (createHref: string, cancelHref: string) => {
+      if (redirect_url === undefined) {
+        throw new Error("Invalid Terms and Conditions ");
+      }
       const url = new URL(redirect_url);
       url.searchParams.set("redirect", createHref);
       url.searchParams.set("cancelRedirect", cancelHref);
