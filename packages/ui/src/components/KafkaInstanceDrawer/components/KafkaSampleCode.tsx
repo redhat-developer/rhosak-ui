@@ -126,14 +126,16 @@ export const KafkaSampleCode: VoidFunctionComponent<KafkaSampleCodeProps> = ({
                 <Skeleton fontSize="4xl" />
               );
             case "python":
-              return (
+              return tokenEndpointUrl ? (
                 <SampleCodeSnippet
-                  codeBlockCode={pythonConfigCodeBlock(tokenEndpointUrl || "")}
+                  codeBlockCode={pythonConfigCodeBlock(tokenEndpointUrl)}
                   expandableCode={pythonConfigExpandabledBlock(
                     kafkaBootstrapUrl
                   )}
                   codeSnippet={clientSelect}
                 />
+              ) : (
+                <Skeleton fontSize="4xl" />
               );
             case "quarkus":
               return tokenEndpointUrl ? (
