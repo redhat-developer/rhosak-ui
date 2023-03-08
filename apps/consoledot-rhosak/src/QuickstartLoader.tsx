@@ -2,7 +2,6 @@
 // @ts-nocheck
 import { useChrome } from "@redhat-cloud-services/frontend-components/useChrome";
 import { AssetsContext } from "@rhoas/app-services-ui-shared";
-import type { ScalprumComponentProps } from "@scalprum/react-core";
 import { ScalprumComponent } from "@scalprum/react-core";
 import type { VoidFunctionComponent } from "react";
 import { useState } from "react";
@@ -27,10 +26,10 @@ export const QuickstartLoader: VoidFunctionComponent = () => {
     }
   };
 
-  const processor = (([_, m]: [string, { entry: string[] }]) =>
-    m.entry.map(
-      (e) => `${basePath}${e}`
-    )) as unknown as ScalprumComponentProps["processor"];
+  const processor = (item) => {
+    const fixPath = (e) => `${basePath}${e}`;
+    return item.guides.entry.map(fixPath);
+  };
 
   return (
     <ErrorBoundary fallbackRender={() => null}>

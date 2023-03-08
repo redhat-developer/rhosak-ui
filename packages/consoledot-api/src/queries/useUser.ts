@@ -1,19 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { masQueries } from "../queryKeys";
-import { useChrome } from "@redhat-cloud-services/frontend-components/useChrome";
 import type { KafkaInstanceEnhanced } from "consoledot-api/src/transformers/kafkaRequestToKafkaInstanceEnhanched";
 import { ReadyStatuses, SuspendedStatuses } from "ui-models/src/models/kafka";
 import type { Status } from "ui-models/src/models/kafka";
 
-export function useUser(suspense = false) {
-  const { auth } = useChrome();
+export function useUser({getUser, suspense}:{getUser:() => Promise<{username: string | undefined, isOrgAdmin:boolean | undefined}>, suspense: boolean}) {
 
   return useQuery({
     queryKey: masQueries.user(),
     queryFn: async () => {
-      const user = await auth.getUser();
-      const username = user?.identity?.user?.username;
-      const isOrgAdmin = user?.identity?.user?.is_org_admin;
+      const { username, isOrgAdmin } = await getUser();
 
       if (username === undefined) {
         return Promise.reject("Invalid username");

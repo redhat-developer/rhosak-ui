@@ -30,15 +30,12 @@ module.exports = {
     },
   },
   moduleFederation: {
+    exclude: ["react-router-dom"],
     shared: [
       {
         "react-router-dom": {
           singleton: false,
           requiredVersion: "5.3.4",
-        },
-        history: {
-          singleton: false,
-          requiredVersion: "4.10.1",
         },
         "@rhoas/app-services-ui-shared": {
           singleton: true,
