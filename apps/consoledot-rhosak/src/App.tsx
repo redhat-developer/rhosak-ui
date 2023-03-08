@@ -3,6 +3,7 @@ import { notificationsReducer } from "@redhat-cloud-services/frontend-components
 import { getRegistry } from "@redhat-cloud-services/frontend-components-utilities/Registry";
 import { useChrome } from "@redhat-cloud-services/frontend-components/useChrome";
 import { useTranslation } from "@rhoas/app-services-ui-components";
+import { useSelfTermsReview } from "consoledot-api";
 import { memo, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import type { Reducer } from "redux";
@@ -15,6 +16,9 @@ const App = memo(() => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
   const { updateDocumentTitle, on } = useChrome();
+
+  // prefetch the T&C acceptance
+  useSelfTermsReview();
 
   const { t } = useTranslation();
   const title = t("kafka:rhosakTitle");

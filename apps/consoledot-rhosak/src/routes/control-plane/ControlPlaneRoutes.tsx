@@ -1,4 +1,5 @@
 import type { VoidFunctionComponent } from "react";
+import { Suspense } from "react";
 import { Route } from "react-router-dom";
 import { RedirectOnGateError } from "../RedirectOnGateError";
 import {
@@ -27,9 +28,11 @@ export const ControlPlaneRoutes: VoidFunctionComponent = () => {
         />
       </Route>
       <RedirectOnGateError redirectUrl={ControlPlaneTermsAndConditionsPath}>
-        <Route path={ControlPlaneNewInstancePath}>
-          <CreateKafkaInstanceRoute instancesHref={ControlPlaneRouteRoot} />
-        </Route>
+        <Suspense fallback={null}>
+          <Route path={ControlPlaneNewInstancePath}>
+            <CreateKafkaInstanceRoute instancesHref={ControlPlaneRouteRoot} />
+          </Route>
+        </Suspense>
       </RedirectOnGateError>
       <RedirectOnGateError redirectUrl={ControlPlaneRouteRoot}>
         <Route path={ControlPlaneDeleteInstancePath}>
