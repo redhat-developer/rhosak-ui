@@ -114,17 +114,17 @@ exports[`ConnectionTab renders 1`] = `
            page.
         </small>
       </div>
-      <button
+      <a
         aria-disabled="false"
         class="pf-c-button pf-m-secondary"
         data-ouia-component-id="OUIA-Generated-Button-secondary-1"
         data-ouia-component-type="PF4/Button"
         data-ouia-safe="true"
         data-testid="drawerStreams-buttonCreateServiceAccount"
-        type="button"
+        href="/application-services/service-account"
       >
         Create service account
-      </button>
+      </a>
       <div
         class="pf-c-content pf-u-pt-sm"
       >

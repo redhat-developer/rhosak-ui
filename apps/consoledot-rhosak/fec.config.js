@@ -18,7 +18,7 @@ module.exports = {
     }),
   ],
   _unstableHotReload: process.env.HOT === "true",
-  sassPrefix: ".rhosakUi",
+  sassPrefix: ".rhosak",
   // localChrome:
   //   "/Users/riccardoforina/Code/bf2fc6cc711aee1a0c2a/insights-chrome/build",
   routes: {
