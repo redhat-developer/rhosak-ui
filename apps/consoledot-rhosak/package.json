@@ -18,7 +18,7 @@
     "verify": "npm-run-all build lint test"
   },
   "dependencies": {
-    "@patternfly/quickstarts": "2.3.2",
+    "@patternfly/quickstarts": "2.3.3",
     "@redhat-cloud-services/frontend-components": "3.9.29",
     "@redhat-cloud-services/frontend-components-notifications": "3.2.12",
     "@redhat-cloud-services/frontend-components-utilities": "3.3.12",
