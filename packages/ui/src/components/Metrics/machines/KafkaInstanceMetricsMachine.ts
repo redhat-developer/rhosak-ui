@@ -1,6 +1,10 @@
 import { assign, createMachine } from "xstate";
 import type {
+  BrokerBytesMetric,
+  BrokerFilter,
   GetKafkaInstanceMetricsResponse,
+  PartitionBytesMetric,
+  PartitionSelect,
   TimeSeriesMetrics,
 } from "../types";
 import { DurationOptions } from "../types";
@@ -37,11 +41,16 @@ export type KafkaInstanceMetricsMachineContext = {
 
   // from the UI elements
   duration: DurationOptions;
+  selectedBroker: string | undefined;
+  selectedToggle: BrokerFilter;
+  selectedPartition: PartitionSelect;
 
   // from the api
-  usedDiskSpaceMetrics: TimeSeriesMetrics;
+  brokers: string[];
+  usedDiskSpaceMetrics: BrokerBytesMetric;
   clientConnectionsMetrics: TimeSeriesMetrics;
   connectionAttemptRateMetrics: TimeSeriesMetrics;
+  bytesPerPartitionMetrics: PartitionBytesMetric;
   diskSpaceLimit: number | undefined;
   connectionsLimit: number | undefined;
   connectionRateLimit: number | undefined;
@@ -51,7 +60,6 @@ export type KafkaInstanceMetricsMachineContext = {
 
 export const KafkaInstanceMetricsMachine = createMachine(
   {
-    predictableActionArguments: true,
     tsTypes: {} as import("./KafkaInstanceMetricsMachine.typegen").Typegen0,
     schema: {
       context: {} as KafkaInstanceMetricsMachineContext,
@@ -62,19 +70,27 @@ export const KafkaInstanceMetricsMachine = createMachine(
         | { type: "refresh" }
         // from the UI elements
         | { type: "selectTopic"; topic: string | undefined }
-        | { type: "selectDuration"; duration: DurationOptions },
+        | { type: "selectDuration"; duration: DurationOptions }
+        | { type: "selectBroker"; broker: string | undefined }
+        | { type: "selectToggle"; value: BrokerFilter }
+        | { type: "selectPartition"; value: PartitionSelect },
     },
     id: "kafkaInstanceMetrics",
     context: {
       lastUpdated: undefined,
+      selectedBroker: undefined,
       duration: DurationOptions.Last1hour,
       usedDiskSpaceMetrics: {},
+      bytesPerPartitionMetrics: {},
       clientConnectionsMetrics: {},
       connectionAttemptRateMetrics: {},
       diskSpaceLimit: undefined,
       connectionsLimit: undefined,
       connectionRateLimit: undefined,
       fetchFailures: 0,
+      brokers: [],
+      selectedToggle: "total",
+      selectedPartition: "Top10",
     },
     initial: "initialLoading",
     states: {
@@ -131,6 +147,17 @@ export const KafkaInstanceMetricsMachine = createMachine(
             actions: "setDuration",
             target: "callApi",
           },
+          selectBroker: {
+            actions: "setBroker",
+            target: "callApi",
+          },
+          selectToggle: {
+            actions: "setToggle",
+            target: "callApi",
+          },
+          selectPartition: {
+            actions: "setPartition",
+          },
         },
       },
       refreshing: {
@@ -162,14 +189,18 @@ export const KafkaInstanceMetricsMachine = createMachine(
       setMetrics: assign((_, event) => {
         const {
           usedDiskSpaceMetrics,
+          bytesPerPartitionMetrics,
           clientConnectionsMetrics,
           connectionAttemptRateMetrics,
           diskSpaceLimit,
           connectionsLimit,
           connectionRateLimit,
+          brokers,
         } = event;
         return {
+          brokers,
           usedDiskSpaceMetrics,
+          bytesPerPartitionMetrics,
           clientConnectionsMetrics,
           connectionAttemptRateMetrics,
           diskSpaceLimit: diskSpaceLimit * 1024 ** 3, // convert it to GiB
@@ -187,9 +218,15 @@ export const KafkaInstanceMetricsMachine = createMachine(
       setDuration: assign((_context, event) => ({
         duration: event.duration,
         usedDiskSpaceMetrics: {},
+        bytesPerPartitionMetrics: {},
         clientConnectionsMetrics: {},
         connectionAttemptRateMetrics: {},
       })),
+      setBroker: assign({
+        selectedBroker: (_context, event) => event.broker,
+      }),
+      setToggle: assign((_, { value }) => ({ selectedToggle: value })),
+      setPartition: assign((_, { value }) => ({ selectedPartition: value })),
     },
     guards: {
       canRetryFetching: (context) => context.fetchFailures < MAX_RETRIES,
@@ -198,7 +235,8 @@ export const KafkaInstanceMetricsMachine = createMachine(
           return (
             Object.keys(event.clientConnectionsMetrics).length > 0 ||
             Object.keys(event.connectionAttemptRateMetrics).length > 0 ||
-            Object.keys(event.usedDiskSpaceMetrics).length > 0
+            Object.keys(event.usedDiskSpaceMetrics).length > 0 ||
+            Object.keys(event.bytesPerPartitionMetrics).length > 0
           );
         }
         return false;

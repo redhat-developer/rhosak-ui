@@ -35,13 +35,21 @@ export type KafkaInstanceDrawerProps = {
   isExpanded: boolean;
   activeTab: KafkaInstanceDrawerTab;
   onTabChange: (tab: KafkaInstanceDrawerTab) => void;
-
+  tokenEndpointUrl: string | undefined;
   onClose: () => void;
 };
 
 export const KafkaInstanceDrawer: FunctionComponent<
   KafkaInstanceDrawerProps
-> = ({ instance, activeTab, isExpanded, onTabChange, onClose, children }) => {
+> = ({
+  instance,
+  activeTab,
+  isExpanded,
+  onTabChange,
+  onClose,
+  children,
+  tokenEndpointUrl,
+}) => {
   const content = useMemo(() => {
     return (
       <DrawerPanelContent>
@@ -51,11 +59,12 @@ export const KafkaInstanceDrawer: FunctionComponent<
             activeTab={activeTab}
             onTabChange={onTabChange}
             onClose={onClose}
+            tokenEndpointUrl={tokenEndpointUrl}
           />
         ) : null}
       </DrawerPanelContent>
     );
-  }, [activeTab, instance, onClose, onTabChange]);
+  }, [activeTab, instance, onClose, onTabChange, tokenEndpointUrl]);
   return (
     <Drawer isExpanded={isExpanded} isInline={true}>
       <DrawerContent panelContent={content}>
@@ -75,7 +84,7 @@ export const KafkaInstanceDrawerPanel: VoidFunctionComponent<
   Required<Omit<KafkaInstanceDrawerProps, "isExpanded">> & {
     activeTab: KafkaInstanceDrawerTab;
   }
-> = ({ instance, activeTab, onTabChange, onClose }) => {
+> = ({ instance, activeTab, onTabChange, onClose, tokenEndpointUrl }) => {
   const { t } = useTranslation(["kafka"]);
   const labels = useKafkaLabels();
 
@@ -155,7 +164,7 @@ export const KafkaInstanceDrawerPanel: VoidFunctionComponent<
               <KafkaConnectionTabP2
                 isKafkaPending={isKafkaPending}
                 externalServer={getExternalServer(instance.bootstrapUrl)}
-                tokenEndPointUrl={"TODO"}
+                tokenEndPointUrl={tokenEndpointUrl}
                 linkToServiceAccount={"service-accounts"}
                 linkToAccessTab={`TODO/acls`}
                 adminAPIUrl={getAdminServerUrl(instance.adminUrl)}
@@ -175,7 +184,7 @@ export const KafkaInstanceDrawerPanel: VoidFunctionComponent<
             <div className={"pf-u-pt-md pf-u-pb-md"}>
               <KafkaSampleCode
                 kafkaBootstrapUrl={getExternalServer(instance.bootstrapUrl)!}
-                tokenEndpointUrl={"TODO"}
+                tokenEndpointUrl={tokenEndpointUrl}
               />
             </div>
           </Tab>

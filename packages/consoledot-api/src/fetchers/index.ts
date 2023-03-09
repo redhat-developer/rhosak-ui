@@ -17,3 +17,4 @@ export * from "./fetchTopicsMetrics";
 export * from "./fetchUserAccounts";
 export * from "./fetchPermissions";
 export * from "./fetchServiceAccounts";
+export * from "./fetchSelfTermsReview";

@@ -18,10 +18,10 @@
     "verify": "npm-run-all build lint test"
   },
   "dependencies": {
-    "@patternfly/quickstarts": "2.3.2",
-    "@redhat-cloud-services/frontend-components": "3.9.29",
+    "@patternfly/quickstarts": "2.3.3",
+    "@redhat-cloud-services/frontend-components": "3.9.32",
     "@redhat-cloud-services/frontend-components-notifications": "3.2.12",
-    "@redhat-cloud-services/frontend-components-utilities": "3.3.12",
+    "@redhat-cloud-services/frontend-components-utilities": "3.3.13",
     "@rhoas/app-services-ui-shared": "0.16.6",
     "@rhoas/registry-management-sdk": "0.53.0",
     "consoledot-api": "*",

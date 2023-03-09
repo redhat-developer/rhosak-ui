@@ -1,5 +1,5 @@
-import { useTranslation } from "@rhoas/app-services-ui-components";
 import type { VoidFunctionComponent } from "react";
+import { useTranslation } from "react-i18next";
 import {
   CardKafkaInstanceMetrics,
   CardTopicsMetrics,
@@ -8,8 +8,6 @@ import {
   MetricsLayout,
 } from "./components";
 import { CardKpi } from "./components/CardKpi";
-import { MetricsLagAlert } from "./components/MetricsLagAlert";
-import { PartitionCard } from "./components/PartitionCard";
 import type { KafkaInstanceMetricsProviderProps } from "./KafkaInstanceMetricsProvider";
 import { KafkaInstanceMetricsProvider } from "./KafkaInstanceMetricsProvider";
 import type { MetricsKpiProviderProps } from "./MetricsKpiProvider";
@@ -19,6 +17,8 @@ import { TopicsMetricsProvider } from "./TopicsMetricsProvider";
 import { useKafkaInstanceMetrics } from "./useKafkaInstanceMetrics";
 import { useMetricsKpi } from "./useMetricsKpi";
 import { useTopicsMetrics } from "./useTopicsMetrics";
+import { PartitionCard } from "./components/PartitionCard";
+import { MetricsLagAlert } from "./components/MetricsLagAlert";
 
 export type MetricsProps = {
   onCreateTopic: () => void;
@@ -135,6 +135,14 @@ const ConnectedKafkaInstanceMetrics: VoidFunctionComponent = () => {
     connectionRateLimit,
     onDurationChange,
     onRefresh,
+    brokers,
+    onBrokerChange,
+    selectedBroker,
+    selectedToggle,
+    onSelectToggle,
+    bytesPerPartitionMetrics,
+    selectedPartition,
+    onSelectPartition,
   } = useKafkaInstanceMetrics();
 
   return (
@@ -154,6 +162,14 @@ const ConnectedKafkaInstanceMetrics: VoidFunctionComponent = () => {
       diskSpaceLimit={diskSpaceLimit || 0}
       connectionsLimit={connectionsLimit || 0}
       connectionRateLimit={connectionRateLimit || 0}
+      brokers={brokers}
+      selectedBroker={selectedBroker}
+      onSelectedBroker={onBrokerChange}
+      selectToggle={selectedToggle}
+      onSelectedToggle={onSelectToggle}
+      bytesPerPartitions={bytesPerPartitionMetrics}
+      onSelectedPartition={onSelectPartition}
+      selectedPartition={selectedPartition}
     />
   );
 };
@@ -178,9 +194,11 @@ const ConnectedTopicsMetrics: VoidFunctionComponent<
     bytesOutgoing,
     bytesPerPartition,
     incomingMessageRate,
+    selectedPartition,
     onDurationChange,
     onTopicChange,
     onRefresh,
+    onSelectPartition,
   } = useTopicsMetrics();
 
   return (
@@ -202,6 +220,8 @@ const ConnectedTopicsMetrics: VoidFunctionComponent<
       onSelectedTopic={onTopicChange}
       onDurationChange={onDurationChange}
       onCreateTopic={onCreateTopic}
+      onSelectedPartition={onSelectPartition}
+      selectedPartition={selectedPartition}
     />
   );
 };
