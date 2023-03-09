@@ -1,10 +1,12 @@
 import type { VoidFunctionComponent } from "react";
+import { Suspense } from "react";
 import { Route } from "react-router-dom";
 import { RedirectOnGateError } from "../RedirectOnGateError";
 import {
   CreateKafkaInstanceRoute,
   DeleteKafkaInstanceRoute,
   KafkaInstancesRoute,
+  TermsAndConditionsRoute,
 } from "./routes";
 import { ChangeOwnerRoute } from "./routes/ChangeOwnerRoute";
 import {
@@ -13,14 +15,25 @@ import {
   ControlPlaneNewInstancePath,
   ControlPlaneRoutePath,
   ControlPlaneRouteRoot,
+  ControlPlaneTermsAndConditionsPath,
 } from "./routesConsts";
 
 export const ControlPlaneRoutes: VoidFunctionComponent = () => {
   return (
     <Route path={ControlPlaneRoutePath} exact>
-      <Route path={ControlPlaneNewInstancePath}>
-        <CreateKafkaInstanceRoute instancesHref={ControlPlaneRouteRoot} />
+      <Route path={ControlPlaneTermsAndConditionsPath}>
+        <TermsAndConditionsRoute
+          createHref={ControlPlaneNewInstancePath}
+          cancelHref={ControlPlaneRouteRoot}
+        />
       </Route>
+      <RedirectOnGateError redirectUrl={ControlPlaneTermsAndConditionsPath}>
+        <Suspense fallback={null}>
+          <Route path={ControlPlaneNewInstancePath}>
+            <CreateKafkaInstanceRoute instancesHref={ControlPlaneRouteRoot} />
+          </Route>
+        </Suspense>
+      </RedirectOnGateError>
       <RedirectOnGateError redirectUrl={ControlPlaneRouteRoot}>
         <Route path={ControlPlaneDeleteInstancePath}>
           <DeleteKafkaInstanceRoute instancesHref={ControlPlaneRouteRoot} />

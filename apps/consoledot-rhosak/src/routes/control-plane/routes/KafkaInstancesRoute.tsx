@@ -3,6 +3,7 @@ import type { FunctionComponent } from "react";
 import type { ControlPlaneHeaderProps, KafkaInstancesProps } from "ui";
 import { KafkaInstances } from "ui";
 import { ReadyStatuses } from "ui-models/src/models/kafka";
+import { useUserControlGate } from "../../../useUserControlGate";
 import { ConnectedControlPlaneHeader } from "./ConnectedControlPlaneHeader";
 import { useKafkaInstancesTable } from "./useKafkaInstancesTable";
 
@@ -49,7 +50,7 @@ export const KafkaInstancesRoute: FunctionComponent<KafkaInstancesRoute> = ({
     instanceCreationHref,
     instanceChangeOwnerHref,
   });
-
+  const { userData } = useUserControlGate();
   const { data } = useKafkas({
     page,
     perPage,
@@ -103,9 +104,11 @@ export const KafkaInstancesRoute: FunctionComponent<KafkaInstancesRoute> = ({
         }}
         onQuickstartGuide={onQuickstartGuide}
         canHaveInstanceLink={({ status }) => ReadyStatuses.includes(status)}
-        canOpenConnection={({ status }) => ReadyStatuses.includes(status)}
-        canChangeOwner={() => true}
-        canDelete={() => true}
+        canOpenConnection={(row) => userData.canOpenConnection(row.status)}
+        canChangeOwner={({ owner, status }) =>
+          userData.canChangeOwner(owner, status)
+        }
+        canDelete={({ owner }) => userData.isUserOwnerOrAdmin(owner)}
       />
     </>
   );

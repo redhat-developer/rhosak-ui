@@ -2,6 +2,7 @@ import { assign, createMachine } from "xstate";
 import type {
   GetTopicsMetricsResponse,
   PartitionBytesMetric,
+  PartitionSelect,
   TimeSeriesMetrics,
 } from "../types";
 import { DurationOptions } from "../types";
@@ -39,7 +40,7 @@ export type TopicsMetricsMachineContext = {
   // from the UI elements
   selectedTopic: string | undefined;
   duration: DurationOptions;
-
+  selectedPartition: PartitionSelect;
   // from the api
   kafkaTopics: string[];
   metricsTopics: string[];
@@ -55,7 +56,6 @@ export type TopicsMetricsMachineContext = {
 export const TopicsMetricsMachine = createMachine(
   {
     tsTypes: {} as import("./TopicsMetricsMachine.typegen").Typegen0,
-    predictableActionArguments: true,
     schema: {
       context: {} as TopicsMetricsMachineContext,
       events: {} as  // called when a new kafka id has been specified
@@ -67,7 +67,8 @@ export const TopicsMetricsMachine = createMachine(
 
         // from the UI elements
         | { type: "selectTopic"; topic: string | undefined }
-        | { type: "selectDuration"; duration: DurationOptions },
+        | { type: "selectDuration"; duration: DurationOptions }
+        | { type: "selectPartition"; value: PartitionSelect },
     },
     id: "topicsMetrics",
     context: {
@@ -76,6 +77,7 @@ export const TopicsMetricsMachine = createMachine(
       // from the UI elements
       selectedTopic: undefined,
       duration: DurationOptions.Last1hour,
+      selectedPartition: "Top10",
 
       // from the api
       kafkaTopics: [],
@@ -168,6 +170,9 @@ export const TopicsMetricsMachine = createMachine(
             actions: "setDuration",
             target: "callApi",
           },
+          selectPartition: {
+            actions: "setPartition",
+          },
         },
       },
     },
@@ -209,6 +214,7 @@ export const TopicsMetricsMachine = createMachine(
       setDuration: assign({
         duration: (_, event) => event.duration,
       }),
+      setPartition: assign((_, { value }) => ({ selectedPartition: value })),
     },
     guards: {
       canRetryFetching: (context) => context.fetchFailures < MAX_RETRIES,

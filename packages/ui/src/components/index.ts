@@ -1,4 +1,3 @@
-export * from "./ChangeKafkaOwner";
 export * from "./ConsumerGroups";
 export * from "./ControlPlaneHeader";
 export * from "./CreateKafkaInstance";
@@ -19,3 +18,5 @@ export * from "./Metrics";
 export * from "./ServiceAccount";
 export * from "./Settings";
 export * from "./Topic";
+export * from "./ChangeKafkaOwner";
+export * from "./TermsAndConditionsDialog";

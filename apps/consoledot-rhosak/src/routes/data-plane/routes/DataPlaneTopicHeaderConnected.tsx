@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import type { DataPlaneTopicHeaderProps } from "ui";
 import { DataPlaneTopicHeader } from "ui";
-import { ReadyStatuses } from "ui-models/src/models/kafka";
+import { useUserControlGate } from "../../../useUserControlGate";
 import { useDrawer } from "../../control-plane";
 import type { DataPlaneNavigationProps } from "../routesConsts";
 import { useTopicGate } from "../useTopicGate";
@@ -19,6 +19,7 @@ export const DataPlaneTopicHeaderConnected: VoidFunctionComponent<
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
   const { setActiveTab, toggleExpanded } = useDrawer();
+  const { userData } = useUserControlGate();
   const {
     instance,
     topic,
@@ -38,6 +39,12 @@ export const DataPlaneTopicHeaderConnected: VoidFunctionComponent<
     history.push(`${instancesHref}/${instance.id}/delete`);
   }, [history, instance, instancesHref]);
 
+  const onChangeOwner = useCallback(() => {
+    // TODO: unhardcode this url
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+    history.push(`${instancesHref}/${instance.id}/change-owner`);
+  }, [history, instance, instancesHref]);
+
   return (
     <DataPlaneTopicHeader
       instancesHref={instancesHref}
@@ -55,12 +62,10 @@ export const DataPlaneTopicHeaderConnected: VoidFunctionComponent<
         setActiveTab("connections");
         toggleExpanded(true);
       }}
-      canOpenConnection={
-        instance ? ReadyStatuses.includes(instance?.status) : false
-      }
-      canChangeOwner={true /* TODO */}
-      onChangeOwner={() => false /* TODO */}
-      canDelete={true /* TODO */}
+      canOpenConnection={userData.canOpenConnection(instance.status)}
+      canChangeOwner={userData.canChangeOwner(instance.owner, instance.status)}
+      canDelete={userData.isUserOwnerOrAdmin(instance.owner)}
+      onChangeOwner={onChangeOwner}
       onDelete={onDelete}
     />
   );

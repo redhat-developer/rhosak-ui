@@ -8,6 +8,7 @@ import { CreateKafkaInstance } from "ui";
 import type { ControlPlaneNavigationProps } from "../routesConsts";
 import { ControlPlaneRouteRoot } from "../routesConsts";
 import { useCreateKafkaCallbacks } from "./useCreateKafkaCallbacks";
+import { useSelfTermsReviewGate } from "./useSelfTermsReviewGate";
 
 export const CreateKafkaInstanceRoute: FunctionComponent<
   ControlPlaneNavigationProps
@@ -17,6 +18,7 @@ export const CreateKafkaInstanceRoute: FunctionComponent<
   const callbacks = useCreateKafkaCallbacks();
   const createKafkaInstance = useCreateKafkaMutation();
   const qsContext = useContext(QuickStartContext);
+  useSelfTermsReviewGate();
 
   const onClickKafkaOverview = () => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access

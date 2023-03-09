@@ -26,9 +26,17 @@ export interface Typegen0 {
   eventsCausingActions: {
     incrementRetries: "fetchFail";
     resetRetries: "refresh";
+    setBroker: "selectBroker";
     setDuration: "selectDuration";
-    setFetchTimestamp: "refresh" | "selectDuration" | "xstate.init";
+    setFetchTimestamp:
+      | "refresh"
+      | "selectBroker"
+      | "selectDuration"
+      | "selectToggle"
+      | "xstate.init";
     setMetrics: "fetchSuccess";
+    setPartition: "selectPartition";
+    setToggle: "selectToggle";
   };
   eventsCausingDelays: {};
   eventsCausingGuards: {
@@ -40,7 +48,9 @@ export interface Typegen0 {
   eventsCausingServices: {
     api:
       | "refresh"
+      | "selectBroker"
       | "selectDuration"
+      | "selectToggle"
       | "xstate.after(1000)#kafkaInstanceMetrics.callApi.failure"
       | "xstate.after(1000)#kafkaInstanceMetrics.initialLoading.failure"
       | "xstate.init";

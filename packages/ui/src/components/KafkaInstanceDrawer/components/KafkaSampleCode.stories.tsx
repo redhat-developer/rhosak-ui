@@ -21,3 +21,10 @@ const Template: ComponentStory<typeof KafkaSampleCode> = (args) => (
 );
 
 export const SampleCodeSnippet = Template.bind({});
+
+export const SampleCodeSnippetWhenTokenEndpointUrlisUndefined = Template.bind(
+  {}
+);
+SampleCodeSnippetWhenTokenEndpointUrlisUndefined.args = {
+  tokenEndpointUrl: undefined,
+};
