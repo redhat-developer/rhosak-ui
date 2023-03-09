@@ -105,8 +105,11 @@ export const KafkaConnectionTabP2: FunctionComponent<
       <Button
         variant={ButtonVariant.secondary}
         isInline
-        onClick={showCreateServiceAccountModal}
         data-testid="drawerStreams-buttonCreateServiceAccount"
+        href={`${
+          document.location.pathname.startsWith("/beta") ? "/beta" : ""
+        }/application-services/service-account`}
+        component={"a"}
       >
         {t("connection-tab:create_service_account")}
       </Button>
