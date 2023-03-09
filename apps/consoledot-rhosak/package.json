@@ -41,7 +41,7 @@
     "@tanstack/react-query": "4.19.1",
     "@tanstack/react-query-devtools": "4.19.1",
     "@patternfly/patternfly": "4.222.4",
-    "@patternfly/react-charts": "6.94.15",
+    "@patternfly/react-charts": "6.94.18",
     "@patternfly/react-core": "4.267.6",
     "@patternfly/react-icons": "4.93.3",
     "@patternfly/react-table": "4.112.6",
