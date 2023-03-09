@@ -1,11 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
-import { masQueries } from "../queryKeys";
-import type { KafkaInstanceEnhanced } from "consoledot-api/src/transformers/kafkaRequestToKafkaInstanceEnhanched";
-import { ReadyStatuses, SuspendedStatuses } from "ui-models/src/models/kafka";
 import type { Status } from "ui-models/src/models/kafka";
+import { ReadyStatuses, SuspendedStatuses } from "ui-models/src/models/kafka";
+import { masQueries } from "../queryKeys";
 
-export function useUser({getUser, suspense}:{getUser:() => Promise<{username: string | undefined, isOrgAdmin:boolean | undefined}>, suspense: boolean}) {
-
+export function useUser({
+  getUser,
+  suspense,
+}: {
+  getUser: () => Promise<{
+    username: string | undefined;
+    isOrgAdmin: boolean | undefined;
+  }>;
+  suspense: boolean;
+}) {
   return useQuery({
     queryKey: masQueries.user(),
     queryFn: async () => {
@@ -19,8 +26,8 @@ export function useUser({getUser, suspense}:{getUser:() => Promise<{username: st
         return Promise.reject("Invalid username");
       }
 
-      const canOpenConnection = (instance: KafkaInstanceEnhanced): boolean => {
-        return instance ? ReadyStatuses.includes(instance.status) : false;
+      const canOpenConnection = (status: Status): boolean => {
+        return ReadyStatuses.includes(status);
       };
 
       const isUserOwnerOrAdmin = (owner: string) => {

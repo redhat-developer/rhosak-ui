@@ -3,9 +3,9 @@ import type { FunctionComponent } from "react";
 import type { ControlPlaneHeaderProps, KafkaInstancesProps } from "ui";
 import { KafkaInstances } from "ui";
 import { ReadyStatuses } from "ui-models/src/models/kafka";
+import { useUserControlGate } from "../../../useUserControlGate";
 import { ConnectedControlPlaneHeader } from "./ConnectedControlPlaneHeader";
 import { useKafkaInstancesTable } from "./useKafkaInstancesTable";
-import { useUserControlGate } from "../../../useUserControlGate";
 
 export type KafkaInstancesRoute = {
   activeSection: ControlPlaneHeaderProps["activeSection"];
@@ -104,7 +104,7 @@ export const KafkaInstancesRoute: FunctionComponent<KafkaInstancesRoute> = ({
         }}
         onQuickstartGuide={onQuickstartGuide}
         canHaveInstanceLink={({ status }) => ReadyStatuses.includes(status)}
-        canOpenConnection={(row) => userData.canOpenConnection(row)}
+        canOpenConnection={(row) => userData.canOpenConnection(row.status)}
         canChangeOwner={({ owner, status }) =>
           userData.canChangeOwner(owner, status)
         }

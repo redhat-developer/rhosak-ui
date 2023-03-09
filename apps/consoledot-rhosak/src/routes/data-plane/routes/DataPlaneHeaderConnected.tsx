@@ -3,10 +3,10 @@ import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import type { DataPlaneHeaderProps } from "ui";
 import { DataPlaneHeader } from "ui";
+import { useUserControlGate } from "../../../useUserControlGate";
 import { useDrawer } from "../../control-plane";
 import type { ControlPlaneNavigationProps } from "../../control-plane/routesConsts";
 import { useDataPlaneGate } from "../useDataPlaneGate";
-import { useUserControlGate } from "../../../useUserControlGate";
 
 export const DataPlaneHeaderConnected: VoidFunctionComponent<
   ControlPlaneNavigationProps & Pick<DataPlaneHeaderProps, "activeSection">
@@ -56,7 +56,7 @@ export const DataPlaneHeaderConnected: VoidFunctionComponent<
         setActiveTab("connections");
         toggleExpanded(true);
       }}
-      canOpenConnection={userData.canOpenConnection(instance)}
+      canOpenConnection={userData.canOpenConnection(instance.status)}
       canChangeOwner={userData.canChangeOwner(instance.owner, instance.status)}
       canDelete={userData.isUserOwnerOrAdmin(instance.owner)}
       onChangeOwner={onChangeOwner}
