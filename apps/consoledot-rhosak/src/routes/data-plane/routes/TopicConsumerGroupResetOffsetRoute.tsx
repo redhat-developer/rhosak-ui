@@ -6,11 +6,15 @@ import type { DataPlaneTopicConsumerGroupNavigationsProps } from "../routesConst
 import { useHistory } from "react-router-dom";
 import { useResetConsumerGroupMutation } from "consoledot-api";
 import { useTopicConsumerGroupGate } from "../useTopicConsumerGroupGate";
+import { addNotification } from "@redhat-cloud-services/frontend-components-notifications";
+import { useDispatch } from "react-redux";
 
 export const TopicConsumerGroupResetOffsetRoute: VoidFunctionComponent<
   DataPlaneTopicConsumerGroupNavigationsProps
 > = ({ instanceTopicConsumerGroupsHref }) => {
   const { instance, topic, consumerGroup } = useTopicConsumerGroupGate();
+
+  const dispatch = useDispatch();
 
   const { mutateAsync } = useResetConsumerGroupMutation();
 
@@ -45,25 +49,42 @@ export const TopicConsumerGroupResetOffsetRoute: VoidFunctionComponent<
         offset: offset,
         partitions: partitions,
         value: customOffsetValue,
-        onError: () => {
-          // TODO: alert
+        onError: (_, message) => {
+          dispatch(
+            addNotification({
+              variant: "danger",
+              title: message,
+              dismissable: true,
+              id: "reset-offset-error",
+            })
+          );
         },
         onSuccess: () => {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
           history.replace(
             instanceTopicConsumerGroupsHref(instance.id, topic.name)
           );
+          dispatch(
+            addNotification({
+              variant: "success",
+              title:
+                "offsets for the consumer group have been successfully reset",
+              dismissable: true,
+              id: "reset-offset-success",
+            })
+          );
         },
       });
     },
     [
       mutateAsync,
-      history,
-      instance?.id,
-      topic.name,
-      instanceTopicConsumerGroupsHref,
+      instance.id,
       instance.adminUrl,
       consumerGroup.groupId,
+      dispatch,
+      history,
+      instanceTopicConsumerGroupsHref,
+      topic.name,
     ]
   );
 
