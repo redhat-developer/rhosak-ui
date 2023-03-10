@@ -5,12 +5,16 @@ import { DeleteConsumerGroup } from "ui";
 import { useDeleteConsumerGroupMutation } from "consoledot-api";
 import type { DataPlaneTopicConsumerGroupNavigationsProps } from "../routesConsts";
 import { useTopicConsumerGroupGate } from "../useTopicConsumerGroupGate";
+import { addNotification } from "@redhat-cloud-services/frontend-components-notifications";
+import { useDispatch } from "react-redux";
 
 export const TopicConsumerGroupDeleteRoute: VoidFunctionComponent<
   DataPlaneTopicConsumerGroupNavigationsProps
 > = ({ instanceTopicConsumerGroupsHref }) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
+
+  const dispatch = useDispatch();
 
   const { instance, consumerGroup, topic } = useTopicConsumerGroupGate();
 
@@ -26,24 +30,40 @@ export const TopicConsumerGroupDeleteRoute: VoidFunctionComponent<
       instanceId: instance.id,
       adminUrl: instance.adminUrl!,
       consumerGroupId: consumerGroup.groupId,
-      onError: () => {
-        // TODO: alert
+      onError: (_, message) => {
+        dispatch(
+          addNotification({
+            variant: "danger",
+            title: message,
+            dismissable: true,
+            id: "delete-consumer-group-error",
+          })
+        );
       },
       onSuccess: () => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
         history.replace(
           instanceTopicConsumerGroupsHref(instance.id, topic.name)
         );
+        dispatch(
+          addNotification({
+            variant: "success",
+            title: `Successfully deleted consumer group ${consumerGroup.groupId}`,
+            dismissable: true,
+            id: "delete-consumer-group-success",
+          })
+        );
       },
     });
   }, [
     mutateAsync,
+    instance.id,
+    instance.adminUrl,
+    consumerGroup.groupId,
     history,
-    instance?.id,
     instanceTopicConsumerGroupsHref,
     topic.name,
-    consumerGroup.groupId,
-    instance?.adminUrl,
+    dispatch,
   ]);
 
   return (
