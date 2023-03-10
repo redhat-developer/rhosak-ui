@@ -6,11 +6,14 @@ import type { DataPlaneConsumerGroupNavigationsProps } from "../routesConsts";
 import { useHistory } from "react-router-dom";
 import { useResetConsumerGroupMutation } from "consoledot-api";
 import { useConsumerGroupGate } from "../useConsumerGroupGate";
+import { useAlerts } from "../../../useAlerts";
 
 export const ConsumerGroupResetOffsetRoute: VoidFunctionComponent<
   DataPlaneConsumerGroupNavigationsProps
 > = ({ instanceConsumerGroupsHref }) => {
   const { instance, consumerGroup } = useConsumerGroupGate();
+
+  const { addAlert } = useAlerts();
 
   const { mutateAsync } = useResetConsumerGroupMutation();
 
@@ -45,22 +48,29 @@ export const ConsumerGroupResetOffsetRoute: VoidFunctionComponent<
         offset: offset,
         partitions: partitions,
         value: customOffsetValue,
-        onError: () => {
-          // TODO: alert
+        onError: (_, message) => {
+          addAlert("danger", message, true, "reset-offset-error");
         },
         onSuccess: () => {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
           history.replace(instanceConsumerGroupsHref(instance.id));
+          addAlert(
+            "success",
+            "offsets for the consumer group have been successfully reset",
+            true,
+            "reset-offset-success"
+          );
         },
       });
     },
     [
       mutateAsync,
-      history,
-      instance?.id,
-      instanceConsumerGroupsHref,
+      instance.id,
       instance.adminUrl,
       consumerGroup.groupId,
+      addAlert,
+      history,
+      instanceConsumerGroupsHref,
     ]
   );
 

@@ -5,12 +5,15 @@ import { DeleteConsumerGroup } from "ui";
 import { useDeleteConsumerGroupMutation } from "consoledot-api";
 import type { DataPlaneConsumerGroupNavigationsProps } from "../routesConsts";
 import { useConsumerGroupGate } from "../useConsumerGroupGate";
+import { useAlerts } from "../../../useAlerts";
 
 export const ConsumerGroupDeleteRoute: VoidFunctionComponent<
   DataPlaneConsumerGroupNavigationsProps
 > = ({ instanceConsumerGroupsHref }) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
+
+  const { addAlert } = useAlerts();
 
   const { instance, consumerGroup } = useConsumerGroupGate();
 
@@ -26,21 +29,28 @@ export const ConsumerGroupDeleteRoute: VoidFunctionComponent<
       instanceId: instance.id,
       adminUrl: instance.adminUrl!,
       consumerGroupId: consumerGroup.groupId,
-      onError: () => {
-        // TODO: alert
+      onError: (_, message) => {
+        addAlert("danger", message, true, "delete-consumer-group-error");
       },
       onSuccess: () => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
         history.replace(instanceConsumerGroupsHref(instance.id));
+        addAlert(
+          "success",
+          `Successfully deleted consumer group ${consumerGroup.groupId}`,
+          true,
+          "delete-consumer-group-success"
+        );
       },
     });
   }, [
     mutateAsync,
-    history,
-    instance?.id,
-    instanceConsumerGroupsHref,
-    consumerGroup.groupId,
+    instance.id,
     instance.adminUrl,
+    consumerGroup.groupId,
+    addAlert,
+    history,
+    instanceConsumerGroupsHref,
   ]);
 
   return (

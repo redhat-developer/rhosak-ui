@@ -35,9 +35,7 @@ describe("ConnectionTab", () => {
       "https://api.openshift.com/api/kafkas_mgmt/v1/openapi"
     );
 
-    expect(
-      comp.getByRole("button", { name: "Create service account" })
-    ).toHaveAttribute(
+    expect(comp.getByText("Create service account")).toHaveAttribute(
       "data-testid",
       "drawerStreams-buttonCreateServiceAccount"
     );

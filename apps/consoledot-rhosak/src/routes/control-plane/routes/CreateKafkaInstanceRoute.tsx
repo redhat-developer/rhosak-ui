@@ -22,7 +22,7 @@ export const CreateKafkaInstanceRoute: FunctionComponent<
 
   const onClickKafkaOverview = () => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-    history.push(`overview`);
+    history.push(`/overview`);
   };
 
   const onClickQuickStart = useCallback(() => {
