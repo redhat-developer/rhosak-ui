@@ -6,15 +6,14 @@ import type { DataPlaneConsumerGroupNavigationsProps } from "../routesConsts";
 import { useHistory } from "react-router-dom";
 import { useResetConsumerGroupMutation } from "consoledot-api";
 import { useConsumerGroupGate } from "../useConsumerGroupGate";
-import { addNotification } from "@redhat-cloud-services/frontend-components-notifications";
-import { useDispatch } from "react-redux";
+import { useAlerts } from "../../../useAlerts";
 
 export const ConsumerGroupResetOffsetRoute: VoidFunctionComponent<
   DataPlaneConsumerGroupNavigationsProps
 > = ({ instanceConsumerGroupsHref }) => {
   const { instance, consumerGroup } = useConsumerGroupGate();
 
-  const dispatch = useDispatch();
+  const { addAlert } = useAlerts();
 
   const { mutateAsync } = useResetConsumerGroupMutation();
 
@@ -50,26 +49,16 @@ export const ConsumerGroupResetOffsetRoute: VoidFunctionComponent<
         partitions: partitions,
         value: customOffsetValue,
         onError: (_, message) => {
-          dispatch(
-            addNotification({
-              variant: "danger",
-              title: message,
-              dismissable: true,
-              id: "reset-offset-error",
-            })
-          );
+          addAlert("danger", message, true, "reset-offset-error");
         },
         onSuccess: () => {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
           history.replace(instanceConsumerGroupsHref(instance.id));
-          dispatch(
-            addNotification({
-              variant: "success",
-              title:
-                "offsets for the consumer group have been successfully reset",
-              dismissable: true,
-              id: "reset-offset-success",
-            })
+          addAlert(
+            "success",
+            "offsets for the consumer group have been successfully reset",
+            true,
+            "reset-offset-success"
           );
         },
       });
@@ -79,9 +68,9 @@ export const ConsumerGroupResetOffsetRoute: VoidFunctionComponent<
       instance.id,
       instance.adminUrl,
       consumerGroup.groupId,
+      addAlert,
       history,
       instanceConsumerGroupsHref,
-      dispatch,
     ]
   );
 

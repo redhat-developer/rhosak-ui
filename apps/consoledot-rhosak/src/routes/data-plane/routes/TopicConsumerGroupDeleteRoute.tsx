@@ -5,8 +5,7 @@ import { DeleteConsumerGroup } from "ui";
 import { useDeleteConsumerGroupMutation } from "consoledot-api";
 import type { DataPlaneTopicConsumerGroupNavigationsProps } from "../routesConsts";
 import { useTopicConsumerGroupGate } from "../useTopicConsumerGroupGate";
-import { addNotification } from "@redhat-cloud-services/frontend-components-notifications";
-import { useDispatch } from "react-redux";
+import { useAlerts } from "../../../useAlerts";
 
 export const TopicConsumerGroupDeleteRoute: VoidFunctionComponent<
   DataPlaneTopicConsumerGroupNavigationsProps
@@ -14,7 +13,7 @@ export const TopicConsumerGroupDeleteRoute: VoidFunctionComponent<
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
 
-  const dispatch = useDispatch();
+  const { addAlert } = useAlerts();
 
   const { instance, consumerGroup, topic } = useTopicConsumerGroupGate();
 
@@ -31,27 +30,18 @@ export const TopicConsumerGroupDeleteRoute: VoidFunctionComponent<
       adminUrl: instance.adminUrl!,
       consumerGroupId: consumerGroup.groupId,
       onError: (_, message) => {
-        dispatch(
-          addNotification({
-            variant: "danger",
-            title: message,
-            dismissable: true,
-            id: "delete-consumer-group-error",
-          })
-        );
+        addAlert("danger", message, true, "delete-consumer-group-error");
       },
       onSuccess: () => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
         history.replace(
           instanceTopicConsumerGroupsHref(instance.id, topic.name)
         );
-        dispatch(
-          addNotification({
-            variant: "success",
-            title: `Successfully deleted consumer group ${consumerGroup.groupId}`,
-            dismissable: true,
-            id: "delete-consumer-group-success",
-          })
+        addAlert(
+          "success",
+          `Successfully deleted consumer group ${consumerGroup.groupId}`,
+          true,
+          "delete-consumer-group-success"
         );
       },
     });
@@ -60,10 +50,10 @@ export const TopicConsumerGroupDeleteRoute: VoidFunctionComponent<
     instance.id,
     instance.adminUrl,
     consumerGroup.groupId,
+    addAlert,
     history,
     instanceTopicConsumerGroupsHref,
     topic.name,
-    dispatch,
   ]);
 
   return (
