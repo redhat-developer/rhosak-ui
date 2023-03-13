@@ -5,7 +5,6 @@ import { CreateTopic } from "ui";
 import type { Topic } from "ui-models/src/models/topic";
 import { useHistory } from "react-router-dom";
 import { useAlerts } from "../../../useAlerts";
-import { useDispatch } from "react-redux";
 import { useCreateTopicMutation, useTopics } from "consoledot-api";
 import { useDataPlaneGate } from "../useDataPlaneGate";
 import type { DataPlaneNavigationProps } from "../routesConsts";
@@ -22,7 +21,6 @@ export const TopicCreateRoute: VoidFunctionComponent<
   const { addAlert } = useAlerts();
   const { instance } = useDataPlaneGate();
   const createTopic = useCreateTopicMutation();
-  const dispatch = useDispatch();
   const availabilityZone = instance.az;
   const { data: topics } = useTopics(
     {
@@ -30,8 +28,7 @@ export const TopicCreateRoute: VoidFunctionComponent<
       adminUrl: instance.adminUrl,
       plan: instance.plan,
     },
-    false,
-    0
+    false
   );
 
   if (instance.maxPartitions === undefined) {

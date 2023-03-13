@@ -10,8 +10,7 @@ export function useTopics(
     FetchTopicsParams,
     "getTopics"
   >,
-  suspense = false,
-  cacheTime=5*(60*1000),
+  suspense = false
 ) {
   const { refetchInterval } = useApiConfiguration();
   const { topics } = useApi();
@@ -35,6 +34,5 @@ export function useTopics(
     enabled: Boolean(params.adminUrl) && Boolean(params.id),
     refetchInterval,
     suspense,
-    cacheTime: cacheTime,
   });
 }

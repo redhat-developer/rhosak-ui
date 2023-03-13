@@ -37,6 +37,5 @@ export function useTopic(
       Boolean(params.topicName),
     refetchInterval,
     suspense,
-    cacheTime: 0,
   });
 }
