@@ -40,7 +40,7 @@ export const DeleteKafkaInstanceRoute: FunctionComponent<
         history.replace(instancesHref);
       },
     });
-  }, [mutateAsync, history, instance?.id, instancesHref]);
+  }, [mutateAsync, instance.id, addAlert, history, instancesHref]);
 
   return (
     <DeleteKafkaInstance
