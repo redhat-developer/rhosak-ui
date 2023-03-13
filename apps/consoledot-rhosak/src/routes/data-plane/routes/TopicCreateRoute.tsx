@@ -4,7 +4,7 @@ import type { CreateTopicPageProps } from "ui";
 import { CreateTopic } from "ui";
 import type { Topic } from "ui-models/src/models/topic";
 import { useHistory } from "react-router-dom";
-import { addNotification } from "@redhat-cloud-services/frontend-components-notifications";
+import { useAlerts } from "../../../useAlerts";
 import { useDispatch } from "react-redux";
 import { useCreateTopicMutation, useTopics } from "consoledot-api";
 import { useDataPlaneGate } from "../useDataPlaneGate";
@@ -19,6 +19,7 @@ export const TopicCreateRoute: VoidFunctionComponent<
 > = ({ instancesHref, instanceTopicsHref }) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
+  const { addAlert } = useAlerts();
   const { instance } = useDataPlaneGate();
   const createTopic = useCreateTopicMutation();
   const dispatch = useDispatch();
@@ -68,22 +69,21 @@ export const TopicCreateRoute: VoidFunctionComponent<
         onSuccess: () => {
           //eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
           history.push(instanceTopicsHref(instance.id));
+          addAlert(
+            "success",
+            "The topic was successfully created in the Kafka instance",
+            true,
+            "create-topic-success"
+          );
         },
         onError: (_, message) => {
-          dispatch(
-            addNotification({
-              variant: "danger",
-              title: message,
-              dismissable: true,
-              id: "save-error",
-            })
-          );
+          addAlert("danger", message, true, "create-topic-fail");
         },
       });
     },
     [
+      addAlert,
       createTopic,
-      dispatch,
       history,
       instance?.adminUrl,
       instance.id,
