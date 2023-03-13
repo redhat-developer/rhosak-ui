@@ -43,7 +43,7 @@ export function useUpdateTopicMutation() {
     },
     {
       onSuccess: (_, { adminUrl, instanceId }) => {
-        void queryClient.invalidateQueries([
+        void queryClient.removeQueries([
           kafkaQueries.instance._root({
             id: instanceId,
             adminUrl,
