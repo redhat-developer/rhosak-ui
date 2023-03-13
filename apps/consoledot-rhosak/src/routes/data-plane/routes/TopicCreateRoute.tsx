@@ -23,11 +23,15 @@ export const TopicCreateRoute: VoidFunctionComponent<
   const createTopic = useCreateTopicMutation();
   const dispatch = useDispatch();
   const availabilityZone = instance.az;
-  const { data: topics } = useTopics({
-    id: instance.id,
-    adminUrl: instance.adminUrl,
-    plan: instance.plan,
-  });
+  const { data: topics } = useTopics(
+    {
+      id: instance.id,
+      adminUrl: instance.adminUrl,
+      plan: instance.plan,
+    },
+    false,
+    0
+  );
 
   if (instance.maxPartitions === undefined) {
     throw new Error(

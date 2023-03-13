@@ -13,23 +13,25 @@ import convert from "convert";
 import type React from "react";
 import type { Topic } from "ui-models/src/models/topic";
 import { TextWithLabelPopover } from "./TextWithLabelPopover";
-import type { IDropdownOption } from "./types";
-import { TopicConfig } from "ui-models/src/models/topic-config";
+import type { CleanupPolicyType, IDropdownOption } from "./types";
+import type { TopicConfig } from "ui-models/src/models/topic-config";
 
 export type LogProps = {
   topicData: Topic;
-  setTopicData: (data: Topic) => void;
   defaultDeleteRetentionTime: bigint;
   defaultMinCleanbleRatio: number;
   defaultMinimumCompactionLagTime: bigint;
+  cleanupPolicy: CleanupPolicyType;
+  setCleanupPolicy: (value: CleanupPolicyType) => void;
 };
 
 const Log: React.FC<LogProps> = ({
   topicData,
-  setTopicData,
   defaultDeleteRetentionTime,
   defaultMinCleanbleRatio,
   defaultMinimumCompactionLagTime,
+  cleanupPolicy,
+  setCleanupPolicy,
 }) => {
   const { t } = useTranslation(["create-topic", "common"]);
 
@@ -55,10 +57,7 @@ const Log: React.FC<LogProps> = ({
   ];
 
   const onSelectOption = (value: string) => {
-    setTopicData({
-      ...topicData,
-      "cleanup.policy": value as TopicConfig["cleanup.policy"],
-    });
+    setCleanupPolicy(value as TopicConfig["cleanup.policy"]);
   };
 
   return (
@@ -82,7 +81,7 @@ const Log: React.FC<LogProps> = ({
           onSelectOption={onSelectOption}
           items={cleanupPolicyOptions}
           name="cleanup-policy"
-          value={topicData["cleanup.policy"]}
+          value={cleanupPolicy}
           isLabelAndValueNotSame={true}
           key={topicData["cleanup.policy"]}
         />

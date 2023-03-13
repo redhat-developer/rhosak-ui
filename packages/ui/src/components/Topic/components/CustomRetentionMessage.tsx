@@ -9,18 +9,20 @@ import {
 } from "@patternfly/react-core";
 import type React from "react";
 import { useState } from "react";
-import type { CustomSelect, TimeUnit } from "./types";
+import type { CustomSelect, TimeUnit, RadioSelectType } from "./types";
 import { retentionTimeSelectOptions } from "./types";
 
 export type CustomRetentionMessageProps = {
   id?: string;
   customTimeValue: CustomSelect;
   setCustomTimeValue: (data: CustomSelect) => void;
+  setRadioTimeSelectValue?: (value: RadioSelectType) => void;
 };
 
 const CustomRetentionMessage: React.FC<CustomRetentionMessageProps> = ({
   customTimeValue,
   setCustomTimeValue,
+  setRadioTimeSelectValue,
 }) => {
   const [isRetentionTimeSelectOpen, setIsRetentionTimeSelectOpen] =
     useState<boolean>(false);
@@ -45,20 +47,12 @@ const CustomRetentionMessage: React.FC<CustomRetentionMessageProps> = ({
       value: Number(input),
     };
     if (inputValue.value > -1) setCustomTimeValue(inputValue);
+    setRadioTimeSelectValue && setRadioTimeSelectValue("custom");
   };
 
   return (
     <div className="kafka-ui--radio__parameters">
       <Flex>
-        <FlexItem>
-          <TextInput
-            aria-label={"Retention time"}
-            type="number"
-            value={customTimeValue.value == 0 ? "" : customTimeValue.value}
-            onChange={onChange}
-            min={1}
-          />
-        </FlexItem>
         <FlexItem>
           <Select
             variant={SelectVariant.single}
@@ -79,6 +73,15 @@ const CustomRetentionMessage: React.FC<CustomRetentionMessageProps> = ({
               </SelectOption>
             ))}
           </Select>
+        </FlexItem>
+        <FlexItem>
+          <TextInput
+            aria-label={"Retention time"}
+            type="number"
+            value={customTimeValue.value == 0 ? "" : customTimeValue.value}
+            onChange={onChange}
+            min={1}
+          />
         </FlexItem>
       </Flex>
     </div>
