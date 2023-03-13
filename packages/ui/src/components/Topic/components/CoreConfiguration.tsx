@@ -33,7 +33,6 @@ import { useValidateTopic } from "./useValidateTopic";
 export type CoreConfigurationProps = {
   isCreate?: boolean;
   topicData: Topic;
-  setTopicData: (data: Topic) => void;
   invalidText: string;
   setInvalidText: (message: string) => void;
   setTopicValidated: (error: ValidatedOptions) => void;
@@ -49,12 +48,15 @@ export type CoreConfigurationProps = {
   setRadioTimeSelectValue: (value: RadioSelectType) => void;
   radioSizeSelectValue: RetentionSizeRadioSelect;
   setRadioSizeSelectValue: (data: RetentionSizeRadioSelect) => void;
+  topicName: string;
+  setTopicName: (value: string) => void;
+  partitions: TopicPartition[];
+  setPartitions: (value: TopicPartition[]) => void;
 };
 
 const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
   isCreate,
   topicData,
-  setTopicData,
   invalidText,
   setInvalidText,
   setTopicValidated,
@@ -68,6 +70,10 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
   customRetentionSizeValue,
   radioSizeSelectValue,
   setRadioSizeSelectValue,
+  topicName,
+  setPartitions,
+  setTopicName,
+  partitions,
 }) => {
   const { t } = useTranslation(["create-topic"]);
   const [initialPartitions] = useState<TopicPartition[]>(topicData.partitions);
@@ -86,27 +92,15 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
   );
 
   const handleRetentionMessageTime = (value: RadioSelectType) => {
-    if (value === "unlimited") {
-      setCustomTimeValue({ value: -1, unit: "unlimited" });
-      setRadioTimeSelectValue(value);
-    } else {
-      setCustomTimeValue({ value: 7, unit: "days" });
-      setRadioTimeSelectValue(value);
-    }
+    setRadioTimeSelectValue(value);
   };
 
   const handleRetentionMessageSize = (value: RetentionSizeRadioSelect) => {
-    if (value === "unlimited") {
-      setRadioSizeSelectValue(value);
-      setCustomRetentionSizeValue({ value: -1, unit: "unlimited" });
-    } else {
-      setCustomRetentionSizeValue({ value: 1, unit: "bytes" });
-      setRadioSizeSelectValue(value);
-    }
+    setRadioSizeSelectValue(value);
   };
   const handleTextInputChange = (value: string) => {
     validationCheck(value);
-    setTopicData({ ...topicData, name: value });
+    setTopicName(value);
   };
 
   const onPartitionsChange: NumberInputProps["onChange"] = (event) => {
@@ -116,41 +110,30 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
       .fill(null)
       .map((_, index) => ({ partition: index }));
     //Donot allow to set a value below original value in case of edit topic
-    setTopicData({
-      ...topicData,
-      partitions: isCreate
+    setPartitions(
+      isCreate
         ? updatedPartitions
         : updatedPartitions.length > initialPartitions.length
         ? updatedPartitions
-        : initialPartitions,
-    });
+        : initialPartitions
+    );
   };
 
   const handleOnPlus = () => {
-    const currentPartitions = topicData.partitions;
-    const updatedPartitions = [
-      ...currentPartitions,
-      { partition: currentPartitions.length },
-    ];
-    setTopicData({
-      ...topicData,
-      partitions: updatedPartitions,
-    });
+    const updatedPartitions = [...partitions, { partition: partitions.length }];
+    setPartitions(updatedPartitions);
   };
 
   const handleOnMinus = () => {
-    const { partitions } = topicData;
     const newPartitions = partitions.slice(0, partitions.length - 1);
-    setTopicData({
-      ...topicData,
-      partitions: newPartitions,
-    });
+    setPartitions(newPartitions);
   };
 
   const retentionTimeInput = (
     <CustomRetentionMessage
       customTimeValue={customTimeValue}
       setCustomTimeValue={setCustomTimeValue}
+      setRadioTimeSelectValue={setRadioTimeSelectValue}
     />
   );
 
@@ -158,6 +141,7 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
     <CustomRetentionSize
       customRetentionSizeValue={customRetentionSizeValue}
       setCustomRetentionSizeValue={setCustomRetentionSizeValue}
+      setRadioSizeSelectValue={setRadioSizeSelectValue}
     />
   );
 
@@ -189,7 +173,7 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
             type="text"
             id="create-topic-name"
             name="name"
-            value={topicData.name}
+            value={topicName}
             onChange={handleTextInputChange}
             label={t("topic_name")}
             placeholder={t("enter_name")}
@@ -231,9 +215,7 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
           data-testid={t("partitions")}
           onPlus={handleOnPlus}
           onMinus={handleOnMinus}
-          value={
-            topicData.partitions.length == 0 ? "" : topicData.partitions.length
-          }
+          value={partitions.length == 0 ? "" : partitions.length}
           plusBtnProps={{ name: "num-partitions" }}
           minusBtnProps={{ name: "num-partitions" }}
           min={isCreate ? 1 : initialPartitions.length}
@@ -264,7 +246,7 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
       >
         <Stack hasGutter>
           <Radio
-            isChecked={radioTimeSelectValue === "custom"}
+            isChecked={radioTimeSelectValue != "unlimited"}
             name="custom-retention-time"
             onChange={() => handleRetentionMessageTime("custom")}
             label={retentionTimeInput}

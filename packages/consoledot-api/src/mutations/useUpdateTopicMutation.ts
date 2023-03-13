@@ -2,12 +2,8 @@ import { isServiceApiError } from "@rhoas/kafka-management-sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { kafkaQueries } from "../queryKeys";
 import { useApi } from "../useApi";
-import type { TopicSettings } from "@rhoas/kafka-instance-sdk";
 import type { Topic } from "ui-models/src/models/topic";
-import {
-  convertToKeyValuePairs,
-  convertToTopicSettings,
-} from "consoledot-api/src/transformers/topicTransformer";
+import { convertToTopicSettings } from "consoledot-api/src/transformers/topicTransformer";
 
 export function useUpdateTopicMutation() {
   const { topics } = useApi();

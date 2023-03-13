@@ -12,9 +12,13 @@ import type {
   TimeUnit,
 } from "../../";
 import { bytesToMemorySize, millisecondsToTime } from "../../KafkaTopics/types";
-import type { CustomRetentionUnit } from "../components/types";
+import type {
+  CleanupPolicyType,
+  CustomRetentionUnit,
+} from "../components/types";
 import { retentionSizeTransformer } from "../components/retentionSizeTransformer";
 import { retentionTimeTransformer } from "../components/retentionTimeTransformer";
+import type { TopicPartition } from "ui-models/src/models/topic-partition";
 
 export type EditTopicPropertiesProps = {
   topic: Topic;
@@ -62,14 +66,18 @@ export const EditTopicProperties: FunctionComponent<
     useState<RetentionSizeRadioSelect>(
       topic["retention.bytes"].value == BigInt(-1) ? "unlimited" : "custom"
     );
-
-  const [topicData, setTopicData] = useState<Topic>(topic);
+  const [topicName, setTopicName] = useState<string>(topic.name);
+  const [cleanupPolicy, setCleanupPolicy] = useState<CleanupPolicyType>(
+    topic["cleanup.policy"]
+  );
+  const [partitions, setPartitions] = useState<TopicPartition[]>(
+    topic.partitions
+  );
 
   const [warningModalOpen, setWarningModalOpen] = useState<boolean>(false);
 
   const onSaveTopic = (transformedTopic: Topic) => {
-    if (topicData.partitions.length >= availablePartitionLimit)
-      setWarningModalOpen(true);
+    if (partitions.length >= availablePartitionLimit) setWarningModalOpen(true);
     else onSave(transformedTopic);
   };
 
@@ -80,12 +88,24 @@ export const EditTopicProperties: FunctionComponent<
       customRetentionSizeValue
     );
     const transformedTopic: Topic = {
-      ...topicData,
+      ...topic,
+      name: topicName,
+      partitions: partitions,
+      "cleanup.policy": cleanupPolicy,
       "retention.ms": {
         type: "ms",
-        value: tranformedValueInMilliseconds || BigInt(-1),
+        value:
+          radioTimeSelectValue == "unlimited"
+            ? BigInt(-1)
+            : tranformedValueInMilliseconds || BigInt(-1),
       },
-      "retention.bytes": { type: "bytes", value: tranformedValueInBytes },
+      "retention.bytes": {
+        type: "bytes",
+        value:
+          radioSizeSelectValue == "unlimited"
+            ? BigInt(-1)
+            : tranformedValueInBytes,
+      },
     };
     onSaveTopic(transformedTopic);
   };
@@ -101,8 +121,9 @@ export const EditTopicProperties: FunctionComponent<
         isCreate={false}
         onConfirm={onTransform}
         handleCancel={onCancel}
-        topicData={topicData}
-        setTopicData={setTopicData}
+        topicData={topic}
+        topicName={topicName}
+        onCleanupPolicyChange={setCleanupPolicy}
         availablePartitionLimit={availablePartitionLimit}
         customRetentionSizeValue={customRetentionSizeValue}
         setCustomRetentionSizeValue={setCustomRetentionSizeValue}
@@ -112,10 +133,14 @@ export const EditTopicProperties: FunctionComponent<
         setRadioTimeSelectValue={setRadioTimeSelectValue}
         radioSizeSelectValue={radioSizeSelectValue}
         setRadioSizeSelectValue={setRadioSizeSelectValue}
+        onTopicNameChange={setTopicName}
+        partitions={partitions}
+        onPartitionsChange={setPartitions}
+        cleanupPolicy={cleanupPolicy}
       />
       {warningModalOpen && (
         <PartitionLimitWarning
-          topicData={topicData}
+          topicData={topic}
           onSave={onSave}
           isModalOpen={warningModalOpen}
           setIsModalOpen={setWarningModalOpen}

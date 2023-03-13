@@ -41,7 +41,7 @@ export default {
       "leader.replication.throttled.replicas": "optional",
       "message.format.version": "abc",
       "min.cleanable.dirty.ratio": 678,
-      "min.insync.replicas": 345,
+      "min.insync.replicas": 1,
       "segment.index.bytes": { type: "bytes", value: BigInt("9") },
       "segment.jitter.ms": { type: "ms", value: BigInt("1") },
       "unclean.leader.election.enable": false,

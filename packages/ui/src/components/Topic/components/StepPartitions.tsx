@@ -11,38 +11,29 @@ import {
 import { useTranslation } from "@rhoas/app-services-ui-components";
 import type React from "react";
 import type { Topic } from "ui-models/src/models/topic";
+import type { TopicPartition } from "ui-models/src/models/topic-partition";
 
 export type StepPartitionsProps = {
-  newTopicData: Topic;
-  onPartitionsChange: (value: Topic) => void;
+  partitions: TopicPartition[];
+  onPartitionsChange: (value: TopicPartition[]) => void;
   availablePartitionLimit: number;
 };
 
 export const StepPartitions: React.FC<StepPartitionsProps> = ({
-  newTopicData,
+  partitions,
   onPartitionsChange,
   availablePartitionLimit,
 }) => {
   const { t } = useTranslation(["create-topic"]);
 
   const handleOnPlus = () => {
-    const newPartitions = [
-      ...newTopicData.partitions,
-      { partition: newTopicData.partitions.length },
-    ];
-    onPartitionsChange({
-      ...newTopicData,
-      partitions: newPartitions,
-    });
+    const newPartitions = [...partitions, { partition: partitions.length }];
+    onPartitionsChange(newPartitions);
   };
 
   const handleOnMinus = () => {
-    const { partitions } = newTopicData;
     const newPartitions = partitions.slice(0, partitions.length - 1);
-    onPartitionsChange({
-      ...newTopicData,
-      partitions: newPartitions,
-    });
+    onPartitionsChange(newPartitions);
   };
 
   const handlePartitionTouchspinChange: NumberInputProps["onChange"] = (
@@ -51,17 +42,9 @@ export const StepPartitions: React.FC<StepPartitionsProps> = ({
     const newPartitionCount = Number((event.target as HTMLInputElement).value);
     const newPartitions = Array.from(
       { length: newPartitionCount },
-      (_, i) => newTopicData.partitions[i] ?? { partition: i }
+      (_, i) => partitions[i] ?? { partition: i }
     );
-    onPartitionsChange({
-      ...newTopicData,
-      partitions: newPartitions,
-    });
-  };
-  const onBlur = () => {
-    if (newTopicData.partitions.length < 1) {
-      onPartitionsChange({ ...newTopicData, partitions: [{ partition: 1 }] });
-    }
+    onPartitionsChange(newPartitions);
   };
 
   return (
@@ -76,14 +59,12 @@ export const StepPartitions: React.FC<StepPartitionsProps> = ({
           label="Partitions"
           fieldId="step-topic-name-form"
           helperText={
-            newTopicData.partitions.length >= availablePartitionLimit
+            partitions.length >= availablePartitionLimit
               ? t("partitions_warning")
               : t("partition_helper_text")
           }
           validated={
-            newTopicData.partitions.length >= availablePartitionLimit
-              ? "warning"
-              : "default"
+            partitions.length >= availablePartitionLimit ? "warning" : "default"
           }
           isRequired
         >
@@ -91,14 +72,11 @@ export const StepPartitions: React.FC<StepPartitionsProps> = ({
             onPlus={handleOnPlus}
             onMinus={handleOnMinus}
             value={
-              Number(newTopicData.partitions.length) == 0
-                ? ""
-                : Number(newTopicData.partitions.length)
+              Number(partitions.length) == 0 ? "" : Number(partitions.length)
             }
             inputName="input"
             onChange={handlePartitionTouchspinChange}
             widthChars={20}
-            onBlur={onBlur}
             min={1}
           />
         </FormGroup>

@@ -23,6 +23,7 @@ import { PartitionLimitWarning } from "./PartitionLimitWarning";
 import { retentionTimeTransformer } from "./retentionTimeTransformer";
 import { TopicAdvancePage } from "./TopicAdvancePage";
 import type {
+  CleanupPolicyType,
   CustomRetentionSizeSelect,
   CustomSelect,
   RadioSelectType,
@@ -30,13 +31,14 @@ import type {
 } from "./types";
 import { retentionSizeTransformer } from "./retentionSizeTransformer";
 import type { AZ } from "ui-models/src/models/kafka";
+import type { TopicPartition } from "ui-models/src/models/topic-partition";
 
 export type CreateTopicWizardProps = {
   isSwitchChecked: boolean;
   setIsCreateTopic?: (value: boolean) => void;
   onCloseCreateTopic: () => void;
   onSave: (topicData: Topic) => void;
-  initialFieldsValue: Topic;
+  topicData: Topic;
   checkTopicName: (value: string) => boolean;
   availablePartitionLimit: number;
   availabilityZone: AZ;
@@ -46,7 +48,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
   isSwitchChecked,
   onCloseCreateTopic,
   onSave,
-  initialFieldsValue,
+  topicData,
   checkTopicName,
   availablePartitionLimit,
   availabilityZone,
@@ -59,13 +61,20 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
   });
 
   const [customRetentionSizeValue, setCustomRetentionSizeValue] =
-    useState<CustomRetentionSizeSelect>({ unit: "unlimited", value: -1 });
+    useState<CustomRetentionSizeSelect>({ unit: "bytes", value: 1 });
 
+  const [topicName, setTopicName] = useState<string>(topicData.name);
+  const [cleanupPolicy, setCleanupPolicy] = useState<CleanupPolicyType>(
+    topicData["cleanup.policy"]
+  );
+  const [partitions, setPartitions] = useState<TopicPartition[]>(
+    topicData.partitions
+  );
   const [topicNameValidated, setTopicNameValidated] =
     useState<ValidatedOptions>(ValidatedOptions.default);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [invalidText, setInvalidText] = useState<string>("");
-  const [topicData, setTopicData] = useState<Topic>(initialFieldsValue);
+  //const [topicData] = useState<Topic>(initialFieldsValue);
   const [warningModalOpen, setWarningModalOpen] = useState<boolean>(false);
   const [radioTimeSelectValue, setRadioTimeSelectValue] =
     useState<RadioSelectType>("week");
@@ -85,8 +94,8 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
         topicNameValidated === ValidatedOptions.default,
       component: (
         <StepTopicName
-          newTopicData={topicData}
-          onTopicNameChange={setTopicData}
+          topicName={topicName}
+          onTopicNameChange={setTopicName}
           topicNameValidated={topicNameValidated}
           onValidationCheck={setTopicNameValidated}
           invalidText={invalidText}
@@ -99,8 +108,8 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
       canJumpTo: topicData?.name.trim() !== "",
       component: (
         <StepPartitions
-          newTopicData={topicData}
-          onPartitionsChange={setTopicData}
+          partitions={partitions}
+          onPartitionsChange={setPartitions}
           availablePartitionLimit={availablePartitionLimit}
         />
       ),
@@ -144,23 +153,35 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
     );
     const transformedTopic: Topic = {
       ...topicData,
+      name: topicName,
+      partitions: partitions,
+      "cleanup.policy": cleanupPolicy,
       "retention.ms": {
         type: "ms",
-        value: tranformedValueInMilliseconds || BigInt(-1),
+        value:
+          radioTimeSelectValue == "unlimited"
+            ? BigInt(-1)
+            : tranformedValueInMilliseconds || BigInt(-1),
       },
-      "retention.bytes": { type: "bytes", value: tranformedValueInBytes },
+      "retention.bytes": {
+        type: "bytes",
+        value:
+          radioSizeSelectValue == "unlimited"
+            ? BigInt(-1)
+            : tranformedValueInBytes,
+      },
     };
     onSaveTopic(transformedTopic);
   };
 
   const onValidate: IWizardFooter["onValidate"] = (onNext) => {
-    if (topicData?.name.length < 1) {
+    if (topicName.length < 1) {
       setInvalidText(t("common:required"));
       setTopicNameValidated(ValidatedOptions.error);
     } else {
       setIsLoading(true);
 
-      const isTopicNameValid = checkTopicName(topicData?.name);
+      const isTopicNameValid = checkTopicName(topicName);
       if (!isTopicNameValid) {
         setIsLoading(false);
         setInvalidText(t("already_exists", { name: topicData?.name })),
@@ -188,8 +209,12 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
                 isCreate={true}
                 onConfirm={onTransform}
                 handleCancel={onCloseCreateTopic}
-                topicData={topicData}
-                setTopicData={setTopicData}
+                topicName={topicName}
+                onTopicNameChange={setTopicName}
+                partitions={partitions}
+                onPartitionsChange={setPartitions}
+                onCleanupPolicyChange={setCleanupPolicy}
+                cleanupPolicy={cleanupPolicy}
                 checkTopicName={checkTopicName}
                 availablePartitionLimit={availablePartitionLimit}
                 customRetentionSizeValue={customRetentionSizeValue}
@@ -200,6 +225,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
                 setRadioTimeSelectValue={setRadioTimeSelectValue}
                 radioSizeSelectValue={radioSizeSelectValue}
                 setRadioSizeSelectValue={setRadioSizeSelectValue}
+                topicData={topicData}
               />
             }
             {warningModalOpen && (
