@@ -7,6 +7,7 @@ import { ChangeKafkaOwner } from "ui";
 
 import type { ControlPlaneNavigationProps } from "../routesConsts";
 import { useControlPlaneGate } from "../useControlPlaneGate";
+import { useAlerts } from "../../../useAlerts";
 
 export const ChangeOwnerRoute: FunctionComponent<
   ControlPlaneNavigationProps
@@ -17,6 +18,8 @@ export const ChangeOwnerRoute: FunctionComponent<
   const { instance } = useControlPlaneGate();
   const { data: accounts } = useUserAccounts({});
   const updateInstance = useUpdateKafkaMutation();
+
+  const { addAlert } = useAlerts();
 
   const onCancel = useCallback(() => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
@@ -34,11 +37,25 @@ export const ChangeOwnerRoute: FunctionComponent<
           onSuccess: () => {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
             history.replace(instancesHref);
+            addAlert(
+              "success",
+              "Kafka instance owner changed",
+              true,
+              "change-owner-success",
+              `${newOwner} is now the owner of the ${instance.name} Kafka instance.`
+            );
           },
         }
       );
     },
-    [history, instance.id, instancesHref, updateInstance]
+    [
+      addAlert,
+      history,
+      instance.id,
+      instance.name,
+      instancesHref,
+      updateInstance,
+    ]
   );
 
   const savingState = ((): ChangeKafkaOwnerProps["savingState"] => {
