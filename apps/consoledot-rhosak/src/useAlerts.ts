@@ -8,12 +8,14 @@ export const useAlerts = () => {
     variant: "default" | "success" | "danger" | "warning" | "info" | undefined,
     message: string,
     dismissable: boolean | undefined,
-    id?: string | number | undefined
+    id?: string | number | undefined,
+    description?: string
   ) => {
     dispatch(
       addNotification({
         variant: variant,
         title: message,
+        description: description,
         dismissable: dismissable,
         id: id,
       })

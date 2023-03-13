@@ -1,8 +1,6 @@
 import { useCallback } from "react";
 import type { VoidFunctionComponent } from "react";
 import { EditPermissions } from "ui";
-import { addNotification } from "@redhat-cloud-services/frontend-components-notifications";
-import { useDispatch } from "react-redux";
 import {
   useAcls,
   useConsumerGroups,
@@ -18,11 +16,14 @@ import type {
 } from "../routesConsts";
 import { DataPlanePermissionsRoutePath } from "../routesConsts";
 import { useDataPlaneGate } from "../useDataPlaneGate";
+import { useAlerts } from "../../../useAlerts";
 
 export const PermissionsEditRoute: VoidFunctionComponent<
   DataPlanePermissionsNavigationProps
 > = ({ managePermissionsHref }) => {
   const { instance } = useDataPlaneGate();
+
+  const { addAlert } = useAlerts();
   const match = useRouteMatch<DataPlanePermissionsRouteParams>(
     DataPlanePermissionsRoutePath
   );
@@ -45,8 +46,6 @@ export const PermissionsEditRoute: VoidFunctionComponent<
     id: instance.id,
     adminUrl: instance.adminUrl,
   });
-
-  const dispatch = useDispatch();
 
   const consumerGroupsList = consumerGroups?.groups.map(
     (consumer) => consumer.groupId
@@ -83,14 +82,7 @@ export const PermissionsEditRoute: VoidFunctionComponent<
                 history.push(managePermissionsHref(instance.id));
               },
               onError: (_, message) => {
-                dispatch(
-                  addNotification({
-                    variant: "danger",
-                    title: message,
-                    dismissable: true,
-                    id: "save-error",
-                  })
-                );
+                addAlert("danger", message, true, "save-error");
               },
             })
         );
@@ -110,14 +102,7 @@ export const PermissionsEditRoute: VoidFunctionComponent<
               resourceType: aclToDelete.resourceType,
             },
             onError: (_, message) => {
-              dispatch(
-                addNotification({
-                  variant: "danger",
-                  title: message,
-                  dismissable: true,
-                  id: "delete-error",
-                })
-              );
+              addAlert("danger", message, true, "delete-error");
             },
             onSuccess: () => {
               //eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
@@ -128,7 +113,7 @@ export const PermissionsEditRoute: VoidFunctionComponent<
       }
     },
     [
-      dispatch,
+      addAlert,
       history,
       instance.adminUrl,
       instance.id,

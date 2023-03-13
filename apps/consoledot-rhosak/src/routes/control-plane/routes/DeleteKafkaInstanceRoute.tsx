@@ -6,12 +6,15 @@ import { DeleteKafkaInstance } from "ui";
 import { ReadyStatuses } from "ui-models/src/models/kafka";
 import type { ControlPlaneNavigationProps } from "../routesConsts";
 import { useControlPlaneGate } from "../useControlPlaneGate";
+import { useAlerts } from "../../../useAlerts";
 
 export const DeleteKafkaInstanceRoute: FunctionComponent<
   ControlPlaneNavigationProps
 > = ({ instancesHref }) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
+
+  const { addAlert } = useAlerts();
 
   const { instance } = useControlPlaneGate();
   const { mutateAsync, isLoading: isDeleting } = useDeleteKafkaMutation();
@@ -25,7 +28,12 @@ export const DeleteKafkaInstanceRoute: FunctionComponent<
     void mutateAsync({
       id: instance.id,
       onError: () => {
-        // TODO: alert
+        addAlert(
+          "danger",
+          "Something went wrong",
+          true,
+          "delete-kafka-instance-error"
+        );
       },
       onSuccess: () => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
