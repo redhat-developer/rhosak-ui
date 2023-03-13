@@ -5,10 +5,9 @@ import { useTopicGate } from "../useTopicGate";
 import { useUpdateTopicMutation } from "consoledot-api";
 import type { Topic } from "ui-models/src/models/topic";
 import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { DataPlaneTopicHeaderConnected } from "./DataPlaneTopicHeaderConnected";
 import { EditTopicProperties } from "ui";
-import { addNotification } from "@redhat-cloud-services/frontend-components-notifications";
+import { useAlerts } from "../../../useAlerts";
 
 export const TopicEditPropertiesRoute: VoidFunctionComponent<
   DataPlaneNavigationProps
@@ -16,15 +15,12 @@ export const TopicEditPropertiesRoute: VoidFunctionComponent<
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
   const { instance, topic } = useTopicGate();
-
+  const { addAlert } = useAlerts();
   if (instance.maxPartitions === undefined) {
     throw new Error(
       `CreateTopicRoute, unexpected maxPartition undefined for instance ${instance.name}`
     );
   }
-
-  const dispatch = useDispatch();
-
   const updateTopic = useUpdateTopicMutation();
 
   const onSave = useCallback(
@@ -42,16 +38,15 @@ export const TopicEditPropertiesRoute: VoidFunctionComponent<
         onSuccess: () => {
           //eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
           history.push(instanceTopicsHref(instance.id));
+          addAlert(
+            "success",
+            `The topic was successfully updated in the Kafka instance.`,
+            true,
+            "edit-topic-success"
+          );
         },
         onError: (_, message) => {
-          dispatch(
-            addNotification({
-              variant: "danger",
-              title: message,
-              dismissable: true,
-              id: "save-error",
-            })
-          );
+          addAlert("danger", message, true, "edit-topic-fail");
         },
       });
     },
@@ -62,7 +57,7 @@ export const TopicEditPropertiesRoute: VoidFunctionComponent<
       updateTopic,
       history,
       instanceTopicsHref,
-      dispatch,
+      addAlert,
     ]
   );
 
