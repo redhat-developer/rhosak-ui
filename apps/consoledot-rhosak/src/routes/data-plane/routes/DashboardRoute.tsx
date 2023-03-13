@@ -14,8 +14,10 @@ import { useCallback, useState } from "react";
 import type { MetricsProps } from "ui";
 import { Metrics } from "ui";
 import type { ControlPlaneNavigationProps } from "../../control-plane/routesConsts";
+import { ControlPlaneRouteRoot } from "../../control-plane/routesConsts";
 import { useDataPlaneGate } from "../useDataPlaneGate";
 import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
+import { useHistory } from "react-router-dom";
 
 export const DashboardRoute: VoidFunctionComponent<
   ControlPlaneNavigationProps
@@ -24,6 +26,9 @@ export const DashboardRoute: VoidFunctionComponent<
     instance,
     match: { params },
   } = useDataPlaneGate();
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const history = useHistory();
+
   const [hasUserAlreadyClosedAlert, setHasUserAlreadyClosedAlert] = useState(
     metricsIsLagAlertsDismissed()
   );
@@ -99,6 +104,13 @@ export const DashboardRoute: VoidFunctionComponent<
     [params.id, queryInstance, queryTopicMetrics, queryTopics]
   );
 
+  const onCreateTopic = useCallback(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+    history.push(
+      `${ControlPlaneRouteRoot}/${instance.id}/details/topics/create-topic`
+    );
+  }, [history, instance.id]);
+
   return (
     <>
       <DataPlaneHeaderConnected
@@ -106,9 +118,7 @@ export const DashboardRoute: VoidFunctionComponent<
         activeSection={"dashboard"}
       />
       <Metrics
-        onCreateTopic={() => {
-          /* TODO */
-        }}
+        onCreateTopic={onCreateTopic}
         onAlertClose={onAlertClose}
         hasUserAlreadyClosedAlert={hasUserAlreadyClosedAlert}
         getKafkaInstanceMetrics={getKafkaInstanceMetrics}
