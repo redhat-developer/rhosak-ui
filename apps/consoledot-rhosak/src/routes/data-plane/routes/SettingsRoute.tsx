@@ -6,12 +6,15 @@ import { Settings as SettingsComp } from "ui";
 import type { ControlPlaneNavigationProps } from "../../control-plane/routesConsts";
 import { useDataPlaneGate } from "../useDataPlaneGate";
 import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
+import { useAlerts } from "../../../useAlerts";
 
 export const SettingsRoute: VoidFunctionComponent<
   ControlPlaneNavigationProps
 > = ({ instancesHref }) => {
   const { instance } = useDataPlaneGate();
   const updateInstance = useUpdateKafkaMutation();
+
+  const { addAlert } = useAlerts();
 
   const onSubmitReAuthentication = useCallback<
     SettingsProps["onSubmitReAuthentication"]
@@ -22,12 +25,31 @@ export const SettingsRoute: VoidFunctionComponent<
           id: instance.id,
           updates: { reauthentication_enabled: reauthenticationEnabled },
         });
+        const status = reauthenticationEnabled ? "on" : "off";
+        addAlert(
+          "success",
+          `Connection re-authentication turned ${status} `,
+          true,
+          "reauthentication-enable-success"
+        );
         return reauthenticationEnabled;
       } catch {
+        addAlert(
+          "danger",
+          "Something went wrong",
+          true,
+          "reauthentication-enable-error",
+          "We're unable to update connection re-authentication at this time. Try again later."
+        );
         return instance.request.reauthentication_enabled;
       }
     },
-    [instance, updateInstance]
+    [
+      addAlert,
+      instance.id,
+      instance.request.reauthentication_enabled,
+      updateInstance,
+    ]
   );
   return (
     <>

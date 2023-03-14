@@ -1,5 +1,3 @@
-import { addNotification } from "@redhat-cloud-services/frontend-components-notifications";
-import type { AclBinding } from "@rhoas/kafka-instance-sdk";
 import {
   useAcls,
   useConsumerGroups,
@@ -9,9 +7,9 @@ import {
 } from "consoledot-api";
 import type { VoidFunctionComponent } from "react";
 import { useCallback } from "react";
-import { useDispatch } from "react-redux";
 import { useHistory, useRouteMatch } from "react-router-dom";
-import { EditPermissions } from "ui";
+import { AclBinding, EditPermissions } from "ui";
+import { useAlerts } from "../../../useAlerts";
 import {
   ControlPlaneRouteRoot,
   DedicatedControlPlaneRouteRoot,
@@ -27,6 +25,8 @@ export const PermissionsEditRoute: VoidFunctionComponent<
   DataPlanePermissionsNavigationProps
 > = ({ managePermissionsHref }) => {
   const { instance } = useDataPlaneGate();
+  const { addAlert } = useAlerts();
+
   const standardMatch = useRouteMatch<DataPlanePermissionsRouteParams>(
     DataPlanePermissionsRoutePath(ControlPlaneRouteRoot)
   );
@@ -54,10 +54,8 @@ export const PermissionsEditRoute: VoidFunctionComponent<
     adminUrl: instance.adminUrl,
   });
 
-  const dispatch = useDispatch();
-
   const consumerGroupsList = consumerGroups?.groups.map(
-    (consumer) => consumer.groupId
+    (consumer) => consumer.name
   );
   const topicsList = topics?.topics.map((topic) => topic.name);
   const { mutateAsync } = useDeletePermissionsMutation();
@@ -91,14 +89,7 @@ export const PermissionsEditRoute: VoidFunctionComponent<
                 history.push(managePermissionsHref(instance.id));
               },
               onError: (_, message) => {
-                dispatch(
-                  addNotification({
-                    variant: "danger",
-                    title: message,
-                    dismissable: true,
-                    id: "save-error",
-                  })
-                );
+                addAlert("danger", message, true, "save-error");
               },
             })
         );
@@ -118,14 +109,7 @@ export const PermissionsEditRoute: VoidFunctionComponent<
               resourceType: aclToDelete.resourceType,
             },
             onError: (_, message) => {
-              dispatch(
-                addNotification({
-                  variant: "danger",
-                  title: message,
-                  dismissable: true,
-                  id: "delete-error",
-                })
-              );
+              addAlert("danger", message, true, "delete-error");
             },
             onSuccess: () => {
               //eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
@@ -136,7 +120,7 @@ export const PermissionsEditRoute: VoidFunctionComponent<
       }
     },
     [
-      dispatch,
+      addAlert,
       history,
       instance.adminUrl,
       instance.id,

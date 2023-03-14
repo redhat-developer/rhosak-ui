@@ -28,6 +28,7 @@ export function useAcls(
 
       return fetchPermissions({
         getAcls: (...args) => api.getAcls(...args),
+        ...params,
       });
     },
     enabled: Boolean(params.adminUrl),

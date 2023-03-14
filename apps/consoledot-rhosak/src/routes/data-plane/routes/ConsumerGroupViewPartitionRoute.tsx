@@ -30,13 +30,13 @@ export const ConsumerGroupViewPartitionRoute: VoidFunctionComponent<
     history.push(
       `${viewPartitionConsumerGroupHref(
         instance.id,
-        consumerGroup.groupId
+        consumerGroup.name
       )}/delete`
     );
   }, [
     history,
     instance.id,
-    consumerGroup.groupId,
+    consumerGroup.name,
     viewPartitionConsumerGroupHref,
   ]);
 
@@ -45,13 +45,13 @@ export const ConsumerGroupViewPartitionRoute: VoidFunctionComponent<
     history.push(
       `${viewPartitionConsumerGroupHref(
         instance.id,
-        consumerGroup.groupId
+        consumerGroup.name
       )}/reset-offset`
     );
   }, [
     history,
     instance.id,
-    consumerGroup.groupId,
+    consumerGroup.name,
     viewPartitionConsumerGroupHref,
   ]);
 
@@ -62,7 +62,7 @@ export const ConsumerGroupViewPartitionRoute: VoidFunctionComponent<
       activeMembers={consumerGroup.activeConsumers!}
       partitionsWithLag={consumerGroup.laggingPartitions!}
       consumers={consumerGroup.consumers}
-      groupId={consumerGroup.groupId}
+      groupId={consumerGroup.name}
       onSelectDeleteConsumerGroup={onDelete}
       onSelectResetOffsetConsumerGroup={onClickResetOffset}
       isExpanded={true}

@@ -4,14 +4,14 @@ import { ConsumerGroups } from "./ConsumerGroups";
 
 const consumers: ConsumerGroup[] = [
   {
-    groupId: "consumer-123",
+    name: "consumer-123",
     activeConsumers: 1,
     laggingPartitions: 2,
     state: "CompletingRebalance",
     consumers: [],
   },
   {
-    groupId: "consumer-233",
+    name: "consumer-233",
     activeConsumers: 2,
     laggingPartitions: 3,
     state: "Stable",

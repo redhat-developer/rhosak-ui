@@ -40,7 +40,7 @@ export async function fetchConsumerGroups({
     sort
   );
   const groups = (response.data.items || []).map<ConsumerGroup>((t) => ({
-    groupId: t.groupId || "",
+    name: t.groupId || "",
     state: stateMapping[t.state as ConsumerGroupState],
     consumers: t.consumers,
     activeConsumers: t.metrics?.activeConsumers,
