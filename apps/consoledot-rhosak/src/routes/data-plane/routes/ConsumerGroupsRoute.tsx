@@ -33,15 +33,13 @@ export const ConsumerGroupsRoute: VoidFunctionComponent<
     [perPage, setPaginationQuery]
   );
 
-  const name = labels.fields.groupId;
-
   const consumerName = useURLSearchParamsChips(
     "consumer",
     resetPaginationQuery
   );
   const [isColumnSortable, sort, sortDirection] = useSortableSearchParams(
     KafkaConsumerGroupSortableColumns,
-    { name }
+    labels.fields
   );
   const { data } = useConsumerGroups({
     id: instance?.id,
@@ -99,7 +97,7 @@ export const ConsumerGroupsRoute: VoidFunctionComponent<
         consumerName={consumerName.chips}
         isRowSelected={() => false}
         isColumnSortable={isColumnSortable}
-        onDelete={(row) => onDeletConsumerGroup(row.groupId)}
+        onDelete={(row) => onDeletConsumerGroup(row.name)}
         onSearchConsumer={(value) => {
           consumerName.clear();
           consumerName.toggle(value);
@@ -108,8 +106,8 @@ export const ConsumerGroupsRoute: VoidFunctionComponent<
         onPageChange={setPagination}
         onRemoveConsumerChip={consumerName.clear}
         onRemoveConsumerChips={consumerName.clear}
-        onViewPartition={(row) => onViewPartition(row.groupId)}
-        onViewResetOffset={(row) => onClickResetOffset(row.groupId)}
+        onViewPartition={(row) => onViewPartition(row.name)}
+        onViewResetOffset={(row) => onClickResetOffset(row.name)}
       />
     </>
   );

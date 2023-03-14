@@ -17,8 +17,8 @@ type SubUnion<T, U extends T> = U;
 
 const Columns: SubUnion<
   ConsumerGroupField,
-  "groupId" | "activeConsumers" | "laggingPartitions" | "state"
->[] = ["groupId", "activeConsumers", "laggingPartitions", "state"];
+  "name" | "activeConsumers" | "laggingPartitions" | "state"
+>[] = ["name", "activeConsumers", "laggingPartitions", "state"];
 
 export type ConsumerGroupsProps<T extends ConsumerGroup> = {
   consumers: Array<T> | undefined;
@@ -75,18 +75,18 @@ export const ConsumerGroups = <T extends ConsumerGroup>({
             info={
               column === "laggingPartitions"
                 ? {
-                    popover: (
-                      <div>
-                        {t("consumerGroup.partitions_with_lag_description")}
-                      </div>
+                  popover: (
+                    <div>
+                      {t("consumerGroup.partitions_with_lag_description")}
+                    </div>
+                  ),
+                  ariaLabel: "partitions with lag",
+                  popoverProps: {
+                    headerContent: t(
+                      "consumerGroup.partitions_with_lag_name"
                     ),
-                    ariaLabel: "partitions with lag",
-                    popoverProps: {
-                      headerContent: t(
-                        "consumerGroup.partitions_with_lag_name"
-                      ),
-                    },
-                  }
+                  },
+                }
                 : undefined
             }
           >
@@ -98,8 +98,8 @@ export const ConsumerGroups = <T extends ConsumerGroup>({
             <Td key={key} dataLabel={labels.fields[column]}>
               {(() => {
                 switch (column) {
-                  case "groupId":
-                    return row.groupId;
+                  case "name":
+                    return row.name;
                   case "activeConsumers":
                     return row.activeConsumers;
                   case "laggingPartitions":
@@ -131,7 +131,7 @@ export const ConsumerGroups = <T extends ConsumerGroup>({
         )}
         isColumnSortable={isColumnSortable}
         filters={{
-          [labels.fields.groupId]: {
+          [labels.fields.name]: {
             type: "search",
             chips: consumerName,
             onSearch: onSearchConsumer,

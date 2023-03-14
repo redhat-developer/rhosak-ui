@@ -28,7 +28,7 @@ export const TopicConsumerGroupDeleteRoute: VoidFunctionComponent<
     void mutateAsync({
       instanceId: instance.id,
       adminUrl: instance.adminUrl!,
-      consumerGroupId: consumerGroup.groupId,
+      consumerGroupId: consumerGroup.name,
       onError: (_, message) => {
         addAlert("danger", message, true, "delete-consumer-group-error");
       },
@@ -39,7 +39,7 @@ export const TopicConsumerGroupDeleteRoute: VoidFunctionComponent<
         );
         addAlert(
           "success",
-          `Successfully deleted consumer group ${consumerGroup.groupId}`,
+          `Successfully deleted consumer group ${consumerGroup.name}`,
           true,
           "delete-consumer-group-success"
         );
@@ -49,7 +49,7 @@ export const TopicConsumerGroupDeleteRoute: VoidFunctionComponent<
     mutateAsync,
     instance.id,
     instance.adminUrl,
-    consumerGroup.groupId,
+    consumerGroup.name,
     addAlert,
     history,
     instanceTopicConsumerGroupsHref,
@@ -62,7 +62,7 @@ export const TopicConsumerGroupDeleteRoute: VoidFunctionComponent<
       onClose={onCancel}
       onDeleteConsumer={onDelete}
       state={consumerGroup.state}
-      consumerName={consumerGroup.groupId}
+      consumerName={consumerGroup.name}
       appendTo={() =>
         (document.getElementById("chrome-app-render-root") as HTMLElement) ||
         document.body

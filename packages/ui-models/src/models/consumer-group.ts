@@ -1,5 +1,5 @@
 export type ConsumerGroup = {
-  groupId: string;
+  name: string;
   state: State;
   consumers: Consumer[];
   laggingPartitions?: number;

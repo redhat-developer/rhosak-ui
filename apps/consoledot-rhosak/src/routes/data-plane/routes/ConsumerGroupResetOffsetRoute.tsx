@@ -43,7 +43,7 @@ export const ConsumerGroupResetOffsetRoute: VoidFunctionComponent<
       void mutateAsync({
         instanceId: instance.id,
         adminUrl: instance.adminUrl!,
-        consumerGroupId: consumerGroup.groupId,
+        consumerGroupId: consumerGroup.name,
         topic: topic,
         offset: offset,
         partitions: partitions,
@@ -67,7 +67,7 @@ export const ConsumerGroupResetOffsetRoute: VoidFunctionComponent<
       mutateAsync,
       instance.id,
       instance.adminUrl,
-      consumerGroup.groupId,
+      consumerGroup.name,
       addAlert,
       history,
       instanceConsumerGroupsHref,
@@ -78,7 +78,7 @@ export const ConsumerGroupResetOffsetRoute: VoidFunctionComponent<
     <ConsumerGroupResetOffset
       isModalOpen={true}
       state={consumerGroup.state}
-      groupId={consumerGroup.groupId}
+      groupId={consumerGroup.name}
       topics={getTopics()}
       consumers={consumerGroup.consumers}
       onClickClose={onCancel}
