@@ -8,7 +8,8 @@ import {
 import type { VoidFunctionComponent } from "react";
 import { useCallback } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
-import { AclBinding, EditPermissions } from "ui";
+import type { AclBinding } from "ui";
+import { EditPermissions } from "ui";
 import { useAlerts } from "../../../useAlerts";
 import {
   ControlPlaneRouteRoot,

@@ -5,18 +5,20 @@ import { useCallback, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { CreateDedicatedKafkaInstance } from "ui";
 import type { CreateDedicatedKafkaInstanceServices } from "ui/src/components/CreateKafkaInstance/machines";
-import type { ControlPlaneNavigationProps } from "../routesConsts";
-import { DedicatedControlPlaneRouteRoot } from "../routesConsts";
+import type { DedicatedControlPlaneNavigationProps } from "../routesConsts";
+import { DedicatedControlPlaneRoutePath } from "../routesConsts";
 import { useCreateDedicatedKafkaCallbacks } from "./useCreateDedicatedKafkaCallbacks";
+import { useSelfTermsReviewGate } from "./useSelfTermsReviewGate";
 
 export const CreateDedicatedKafkaInstanceRoute: FunctionComponent<
-  ControlPlaneNavigationProps
+  DedicatedControlPlaneNavigationProps
 > = ({ instancesHref }) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
   const callbacks = useCreateDedicatedKafkaCallbacks();
   const createDedicatedKafkaInstance = useCreateDedicatedKafkaMutation();
   const qsContext = useContext(QuickStartContext);
+  useSelfTermsReviewGate();
 
   const onClickKafkaOverview = () => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
@@ -35,7 +37,7 @@ export const CreateDedicatedKafkaInstanceRoute: FunctionComponent<
       const onOnSuccess = () => {
         onSuccess();
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-        history.push(DedicatedControlPlaneRouteRoot);
+        history.push(DedicatedControlPlaneRoutePath);
       };
       void createDedicatedKafkaInstance.mutateAsync({
         instance,

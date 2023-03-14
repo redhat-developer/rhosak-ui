@@ -92,6 +92,7 @@ export interface Typegen0 {
     | "configuring.form.valid"
     | "configuring.status"
     | "configuring.status.submitted"
+    | "configuring.status.submitting"
     | "configuring.status.unsubmitted"
     | "overQuota"
     | "saved"
@@ -122,7 +123,7 @@ export interface Typegen0 {
                       | "waitingForQuota";
                   };
               form?: "invalid" | "saved" | "saving" | "valid";
-              status?: "submitted" | "unsubmitted";
+              status?: "submitted" | "submitting" | "unsubmitted";
             };
       };
   tags:

@@ -1,4 +1,5 @@
 import { addNotification } from "@redhat-cloud-services/frontend-components-notifications";
+import type { ReactNode } from "react";
 import { useDispatch } from "react-redux";
 
 export const useAlerts = () => {
@@ -9,7 +10,7 @@ export const useAlerts = () => {
     message: string,
     dismissable: boolean | undefined,
     id?: string | number | undefined,
-    description?: string
+    description?: ReactNode
   ) => {
     dispatch(
       addNotification({

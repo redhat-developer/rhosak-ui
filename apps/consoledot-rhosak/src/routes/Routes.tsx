@@ -1,17 +1,19 @@
 import type { VoidFunctionComponent } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import {
   ControlPlaneRoutes,
   DedicatedControlPlaneRoutes,
   DrawerProvider,
 } from "./control-plane";
+import { DedicatedClustersRoute } from "./control-plane/routes/DedicatedClustersRoute";
 import {
   ControlPlaneRouteRoot,
+  DedicatedControlPlaneClustersPath,
+  DedicatedControlPlaneRoutePath,
   DedicatedControlPlaneRouteRoot,
 } from "./control-plane/routesConsts";
 import { DataPlaneRoutes } from "./data-plane";
 import { DataPlaneRoutePath } from "./data-plane/routesConsts";
-import { DefaultServiceRedirect } from "./DefaultServiceRedirect";
 import { OverviewRoute } from "./overview";
 
 export const Routes: VoidFunctionComponent = () => {
@@ -21,7 +23,7 @@ export const Routes: VoidFunctionComponent = () => {
         <OverviewRoute />
       </Route>
       <Route path={"/"} exact>
-        <DefaultServiceRedirect />
+        <Redirect to={DedicatedControlPlaneRoutePath} />
       </Route>
       <Route path={ControlPlaneRouteRoot}>
         <DrawerProvider>
@@ -32,6 +34,7 @@ export const Routes: VoidFunctionComponent = () => {
             render={({ match }) => (
               <DataPlaneRoutes
                 root={DataPlaneRoutePath(ControlPlaneRouteRoot)}
+                instancesHref={ControlPlaneRouteRoot}
                 instanceId={match.params.id}
               />
             )}
@@ -43,17 +46,23 @@ export const Routes: VoidFunctionComponent = () => {
           {/* don't move these routes around! the order is important */}
           <DedicatedControlPlaneRoutes />
           <Route
-            path={DataPlaneRoutePath(DedicatedControlPlaneRouteRoot)}
+            path={DataPlaneRoutePath(DedicatedControlPlaneRoutePath)}
             render={({ match }) => (
               <DataPlaneRoutes
-                root={DataPlaneRoutePath(DedicatedControlPlaneRouteRoot)}
+                root={DataPlaneRoutePath(DedicatedControlPlaneRoutePath)}
+                instancesHref={DedicatedControlPlaneRouteRoot}
                 instanceId={match.params.id}
               />
             )}
           />
         </DrawerProvider>
       </Route>
-      <Route path={""} exact></Route>
+      <Route path={DedicatedControlPlaneClustersPath}>
+        <DedicatedClustersRoute
+          instancesHref={DedicatedControlPlaneRoutePath}
+          clustersHref={DedicatedControlPlaneClustersPath}
+        />
+      </Route>
     </Switch>
   );
 };

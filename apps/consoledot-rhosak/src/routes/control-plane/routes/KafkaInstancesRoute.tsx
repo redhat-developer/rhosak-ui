@@ -1,10 +1,9 @@
 import { useKafkas } from "consoledot-api";
 import type { FunctionComponent } from "react";
 import type { ControlPlaneHeaderProps, KafkaInstancesProps } from "ui";
-import { KafkaInstances } from "ui";
+import { KafkaInstances, LegacyControlPlaneHeader } from "ui";
 import { ReadyStatuses } from "ui-models/src/models/kafka";
 import { useUserControlGate } from "../../../useUserControlGate";
-import { ConnectedControlPlaneHeader } from "./ConnectedControlPlaneHeader";
 import { useKafkaInstancesTable } from "./useKafkaInstancesTable";
 
 export type KafkaInstancesRoute = {
@@ -64,7 +63,7 @@ export const KafkaInstancesRoute: FunctionComponent<KafkaInstancesRoute> = ({
 
   return (
     <>
-      <ConnectedControlPlaneHeader activeSection={activeSection} />
+      <LegacyControlPlaneHeader />
       <KafkaInstances
         columns={"standard"}
         instances={data?.instances}

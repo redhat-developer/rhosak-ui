@@ -1,58 +1,39 @@
+import { Button } from "@patternfly/react-core";
 import { useDedicatedClusters, useKafkas } from "consoledot-api";
 import type { FunctionComponent } from "react";
+import { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import type { ControlPlaneHeaderProps, KafkaInstancesProps } from "ui";
-import {
-  EmptyStateNoDedicatedClusters,
-  EmptyStateNoDedicatedEntitlement,
-  KafkaInstances,
-} from "ui";
+import { EmptyStateNoDedicatedEntitlement, KafkaInstances } from "ui";
 import { ReadyStatuses } from "ui-models/src/models/kafka";
-import { useDedicatedGate } from "../../useDedicatedGate";
+import { EmptyStateNoDedicatedInstances } from "ui/src/components/KafkaInstances/components";
+import { useAlerts } from "../../../useAlerts";
+import type { DedicatedControlPlaneNavigationProps } from "../routesConsts";
 import { ConnectedControlPlaneHeader } from "./ConnectedControlPlaneHeader";
 import { useKafkaInstancesTable } from "./useKafkaInstancesTable";
 
 export type KafkaInstancesRoute = {
   activeSection: ControlPlaneHeaderProps["activeSection"];
-  instancesHref: string;
   instanceSelectedHref: (id: string) => string;
   instanceCreationHref: string;
   instanceDeletionHref: (id: string) => string;
   instanceChangeOwnerHref: (id: string) => string;
-} & Pick<KafkaInstancesProps, "getUrlForInstance">;
+} & Pick<KafkaInstancesProps, "getUrlForInstance"> &
+  DedicatedControlPlaneNavigationProps;
 
 export const DedicatedKafkaInstancesRoute: FunctionComponent<
-  KafkaInstancesRoute
-> = (props) => {
-  const dedicatedGate = useDedicatedGate();
-  const noEntitlement = dedicatedGate === "standard-only";
-
-  if (noEntitlement) {
-    return (
-      <>
-        <ConnectedControlPlaneHeader activeSection={props.activeSection} />
-        <EmptyStateNoDedicatedEntitlement
-          onQuickstartGuide={() => {
-            /* TODO */
-          }}
-        />
-      </>
-    );
-  }
-
-  return <DedicatedKafkaInstancesWithEntitlementRoute {...props} />;
-};
-
-export const DedicatedKafkaInstancesWithEntitlementRoute: FunctionComponent<
   KafkaInstancesRoute
 > = ({
   activeSection,
   instancesHref,
+  clustersHref,
   instanceDeletionHref,
   instanceSelectedHref,
   instanceCreationHref,
   instanceChangeOwnerHref,
   getUrlForInstance,
 }) => {
+  const { addAlert } = useAlerts();
   const {
     selectedInstance,
     page,
@@ -89,63 +70,111 @@ export const DedicatedKafkaInstancesWithEntitlementRoute: FunctionComponent<
     direction: sortDirection,
     deployment: "clusters",
   });
+  const { data: standardInstances } = useKafkas({
+    page: 1,
+    perPage: 1,
+    name: [],
+    owner: [],
+    status: [],
+    sort: "createdAt",
+    direction: "desc",
+    deployment: "standard",
+  });
+  const didAlertForLegacyInstances = useRef(false);
 
   const hasReadyClusters = dedicatedClusters.isLoading
-    ? true // let's use the table default loading logic until we know if we have ready clusters
+    ? false
     : (dedicatedClusters.data?.clusters || []).filter(
         (c) => c.status === "ready"
       ).length > 0;
 
+  useEffect(() => {
+    if (
+      standardInstances &&
+      standardInstances.count > 0 &&
+      didAlertForLegacyInstances.current === false
+    ) {
+      didAlertForLegacyInstances.current = true;
+      addAlert(
+        "info",
+        "You have legacy instances",
+        true,
+        "legacy-instance",
+        <>
+          Instances created before March 15th, 2023 are visible{" "}
+          <Link to={"../legacy"}>here</Link>. Please note that you can't create
+          any more instances of that kind.
+          <br />
+          <Button
+            component={() => <Link to={"../legacy"}>Take me there</Link>}
+          />
+        </>
+      );
+    }
+  }, [addAlert, standardInstances]);
+
   return (
     <>
-      <ConnectedControlPlaneHeader activeSection={activeSection} />
-      {hasReadyClusters ? (
-        <KafkaInstances
-          columns={"dedicated"}
-          instances={data?.instances}
-          itemCount={data?.count}
-          page={page}
-          perPage={perPage}
-          names={namesChips.chips}
-          owners={ownersChips.chips}
-          statuses={statusesChips.chips}
-          isColumnSortable={isColumnSortable}
-          onPageChange={setPagination}
-          onSearchName={namesChips.add}
-          onRemoveNameChip={namesChips.remove}
-          onRemoveNameChips={namesChips.clear}
-          onSearchOwner={ownersChips.add}
-          onRemoveOwnerChip={ownersChips.remove}
-          onRemoveOwnerChips={ownersChips.clear}
-          onSearchStatus={statusesChips.toggle}
-          onRemoveStatusChip={statusesChips.remove}
-          onRemoveStatusChips={statusesChips.clear}
-          onClearAllFilters={onClearAllFilters}
-          onChangeOwner={onChangeOwner}
-          onDelete={onDelete}
-          onCreate={onCreate}
-          isRowSelected={({ row }) => row.id === selectedInstance}
-          getUrlForInstance={getUrlForInstance}
-          onDetails={onDetailsClick}
-          onConnection={onConnectionsClick}
-          onClickConnectionTabLink={() => {
-            /* TODO */
-          }}
-          onClickSupportLink={() => {
-            /* TODO */
-          }}
-          onInstanceLinkClick={() => {
-            /* TODO */
-          }}
-          onQuickstartGuide={onQuickstartGuide}
-          canHaveInstanceLink={({ status }) => ReadyStatuses.includes(status)}
-          canOpenConnection={({ status }) => ReadyStatuses.includes(status)}
-          canChangeOwner={() => true}
-          canDelete={() => true}
-        />
-      ) : (
-        <EmptyStateNoDedicatedClusters onQuickstartGuide={onQuickstartGuide} />
-      )}
+      <ConnectedControlPlaneHeader
+        activeSection={activeSection}
+        instancesHref={instancesHref}
+        clustersHref={clustersHref}
+      />
+      <KafkaInstances
+        columns={"dedicated"}
+        instances={data?.instances}
+        itemCount={data?.count}
+        page={page}
+        perPage={perPage}
+        names={namesChips.chips}
+        owners={ownersChips.chips}
+        statuses={statusesChips.chips}
+        isColumnSortable={isColumnSortable}
+        onPageChange={setPagination}
+        onSearchName={namesChips.add}
+        onRemoveNameChip={namesChips.remove}
+        onRemoveNameChips={namesChips.clear}
+        onSearchOwner={ownersChips.add}
+        onRemoveOwnerChip={ownersChips.remove}
+        onRemoveOwnerChips={ownersChips.clear}
+        onSearchStatus={statusesChips.toggle}
+        onRemoveStatusChip={statusesChips.remove}
+        onRemoveStatusChips={statusesChips.clear}
+        onClearAllFilters={onClearAllFilters}
+        onChangeOwner={onChangeOwner}
+        onDelete={onDelete}
+        onCreate={onCreate}
+        isRowSelected={({ row }) => row.id === selectedInstance}
+        getUrlForInstance={getUrlForInstance}
+        onDetails={onDetailsClick}
+        onConnection={onConnectionsClick}
+        onClickConnectionTabLink={() => {
+          /* TODO */
+        }}
+        onClickSupportLink={() => {
+          /* TODO */
+        }}
+        onInstanceLinkClick={() => {
+          /* TODO */
+        }}
+        onQuickstartGuide={onQuickstartGuide}
+        canHaveInstanceLink={({ status }) => ReadyStatuses.includes(status)}
+        canOpenConnection={({ status }) => ReadyStatuses.includes(status)}
+        canChangeOwner={() => true}
+        canDelete={() => true}
+        emptyStateNoData={
+          hasReadyClusters ? (
+            <EmptyStateNoDedicatedInstances
+              onCreate={onCreate}
+              onQuickstartGuide={onQuickstartGuide}
+            />
+          ) : (
+            <EmptyStateNoDedicatedEntitlement
+              onQuickstartGuide={onQuickstartGuide}
+            />
+          )
+        }
+      />
     </>
   );
 };
