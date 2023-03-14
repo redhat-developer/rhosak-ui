@@ -57,6 +57,4 @@ export type CustomRetentionUnit =
 
 export type RadioSelectType = "day" | "week" | "custom" | "unlimited";
 
-export type CleanupPolicyType = "delete" | "compact" | "delete,compact";
-
 export type RetentionSizeRadioSelect = "unlimited" | "custom";

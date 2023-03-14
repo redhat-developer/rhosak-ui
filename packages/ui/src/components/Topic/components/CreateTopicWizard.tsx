@@ -23,7 +23,6 @@ import { PartitionLimitWarning } from "./PartitionLimitWarning";
 import { retentionTimeTransformer } from "./retentionTimeTransformer";
 import { TopicAdvancePage } from "./TopicAdvancePage";
 import type {
-  CleanupPolicyType,
   CustomRetentionSizeSelect,
   CustomSelect,
   RadioSelectType,
@@ -31,7 +30,6 @@ import type {
 } from "./types";
 import { retentionSizeTransformer } from "./retentionSizeTransformer";
 import type { AZ } from "ui-models/src/models/kafka";
-import type { TopicPartition } from "ui-models/src/models/topic-partition";
 
 export type CreateTopicWizardProps = {
   isSwitchChecked: boolean;
@@ -64,11 +62,11 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
     useState<CustomRetentionSizeSelect>({ unit: "bytes", value: 1 });
 
   const [topicName, setTopicName] = useState<string>(topicData.name);
-  const [cleanupPolicy, setCleanupPolicy] = useState<CleanupPolicyType>(
-    topicData["cleanup.policy"]
-  );
-  const [partitions, setPartitions] = useState<TopicPartition[]>(
-    topicData.partitions
+  const [cleanupPolicy, setCleanupPolicy] = useState<
+    "delete" | "compact" | "delete,compact"
+  >(topicData["cleanup.policy"]);
+  const [partitions, setPartitions] = useState<number>(
+    topicData.partitions.length
   );
   const [topicNameValidated, setTopicNameValidated] =
     useState<ValidatedOptions>(ValidatedOptions.default);
@@ -151,10 +149,13 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
     const tranformedValueInBytes = retentionSizeTransformer(
       customRetentionSizeValue
     );
+    const updatedPartitions = Array(partitions)
+      .fill(null)
+      .map((_, index) => ({ partition: index }));
     const transformedTopic: Topic = {
       ...topicData,
       name: topicName,
-      partitions: partitions,
+      partitions: updatedPartitions,
       "cleanup.policy": cleanupPolicy,
       "retention.ms": {
         type: "ms",

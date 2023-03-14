@@ -13,7 +13,7 @@ import convert from "convert";
 import type React from "react";
 import type { Topic } from "ui-models/src/models/topic";
 import { TextWithLabelPopover } from "./TextWithLabelPopover";
-import type { CleanupPolicyType, IDropdownOption } from "./types";
+import type { IDropdownOption } from "./types";
 import type { TopicConfig } from "ui-models/src/models/topic-config";
 
 export type LogProps = {
@@ -21,8 +21,8 @@ export type LogProps = {
   defaultDeleteRetentionTime: bigint;
   defaultMinCleanbleRatio: number;
   defaultMinimumCompactionLagTime: bigint;
-  cleanupPolicy: CleanupPolicyType;
-  setCleanupPolicy: (value: CleanupPolicyType) => void;
+  cleanupPolicy: "delete" | "compact" | "delete,compact";
+  setCleanupPolicy: (value: "delete" | "compact" | "delete,compact") => void;
 };
 
 const Log: React.FC<LogProps> = ({

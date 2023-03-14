@@ -10,12 +10,10 @@ import {
 } from "@patternfly/react-core";
 import { useTranslation } from "@rhoas/app-services-ui-components";
 import type React from "react";
-import type { Topic } from "ui-models/src/models/topic";
-import type { TopicPartition } from "ui-models/src/models/topic-partition";
 
 export type StepPartitionsProps = {
-  partitions: TopicPartition[];
-  onPartitionsChange: (value: TopicPartition[]) => void;
+  partitions: number;
+  onPartitionsChange: (value: number) => void;
   availablePartitionLimit: number;
 };
 
@@ -27,24 +25,22 @@ export const StepPartitions: React.FC<StepPartitionsProps> = ({
   const { t } = useTranslation(["create-topic"]);
 
   const handleOnPlus = () => {
-    const newPartitions = [...partitions, { partition: partitions.length }];
-    onPartitionsChange(newPartitions);
+    onPartitionsChange(partitions + 1);
   };
 
   const handleOnMinus = () => {
-    const newPartitions = partitions.slice(0, partitions.length - 1);
-    onPartitionsChange(newPartitions);
+    onPartitionsChange(partitions - 1);
   };
 
   const handlePartitionTouchspinChange: NumberInputProps["onChange"] = (
     event
   ) => {
     const newPartitionCount = Number((event.target as HTMLInputElement).value);
-    const newPartitions = Array.from(
-      { length: newPartitionCount },
-      (_, i) => partitions[i] ?? { partition: i }
-    );
-    onPartitionsChange(newPartitions);
+    if (newPartitionCount > -1) onPartitionsChange(newPartitionCount);
+  };
+
+  const onBlur = () => {
+    if (partitions < 1) onPartitionsChange(1);
   };
 
   return (
@@ -59,25 +55,24 @@ export const StepPartitions: React.FC<StepPartitionsProps> = ({
           label="Partitions"
           fieldId="step-topic-name-form"
           helperText={
-            partitions.length >= availablePartitionLimit
+            partitions >= availablePartitionLimit
               ? t("partitions_warning")
               : t("partition_helper_text")
           }
           validated={
-            partitions.length >= availablePartitionLimit ? "warning" : "default"
+            partitions >= availablePartitionLimit ? "warning" : "default"
           }
           isRequired
         >
           <NumberInput
             onPlus={handleOnPlus}
             onMinus={handleOnMinus}
-            value={
-              Number(partitions.length) == 0 ? "" : Number(partitions.length)
-            }
+            value={partitions == 0 ? "" : partitions}
             inputName="input"
             onChange={handlePartitionTouchspinChange}
             widthChars={20}
             min={1}
+            onBlur={onBlur}
           />
         </FormGroup>
       </FormSection>
