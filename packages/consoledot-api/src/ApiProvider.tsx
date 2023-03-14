@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { isReactQueryDevToolsEanbled } from "local-storage-helpers";
+import { isDevToolsEnabled } from "local-storage-helpers";
 import type { FunctionComponent } from "react";
 import { createContext, lazy, Suspense, useContext } from "react";
 
@@ -27,7 +27,7 @@ export const ApiProvider: FunctionComponent<ApiContextProps> = ({
   children,
   ...context
 }) => {
-  const showDevTools = isReactQueryDevToolsEanbled();
+  const showDevTools = isDevToolsEnabled();
   return (
     <QueryClientProvider client={queryClient}>
       <ApiContext.Provider value={context}>

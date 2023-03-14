@@ -5,7 +5,7 @@ import { memo, useLayoutEffect } from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router } from "react-router-dom";
 import logger from "redux-logger";
-import { I18nProvider } from "ui";
+import { I18nProvider, useXStateInspector } from "ui";
 import App from "./App";
 import { QuickstartLoader } from "./QuickstartLoader";
 import { init } from "./store";
@@ -25,6 +25,7 @@ const store = init(
 
 const AppEntry = memo(() => {
   const { auth } = useChrome();
+  const XStateInspector = useXStateInspector();
 
   useLayoutEffect(() => {
     const el = document.querySelector<HTMLDivElement>(
@@ -50,6 +51,7 @@ const AppEntry = memo(() => {
       >
         <Router basename={getBaseName(window.location.pathname)}>
           <I18nProvider lng={"en"}>
+            <XStateInspector />
             <App />
           </I18nProvider>
         </Router>

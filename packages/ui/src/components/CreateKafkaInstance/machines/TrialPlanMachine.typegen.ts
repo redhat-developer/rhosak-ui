@@ -86,6 +86,7 @@ export interface Typegen0 {
     | "configuring.form.valid"
     | "configuring.status"
     | "configuring.status.submitted"
+    | "configuring.status.submitting"
     | "configuring.status.unsubmitted"
     | "regionsUnavailable"
     | "saved"
@@ -110,7 +111,7 @@ export interface Typegen0 {
                     size?: "error" | "idle" | "loading" | "valid" | "validate";
                   };
               form?: "invalid" | "saved" | "saving" | "valid";
-              status?: "submitted" | "unsubmitted";
+              status?: "submitted" | "submitting" | "unsubmitted";
             };
       };
   tags:
