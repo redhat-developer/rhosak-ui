@@ -7,7 +7,7 @@ export function useConsumerGroupLabels() {
   const fields: {
     [field in ConsumerGroupField]: string;
   } = {
-    groupId: t("consumerGroup.consumer_group_id"),
+    name: t("consumerGroup.consumer_group_id"),
     activeConsumers: t("consumerGroup.active_members"),
     laggingPartitions: t("consumerGroup.partitions_with_lag"),
     state: t("consumerGroup.state_header"),

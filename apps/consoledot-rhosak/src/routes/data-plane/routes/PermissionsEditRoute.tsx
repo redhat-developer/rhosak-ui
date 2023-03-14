@@ -48,7 +48,7 @@ export const PermissionsEditRoute: VoidFunctionComponent<
   });
 
   const consumerGroupsList = consumerGroups?.groups.map(
-    (consumer) => consumer.groupId
+    (consumer) => consumer.name
   );
   const topicsList = topics?.topics.map((topic) => topic.name);
   const { mutateAsync } = useDeletePermissionsMutation();

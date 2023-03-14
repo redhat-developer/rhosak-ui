@@ -10,7 +10,7 @@ import type {
 export function consumerGroupTransformer(t: ConsumerGroupApi): ConsumerGroup {
   const state = stateMapping[t.state as ConsumerGroupState];
   return {
-    groupId: t.groupId,
+    name: t.groupId,
     state: state,
     consumers: t.consumers.map<Consumer>((consumer) => ({
       groupId: consumer.groupId,
