@@ -49,7 +49,7 @@ describe("Consumer group table", () => {
 
     expect(onDelete).toHaveBeenCalledWith(
       expect.objectContaining({
-        groupId: "consumer-123",
+        name: "consumer-123",
         activeConsumers: 1,
         laggingPartitions: 2,
         state: "CompletingRebalance",
@@ -57,7 +57,7 @@ describe("Consumer group table", () => {
     );
     expect(onClickResetoffset).toHaveBeenCalledWith(
       expect.objectContaining({
-        groupId: "consumer-123",
+        name: "consumer-123",
         activeConsumers: 1,
         laggingPartitions: 2,
         state: "CompletingRebalance",
@@ -65,7 +65,7 @@ describe("Consumer group table", () => {
     );
     expect(onClickPartitionoffset).toHaveBeenCalledWith(
       expect.objectContaining({
-        groupId: "consumer-123",
+        name: "consumer-123",
         activeConsumers: 1,
         laggingPartitions: 2,
         state: "CompletingRebalance",
@@ -85,7 +85,7 @@ describe("Consumer group table", () => {
     expect(onClickResetoffset).toHaveBeenCalledTimes(2);
     expect(onDelete).toHaveBeenLastCalledWith(
       expect.objectContaining({
-        groupId: "consumer-233",
+        name: "consumer-233",
         activeConsumers: 2,
         laggingPartitions: 3,
         state: "Stable",
@@ -93,7 +93,7 @@ describe("Consumer group table", () => {
     );
     expect(onClickResetoffset).toHaveBeenCalledWith(
       expect.objectContaining({
-        groupId: "consumer-233",
+        name: "consumer-233",
         activeConsumers: 2,
         laggingPartitions: 3,
         state: "Stable",
@@ -101,7 +101,7 @@ describe("Consumer group table", () => {
     );
     expect(onClickPartitionoffset).toHaveBeenCalledWith(
       expect.objectContaining({
-        groupId: "consumer-233",
+        name: "consumer-233",
         activeConsumers: 2,
         laggingPartitions: 3,
         state: "Stable",
