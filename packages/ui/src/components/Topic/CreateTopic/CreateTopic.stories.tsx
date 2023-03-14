@@ -11,6 +11,8 @@ export default {
     kafkaInstanceLink: "kafka-instance-link",
     availablePartitionLimit: 10,
     availabilityZone: "single",
+    checkTopicName: (topicName) =>
+      !["test", "my-test", "test-topic"].some((m) => m == topicName),
     initialTopicValues: {
       name: "",
       partitions: [{ partition: 1, id: 1 }],
