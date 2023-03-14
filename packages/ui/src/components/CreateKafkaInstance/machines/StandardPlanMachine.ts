@@ -114,8 +114,11 @@ export const StandardPlanMachine =
                 unsubmitted: {
                   tags: "unsubmitted",
                 },
-                submitted: {
+                submitting: {
                   entry: "triggerSubmit",
+                  always: ["submitted"],
+                },
+                submitted: {
                   tags: "submitted",
                 },
               },
@@ -123,7 +126,7 @@ export const StandardPlanMachine =
                 create: {
                   description:
                     "Save is enabled all the time, if it's clicked before the form is completely filled out we should show the validation for all errored fields",
-                  target: ".submitted",
+                  target: ".submitting",
                 },
               },
             },

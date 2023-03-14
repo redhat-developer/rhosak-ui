@@ -1,10 +1,10 @@
 import { QuickStartContext } from "@patternfly/quickstarts";
-import type { CreateKafkaInstanceServices } from "@rhoas/app-services-ui-components";
-import { CreateKafkaInstance } from "@rhoas/app-services-ui-components";
 import { useCreateKafkaMutation } from "consoledot-api";
 import type { FunctionComponent } from "react";
 import { useCallback, useContext } from "react";
 import { useHistory } from "react-router-dom";
+import type { CreateKafkaInstanceServices } from "ui";
+import { CreateKafkaInstance } from "ui";
 import type { ControlPlaneNavigationProps } from "../routesConsts";
 import { ControlPlaneRouteRoot } from "../routesConsts";
 import { useCreateKafkaCallbacks } from "./useCreateKafkaCallbacks";

@@ -1,7 +1,7 @@
 const REACT_QUERY_DEVTOOLS = "mas.devtools";
 const METRICS_LAG_ALERT = "mas.rhosak.metrics.lag-alert-closed";
 
-export function isReactQueryDevToolsEanbled() {
+export function isDevToolsEnabled() {
   return localStorage.getItem(REACT_QUERY_DEVTOOLS) === "true";
 }
 
