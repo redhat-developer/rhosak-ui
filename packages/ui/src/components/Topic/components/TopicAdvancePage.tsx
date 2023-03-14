@@ -18,7 +18,7 @@ import type {
   CustomSelect,
   RadioSelectType,
   RetentionSizeRadioSelect,
-} from "..";
+} from "./types";
 import { Cleanup } from "./Cleanup";
 import { CoreConfiguration } from "./CoreConfiguration";
 import { Flush } from "./Flush";
@@ -27,20 +27,19 @@ import { Message } from "./Message";
 import { Replication } from "./Replication";
 import { TopicAdvanceIndex } from "./TopicAdvanceIndex";
 import { TopicAdvanceJumpLinks } from "./TopicAdvanceJumpLinks";
+import type { CleanupPolicy } from "ui-models/src/types";
 
 export type TopicAdvancePageProps = {
   isCreate: boolean;
-  onConfirm: (data: Topic) => void;
+  onConfirm: () => void;
   handleCancel?: () => void;
   topicData: Topic;
   topicName: string;
   onTopicNameChange: (value: string) => void;
   partitions: number;
   onPartitionsChange: (value: number) => void;
-  cleanupPolicy: "delete" | "compact" | "delete,compact";
-  onCleanupPolicyChange: (
-    value: "delete" | "compact" | "delete,compact"
-  ) => void;
+  cleanupPolicy: CleanupPolicy;
+  onCleanupPolicyChange: (value: CleanupPolicy) => void;
   checkTopicName?: (value: string) => boolean;
   availablePartitionLimit: number;
   customRetentionSizeValue: CustomRetentionSizeSelect;
@@ -101,10 +100,14 @@ export const TopicAdvancePage: React.FunctionComponent<
           setIsLoading(false);
           setInvalidText(t("already_exists", { name: topicName })),
             setTopicValidated(ValidatedOptions.error);
-        } else onConfirm(topicData);
+        } else {
+          onConfirm();
+          setIsLoading(false);
+        }
       }
     } else {
-      onConfirm(topicData);
+      setIsLoading(false);
+      onConfirm();
     }
   };
   return (

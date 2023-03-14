@@ -3,9 +3,9 @@ import { useCallback } from "react";
 import type { DataPlaneNavigationProps } from "../routesConsts";
 import { useTopicGate } from "../useTopicGate";
 import { useUpdateTopicMutation } from "consoledot-api";
-import type { Topic } from "ui-models/src/models/topic";
 import { useHistory } from "react-router-dom";
 import { DataPlaneTopicHeaderConnected } from "./DataPlaneTopicHeaderConnected";
+import type { TopicForm } from "ui";
 import { EditTopicProperties } from "ui";
 import { useAlerts } from "../../../useAlerts";
 
@@ -24,7 +24,7 @@ export const TopicEditPropertiesRoute: VoidFunctionComponent<
   const updateTopic = useUpdateTopicMutation();
 
   const onSave = useCallback(
-    (topicData: Topic) => {
+    (topicData: TopicForm) => {
       if (instance.adminUrl === undefined) {
         throw new Error(
           `EditTopicRoute, adminUrl undefined for instance ${instance.name}`

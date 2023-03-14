@@ -1,4 +1,4 @@
-import type { Bytes, Milliseconds } from "../types";
+import type { Bytes, Milliseconds, CleanupPolicy } from "../types";
 
 /** Kafka topic configs https://kafka.apache.org/documentation/#topicconfigs */
 
@@ -52,7 +52,7 @@ import type { Bytes, Milliseconds } from "../types";
  */
 
 export type UserEditable = {
-  "cleanup.policy": "delete" | "compact" | "delete,compact";
+  "cleanup.policy": CleanupPolicy;
   "delete.retention.ms": Milliseconds;
   "max.compaction.lag.ms": Milliseconds;
   "max.message.bytes": Bytes;

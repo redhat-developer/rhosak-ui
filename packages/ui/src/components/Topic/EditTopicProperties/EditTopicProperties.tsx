@@ -12,14 +12,13 @@ import type {
   TimeUnit,
 } from "../../";
 import { bytesToMemorySize, millisecondsToTime } from "../../KafkaTopics/types";
-import type { CustomRetentionUnit } from "../components/types";
-import { retentionSizeTransformer } from "../components/retentionSizeTransformer";
-import { retentionTimeTransformer } from "../components/retentionTimeTransformer";
+import type { CustomRetentionUnit, TopicForm } from "../components/types";
+import type { CleanupPolicy } from "ui-models/src/types";
 
 export type EditTopicPropertiesProps = {
   topic: Topic;
   onCancel: () => void;
-  onSave: (data: Topic) => void;
+  onSave: (data: TopicForm) => void;
   availablePartitionLimit: number;
 };
 
@@ -63,48 +62,34 @@ export const EditTopicProperties: FunctionComponent<
       topic["retention.bytes"].value == BigInt(-1) ? "unlimited" : "custom"
     );
   const [topicName, setTopicName] = useState<string>(topic.name);
-  const [cleanupPolicy, setCleanupPolicy] = useState<
-    "delete" | "compact" | "delete,compact"
-  >(topic["cleanup.policy"]);
+  const [cleanupPolicy, setCleanupPolicy] = useState<CleanupPolicy>(
+    topic["cleanup.policy"]
+  );
   const [partitions, setPartitions] = useState<number>(topic.partitions.length);
 
   const [warningModalOpen, setWarningModalOpen] = useState<boolean>(false);
 
-  const onSaveTopic = (transformedTopic: Topic) => {
+  const onConfirmSave = () => {
     if (partitions >= availablePartitionLimit) setWarningModalOpen(true);
-    else onSave(transformedTopic);
+    else onTransform();
   };
 
   const onTransform = () => {
-    const tranformedValueInMilliseconds =
-      retentionTimeTransformer(customTimeValue);
-    const tranformedValueInBytes = retentionSizeTransformer(
-      customRetentionSizeValue
-    );
-    const updatedPartitions = Array(partitions)
-      .fill(null)
-      .map((_, index) => ({ partition: index }));
-    const transformedTopic: Topic = {
-      ...topic,
+    const topicValues: TopicForm = {
       name: topicName,
-      partitions: updatedPartitions,
-      "cleanup.policy": cleanupPolicy,
-      "retention.ms": {
-        type: "ms",
-        value:
-          radioTimeSelectValue == "unlimited"
-            ? BigInt(-1)
-            : tranformedValueInMilliseconds || BigInt(-1),
-      },
-      "retention.bytes": {
-        type: "bytes",
-        value:
-          radioSizeSelectValue == "unlimited"
-            ? BigInt(-1)
-            : tranformedValueInBytes,
-      },
+      partitions: partitions,
+      retentionTime:
+        radioTimeSelectValue == "unlimited"
+          ? { value: -1, unit: "unlimited" }
+          : customTimeValue,
+      retentionSize:
+        radioSizeSelectValue == "unlimited"
+          ? { value: -1, unit: "unlimited" }
+          : customRetentionSizeValue,
+      cleanupPolicy: cleanupPolicy,
     };
-    onSaveTopic(transformedTopic);
+
+    onSave(topicValues);
   };
 
   return (
@@ -116,7 +101,7 @@ export const EditTopicProperties: FunctionComponent<
     >
       <TopicAdvancePage
         isCreate={false}
-        onConfirm={onTransform}
+        onConfirm={onConfirmSave}
         handleCancel={onCancel}
         topicData={topic}
         topicName={topicName}
@@ -138,7 +123,7 @@ export const EditTopicProperties: FunctionComponent<
       {warningModalOpen && (
         <PartitionLimitWarning
           topicData={topic}
-          onSave={onSave}
+          onSave={onTransform}
           isModalOpen={warningModalOpen}
           setIsModalOpen={setWarningModalOpen}
         />

@@ -14,15 +14,15 @@ import type React from "react";
 import type { Topic } from "ui-models/src/models/topic";
 import { TextWithLabelPopover } from "./TextWithLabelPopover";
 import type { IDropdownOption } from "./types";
-import type { TopicConfig } from "ui-models/src/models/topic-config";
+import type { CleanupPolicy } from "ui-models/src/types";
 
 export type LogProps = {
   topicData: Topic;
   defaultDeleteRetentionTime: bigint;
   defaultMinCleanbleRatio: number;
   defaultMinimumCompactionLagTime: bigint;
-  cleanupPolicy: "delete" | "compact" | "delete,compact";
-  setCleanupPolicy: (value: "delete" | "compact" | "delete,compact") => void;
+  cleanupPolicy: CleanupPolicy;
+  setCleanupPolicy: (value: CleanupPolicy) => void;
 };
 
 const Log: React.FC<LogProps> = ({
@@ -57,7 +57,7 @@ const Log: React.FC<LogProps> = ({
   ];
 
   const onSelectOption = (value: string) => {
-    setCleanupPolicy(value as TopicConfig["cleanup.policy"]);
+    setCleanupPolicy(value as CleanupPolicy);
   };
 
   return (

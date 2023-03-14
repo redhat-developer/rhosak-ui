@@ -1,3 +1,5 @@
+import type { CleanupPolicy } from "ui-models/src/types";
+
 export type SelectOptions = {
   key: string;
   value: string;
@@ -58,3 +60,11 @@ export type CustomRetentionUnit =
 export type RadioSelectType = "day" | "week" | "custom" | "unlimited";
 
 export type RetentionSizeRadioSelect = "unlimited" | "custom";
+
+export type TopicForm = {
+  name: string;
+  partitions: number;
+  retentionTime: CustomSelect;
+  retentionSize: CustomRetentionSizeSelect;
+  cleanupPolicy: CleanupPolicy;
+};
