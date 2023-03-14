@@ -1,21 +1,21 @@
 import type { VoidFunctionComponent } from "react";
 import type { ControlPlaneHeaderProps } from "ui";
 import { ControlPlaneHeader } from "ui";
+import type { DedicatedControlPlaneNavigationProps } from "../routesConsts";
 
 export type ConnectedControlPlaneHeaderProps = {
   activeSection: ControlPlaneHeaderProps["activeSection"];
-};
+} & DedicatedControlPlaneNavigationProps;
 
 export const ConnectedControlPlaneHeader: VoidFunctionComponent<
   ConnectedControlPlaneHeaderProps
-> = ({ activeSection }) => {
+> = ({ activeSection, instancesHref, clustersHref }) => {
   return (
     <ControlPlaneHeader
       activeSection={activeSection}
       sectionsHref={{
-        standard: "/kafkas",
-        dedicated: "/dedicated",
-        clusters: "/dedicated/clusters",
+        instances: instancesHref,
+        clusters: clustersHref,
       }}
     />
   );

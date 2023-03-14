@@ -3,7 +3,7 @@ import { useRouteMatch } from "react-router-dom";
 import type { ControlPlaneRouteParams } from "./routesConsts";
 import {
   ControlPlaneRoutePath,
-  DedicatedControlPlaneRoutePath,
+  DedicatedControlPlaneRouteMatch,
 } from "./routesConsts";
 
 export function useControlPlaneGate() {
@@ -11,7 +11,7 @@ export function useControlPlaneGate() {
     ControlPlaneRoutePath
   );
   const enterpriseMatch = useRouteMatch<ControlPlaneRouteParams>(
-    DedicatedControlPlaneRoutePath
+    DedicatedControlPlaneRouteMatch
   );
   const match = standardMatch || enterpriseMatch;
   if (!match) {

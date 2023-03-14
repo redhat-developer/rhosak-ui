@@ -18,7 +18,7 @@ import {
 import type { VoidFunctionComponent } from "react";
 import { Link } from "react-router-dom";
 
-type Sections = "standard" | "dedicated" | "clusters";
+type Sections = "instances" | "clusters";
 
 export type ControlPlaneHeaderProps = {
   activeSection: Sections;
@@ -46,76 +46,41 @@ export const ControlPlaneHeader: VoidFunctionComponent<
             </TextContent>
           </LevelItem>
         </Level>
-        <Nav variant="tertiary" className="pf-u-px-sm-on-xl">
-          <NavList>
-            <NavItem
-              style={{ borderTop: 0 }}
-              data-testid="pageKafka-tabstandard"
-              id="dashboard-tab-section"
-              aria-label={t("controlPlaneNavigation.standard")}
-              ouiaId={"tab-standard"}
-              isActive={activeSection === "standard"}
-            >
-              <Link to={sectionsHref["standard"]}>
-                {t("controlPlaneNavigation.standard")}
-              </Link>
-            </NavItem>
-            <NavItem
-              style={{ borderTop: 0 }}
-              data-testid="pageKafka-tabdedicated"
-              id="dashboard-tab-section"
-              aria-label={t("controlPlaneNavigation.dedicated")}
-              ouiaId={"tab-dedicated"}
-              isActive={
-                activeSection === "dedicated" || activeSection === "clusters"
-              }
-            >
-              <Link to={sectionsHref["dedicated"]}>
-                {t("controlPlaneNavigation.dedicated")}
-              </Link>
-            </NavItem>
-          </NavList>
-        </Nav>
-        {(activeSection === "dedicated" || activeSection === "clusters") && (
-          <>
-            <Divider />
-            <Nav variant="tertiary" className="pf-u-px-sm-on-xl">
-              <NavList>
-                <NavItem
-                  style={{ borderTop: 0 }}
-                  data-testid="pageKafka-tabdedicated"
-                  id="dashboard-tab-section"
-                  aria-label={t("controlPlaneNavigation.dedicated")}
-                  ouiaId={"tab-dedicated"}
-                  isActive={activeSection === "dedicated"}
-                >
-                  <Link to={sectionsHref["dedicated"]}>
-                    {t("controlPlaneNavigation.dedicated-instances")}
-                  </Link>
-                </NavItem>
-                <NavItem
-                  style={{ borderTop: 0 }}
-                  data-testid="pageKafka-tabclusters"
-                  id="dashboard-tab-section"
-                  aria-label={t("controlPlaneNavigation.clusters")}
-                  ouiaId={"tab-clusters"}
-                  isActive={activeSection === "clusters"}
-                >
-                  <Link to={sectionsHref["clusters"]}>
-                    {t("controlPlaneNavigation.clusters")}
-                  </Link>
-                </NavItem>
-              </NavList>
-            </Nav>
-          </>
+        {(activeSection === "instances" || activeSection === "clusters") && (
+          <Nav variant="tertiary" className="pf-u-px-sm-on-xl">
+            <NavList>
+              <NavItem
+                style={{ borderTop: 0 }}
+                data-testid="pageKafka-tabinstances"
+                id="dashboard-tab-section"
+                aria-label={t("controlPlaneNavigation.dedicated-instances")}
+                ouiaId={"tab-instances"}
+                isActive={activeSection === "instances"}
+              >
+                <Link to={sectionsHref["instances"]}>
+                  {t("controlPlaneNavigation.dedicated-instances")}
+                </Link>
+              </NavItem>
+              <NavItem
+                style={{ borderTop: 0 }}
+                data-testid="pageKafka-tabclusters"
+                id="dashboard-tab-section"
+                aria-label={t("controlPlaneNavigation.clusters")}
+                ouiaId={"tab-clusters"}
+                isActive={activeSection === "clusters"}
+              >
+                <Link to={sectionsHref["clusters"]}>
+                  {t("controlPlaneNavigation.clusters")}
+                </Link>
+              </NavItem>
+            </NavList>
+          </Nav>
         )}
         <Divider />
         <div className="pf-u-p-md pf-u-p-lg-on-xl">
           {(() => {
             switch (activeSection) {
-              case "standard":
-                return t("standard_description");
-              case "dedicated":
+              case "instances":
                 return (
                   <Trans
                     ns={"kafka"}
@@ -123,7 +88,7 @@ export const ControlPlaneHeader: VoidFunctionComponent<
                     components={[
                       <ExternalLink
                         href={"https://access.redhat.com/articles/TODO"}
-                        testId={"dedicated-instances-support-link"}
+                        testId={"instances-instances-support-link"}
                         className={"pf-u-ml-xs"}
                       />,
                     ]}

@@ -8,7 +8,7 @@
     "single": "Single"
   },
   "billing": {
-    "dedicated_option": "Dedicated",
+    "dedicated_option": "Prepaid",
     "field_label": "Billing",
     "field_popover_external_marketplace": "Billing indicates which subscription is used to pay for the instance. When using a subscription purchased through  another marketplace, the cloud provider associated with the marketplace must be selected. <0>See subscription options</0>",
     "field_popover_rh_only": "Billing indicates which subscription is used to pay for the instance. <0>See subscription options</0>",

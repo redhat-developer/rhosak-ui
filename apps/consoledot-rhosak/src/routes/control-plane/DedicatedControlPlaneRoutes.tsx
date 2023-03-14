@@ -1,66 +1,73 @@
 import type { VoidFunctionComponent } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Suspense } from "react";
+import { Route } from "react-router-dom";
 import { RedirectOnGateError } from "../RedirectOnGateError";
 import {
   CreateDedicatedKafkaInstanceRoute,
   DeleteKafkaInstanceRoute,
+  TermsAndConditionsRoute,
 } from "./routes";
 import { ChangeOwnerRoute } from "./routes/ChangeOwnerRoute";
-import { DedicatedClustersRoute } from "./routes/DedicatedClustersRoute";
 import { DedicatedKafkaInstancesRoute } from "./routes/DedicatedKafkaInstancesRoute";
 import {
-  DedicatedControlPlaneChangeOwnerPath,
+  DedicatedControlPlaneChangeOwnerMatch,
+  DedicatedControlPlaneChangeOwnerRoutePath,
   DedicatedControlPlaneClustersPath,
-  DedicatedControlPlaneDeleteInstancePath,
-  DedicatedControlPlaneNewInstancePath,
+  DedicatedControlPlaneDeleteInstanceMatch,
+  DedicatedControlPlaneDeleteInstanceRoutePath,
+  DedicatedControlPlaneNewInstanceMatch,
+  DedicatedControlPlaneNewInstanceRoutePath,
+  DedicatedControlPlaneRouteMatch,
   DedicatedControlPlaneRoutePath,
-  DedicatedControlPlaneRouteRoot,
+  DedicatedControlPlaneSelectedInstanceRoutePath,
+  DedicatedControlPlaneTermsAndConditionsMatch,
 } from "./routesConsts";
 
 export const DedicatedControlPlaneRoutes: VoidFunctionComponent = () => {
   return (
-    <Route path={DedicatedControlPlaneRoutePath}>
-      <Route path={DedicatedControlPlaneNewInstancePath}>
-        <CreateDedicatedKafkaInstanceRoute
-          instancesHref={DedicatedControlPlaneRouteRoot}
+    <Route path={DedicatedControlPlaneRouteMatch} exact={true}>
+      <Route path={DedicatedControlPlaneTermsAndConditionsMatch}>
+        <TermsAndConditionsRoute
+          createHref={DedicatedControlPlaneNewInstanceRoutePath}
+          cancelHref={DedicatedControlPlaneRoutePath}
         />
       </Route>
+      <Route path={DedicatedControlPlaneNewInstanceMatch}>
+        <RedirectOnGateError
+          redirectUrl={DedicatedControlPlaneTermsAndConditionsMatch}
+        >
+          <Suspense fallback={null}>
+            <CreateDedicatedKafkaInstanceRoute
+              instancesHref={DedicatedControlPlaneRoutePath}
+              clustersHref={DedicatedControlPlaneClustersPath}
+            />
+          </Suspense>
+          .
+        </RedirectOnGateError>
+      </Route>
       <RedirectOnGateError redirectUrl={DedicatedControlPlaneRoutePath}>
-        <Route path={DedicatedControlPlaneDeleteInstancePath}>
+        <Route path={DedicatedControlPlaneDeleteInstanceMatch}>
           <DeleteKafkaInstanceRoute
-            instancesHref={DedicatedControlPlaneRouteRoot}
+            instancesHref={DedicatedControlPlaneRoutePath}
           />
         </Route>
-        <Route path={DedicatedControlPlaneChangeOwnerPath}>
-          <ChangeOwnerRoute instancesHref={DedicatedControlPlaneRouteRoot} />
+        <Route path={DedicatedControlPlaneChangeOwnerMatch}>
+          <ChangeOwnerRoute instancesHref={DedicatedControlPlaneRoutePath} />
         </Route>
       </RedirectOnGateError>
 
-      <Switch>
-        <Route path={DedicatedControlPlaneClustersPath}>
-          <DedicatedClustersRoute />
-        </Route>
-
-        <Route path={DedicatedControlPlaneRoutePath} exact>
-          <DedicatedKafkaInstancesRoute
-            activeSection={"dedicated"}
-            instancesHref={DedicatedControlPlaneRouteRoot}
-            instanceSelectedHref={(id) =>
-              `${DedicatedControlPlaneRouteRoot}/${id}`
-            }
-            instanceCreationHref={`${DedicatedControlPlaneRouteRoot}/create`}
-            instanceDeletionHref={(id) =>
-              `${DedicatedControlPlaneRouteRoot}/${id}/delete`
-            }
-            instanceChangeOwnerHref={(id) =>
-              `${DedicatedControlPlaneRouteRoot}/${id}/change-owner`
-            }
-            getUrlForInstance={(instance) =>
-              `${DedicatedControlPlaneRouteRoot}/${instance.id}/details`
-            }
-          />
-        </Route>
-      </Switch>
+      <DedicatedKafkaInstancesRoute
+        activeSection={"instances"}
+        instancesHref={DedicatedControlPlaneRoutePath}
+        clustersHref={DedicatedControlPlaneClustersPath}
+        instanceSelectedHref={DedicatedControlPlaneSelectedInstanceRoutePath}
+        instanceCreationHref={DedicatedControlPlaneNewInstanceRoutePath}
+        instanceDeletionHref={DedicatedControlPlaneDeleteInstanceRoutePath}
+        instanceChangeOwnerHref={DedicatedControlPlaneChangeOwnerRoutePath}
+        getUrlForInstance={(instance) =>
+          `${DedicatedControlPlaneRoutePath}/${instance.id}/details`
+        }
+      />
     </Route>
   );
 };

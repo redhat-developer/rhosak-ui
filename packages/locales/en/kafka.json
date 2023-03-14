@@ -6,7 +6,7 @@
   "client_connections": "Client connections",
   "client_connections_value": "up to 500",
   "clientID": "Client ID",
-  "clusters_description": "OpenShift clusters that you own and manage are used for deploying Dedicated Kafka instances. <0>Learn more about the prerequisites</0>.",
+  "clusters_description": "OpenShift clusters that you own and manage are used for deploying Kafka instances. <0>Learn more about the prerequisites</0>.",
   "connection_rate": "Connection rate",
   "connection_rate_value": "up to 100 connections/second",
   "connection_tab": {
@@ -105,7 +105,6 @@
   },
   "controlPlaneNavigation": {
     "clusters": "OpenShift clusters",
-    "dedicated": "Dedicated",
     "dedicated-instances": "Kafka instances",
     "standard": "Standard"
   },
@@ -124,7 +123,7 @@
     "properties": "Properties",
     "schemas": "Schemas"
   },
-  "dedicated_description": "Dedicated Kafka instances are provisioned in OpenShift clusters that you own and manage. <0>Learn more about the prerequisites</0>.",
+  "dedicated_description": "Kafka instances are provisioned in OpenShift clusters that you own and manage. <0>Learn more about the prerequisites</0>.",
   "delete_instance_message": "The <0>{{instanceName}}</0> Kafka instance and all topics will be deleted. Applications will no longer have access to the topics in this instance.",
   "delete_instance_title": "Delete instance?",
   "delete_topic_active_message": "One or more consumers are currently active in this topic, and will be removed at the time of deletion. ",
@@ -146,11 +145,11 @@
   "empty_state_instances_no_dedicated_clusters_title": "Kafka instances",
   "empty_state_no_dedicated_clusters_body": "The creation <0>prerequisites</0> are an OpenShift cluster that's enabled for Streams for Apache Kafka instances.",
   "empty_state_no_dedicated_clusters_prerequisite_button": "Learn more about prerequisites",
-  "empty_state_no_dedicated_clusters_title": "No OpenShift clusters for Dedicated Kafka instances",
+  "empty_state_no_dedicated_clusters_title": "No OpenShift clusters for Kafka instances",
   "empty_state_no_dedicated_entitlement_body": "If you are interested in using this service in production, go to the Streams for Apache Kafka <0>pricing page</0> to see what options are available and talk to a Red Hatter.",
-  "empty_state_no_dedicated_entitlement_title": "Welcome to Dedicated Kafka instances",
+  "empty_state_no_dedicated_entitlement_title": "Welcome to Kafka instances",
   "empty_state_no_dedicated_instances_body": "To get started, create a Kafka instance. The creation <0>prerequisites</0> are an OpenShift cluster that's enabled for Streams for Apache Kafka instances.<br/><br/>For help getting started, access the <0>quick start guide</0>.",
-  "empty_state_no_dedicated_instances_create_instance": "Create dedicated instance",
+  "empty_state_no_dedicated_instances_create_instance": "Create instance",
   "empty_state_no_dedicated_instances_title": "No Kafka instances",
   "empty_state_no_instances_body": "For help getting started, access the <0>quick start guide</0>",
   "empty_state_no_instances_create_instance": "$t(kafka:create_instance)",

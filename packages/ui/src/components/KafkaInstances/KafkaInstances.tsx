@@ -18,7 +18,6 @@ import type {
   EmptyStateNoResultsProps,
 } from "./components";
 import { EmptyStateNoInstances, EmptyStateNoResults } from "./components";
-import { EmptyStateNoDedicatedInstances } from "./components/EmptyStateNoDedicatedInstances";
 
 const StandardColumns = [
   "name",
@@ -78,6 +77,15 @@ export type KafkaInstancesProps = {
   | "isColumnSortable"
   | "onClearAllFilters"
 > &
+  Partial<
+    Pick<
+      TableViewProps<
+        Kafka,
+        (typeof StandardColumns | typeof DedicatedColumns)[number]
+      >,
+      "emptyStateNoData"
+    >
+  > &
   EmptyStateNoInstancesProps &
   EmptyStateNoResultsProps;
 
@@ -117,7 +125,7 @@ export const KafkaInstances = <
   onRemoveStatusChip,
   onRemoveStatusChips,
   onClearAllFilters,
-
+  emptyStateNoData,
   canHaveInstanceLink,
   canOpenConnection,
 }: KafkaInstancesProps) => {
@@ -271,13 +279,8 @@ export const KafkaInstances = <
         ariaLabel={t("table.title")}
         isFiltered={isFiltered}
         emptyStateNoData={
-          columns === "standard" ? (
+          emptyStateNoData || (
             <EmptyStateNoInstances
-              onCreate={onCreate}
-              onQuickstartGuide={onQuickstartGuide}
-            />
-          ) : (
-            <EmptyStateNoDedicatedInstances
               onCreate={onCreate}
               onQuickstartGuide={onQuickstartGuide}
             />

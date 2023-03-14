@@ -6,9 +6,8 @@ export default {
   component: ControlPlaneHeader,
   args: {
     sectionsHref: {
+      instances: "#/instances",
       clusters: "#/clusters",
-      dedicated: "#/dedicated",
-      standard: "#/standard",
     },
   },
 } as ComponentMeta<typeof ControlPlaneHeader>;
@@ -155,14 +154,9 @@ const Template: ComponentStory<typeof ControlPlaneHeader> = (args) => (
   </Page>
 );
 
-export const Standard = Template.bind({});
-Standard.args = {
-  activeSection: "standard",
-};
-
-export const Dedicated = Template.bind({});
-Dedicated.args = {
-  activeSection: "dedicated",
+export const Instances = Template.bind({});
+Instances.args = {
+  activeSection: "instances",
 };
 
 export const Clusters = Template.bind({});

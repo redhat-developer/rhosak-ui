@@ -1,9 +1,8 @@
 import type { VoidFunctionComponent } from "react";
 import { Suspense } from "react";
-import { Route } from "react-router-dom";
+import { Redirect, Route } from "react-router-dom";
 import { RedirectOnGateError } from "../RedirectOnGateError";
 import {
-  CreateKafkaInstanceRoute,
   DeleteKafkaInstanceRoute,
   KafkaInstancesRoute,
   TermsAndConditionsRoute,
@@ -30,7 +29,8 @@ export const ControlPlaneRoutes: VoidFunctionComponent = () => {
       <RedirectOnGateError redirectUrl={ControlPlaneTermsAndConditionsPath}>
         <Suspense fallback={null}>
           <Route path={ControlPlaneNewInstancePath}>
-            <CreateKafkaInstanceRoute instancesHref={ControlPlaneRouteRoot} />
+            {/*<CreateKafkaInstanceRoute instancesHref={ControlPlaneRouteRoot} />*/}
+            <Redirect to={ControlPlaneRouteRoot} />
           </Route>
         </Suspense>
       </RedirectOnGateError>
@@ -43,7 +43,7 @@ export const ControlPlaneRoutes: VoidFunctionComponent = () => {
         </Route>
       </RedirectOnGateError>
       <KafkaInstancesRoute
-        activeSection={"standard"}
+        activeSection={"instances"}
         instancesHref={ControlPlaneRouteRoot}
         instanceSelectedHref={(id) => `${ControlPlaneRouteRoot}/${id}`}
         instanceCreationHref={`${ControlPlaneRouteRoot}/create`}

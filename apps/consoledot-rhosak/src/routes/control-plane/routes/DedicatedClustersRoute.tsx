@@ -1,27 +1,34 @@
 import { useDedicatedClusters } from "consoledot-api";
-import type { FunctionComponent, VoidFunctionComponent } from "react";
+import type { VoidFunctionComponent } from "react";
 import { DedicatedClusters, EmptyStateNoDedicatedEntitlement } from "ui";
 import { useDedicatedGate } from "../../useDedicatedGate";
+import type { DedicatedControlPlaneNavigationProps } from "../routesConsts";
 import { ConnectedControlPlaneHeader } from "./ConnectedControlPlaneHeader";
 
-export const DedicatedClustersRoute: FunctionComponent = () => {
+export const DedicatedClustersRoute: VoidFunctionComponent<
+  DedicatedControlPlaneNavigationProps
+> = ({ clustersHref, instancesHref }) => {
   const dedicatedGate = useDedicatedGate();
   const noEntitlement = dedicatedGate === "standard-only";
 
-  if (noEntitlement) {
-    return (
-      <>
-        <ConnectedControlPlaneHeader activeSection={"clusters"} />
+  return (
+    <>
+      <ConnectedControlPlaneHeader
+        activeSection={"clusters"}
+        clustersHref={clustersHref}
+        instancesHref={instancesHref}
+      />
+      {noEntitlement ? (
         <EmptyStateNoDedicatedEntitlement
           onQuickstartGuide={() => {
             /* TODO */
           }}
         />
-      </>
-    );
-  }
-
-  return <DedicatedClustersWithEntitlementRoute />;
+      ) : (
+        <DedicatedClustersWithEntitlementRoute />
+      )}
+    </>
+  );
 };
 
 export const DedicatedClustersWithEntitlementRoute: VoidFunctionComponent =
@@ -29,19 +36,16 @@ export const DedicatedClustersWithEntitlementRoute: VoidFunctionComponent =
     const { data } = useDedicatedClusters();
 
     return (
-      <>
-        <ConnectedControlPlaneHeader activeSection={"clusters"} />
-        <DedicatedClusters
-          clusters={data?.clusters}
-          itemCount={data?.count}
-          page={1}
-          onPageChange={() => {
-            /* TODO */
-          }}
-          onQuickstartGuide={() => {
-            /* TODO */
-          }}
-        />
-      </>
+      <DedicatedClusters
+        clusters={data?.clusters}
+        itemCount={data?.count}
+        page={1}
+        onPageChange={() => {
+          /* TODO */
+        }}
+        onQuickstartGuide={() => {
+          /* TODO */
+        }}
+      />
     );
   };

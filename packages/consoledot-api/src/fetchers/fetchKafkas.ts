@@ -47,6 +47,12 @@ export async function fetchKafkas(params: FetchKafkasParams): Promise<{
   } = params;
   const search = filtersToSearch(name, owner, status, clusterIds, deployment);
 
+  if (
+    deployment === "clusters" &&
+    (clusterIds === undefined || clusterIds?.length === 0)
+  ) {
+    return Promise.resolve({ instances: [], count: 0 });
+  }
   const res = await getKafkas(
     page.toString(10),
     perPage.toString(10),

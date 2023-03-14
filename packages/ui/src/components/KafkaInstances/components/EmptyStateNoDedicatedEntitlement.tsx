@@ -18,7 +18,7 @@ export const EmptyStateNoDedicatedEntitlement: VoidFunctionComponent<
 > = ({ onQuickstartGuide }) => {
   const { t } = useTranslation("kafka");
   return (
-    <EmptyState variant={EmptyStateVariant.xs}>
+    <EmptyState variant={EmptyStateVariant.xs} isFullHeight={true}>
       <EmptyStateIcon icon={PlusCircleIcon} />
       <Title headingLevel="h2" size="lg">
         {t("empty_state_no_dedicated_entitlement_title")}
