@@ -13,9 +13,7 @@ import { useTranslation } from "@rhoas/app-services-ui-components";
 import type React from "react";
 import { useState } from "react";
 import type { Topic } from "ui-models/src/models/topic";
-import type { TopicPartition } from "ui-models/src/models/topic-partition";
 import type {
-  CleanupPolicyType,
   CustomRetentionSizeSelect,
   CustomSelect,
   RadioSelectType,
@@ -37,10 +35,12 @@ export type TopicAdvancePageProps = {
   topicData: Topic;
   topicName: string;
   onTopicNameChange: (value: string) => void;
-  partitions: TopicPartition[];
-  onPartitionsChange: (value: TopicPartition[]) => void;
-  cleanupPolicy: CleanupPolicyType;
-  onCleanupPolicyChange: (value: CleanupPolicyType) => void;
+  partitions: number;
+  onPartitionsChange: (value: number) => void;
+  cleanupPolicy: "delete" | "compact" | "delete,compact";
+  onCleanupPolicyChange: (
+    value: "delete" | "compact" | "delete,compact"
+  ) => void;
   checkTopicName?: (value: string) => boolean;
   availablePartitionLimit: number;
   customRetentionSizeValue: CustomRetentionSizeSelect;

@@ -12,13 +12,9 @@ import type {
   TimeUnit,
 } from "../../";
 import { bytesToMemorySize, millisecondsToTime } from "../../KafkaTopics/types";
-import type {
-  CleanupPolicyType,
-  CustomRetentionUnit,
-} from "../components/types";
+import type { CustomRetentionUnit } from "../components/types";
 import { retentionSizeTransformer } from "../components/retentionSizeTransformer";
 import { retentionTimeTransformer } from "../components/retentionTimeTransformer";
-import type { TopicPartition } from "ui-models/src/models/topic-partition";
 
 export type EditTopicPropertiesProps = {
   topic: Topic;
@@ -67,17 +63,15 @@ export const EditTopicProperties: FunctionComponent<
       topic["retention.bytes"].value == BigInt(-1) ? "unlimited" : "custom"
     );
   const [topicName, setTopicName] = useState<string>(topic.name);
-  const [cleanupPolicy, setCleanupPolicy] = useState<CleanupPolicyType>(
-    topic["cleanup.policy"]
-  );
-  const [partitions, setPartitions] = useState<TopicPartition[]>(
-    topic.partitions
-  );
+  const [cleanupPolicy, setCleanupPolicy] = useState<
+    "delete" | "compact" | "delete,compact"
+  >(topic["cleanup.policy"]);
+  const [partitions, setPartitions] = useState<number>(topic.partitions.length);
 
   const [warningModalOpen, setWarningModalOpen] = useState<boolean>(false);
 
   const onSaveTopic = (transformedTopic: Topic) => {
-    if (partitions.length >= availablePartitionLimit) setWarningModalOpen(true);
+    if (partitions >= availablePartitionLimit) setWarningModalOpen(true);
     else onSave(transformedTopic);
   };
 
@@ -87,10 +81,13 @@ export const EditTopicProperties: FunctionComponent<
     const tranformedValueInBytes = retentionSizeTransformer(
       customRetentionSizeValue
     );
+    const updatedPartitions = Array(partitions)
+      .fill(null)
+      .map((_, index) => ({ partition: index }));
     const transformedTopic: Topic = {
       ...topic,
       name: topicName,
-      partitions: partitions,
+      partitions: updatedPartitions,
       "cleanup.policy": cleanupPolicy,
       "retention.ms": {
         type: "ms",

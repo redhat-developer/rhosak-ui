@@ -18,7 +18,6 @@ import type { FunctionComponent } from "react";
 import { useState } from "react";
 import { useCallback } from "react";
 import type { Topic } from "ui-models/src/models/topic";
-import type { TopicPartition } from "ui-models/src/models/topic-partition";
 import { CustomRetentionMessage } from "./CustomRetentionMessage";
 import { CustomRetentionSize } from "./CustomRetentionSize";
 import { TextWithLabelPopover } from "./TextWithLabelPopover";
@@ -50,8 +49,8 @@ export type CoreConfigurationProps = {
   setRadioSizeSelectValue: (data: RetentionSizeRadioSelect) => void;
   topicName: string;
   setTopicName: (value: string) => void;
-  partitions: TopicPartition[];
-  setPartitions: (value: TopicPartition[]) => void;
+  partitions: number;
+  setPartitions: (value: number) => void;
 };
 
 const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
@@ -76,7 +75,7 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
   partitions,
 }) => {
   const { t } = useTranslation(["create-topic"]);
-  const [initialPartitions] = useState<TopicPartition[]>(topicData.partitions);
+  const [initialPartitions] = useState<number>(topicData.partitions.length);
   const { validateName } = useValidateTopic();
   const validationCheck = useCallback(
     (value: string) => {
@@ -104,29 +103,24 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
   };
 
   const onPartitionsChange: NumberInputProps["onChange"] = (event) => {
-    const partitions = Number((event.target as HTMLInputElement).value);
+    const partitionsValue = Number((event.target as HTMLInputElement).value);
+    if (partitionsValue > -1 && isCreate) setPartitions(partitionsValue);
+    if (!isCreate && partitionsValue >= initialPartitions)
+      setPartitions(partitionsValue);
+    if (!isCreate && partitionsValue <= initialPartitions)
+      setPartitions(initialPartitions);
+  };
 
-    const updatedPartitions = Array(partitions)
-      .fill(null)
-      .map((_, index) => ({ partition: index }));
-    //Donot allow to set a value below original value in case of edit topic
-    setPartitions(
-      isCreate
-        ? updatedPartitions
-        : updatedPartitions.length > initialPartitions.length
-        ? updatedPartitions
-        : initialPartitions
-    );
+  const onBlur = () => {
+    if (partitions < 1) setPartitions(1);
   };
 
   const handleOnPlus = () => {
-    const updatedPartitions = [...partitions, { partition: partitions.length }];
-    setPartitions(updatedPartitions);
+    setPartitions(partitions + 1);
   };
 
   const handleOnMinus = () => {
-    const newPartitions = partitions.slice(0, partitions.length - 1);
-    setPartitions(newPartitions);
+    setPartitions(partitions - 1);
   };
 
   const retentionTimeInput = (
@@ -215,10 +209,11 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
           data-testid={t("partitions")}
           onPlus={handleOnPlus}
           onMinus={handleOnMinus}
-          value={partitions.length == 0 ? "" : partitions.length}
+          value={partitions == 0 ? "" : partitions}
           plusBtnProps={{ name: "num-partitions" }}
           minusBtnProps={{ name: "num-partitions" }}
-          min={isCreate ? 1 : initialPartitions.length}
+          min={isCreate ? 1 : initialPartitions}
+          onBlur={onBlur}
         />
       </FormGroupWithPopover>
 
