@@ -1,8 +1,7 @@
 import type { VoidFunctionComponent } from "react";
 import { useCallback, useMemo } from "react";
-import type { CreateTopicPageProps } from "ui";
+import type { CreateTopicPageProps, TopicForm } from "ui";
 import { CreateTopic } from "ui";
-import type { Topic } from "ui-models/src/models/topic";
 import { useHistory } from "react-router-dom";
 import { useAlerts } from "../../../useAlerts";
 import { useCreateTopicMutation, useTopics } from "consoledot-api";
@@ -57,7 +56,7 @@ export const TopicCreateRoute: VoidFunctionComponent<
   }, [history, instance.id, instanceTopicsHref]);
 
   const onSave = useCallback(
-    (topicData: Topic) => {
+    (topicData: TopicForm) => {
       void createTopic.mutateAsync({
         instanceId: instance.id,
         adminUrl: instance?.adminUrl || "",

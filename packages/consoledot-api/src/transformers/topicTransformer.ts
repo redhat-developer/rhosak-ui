@@ -7,6 +7,57 @@ import type {
 } from "ui-models/src/models/topic-config";
 import type { Bytes, Milliseconds } from "ui-models/src/types";
 import type { TopicSettings } from "@rhoas/kafka-instance-sdk";
+import type { CustomRetentionSizeSelect, CustomSelect, TopicForm } from "ui";
+import { convert } from "convert";
+
+export const retentionTimeTransformer = (value: CustomSelect) => {
+  if (value.value != null)
+    switch (value.unit) {
+      case "days": {
+        const convertedValue = convert(BigInt(value.value), "days").to("ms");
+        return convertedValue;
+      }
+      case "weeks": {
+        const convertedValue = convert(BigInt(value.value), "weeks").to("ms");
+        return convertedValue;
+      }
+      case "seconds": {
+        const convertedValue = convert(BigInt(value.value), "seconds").to("ms");
+        return convertedValue;
+      }
+      case "hours": {
+        const convertedValue = convert(BigInt(value.value), "hours").to("ms");
+        return convertedValue;
+      }
+      case "minutes": {
+        const convertedValue = convert(BigInt(value.value), "minutes").to("ms");
+        return convertedValue;
+      }
+      case "unlimited": {
+        return BigInt(value.value);
+      }
+      case "milliseconds": {
+        return BigInt(value.value);
+      }
+    }
+};
+
+export const retentionSizeTransformer = (size: CustomRetentionSizeSelect) => {
+  switch (size.unit) {
+    case "bytes":
+      return BigInt(size.value);
+    case "kibibytes":
+      return convert(BigInt(size.value), "kibibytes").to("bytes");
+    case "mebibytes":
+      return convert(BigInt(size.value), "mebibytes").to("bytes");
+    case "gibibytes":
+      return convert(BigInt(size.value), "gibibytes").to("bytes");
+    case "tebibytes":
+      return convert(BigInt(size.value), "tebibytes").to("bytes");
+    case "unlimited":
+      return BigInt(size.value);
+  }
+};
 
 export type UserEditable = Pick<
   TopicConfig,
@@ -236,11 +287,30 @@ export const convertToKeyValuePairs = (inputObj: UserEditable) => {
   return keyValuePairs;
 };
 
-export const convertToTopicSettings = (topic: Topic): TopicSettings => {
-  const { partitions, ...config } = topic;
+export const convertToTopicSettings = (topic: TopicForm): TopicSettings => {
+  const tranformedValueInMilliseconds =
+    topic.retentionTime.value == -1
+      ? BigInt(-1)
+      : retentionTimeTransformer(topic.retentionTime);
+  const tranformedValueInBytes =
+    topic.retentionSize.value == -1
+      ? BigInt(-1)
+      : retentionSizeTransformer(topic.retentionSize);
+
+  const config: UserEditable = {
+    "retention.ms": {
+      value: tranformedValueInMilliseconds || BigInt(-1),
+      type: "ms",
+    },
+    "retention.bytes": {
+      value: tranformedValueInBytes || BigInt(-1),
+      type: "bytes",
+    },
+    "cleanup.policy": topic.cleanupPolicy,
+  };
   const configEntries = convertToKeyValuePairs(config);
   const topicSettings: TopicSettings = {
-    numPartitions: partitions.length,
+    numPartitions: topic.partitions,
     config: configEntries,
   };
   return topicSettings;

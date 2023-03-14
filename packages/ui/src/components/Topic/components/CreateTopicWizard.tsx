@@ -20,22 +20,22 @@ import {
   WizardCustomFooter,
 } from "./index";
 import { PartitionLimitWarning } from "./PartitionLimitWarning";
-import { retentionTimeTransformer } from "./retentionTimeTransformer";
 import { TopicAdvancePage } from "./TopicAdvancePage";
 import type {
   CustomRetentionSizeSelect,
   CustomSelect,
   RadioSelectType,
   RetentionSizeRadioSelect,
+  TopicForm,
 } from "./types";
-import { retentionSizeTransformer } from "./retentionSizeTransformer";
 import type { AZ } from "ui-models/src/models/kafka";
+import type { CleanupPolicy } from "ui-models/src/types";
 
 export type CreateTopicWizardProps = {
   isSwitchChecked: boolean;
   setIsCreateTopic?: (value: boolean) => void;
   onCloseCreateTopic: () => void;
-  onSave: (topicData: Topic) => void;
+  onSave: (topicData: TopicForm) => void;
   topicData: Topic;
   checkTopicName: (value: string) => boolean;
   availablePartitionLimit: number;
@@ -62,9 +62,9 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
     useState<CustomRetentionSizeSelect>({ unit: "bytes", value: 1 });
 
   const [topicName, setTopicName] = useState<string>(topicData.name);
-  const [cleanupPolicy, setCleanupPolicy] = useState<
-    "delete" | "compact" | "delete,compact"
-  >(topicData["cleanup.policy"]);
+  const [cleanupPolicy, setCleanupPolicy] = useState<CleanupPolicy>(
+    topicData["cleanup.policy"]
+  );
   const [partitions, setPartitions] = useState<number>(
     topicData.partitions.length
   );
@@ -144,35 +144,26 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
   const title = t("wizard_title");
 
   const onTransform = () => {
-    const tranformedValueInMilliseconds =
-      retentionTimeTransformer(customTimeValue);
-    const tranformedValueInBytes = retentionSizeTransformer(
-      customRetentionSizeValue
-    );
-    const updatedPartitions = Array(partitions)
-      .fill(null)
-      .map((_, index) => ({ partition: index }));
-    const transformedTopic: Topic = {
-      ...topicData,
+    const topicValues: TopicForm = {
       name: topicName,
-      partitions: updatedPartitions,
-      "cleanup.policy": cleanupPolicy,
-      "retention.ms": {
-        type: "ms",
-        value:
-          radioTimeSelectValue == "unlimited"
-            ? BigInt(-1)
-            : tranformedValueInMilliseconds || BigInt(-1),
-      },
-      "retention.bytes": {
-        type: "bytes",
-        value:
-          radioSizeSelectValue == "unlimited"
-            ? BigInt(-1)
-            : tranformedValueInBytes,
-      },
+      partitions: partitions,
+      retentionTime:
+        radioTimeSelectValue == "unlimited"
+          ? { value: -1, unit: "unlimited" }
+          : customTimeValue,
+      retentionSize:
+        radioSizeSelectValue == "unlimited"
+          ? { value: -1, unit: "unlimited" }
+          : customRetentionSizeValue,
+      cleanupPolicy: cleanupPolicy,
     };
-    onSaveTopic(transformedTopic);
+
+    onSave(topicValues);
+  };
+
+  const onConfirmSave = () => {
+    if (partitions >= availablePartitionLimit) setWarningModalOpen(true);
+    else onTransform();
   };
 
   const onValidate: IWizardFooter["onValidate"] = (onNext) => {
@@ -190,11 +181,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
       } else onNext();
     }
   };
-  const onSaveTopic = (transformedTopic: Topic) => {
-    if (topicData.partitions.length >= availablePartitionLimit)
-      setWarningModalOpen(true);
-    else onSave(transformedTopic);
-  };
+
   return (
     <>
       {isSwitchChecked ? (
@@ -208,7 +195,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
             {
               <TopicAdvancePage
                 isCreate={true}
-                onConfirm={onTransform}
+                onConfirm={onConfirmSave}
                 handleCancel={onCloseCreateTopic}
                 topicName={topicName}
                 onTopicNameChange={setTopicName}
@@ -232,7 +219,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
             {warningModalOpen && (
               <PartitionLimitWarning
                 topicData={topicData}
-                onSave={onSaveTopic}
+                onSave={onTransform}
                 isModalOpen={warningModalOpen}
                 setIsModalOpen={setWarningModalOpen}
               />
@@ -251,7 +238,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
             mainAriaLabel={`${title} content`}
             steps={steps}
             onClose={closeWizard}
-            onSave={onTransform}
+            onSave={onConfirmSave}
             data-testid="topicBasicCreate-Wizard"
             footer={
               <WizardCustomFooter
@@ -265,7 +252,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
           {warningModalOpen && (
             <PartitionLimitWarning
               topicData={topicData}
-              onSave={onSave}
+              onSave={onTransform}
               isModalOpen={warningModalOpen}
               setIsModalOpen={setWarningModalOpen}
             />
