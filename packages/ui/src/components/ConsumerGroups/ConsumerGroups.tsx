@@ -75,18 +75,18 @@ export const ConsumerGroups = <T extends ConsumerGroup>({
             info={
               column === "laggingPartitions"
                 ? {
-                  popover: (
-                    <div>
-                      {t("consumerGroup.partitions_with_lag_description")}
-                    </div>
-                  ),
-                  ariaLabel: "partitions with lag",
-                  popoverProps: {
-                    headerContent: t(
-                      "consumerGroup.partitions_with_lag_name"
+                    popover: (
+                      <div>
+                        {t("consumerGroup.partitions_with_lag_description")}
+                      </div>
                     ),
-                  },
-                }
+                    ariaLabel: "partitions with lag",
+                    popoverProps: {
+                      headerContent: t(
+                        "consumerGroup.partitions_with_lag_name"
+                      ),
+                    },
+                  }
                 : undefined
             }
           >
