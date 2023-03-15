@@ -4,8 +4,8 @@ import { Route } from "react-router-dom";
 import { RedirectOnGateError } from "../RedirectOnGateError";
 import {
   ChangeOwnerRoute,
+  CreateKafkaInstanceRoute,
   DeleteKafkaInstanceRoute,
-  DisabledCreateKafkaInstanceRoute,
   KafkaInstancesRoute,
   TermsAndConditionsRoute,
 } from "./routes";
@@ -30,8 +30,8 @@ export const ControlPlaneRoutes: VoidFunctionComponent = () => {
       <RedirectOnGateError redirectUrl={ControlPlaneTermsAndConditionsPath}>
         <Suspense fallback={null}>
           <Route path={ControlPlaneNewInstancePath}>
-            {/*<CreateKafkaInstanceRoute instancesHref={ControlPlaneRouteRoot} />*/}
-            <DisabledCreateKafkaInstanceRoute />
+            <CreateKafkaInstanceRoute instancesHref={ControlPlaneRouteRoot} />
+            {/*<DisabledCreateKafkaInstanceRoute />*/}
           </Route>
         </Suspense>
       </RedirectOnGateError>
