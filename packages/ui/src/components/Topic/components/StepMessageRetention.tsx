@@ -43,13 +43,7 @@ export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
   const { t } = useTranslation(["create-topic"]);
 
   const handleRetentionMessageSize = (value: RetentionSizeRadioSelect) => {
-    if (value === "unlimited") {
-      setRadioSizeSelectValue(value);
-      setCustomRetentionSizeValue({ value: -1, unit: "unlimited" });
-    } else {
-      setCustomRetentionSizeValue({ value: 1, unit: "bytes" });
-      setRadioSizeSelectValue(value);
-    }
+    setRadioSizeSelectValue(value);
   };
 
   const retentionTime = (value: RadioSelectType) => {
@@ -61,10 +55,7 @@ export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
         setCustomTimeValue({ value: 1, unit: "weeks" });
         break;
       case "custom":
-        setCustomTimeValue({ value: 7, unit: "days" });
-        break;
-      case "unlimited":
-        setCustomTimeValue({ value: -1, unit: "unlimited" });
+        //setCustomTimeValue({ value: 7, unit: "days" });
         break;
     }
     setRadioTimeSelectValue(value);

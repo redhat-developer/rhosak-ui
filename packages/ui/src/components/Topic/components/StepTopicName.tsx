@@ -11,12 +11,11 @@ import {
 import { useTranslation } from "@rhoas/app-services-ui-components";
 import type React from "react";
 import { useCallback, useEffect } from "react";
-import type { Topic } from "ui-models/src/models/topic";
 import { useValidateTopic } from "./useValidateTopic";
 
 export type StepTopicNameProps = {
-  newTopicData: Topic;
-  onTopicNameChange: (value: Topic) => void;
+  topicName: string;
+  onTopicNameChange: (value: string) => void;
   topicNameValidated: ValidatedOptions;
   onValidationCheck: (value: ValidatedOptions) => void;
   invalidText: string;
@@ -24,7 +23,7 @@ export type StepTopicNameProps = {
 };
 
 export const StepTopicName: React.FC<StepTopicNameProps> = ({
-  newTopicData,
+  topicName,
   onTopicNameChange,
   topicNameValidated,
   onValidationCheck,
@@ -48,12 +47,12 @@ export const StepTopicName: React.FC<StepTopicNameProps> = ({
   );
 
   useEffect(() => {
-    validationCheck(newTopicData.name);
-  }, [newTopicData.name, validationCheck]);
+    validationCheck(topicName);
+  }, [topicName, validationCheck]);
 
   const handleTopicNameChange = (value: string) => {
     validationCheck(value);
-    onTopicNameChange({ ...newTopicData, name: value });
+    onTopicNameChange(value);
   };
 
   return (
@@ -79,7 +78,7 @@ export const StepTopicName: React.FC<StepTopicNameProps> = ({
             type="text"
             id="step-topic-name-input"
             name="step-topic-name"
-            value={newTopicData.name}
+            value={topicName}
             onChange={handleTopicNameChange}
             placeholder={t("enter_name")}
             validated={topicNameValidated}

@@ -1,11 +1,9 @@
 import type { VoidFunctionComponent } from "react";
 import { useCallback, useMemo } from "react";
-import type { CreateTopicPageProps } from "ui";
+import type { CreateTopicPageProps, TopicForm } from "ui";
 import { CreateTopic } from "ui";
-import type { Topic } from "ui-models/src/models/topic";
 import { useHistory } from "react-router-dom";
-import { addNotification } from "@redhat-cloud-services/frontend-components-notifications";
-import { useDispatch } from "react-redux";
+import { useAlerts } from "../../../useAlerts";
 import { useCreateTopicMutation, useTopics } from "consoledot-api";
 import { useDataPlaneGate } from "../useDataPlaneGate";
 import type { DataPlaneNavigationProps } from "../routesConsts";
@@ -19,15 +17,18 @@ export const TopicCreateRoute: VoidFunctionComponent<
 > = ({ instancesHref, instanceTopicsHref }) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
+  const { addAlert } = useAlerts();
   const { instance } = useDataPlaneGate();
   const createTopic = useCreateTopicMutation();
-  const dispatch = useDispatch();
   const availabilityZone = instance.az;
-  const { data: topics } = useTopics({
-    id: instance.id,
-    adminUrl: instance.adminUrl,
-    plan: instance.plan,
-  });
+  const { data: topics } = useTopics(
+    {
+      id: instance.id,
+      adminUrl: instance.adminUrl,
+      plan: instance.plan,
+    },
+    false
+  );
 
   if (instance.maxPartitions === undefined) {
     throw new Error(
@@ -55,7 +56,7 @@ export const TopicCreateRoute: VoidFunctionComponent<
   }, [history, instance.id, instanceTopicsHref]);
 
   const onSave = useCallback(
-    (topicData: Topic) => {
+    (topicData: TopicForm) => {
       void createTopic.mutateAsync({
         instanceId: instance.id,
         adminUrl: instance?.adminUrl || "",
@@ -64,22 +65,21 @@ export const TopicCreateRoute: VoidFunctionComponent<
         onSuccess: () => {
           //eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
           history.push(instanceTopicsHref(instance.id));
+          addAlert(
+            "success",
+            "The topic was successfully created in the Kafka instance",
+            true,
+            "create-topic-success"
+          );
         },
         onError: (_, message) => {
-          dispatch(
-            addNotification({
-              variant: "danger",
-              title: message,
-              dismissable: true,
-              id: "save-error",
-            })
-          );
+          addAlert("danger", message, true, "create-topic-fail");
         },
       });
     },
     [
+      addAlert,
       createTopic,
-      dispatch,
       history,
       instance?.adminUrl,
       instance.id,

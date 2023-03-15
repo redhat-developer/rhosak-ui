@@ -2,13 +2,9 @@ import { isServiceApiError } from "@rhoas/kafka-management-sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { kafkaQueries } from "../queryKeys";
 import { useApi } from "../useApi";
-import type { Topic } from "ui-models/src/models/topic";
-import type { NewTopicInput, TopicSettings } from "@rhoas/kafka-instance-sdk";
-import {
-  UserEditable,
-  convertToTopicSettings,
-} from "consoledot-api/src/transformers/topicTransformer";
-import { convertToKeyValuePairs } from "consoledot-api/src/transformers/topicTransformer";
+import type { NewTopicInput } from "@rhoas/kafka-instance-sdk";
+import { convertToTopicSettings } from "consoledot-api/src/transformers/topicTransformer";
+import type { TopicForm } from "ui";
 
 export function useCreateTopicMutation() {
   const { topics } = useApi();
@@ -18,14 +14,14 @@ export function useCreateTopicMutation() {
     async function createTopic(props: {
       instanceId: string;
       adminUrl: string;
-      topic: Topic;
+      topic: TopicForm;
       onSuccess: () => void;
       onError: (code: string, message: string) => void;
     }) {
       const { adminUrl, topic, onSuccess, onError } = props;
       const api = topics(adminUrl);
 
-      const createTopic = (topic: Topic): NewTopicInput => {
+      const createTopic = (topic: TopicForm): NewTopicInput => {
         const { name } = topic;
         const topicSettings = convertToTopicSettings(topic);
         return {

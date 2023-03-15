@@ -10,58 +10,37 @@ import {
 } from "@patternfly/react-core";
 import { useTranslation } from "@rhoas/app-services-ui-components";
 import type React from "react";
-import type { Topic } from "ui-models/src/models/topic";
 
 export type StepPartitionsProps = {
-  newTopicData: Topic;
-  onPartitionsChange: (value: Topic) => void;
+  partitions: number;
+  onPartitionsChange: (value: number) => void;
   availablePartitionLimit: number;
 };
 
 export const StepPartitions: React.FC<StepPartitionsProps> = ({
-  newTopicData,
+  partitions,
   onPartitionsChange,
   availablePartitionLimit,
 }) => {
   const { t } = useTranslation(["create-topic"]);
 
   const handleOnPlus = () => {
-    const newPartitions = [
-      ...newTopicData.partitions,
-      { partition: newTopicData.partitions.length },
-    ];
-    onPartitionsChange({
-      ...newTopicData,
-      partitions: newPartitions,
-    });
+    onPartitionsChange(partitions + 1);
   };
 
   const handleOnMinus = () => {
-    const { partitions } = newTopicData;
-    const newPartitions = partitions.slice(0, partitions.length - 1);
-    onPartitionsChange({
-      ...newTopicData,
-      partitions: newPartitions,
-    });
+    onPartitionsChange(partitions - 1);
   };
 
   const handlePartitionTouchspinChange: NumberInputProps["onChange"] = (
     event
   ) => {
     const newPartitionCount = Number((event.target as HTMLInputElement).value);
-    const newPartitions = Array.from(
-      { length: newPartitionCount },
-      (_, i) => newTopicData.partitions[i] ?? { partition: i }
-    );
-    onPartitionsChange({
-      ...newTopicData,
-      partitions: newPartitions,
-    });
+    if (newPartitionCount > -1) onPartitionsChange(newPartitionCount);
   };
+
   const onBlur = () => {
-    if (newTopicData.partitions.length < 1) {
-      onPartitionsChange({ ...newTopicData, partitions: [{ partition: 1 }] });
-    }
+    if (partitions < 1) onPartitionsChange(1);
   };
 
   return (
@@ -76,30 +55,24 @@ export const StepPartitions: React.FC<StepPartitionsProps> = ({
           label="Partitions"
           fieldId="step-topic-name-form"
           helperText={
-            newTopicData.partitions.length >= availablePartitionLimit
+            partitions >= availablePartitionLimit
               ? t("partitions_warning")
               : t("partition_helper_text")
           }
           validated={
-            newTopicData.partitions.length >= availablePartitionLimit
-              ? "warning"
-              : "default"
+            partitions >= availablePartitionLimit ? "warning" : "default"
           }
           isRequired
         >
           <NumberInput
             onPlus={handleOnPlus}
             onMinus={handleOnMinus}
-            value={
-              Number(newTopicData.partitions.length) == 0
-                ? ""
-                : Number(newTopicData.partitions.length)
-            }
+            value={partitions == 0 ? "" : partitions}
             inputName="input"
             onChange={handlePartitionTouchspinChange}
             widthChars={20}
-            onBlur={onBlur}
             min={1}
+            onBlur={onBlur}
           />
         </FormGroup>
       </FormSection>

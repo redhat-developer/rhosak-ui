@@ -18,7 +18,7 @@ import type {
   CustomSelect,
   RadioSelectType,
   RetentionSizeRadioSelect,
-} from "..";
+} from "./types";
 import { Cleanup } from "./Cleanup";
 import { CoreConfiguration } from "./CoreConfiguration";
 import { Flush } from "./Flush";
@@ -27,13 +27,19 @@ import { Message } from "./Message";
 import { Replication } from "./Replication";
 import { TopicAdvanceIndex } from "./TopicAdvanceIndex";
 import { TopicAdvanceJumpLinks } from "./TopicAdvanceJumpLinks";
+import type { CleanupPolicy } from "ui-models/src/types";
 
 export type TopicAdvancePageProps = {
   isCreate: boolean;
-  onConfirm: (data: Topic) => void;
+  onConfirm: () => void;
   handleCancel?: () => void;
   topicData: Topic;
-  setTopicData: (val: Topic) => void;
+  topicName: string;
+  onTopicNameChange: (value: string) => void;
+  partitions: number;
+  onPartitionsChange: (value: number) => void;
+  cleanupPolicy: CleanupPolicy;
+  onCleanupPolicyChange: (value: CleanupPolicy) => void;
   checkTopicName?: (value: string) => boolean;
   availablePartitionLimit: number;
   customRetentionSizeValue: CustomRetentionSizeSelect;
@@ -52,8 +58,13 @@ export const TopicAdvancePage: React.FunctionComponent<
   isCreate,
   onConfirm,
   handleCancel,
+  topicName,
+  onCleanupPolicyChange,
+  onPartitionsChange,
+  onTopicNameChange,
   topicData,
-  setTopicData,
+  partitions,
+  cleanupPolicy,
   checkTopicName,
   availablePartitionLimit,
   customTimeValue,
@@ -78,22 +89,25 @@ export const TopicAdvancePage: React.FunctionComponent<
   const [warning, setWarning] = useState<boolean>(false);
   const onValidateTopic = () => {
     if (isCreate) {
-      if (topicData?.name.length < 1) {
+      if (topicName.length < 1) {
         setInvalidText(t("common:required"));
         setTopicValidated(ValidatedOptions.error);
       } else {
         setIsLoading(true);
 
-        const isTopicNameValid =
-          checkTopicName && checkTopicName(topicData?.name);
+        const isTopicNameValid = checkTopicName && checkTopicName(topicName);
         if (!isTopicNameValid) {
           setIsLoading(false);
-          setInvalidText(t("already_exists", { name: topicData?.name })),
+          setInvalidText(t("already_exists", { name: topicName })),
             setTopicValidated(ValidatedOptions.error);
-        } else onConfirm(topicData);
+        } else {
+          onConfirm();
+          setIsLoading(false);
+        }
       }
     } else {
-      onConfirm(topicData);
+      setIsLoading(false);
+      onConfirm();
     }
   };
   return (
@@ -111,7 +125,10 @@ export const TopicAdvancePage: React.FunctionComponent<
                 <CoreConfiguration
                   isCreate={isCreate}
                   topicData={topicData}
-                  setTopicData={setTopicData}
+                  topicName={topicName}
+                  setTopicName={onTopicNameChange}
+                  partitions={partitions}
+                  setPartitions={onPartitionsChange}
                   availablePartitionLimit={availablePartitionLimit}
                   invalidText={invalidText}
                   setInvalidText={setInvalidText}
@@ -141,14 +158,17 @@ export const TopicAdvancePage: React.FunctionComponent<
                 />
                 <Log
                   topicData={topicData}
-                  setTopicData={setTopicData}
-                  defaultDeleteRetentionTime={topicData["retention.ms"].value}
+                  defaultDeleteRetentionTime={
+                    topicData["delete.retention.ms"].value
+                  }
                   defaultMinCleanbleRatio={
                     topicData["min.cleanable.dirty.ratio"]
                   }
                   defaultMinimumCompactionLagTime={
                     topicData["min.compaction.lag.ms"].value
                   }
+                  cleanupPolicy={cleanupPolicy}
+                  setCleanupPolicy={onCleanupPolicyChange}
                 />
                 <Replication />
                 <Cleanup

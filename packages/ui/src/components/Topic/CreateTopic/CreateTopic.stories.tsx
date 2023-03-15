@@ -1,6 +1,5 @@
 import type { ComponentMeta, ComponentStory } from "@storybook/react";
 import { userEvent, within } from "@storybook/testing-library";
-import type { Topic } from "ui-models/src/models/topic";
 import type { TopicPartition } from "ui-models/src/models/topic-partition";
 import { CreateTopic } from "./CreateTopic";
 
@@ -11,7 +10,7 @@ export default {
     kafkaPageLink: "kafka-link",
     kafkaInstanceLink: "kafka-instance-link",
     availablePartitionLimit: 10,
-    onSave: (value: Topic) => console.log("topic value", value),
+    availabilityZone: "single",
     checkTopicName: (topicName) =>
       !["test", "my-test", "test-topic"].some((m) => m == topicName),
     initialTopicValues: {
@@ -28,7 +27,7 @@ export default {
       },
       "message.timestamp.type": "CreateTime",
       "min.compaction.lag.ms": { type: "ms", value: BigInt("1") },
-      "retention.bytes": { type: "bytes", value: BigInt("-1") },
+      "retention.bytes": { type: "bytes", value: BigInt("9") },
       "retention.ms": { type: "ms", value: BigInt("1") },
       "segment.bytes": { type: "bytes", value: BigInt("9") },
       "segment.ms": { type: "ms", value: BigInt("1") },
@@ -41,7 +40,7 @@ export default {
       "leader.replication.throttled.replicas": "optional",
       "message.format.version": "abc",
       "min.cleanable.dirty.ratio": 678,
-      "min.insync.replicas": 345,
+      "min.insync.replicas": 1,
       "segment.index.bytes": { type: "bytes", value: BigInt("9") },
       "segment.jitter.ms": { type: "ms", value: BigInt("1") },
       "unclean.leader.election.enable": false,
@@ -100,7 +99,7 @@ InvalidTopicName.args = {
     "leader.replication.throttled.replicas": "optional",
     "message.format.version": "abc",
     "min.cleanable.dirty.ratio": 678,
-    "min.insync.replicas": 345,
+    "min.insync.replicas": 1,
     "segment.index.bytes": { type: "bytes", value: BigInt("9") },
     "segment.jitter.ms": { type: "ms", value: BigInt("1") },
     "unclean.leader.election.enable": false,
@@ -144,7 +143,7 @@ InvalidLength.args = {
     "leader.replication.throttled.replicas": "optional",
     "message.format.version": "abc",
     "min.cleanable.dirty.ratio": 678,
-    "min.insync.replicas": 345,
+    "min.insync.replicas": 1,
     "segment.index.bytes": { type: "bytes", value: BigInt("9") },
     "segment.jitter.ms": { type: "ms", value: BigInt("1") },
     "unclean.leader.election.enable": false,
@@ -188,7 +187,7 @@ PartitionLimitReached.args = {
     "leader.replication.throttled.replicas": "optional",
     "message.format.version": "abc",
     "min.cleanable.dirty.ratio": 678,
-    "min.insync.replicas": 345,
+    "min.insync.replicas": 1,
     "segment.index.bytes": { type: "bytes", value: BigInt("9") },
     "segment.jitter.ms": { type: "ms", value: BigInt("1") },
     "unclean.leader.election.enable": false,

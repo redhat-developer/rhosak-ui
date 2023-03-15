@@ -2,12 +2,8 @@ import { isServiceApiError } from "@rhoas/kafka-management-sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { kafkaQueries } from "../queryKeys";
 import { useApi } from "../useApi";
-import type { TopicSettings } from "@rhoas/kafka-instance-sdk";
-import type { Topic } from "ui-models/src/models/topic";
-import {
-  convertToKeyValuePairs,
-  convertToTopicSettings,
-} from "consoledot-api/src/transformers/topicTransformer";
+import { convertToTopicSettings } from "consoledot-api/src/transformers/topicTransformer";
+import type { TopicForm } from "ui";
 
 export function useUpdateTopicMutation() {
   const { topics } = useApi();
@@ -22,13 +18,13 @@ export function useUpdateTopicMutation() {
     }: {
       instanceId: string;
       adminUrl: string;
-      topic: Topic;
+      topic: TopicForm;
       onSuccess: () => void;
       onError: (code: string, message: string) => void;
     }) {
       const api = topics(adminUrl);
 
-      const updateTopic = (topic: Topic) => {
+      const updateTopic = (topic: TopicForm) => {
         const topicSettings = convertToTopicSettings(topic);
         return topicSettings;
       };
@@ -47,7 +43,7 @@ export function useUpdateTopicMutation() {
     },
     {
       onSuccess: (_, { adminUrl, instanceId }) => {
-        void queryClient.invalidateQueries([
+        void queryClient.removeQueries([
           kafkaQueries.instance._root({
             id: instanceId,
             adminUrl,

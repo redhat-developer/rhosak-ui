@@ -8,7 +8,11 @@ import {
   SelectVariant,
 } from "@patternfly/react-core";
 import type React from "react";
-import type { CustomRetentionSizeSelect, CustomRetentionUnit } from "./types";
+import type {
+  CustomRetentionSizeSelect,
+  CustomRetentionUnit,
+  RetentionSizeRadioSelect,
+} from "./types";
 import { retentionSizeSelectOptions } from "./types";
 import { useState } from "react";
 
@@ -16,11 +20,13 @@ export type CustomRetentionSizeProps = {
   id?: string;
   customRetentionSizeValue: CustomRetentionSizeSelect;
   setCustomRetentionSizeValue: (data: CustomRetentionSizeSelect) => void;
+  setRadioSizeSelectValue?: (value: RetentionSizeRadioSelect) => void;
 };
 
 const CustomRetentionSize: React.FC<CustomRetentionSizeProps> = ({
   customRetentionSizeValue,
   setCustomRetentionSizeValue,
+  setRadioSizeSelectValue,
 }) => {
   const [isRetentionSizeSelectOpen, setIsRetentionSizeSelectOpen] =
     useState<boolean>(false);
@@ -44,23 +50,11 @@ const CustomRetentionSize: React.FC<CustomRetentionSizeProps> = ({
       value: Number(input),
     };
     if (inputValue.value > -1) setCustomRetentionSizeValue(inputValue);
+    setRadioSizeSelectValue && setRadioSizeSelectValue("custom");
   };
   return (
     <div className="kafka-ui--radio__parameters">
       <Flex>
-        <FlexItem>
-          <TextInput
-            aria-label="Retention size"
-            type="number"
-            value={
-              customRetentionSizeValue.value == 0
-                ? ""
-                : customRetentionSizeValue.value
-            }
-            onChange={onChange}
-            min={1}
-          />
-        </FlexItem>
         <FlexItem>
           <Select
             variant={SelectVariant.single}
@@ -78,6 +72,21 @@ const CustomRetentionSize: React.FC<CustomRetentionSizeProps> = ({
               />
             ))}
           </Select>
+        </FlexItem>
+        <FlexItem>
+          <TextInput
+            aria-label="Retention size"
+            type="number"
+            value={
+              customRetentionSizeValue.value == 0
+                ? ""
+                : customRetentionSizeValue.value == -1
+                ? 1
+                : customRetentionSizeValue.value
+            }
+            onChange={onChange}
+            min={1}
+          />
         </FlexItem>
       </Flex>
     </div>
