@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import { DeleteKafkaTopic } from "ui/src/components/DeleteKafkaTopic";
 import type { DataPlaneTopicNavigationProps } from "../routesConsts";
 import { useTopicGate } from "../useTopicGate";
+import { useAlerts } from "../../../useAlerts";
 
 export const TopicDeleteRoute: VoidFunctionComponent<
   DataPlaneTopicNavigationProps
@@ -13,6 +14,8 @@ export const TopicDeleteRoute: VoidFunctionComponent<
   const history = useHistory();
 
   const { instance, topic } = useTopicGate();
+
+  const { addAlert } = useAlerts();
   const { mutateAsync, isLoading: isDeleting } = useDeleteTopicMutation();
 
   const onCancel = useCallback(() => {
@@ -28,12 +31,18 @@ export const TopicDeleteRoute: VoidFunctionComponent<
       instanceId: instance.id,
       adminUrl: instance.adminUrl,
       name: topic.name,
-      onError: () => {
-        // TODO: alert
+      onError: (_, message) => {
+        addAlert("danger", message, true, "delete-topic-error");
       },
       onSuccess: () => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
         history.replace(instanceTopicsHref(instance.id));
+        addAlert(
+          "success",
+          `Successfully deleted topic ${topic.name}`,
+          true,
+          "delete-topic-success"
+        );
       },
     });
   }, [
@@ -41,6 +50,7 @@ export const TopicDeleteRoute: VoidFunctionComponent<
     instance.id,
     mutateAsync,
     topic.name,
+    addAlert,
     history,
     instanceTopicsHref,
   ]);
