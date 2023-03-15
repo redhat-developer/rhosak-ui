@@ -40,7 +40,7 @@
     "@types/react-router-dom": "5.3.3",
     "@xstate/cli": "0.4.2",
     "@xstate/inspect": "0.7.0",
-    "eslint": "8.30.0",
+    "eslint": "8.36.0",
     "eslint-config-custom": "*",
     "jest": "27.5.1",
     "jest-environment-jsdom": "27.5.1",
