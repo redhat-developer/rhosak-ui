@@ -1,6 +1,6 @@
 import { FormGroup, TextInput } from "@patternfly/react-core";
-import type { VoidFunctionComponent } from "react";
 import { useTranslation } from "@rhoas/app-services-ui-components";
+import type { VoidFunctionComponent } from "react";
 
 export type FieldInstanceNameProps = {
   value: string;
@@ -38,6 +38,7 @@ export const FieldInstanceName: VoidFunctionComponent<
         onChange={onChange}
         autoFocus={true}
         isDisabled={isDisabled}
+        maxLength={32}
       />
     </FormGroup>
   );
