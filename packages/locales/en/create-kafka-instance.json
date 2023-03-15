@@ -47,6 +47,7 @@
     "unknown_error_title": "$t(common:something_went_wrong)"
   },
   "ingress_value": "up to {{value}} MiB/second",
+  "instance_creation_disabled": "Sorry, instance creation is disabled at this time.",
   "instance_creation_time_alert": "Your $t(common:kafka) instance will be ready for use shortly after creation.",
   "instance_information": "Details",
   "instance_name": "Name",
