@@ -3,10 +3,10 @@ import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import type { DataPlaneTopicHeaderProps } from "ui";
 import { DataPlaneTopicHeader } from "ui";
+import { useUserControlGate } from "../../../useUserControlGate";
 import { useDrawer } from "../../control-plane";
 import type { DataPlaneNavigationProps } from "../routesConsts";
 import { useTopicGate } from "../useTopicGate";
-import { useUserControlGate } from "../../../useUserControlGate";
 
 export const DataPlaneTopicHeaderConnected: VoidFunctionComponent<
   DataPlaneNavigationProps & Pick<DataPlaneTopicHeaderProps, "activeSection">
@@ -16,7 +16,6 @@ export const DataPlaneTopicHeaderConnected: VoidFunctionComponent<
   instancesHref,
   activeSection,
 }) => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
   const { setActiveTab, toggleExpanded } = useDrawer();
   const { userData } = useUserControlGate();
@@ -35,13 +34,11 @@ export const DataPlaneTopicHeaderConnected: VoidFunctionComponent<
 
   const onDelete = useCallback(() => {
     // TODO: unhardcode this url
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(`${instancesHref}/${instance.id}/delete`);
   }, [history, instance, instancesHref]);
 
   const onChangeOwner = useCallback(() => {
     // TODO: unhardcode this url
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(`${instancesHref}/${instance.id}/change-owner`);
   }, [history, instance, instancesHref]);
 

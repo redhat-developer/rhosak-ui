@@ -1,22 +1,22 @@
-import { useCallback } from "react";
-import type { VoidFunctionComponent } from "react";
-import { EditPermissions } from "ui";
+import type { AclBinding } from "@rhoas/kafka-instance-sdk";
 import {
   useAcls,
   useConsumerGroups,
   useDeletePermissionsMutation,
   useTopics,
   useUpdatePermissionsMutation,
-} from "consoledot-api";
+} from "consoledot-api/src";
+import type { VoidFunctionComponent } from "react";
+import { useCallback } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
-import type { AclBinding } from "@rhoas/kafka-instance-sdk";
+import { EditPermissions } from "ui";
+import { useAlerts } from "../../../useAlerts";
 import type {
   DataPlanePermissionsNavigationProps,
   DataPlanePermissionsRouteParams,
 } from "../routesConsts";
 import { DataPlanePermissionsRoutePath } from "../routesConsts";
 import { useDataPlaneGate } from "../useDataPlaneGate";
-import { useAlerts } from "../../../useAlerts";
 
 export const PermissionsEditRoute: VoidFunctionComponent<
   DataPlanePermissionsNavigationProps
@@ -54,7 +54,6 @@ export const PermissionsEditRoute: VoidFunctionComponent<
   const { mutateAsync } = useDeletePermissionsMutation();
   const updatePermissions = useUpdatePermissionsMutation();
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
 
   const onSaveAcls = useCallback(

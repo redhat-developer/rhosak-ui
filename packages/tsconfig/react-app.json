@@ -1,14 +1,18 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "display": "React Library",
+  "display": "React App",
   "extends": "./base.json",
   "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "noErrorTruncation": true,
+    "isolatedModules": false,
     "jsx": "react-jsx",
     "lib": [
       "ESNext",
       "dom"
     ],
     "module": "ESNext",
-    "target": "ES6"
+    "sourceMap": true,
+    "target": "ES5"
   }
 }

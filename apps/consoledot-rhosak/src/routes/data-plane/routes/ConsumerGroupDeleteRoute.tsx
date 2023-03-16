@@ -1,16 +1,15 @@
+import { useDeleteConsumerGroupMutation } from "consoledot-api/src";
 import type { VoidFunctionComponent } from "react";
 import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { DeleteConsumerGroup } from "ui";
-import { useDeleteConsumerGroupMutation } from "consoledot-api";
+import { useAlerts } from "../../../useAlerts";
 import type { DataPlaneConsumerGroupNavigationsProps } from "../routesConsts";
 import { useConsumerGroupGate } from "../useConsumerGroupGate";
-import { useAlerts } from "../../../useAlerts";
 
 export const ConsumerGroupDeleteRoute: VoidFunctionComponent<
   DataPlaneConsumerGroupNavigationsProps
 > = ({ instanceConsumerGroupsHref }) => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
 
   const { addAlert } = useAlerts();
@@ -20,7 +19,6 @@ export const ConsumerGroupDeleteRoute: VoidFunctionComponent<
   const { mutateAsync } = useDeleteConsumerGroupMutation();
 
   const onCancel = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(instanceConsumerGroupsHref(instance.id));
   }, [history, instance.id, instanceConsumerGroupsHref]);
 
@@ -33,7 +31,6 @@ export const ConsumerGroupDeleteRoute: VoidFunctionComponent<
         addAlert("danger", message, true, "delete-consumer-group-error");
       },
       onSuccess: () => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
         history.replace(instanceConsumerGroupsHref(instance.id));
         addAlert(
           "success",

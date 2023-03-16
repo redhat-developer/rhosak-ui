@@ -1,21 +1,22 @@
-import type { VoidFunctionComponent } from "react";
-import { useCallback, useMemo } from "react";
-import type { CreateTopicPageProps, TopicForm } from "ui";
-import { CreateTopic } from "ui";
-import { useHistory } from "react-router-dom";
-import { useAlerts } from "../../../useAlerts";
-import { useCreateTopicMutation, useTopics } from "consoledot-api";
-import { useDataPlaneGate } from "../useDataPlaneGate";
-import type { DataPlaneNavigationProps } from "../routesConsts";
+import { useChrome } from "@redhat-cloud-services/frontend-components/useChrome";
+import { useCreateTopicMutation, useTopics } from "consoledot-api/src";
 import {
   developerDefaults,
   standardDefaults,
 } from "consoledot-api/src/transformers/topicTransformer";
+import type { VoidFunctionComponent } from "react";
+import { useCallback, useMemo } from "react";
+import { useHistory } from "react-router-dom";
+import type { CreateTopicPageProps, TopicForm } from "ui";
+import { CreateTopic } from "ui";
+import { useAlerts } from "../../../useAlerts";
+import type { DataPlaneNavigationProps } from "../routesConsts";
+import { useDataPlaneGate } from "../useDataPlaneGate";
 
 export const TopicCreateRoute: VoidFunctionComponent<
   DataPlaneNavigationProps
 > = ({ instancesHref, instanceTopicsHref }) => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const { analytics } = useChrome();
   const history = useHistory();
   const { addAlert } = useAlerts();
   const { instance } = useDataPlaneGate();
@@ -29,6 +30,11 @@ export const TopicCreateRoute: VoidFunctionComponent<
     },
     false
   );
+
+  void analytics.track("RHOSAK Create Topic", {
+    entityId: instance.id,
+    status: "prompt",
+  });
 
   if (instance.maxPartitions === undefined) {
     throw new Error(
@@ -51,7 +57,6 @@ export const TopicCreateRoute: VoidFunctionComponent<
   );
 
   const onCloseCreateTopic = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(instanceTopicsHref(instance.id));
   }, [history, instance.id, instanceTopicsHref]);
 
@@ -63,6 +68,12 @@ export const TopicCreateRoute: VoidFunctionComponent<
         topic: topicData,
 
         onSuccess: () => {
+          void analytics.track("RHOSAK Create Topic", {
+            entityId: instance.id,
+            topic: topicData.name,
+            status: "success",
+          });
+
           //eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
           history.push(instanceTopicsHref(instance.id));
           addAlert(
@@ -73,12 +84,18 @@ export const TopicCreateRoute: VoidFunctionComponent<
           );
         },
         onError: (_, message) => {
+          void analytics.track("RHOSAK Create Topic", {
+            entityId: instance.id,
+            topic: topicData.name,
+            status: "failure",
+          });
           addAlert("danger", message, true, "create-topic-fail");
         },
       });
     },
     [
       addAlert,
+      analytics,
       createTopic,
       history,
       instance?.adminUrl,
@@ -102,18 +119,16 @@ export const TopicCreateRoute: VoidFunctionComponent<
   }, [instance.plan]);
 
   return (
-    <>
-      <CreateTopic
-        kafkaName={instance.name}
-        kafkaPageLink={instanceTopicsHref(instance.id)}
-        kafkaInstanceLink={instancesHref}
-        onSave={onSave}
-        initialTopicValues={initialTopicValues}
-        onCloseCreateTopic={onCloseCreateTopic}
-        checkTopicName={checkTopicName}
-        availablePartitionLimit={instance.maxPartitions}
-        availabilityZone={availabilityZone}
-      />
-    </>
+    <CreateTopic
+      kafkaName={instance.name}
+      kafkaPageLink={instanceTopicsHref(instance.id)}
+      kafkaInstanceLink={instancesHref}
+      onSave={onSave}
+      initialTopicValues={initialTopicValues}
+      onCloseCreateTopic={onCloseCreateTopic}
+      checkTopicName={checkTopicName}
+      availablePartitionLimit={instance.maxPartitions}
+      availabilityZone={availabilityZone}
+    />
   );
 };

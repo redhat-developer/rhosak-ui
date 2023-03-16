@@ -1,6 +1,6 @@
 import { getBaseName } from "@redhat-cloud-services/frontend-components-utilities/helpers";
 import { useChrome } from "@redhat-cloud-services/frontend-components/useChrome";
-import { ApiProvider } from "consoledot-api";
+import { ApiProvider } from "consoledot-api/src";
 import { memo, useLayoutEffect } from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router } from "react-router-dom";

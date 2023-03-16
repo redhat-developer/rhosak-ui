@@ -1,7 +1,7 @@
-import { QuickStartContext } from "@patternfly/quickstarts";
-import { useCreateKafkaMutation } from "consoledot-api";
+import { useChrome } from "@redhat-cloud-services/frontend-components/useChrome";
+import { useCreateKafkaMutation } from "consoledot-api/src";
 import type { FunctionComponent } from "react";
-import { useCallback, useContext } from "react";
+import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import type { CreateKafkaInstanceServices } from "ui";
 import { CreateKafkaInstance } from "ui";
@@ -13,28 +13,29 @@ import { useSelfTermsReviewGate } from "./useSelfTermsReviewGate";
 export const CreateKafkaInstanceRoute: FunctionComponent<
   ControlPlaneNavigationProps
 > = ({ instancesHref }) => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const { analytics, quickStarts } = useChrome();
   const history = useHistory();
   const callbacks = useCreateKafkaCallbacks();
   const createKafkaInstance = useCreateKafkaMutation();
-  const qsContext = useContext(QuickStartContext);
   useSelfTermsReviewGate();
 
+  void analytics.track("RHOSAK Create Instance", { status: "prompt" });
+
   const onClickKafkaOverview = () => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(`/overview`);
   };
 
   const onClickQuickStart = useCallback(() => {
-    qsContext.setActiveQuickStart &&
-      qsContext.setActiveQuickStart("getting-started");
-  }, [qsContext]);
+    quickStarts.toggle("getting-started");
+  }, [quickStarts]);
 
   const onCreate = useCallback<CreateKafkaInstanceServices["onCreate"]>(
     function (instance, onSuccess, onError) {
       const onOnSuccess = () => {
         onSuccess();
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+        void analytics.track("RHOSAK Create Instance", {
+          status: "success",
+        });
         history.push(ControlPlaneRouteRoot);
       };
       void createKafkaInstance.mutateAsync({
@@ -43,13 +44,15 @@ export const CreateKafkaInstanceRoute: FunctionComponent<
         onError,
       });
     },
-    [createKafkaInstance, history]
+    [analytics, createKafkaInstance, history]
   );
 
   const onCancel = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+    void analytics.track("RHOSAK Create Instance", {
+      status: "canceled",
+    });
     history.push(instancesHref);
-  }, [history, instancesHref]);
+  }, [analytics, history, instancesHref]);
 
   return (
     <CreateKafkaInstance

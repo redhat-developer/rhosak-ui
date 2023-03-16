@@ -3,22 +3,21 @@ import {
   useSortableSearchParams,
   useURLSearchParamsChips,
 } from "@rhoas/app-services-ui-components";
-import { KafkaTopicsSortableColumns, useTopics } from "consoledot-api";
+import { KafkaTopicsSortableColumns, useTopics } from "consoledot-api/src";
 import type { VoidFunctionComponent } from "react";
 import { useCallback } from "react";
+import { useHistory } from "react-router-dom";
 import { KafkaTopics, useTopicLabels } from "ui";
 import type { ControlPlaneNavigationProps } from "../../control-plane/routesConsts";
 import { ControlPlaneRouteRoot } from "../../control-plane/routesConsts";
 import { useDataPlaneGate } from "../useDataPlaneGate";
 import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
-import { useHistory } from "react-router-dom";
 
 export const TopicsRoute: VoidFunctionComponent<
   ControlPlaneNavigationProps
 > = ({ instancesHref }) => {
   const labels = useTopicLabels();
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
 
   const { instance } = useDataPlaneGate();
@@ -30,7 +29,6 @@ export const TopicsRoute: VoidFunctionComponent<
   );
 
   const onCreate = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(
       `${ControlPlaneRouteRoot}/${instance.id}/details/topics/create-topic`
     );
@@ -55,7 +53,6 @@ export const TopicsRoute: VoidFunctionComponent<
   const onDeleteTopic = useCallback(
     (topicName: string) => {
       //TODO: remove hardcode value
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       history.push(
         `${ControlPlaneRouteRoot}/${instance.id}/details/topics/${topicName}/delete`
       );
@@ -66,7 +63,6 @@ export const TopicsRoute: VoidFunctionComponent<
   const onEditTopic = useCallback(
     (topicName: string) => {
       //TODO: remove hardcode value
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       history.push(
         `${ControlPlaneRouteRoot}/${instance.id}/details/topics/${topicName}/edit`
       );
