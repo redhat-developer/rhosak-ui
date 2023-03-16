@@ -20,8 +20,8 @@ export const TopicDeleteRoute: VoidFunctionComponent<
 
   const onCancel = useCallback(() => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-    history.push(instanceTopicsHref(instance.id));
-  }, [history, instance.id, instanceTopicsHref]);
+    history.goback();
+  }, [history]);
 
   const onDelete = useCallback(() => {
     if (!instance.adminUrl) {
