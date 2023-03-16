@@ -18,7 +18,6 @@ export const Routes: VoidFunctionComponent = () => {
           <DataPlaneRoutes />
         </DrawerProvider>
       </Route>
-      <Route path={""} exact></Route>
     </Switch>
   );
 };
