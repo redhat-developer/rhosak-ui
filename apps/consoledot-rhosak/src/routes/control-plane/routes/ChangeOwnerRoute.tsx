@@ -48,14 +48,7 @@ export const ChangeOwnerRoute: FunctionComponent<
         }
       );
     },
-    [
-      addAlert,
-      history,
-      instance.id,
-      instance.name,
-      instancesHref,
-      updateInstance,
-    ]
+    [addAlert, history, instance.id, instance.name, updateInstance]
   );
 
   const savingState = ((): ChangeKafkaOwnerProps["savingState"] => {
