@@ -23,8 +23,8 @@ export const ChangeOwnerRoute: FunctionComponent<
 
   const onCancel = useCallback(() => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-    history.push(instancesHref);
-  }, [history, instancesHref]);
+    history.goBack();
+  }, [history]);
 
   const onConfirm = useCallback(
     (newOwner: string) => {
@@ -36,7 +36,7 @@ export const ChangeOwnerRoute: FunctionComponent<
         {
           onSuccess: () => {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-            history.replace(instancesHref);
+            history.goBack();
             addAlert(
               "success",
               "Kafka instance owner changed",
