@@ -11,7 +11,7 @@ export type FetchUserAccountsParams = {
 export async function fetchUserAccounts({
   getUserAccounts,
 }: FetchUserAccountsParams): Promise<{
-  accounts: UserAccount[] | [];
+  accounts: UserAccount[];
   count: number;
 }> {
   try {
