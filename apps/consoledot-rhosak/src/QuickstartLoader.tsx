@@ -44,7 +44,7 @@ export const QuickstartLoader: VoidFunctionComponent = () => {
               processor={processor}
               showDrafts={false}
               onLoad={onLoad}
-              fallback={() => <div>lol</div>}
+              fallback={() => null}
             />
           ) : null}
         </AssetsContext.Provider>
