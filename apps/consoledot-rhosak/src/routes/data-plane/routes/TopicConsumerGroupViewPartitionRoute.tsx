@@ -1,8 +1,8 @@
-import { useCallback } from "react";
 import type { VoidFunctionComponent } from "react";
+import { useCallback } from "react";
+import { useHistory } from "react-router-dom";
 import { ConsumerGroupDrawer } from "ui";
 import type { DataPlaneTopicConsumerGroupNavigationsProps } from "../routesConsts";
-import { useHistory } from "react-router-dom";
 import { useTopicConsumerGroupGate } from "../useTopicConsumerGroupGate";
 import { TopicConsumerGroupsRoute } from "./TopicConsumerGroupsRoute";
 
@@ -17,16 +17,13 @@ export const TopicConsumerGroupViewPartitionRoute: VoidFunctionComponent<
 }) => {
   const { instance, topic, consumerGroup } = useTopicConsumerGroupGate();
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
 
   const onCancel = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(instanceTopicConsumerGroupsHref(instance.id, topic.name));
   }, [history, instance.id, topic.name, instanceTopicConsumerGroupsHref]);
 
   const onDelete = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(
       `${viewTopicPartitionConsumerGroupHref(
         instance.id,
@@ -43,7 +40,6 @@ export const TopicConsumerGroupViewPartitionRoute: VoidFunctionComponent<
   ]);
 
   const onClickResetOffset = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(
       `${viewTopicPartitionConsumerGroupHref(
         instance.id,

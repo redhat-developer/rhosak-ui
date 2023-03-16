@@ -1,12 +1,12 @@
-import { useCallback } from "react";
+import { useResetConsumerGroupMutation } from "consoledot-api/src";
 import type { VoidFunctionComponent } from "react";
-import { ConsumerGroupResetOffset } from "ui";
-import type { OffsetValue } from "ui";
-import type { DataPlaneConsumerGroupNavigationsProps } from "../routesConsts";
+import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
-import { useResetConsumerGroupMutation } from "consoledot-api";
-import { useConsumerGroupGate } from "../useConsumerGroupGate";
+import type { OffsetValue } from "ui";
+import { ConsumerGroupResetOffset } from "ui";
 import { useAlerts } from "../../../useAlerts";
+import type { DataPlaneConsumerGroupNavigationsProps } from "../routesConsts";
+import { useConsumerGroupGate } from "../useConsumerGroupGate";
 
 export const ConsumerGroupResetOffsetRoute: VoidFunctionComponent<
   DataPlaneConsumerGroupNavigationsProps
@@ -17,11 +17,9 @@ export const ConsumerGroupResetOffsetRoute: VoidFunctionComponent<
 
   const { mutateAsync } = useResetConsumerGroupMutation();
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
 
   const onCancel = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(instanceConsumerGroupsHref(instance.id));
   }, [history, instance.id, instanceConsumerGroupsHref]);
 
@@ -52,7 +50,6 @@ export const ConsumerGroupResetOffsetRoute: VoidFunctionComponent<
           addAlert("danger", message, true, "reset-offset-error");
         },
         onSuccess: () => {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
           history.replace(instanceConsumerGroupsHref(instance.id));
           addAlert(
             "success",

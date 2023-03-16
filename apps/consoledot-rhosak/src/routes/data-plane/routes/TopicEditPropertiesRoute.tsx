@@ -1,18 +1,17 @@
+import { useUpdateTopicMutation } from "consoledot-api/src";
 import type { VoidFunctionComponent } from "react";
 import { useCallback } from "react";
-import type { DataPlaneNavigationProps } from "../routesConsts";
-import { useTopicGate } from "../useTopicGate";
-import { useUpdateTopicMutation } from "consoledot-api";
 import { useHistory } from "react-router-dom";
-import { DataPlaneTopicHeaderConnected } from "./DataPlaneTopicHeaderConnected";
 import type { TopicForm } from "ui";
 import { EditTopicProperties } from "ui";
 import { useAlerts } from "../../../useAlerts";
+import type { DataPlaneNavigationProps } from "../routesConsts";
+import { useTopicGate } from "../useTopicGate";
+import { DataPlaneTopicHeaderConnected } from "./DataPlaneTopicHeaderConnected";
 
 export const TopicEditPropertiesRoute: VoidFunctionComponent<
   DataPlaneNavigationProps
 > = ({ instanceDetailsHref, instanceTopicsHref, instancesHref }) => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
   const { instance, topic } = useTopicGate();
   const { addAlert } = useAlerts();
@@ -62,7 +61,6 @@ export const TopicEditPropertiesRoute: VoidFunctionComponent<
   );
 
   const onCancel = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(instanceTopicsHref(instance.id));
   }, [history, instance.id, instanceTopicsHref]);
 

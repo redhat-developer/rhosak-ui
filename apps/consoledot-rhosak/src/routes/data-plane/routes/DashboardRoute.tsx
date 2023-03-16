@@ -4,20 +4,20 @@ import {
   useKafkaMetricsFetchQuery,
   useTopicsFetchQuery,
   useTopicsMetricsFetchQuery,
-} from "consoledot-api";
+} from "consoledot-api/src";
 import {
   metricsDismissLagAlerts,
   metricsIsLagAlertsDismissed,
 } from "local-storage-helpers";
 import type { VoidFunctionComponent } from "react";
 import { useCallback, useState } from "react";
+import { useHistory } from "react-router-dom";
 import type { MetricsProps } from "ui";
 import { Metrics } from "ui";
 import type { ControlPlaneNavigationProps } from "../../control-plane/routesConsts";
 import { ControlPlaneRouteRoot } from "../../control-plane/routesConsts";
 import { useDataPlaneGate } from "../useDataPlaneGate";
 import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
-import { useHistory } from "react-router-dom";
 
 export const DashboardRoute: VoidFunctionComponent<
   ControlPlaneNavigationProps
@@ -26,7 +26,6 @@ export const DashboardRoute: VoidFunctionComponent<
     instance,
     match: { params },
   } = useDataPlaneGate();
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
 
   const [hasUserAlreadyClosedAlert, setHasUserAlreadyClosedAlert] = useState(
@@ -105,7 +104,6 @@ export const DashboardRoute: VoidFunctionComponent<
   );
 
   const onCreateTopic = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(
       `${ControlPlaneRouteRoot}/${instance.id}/details/topics/create-topic`
     );

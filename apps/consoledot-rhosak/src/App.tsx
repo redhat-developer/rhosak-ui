@@ -3,7 +3,7 @@ import { notificationsReducer } from "@redhat-cloud-services/frontend-components
 import { getRegistry } from "@redhat-cloud-services/frontend-components-utilities/Registry";
 import { useChrome } from "@redhat-cloud-services/frontend-components/useChrome";
 import { useTranslation } from "@rhoas/app-services-ui-components";
-import { useSelfTermsReview } from "consoledot-api";
+import { useSelfTermsReview } from "consoledot-api/src";
 import { memo, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import type { Reducer } from "redux";
@@ -13,7 +13,6 @@ import "./App.scss";
 import { Routes } from "./routes/Routes";
 
 const App = memo(() => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
   const { updateDocumentTitle, on } = useChrome();
 
@@ -32,7 +31,6 @@ const App = memo(() => {
     const unregister = on("APP_NAVIGATION", (event) => {
       console.dir(event);
       if (event.navId) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
         history.push("/" + event.navId === "/" ? "" : event.navId);
       }
     });

@@ -1,7 +1,7 @@
-import { useConsumerGroup } from "consoledot-api";
+import { useConsumerGroup } from "consoledot-api/src";
 import { useRouteMatch } from "react-router-dom";
-import { DataPlaneTopicConsumerGroupRoutePath } from "./routesConsts";
 import type { DataPlaneTopicConsumerRouteParams } from "./routesConsts";
+import { DataPlaneTopicConsumerGroupRoutePath } from "./routesConsts";
 import { useTopicGate } from "./useTopicGate";
 
 export function useTopicConsumerGroupGate() {

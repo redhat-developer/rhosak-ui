@@ -1,12 +1,12 @@
-import { useUpdateKafkaMutation } from "consoledot-api";
+import { useUpdateKafkaMutation } from "consoledot-api/src";
 import type { VoidFunctionComponent } from "react";
 import { useCallback } from "react";
 import type { SettingsProps } from "ui";
 import { Settings as SettingsComp } from "ui";
+import { useAlerts } from "../../../useAlerts";
 import type { ControlPlaneNavigationProps } from "../../control-plane/routesConsts";
 import { useDataPlaneGate } from "../useDataPlaneGate";
 import { DataPlaneHeaderConnected } from "./DataPlaneHeaderConnected";
-import { useAlerts } from "../../../useAlerts";
 
 export const SettingsRoute: VoidFunctionComponent<
   ControlPlaneNavigationProps

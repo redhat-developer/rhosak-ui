@@ -1,4 +1,4 @@
-import { useSelfTermsReview } from "consoledot-api";
+import { useSelfTermsReview } from "consoledot-api/src";
 
 export function useSelfTermsReviewGate() {
   const { data } = useSelfTermsReview(true);

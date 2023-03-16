@@ -4,7 +4,7 @@ import {
   useProviderRegionSizesFetchQuery,
   useProvidersWithRegionsFetchQuery,
   useStandardQuotaFetchQuery,
-} from "consoledot-api";
+} from "consoledot-api/src";
 import { useCallback } from "react";
 import type { CreateKafkaInstanceProps, StandardSizes } from "ui";
 

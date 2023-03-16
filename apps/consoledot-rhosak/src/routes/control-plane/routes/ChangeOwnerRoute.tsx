@@ -1,18 +1,17 @@
-import { useUpdateKafkaMutation, useUserAccounts } from "consoledot-api";
+import { useUpdateKafkaMutation, useUserAccounts } from "consoledot-api/src";
 import type { FunctionComponent } from "react";
 import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import type { ChangeKafkaOwnerProps } from "ui";
 import { ChangeKafkaOwner } from "ui";
+import { useAlerts } from "../../../useAlerts";
 
 import type { ControlPlaneNavigationProps } from "../routesConsts";
 import { useControlPlaneGate } from "../useControlPlaneGate";
-import { useAlerts } from "../../../useAlerts";
 
 export const ChangeOwnerRoute: FunctionComponent<
   ControlPlaneNavigationProps
 > = ({ instancesHref }) => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
 
   const { instance } = useControlPlaneGate();
@@ -22,7 +21,6 @@ export const ChangeOwnerRoute: FunctionComponent<
   const { addAlert } = useAlerts();
 
   const onCancel = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(instancesHref);
   }, [history, instancesHref]);
 
@@ -35,7 +33,6 @@ export const ChangeOwnerRoute: FunctionComponent<
         },
         {
           onSuccess: () => {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
             history.replace(instancesHref);
             addAlert(
               "success",

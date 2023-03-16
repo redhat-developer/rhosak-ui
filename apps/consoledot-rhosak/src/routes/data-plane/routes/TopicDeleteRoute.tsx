@@ -1,4 +1,5 @@
-import { useDeleteTopicMutation } from "consoledot-api";
+import { useChrome } from "@redhat-cloud-services/frontend-components/useChrome";
+import { useDeleteTopicMutation } from "consoledot-api/src";
 import type { VoidFunctionComponent } from "react";
 import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
@@ -9,14 +10,19 @@ import { useTopicGate } from "../useTopicGate";
 export const TopicDeleteRoute: VoidFunctionComponent<
   DataPlaneTopicNavigationProps
 > = ({ instanceTopicsHref }) => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const { analytics } = useChrome();
   const history = useHistory();
 
   const { instance, topic } = useTopicGate();
   const { mutateAsync, isLoading: isDeleting } = useDeleteTopicMutation();
 
+  void analytics.track("RHOSAK Delete Topic", {
+    entityId: instance.id,
+    topic: topic.name,
+    status: "prompt",
+  });
+
   const onCancel = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(instanceTopicsHref(instance.id));
   }, [history, instance.id, instanceTopicsHref]);
 
@@ -29,10 +35,19 @@ export const TopicDeleteRoute: VoidFunctionComponent<
       adminUrl: instance.adminUrl,
       name: topic.name,
       onError: () => {
+        void analytics.track("RHOSAK Delete Topic", {
+          entityId: instance.id,
+          topic: topic.name,
+          status: "failure",
+        });
         // TODO: alert
       },
       onSuccess: () => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+        void analytics.track("RHOSAK Delete Topic", {
+          entityId: instance.id,
+          topic: topic.name,
+          status: "success",
+        });
         history.replace(instanceTopicsHref(instance.id));
       },
     });
@@ -41,6 +56,7 @@ export const TopicDeleteRoute: VoidFunctionComponent<
     instance.id,
     mutateAsync,
     topic.name,
+    analytics,
     history,
     instanceTopicsHref,
   ]);

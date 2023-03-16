@@ -1,13 +1,12 @@
-import { useCallback } from "react";
+import { useServiceAccounts, useUserAccounts } from "consoledot-api/src";
 import type { VoidFunctionComponent } from "react";
-import type { Account } from "ui";
-import { PrincipalType } from "ui";
+import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
-import type { DataPlanePermissionsNavigationProps } from "../routesConsts";
-import { SelectAccount } from "ui";
-import { useServiceAccounts, useUserAccounts } from "consoledot-api";
-import { useDataPlaneGate } from "../useDataPlaneGate";
+import type { Account } from "ui";
+import { PrincipalType, SelectAccount } from "ui";
 import { useUserControlGate } from "../../../useUserControlGate";
+import type { DataPlanePermissionsNavigationProps } from "../routesConsts";
+import { useDataPlaneGate } from "../useDataPlaneGate";
 
 export const PermissionsSelectAccountRoute: VoidFunctionComponent<
   DataPlanePermissionsNavigationProps
@@ -51,7 +50,6 @@ export const PermissionsSelectAccountRoute: VoidFunctionComponent<
     (value) => value.id !== instance.owner && value.id !== userData.username
   );
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
 
   const onNext = useCallback(
