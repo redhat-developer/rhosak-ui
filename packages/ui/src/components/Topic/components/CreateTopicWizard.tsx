@@ -72,9 +72,12 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
   );
   const [topicNameValidated, setTopicNameValidated] =
     useState<ValidatedOptions>(ValidatedOptions.default);
+  const [retentionTimeValidated, setRetentionTimeValidated] =
+    useState<ValidatedOptions>(ValidatedOptions.default);
+  const [retentionSizeValidated, setRetentionSizeValidated] =
+    useState<ValidatedOptions>(ValidatedOptions.default);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [invalidText, setInvalidText] = useState<string>("");
-  //const [topicData] = useState<Topic>(initialFieldsValue);
   const [warningModalOpen, setWarningModalOpen] = useState<boolean>(false);
   const [radioTimeSelectValue, setRadioTimeSelectValue] =
     useState<RadioSelectType>("week");
@@ -130,6 +133,10 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
           setRadioTimeSelectValue={setRadioTimeSelectValue}
           radioSizeSelectValue={radioSizeSelectValue}
           setRadioSizeSelectValue={setRadioSizeSelectValue}
+          retentionSizeValidated={retentionSizeValidated}
+          retentionTimeValidated={retentionTimeValidated}
+          onChangeRetentionSizeValidated={setRetentionSizeValidated}
+          onChangeRetentionTimeValidated={setRetentionTimeValidated}
         />
       ),
       isDisabled: isSaving,
@@ -150,14 +157,20 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
 
   const title = t("wizard_title");
 
+  const retentionTimeTransform: CustomSelect =
+    radioTimeSelectValue == "unlimited"
+      ? { value: -1, unit: "unlimited" }
+      : radioTimeSelectValue == "day"
+      ? { value: 1, unit: "days" }
+      : radioTimeSelectValue == "week"
+      ? { value: 1, unit: "weeks" }
+      : customTimeValue;
+
   const onTransform = () => {
     const topicValues: TopicForm = {
       name: topicName,
       partitions: partitions,
-      retentionTime:
-        radioTimeSelectValue == "unlimited"
-          ? { value: -1, unit: "unlimited" }
-          : customTimeValue,
+      retentionTime: retentionTimeTransform,
       retentionSize:
         radioSizeSelectValue == "unlimited"
           ? { value: -1, unit: "unlimited" }
@@ -169,8 +182,19 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
   };
 
   const onConfirmSave = () => {
-    if (partitions >= availablePartitionLimit) setWarningModalOpen(true);
-    else onTransform();
+    const isRetentionTimeValid = validateRetentionTime();
+    const isRetentionSizeValid = validateRetentionSize();
+    if (!isRetentionTimeValid)
+      setRetentionTimeValidated(ValidatedOptions.error);
+    if (!isRetentionSizeValid)
+      setRetentionSizeValidated(ValidatedOptions.error);
+    if (
+      isRetentionTimeValid &&
+      isRetentionSizeValid &&
+      partitions >= availablePartitionLimit
+    )
+      setWarningModalOpen(true);
+    else if (isRetentionTimeValid && isRetentionSizeValid) onTransform();
   };
 
   const onValidate: IWizardFooter["onValidate"] = (onNext) => {
@@ -187,6 +211,31 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
           setTopicNameValidated(ValidatedOptions.error);
       } else onNext();
     }
+  };
+  const validateRetentionTime = () => {
+    switch (radioTimeSelectValue) {
+      case "custom":
+        return customTimeValue.value == 0 ? false : true;
+      default:
+        return true;
+    }
+  };
+  const validateRetentionSize = () => {
+    switch (radioSizeSelectValue) {
+      case "custom":
+        return customRetentionSizeValue.value == 0 ? false : true;
+      default:
+        return true;
+    }
+  };
+  const onValidateRetentionValues: IWizardFooter["onValidate"] = (onNext) => {
+    const isRetentionTimeValid = validateRetentionTime();
+    const isRetentionSizeValid = validateRetentionSize();
+    if (isRetentionTimeValid && isRetentionSizeValid) onNext();
+    if (!isRetentionTimeValid)
+      setRetentionTimeValidated(ValidatedOptions.error);
+    if (!isRetentionSizeValid)
+      setRetentionSizeValidated(ValidatedOptions.error);
   };
 
   return (
@@ -223,6 +272,11 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
                 setRadioSizeSelectValue={setRadioSizeSelectValue}
                 topicData={topicData}
                 isSaving={isSaving}
+                retentionSizeValidated={retentionSizeValidated}
+                retentionTimeValidated={retentionTimeValidated}
+                onChangeRetentionSizeValidated={setRetentionSizeValidated}
+                onChangeRetentionTimeValidated={setRetentionTimeValidated}
+                initialPartitions={1}
               />
             }
             {warningModalOpen && (
@@ -257,6 +311,11 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
                 topicNameValidated={topicNameValidated}
                 closeWizard={closeWizard}
                 isSaving={isSaving}
+                onValidateRetentionValues={onValidateRetentionValues}
+                retentionSizeValidated={retentionSizeValidated}
+                retentionTimeValidated={retentionTimeValidated}
+                radioTimeSelectValue={radioTimeSelectValue}
+                radioSizeSelectValue={radioSizeSelectValue}
               />
             }
           />

@@ -15,7 +15,6 @@ import {
   useTranslation,
 } from "@rhoas/app-services-ui-components";
 import type { FunctionComponent } from "react";
-import { useState } from "react";
 import { useCallback } from "react";
 import type { Topic } from "ui-models/src/models/topic";
 import { CustomRetentionMessage } from "./CustomRetentionMessage";
@@ -51,6 +50,11 @@ export type CoreConfigurationProps = {
   setTopicName: (value: string) => void;
   partitions: number;
   setPartitions: (value: number) => void;
+  retentionTimeValidated: ValidatedOptions;
+  retentionSizeValidated: ValidatedOptions;
+  onChangeRetentionSizeValidated: (value: ValidatedOptions) => void;
+  onChangeRetentionTimeValidated: (value: ValidatedOptions) => void;
+  initialPartitions: number;
 };
 
 const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
@@ -73,9 +77,14 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
   setPartitions,
   setTopicName,
   partitions,
+  retentionSizeValidated,
+  retentionTimeValidated,
+  onChangeRetentionSizeValidated,
+  onChangeRetentionTimeValidated,
+  initialPartitions,
 }) => {
   const { t } = useTranslation(["create-topic"]);
-  const [initialPartitions] = useState<number>(topicData.partitions.length);
+
   const { validateName } = useValidateTopic();
   const validationCheck = useCallback(
     (value: string) => {
@@ -128,6 +137,8 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
       customTimeValue={customTimeValue}
       setCustomTimeValue={setCustomTimeValue}
       setRadioTimeSelectValue={setRadioTimeSelectValue}
+      retentionTimeValidated={retentionTimeValidated}
+      onChangeRetentionTimeValidated={onChangeRetentionTimeValidated}
     />
   );
 
@@ -136,6 +147,8 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
       customRetentionSizeValue={customRetentionSizeValue}
       setCustomRetentionSizeValue={setCustomRetentionSizeValue}
       setRadioSizeSelectValue={setRadioSizeSelectValue}
+      retentionSizeValidated={retentionSizeValidated}
+      onChangeRetentionSizeValidated={onChangeRetentionSizeValidated}
     />
   );
 

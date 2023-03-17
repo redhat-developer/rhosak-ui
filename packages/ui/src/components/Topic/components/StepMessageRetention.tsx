@@ -1,3 +1,4 @@
+import type { ValidatedOptions } from "@patternfly/react-core";
 import {
   Form,
   FormGroup,
@@ -28,6 +29,10 @@ export type StepMessageRetentionProps = {
   setRadioTimeSelectValue: (value: RadioSelectType) => void;
   radioSizeSelectValue: RetentionSizeRadioSelect;
   setRadioSizeSelectValue: (data: RetentionSizeRadioSelect) => void;
+  retentionTimeValidated: ValidatedOptions;
+  retentionSizeValidated: ValidatedOptions;
+  onChangeRetentionTimeValidated: (value: ValidatedOptions) => void;
+  onChangeRetentionSizeValidated: (value: ValidatedOptions) => void;
 };
 
 export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
@@ -39,6 +44,10 @@ export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
   customRetentionSizeValue,
   radioSizeSelectValue,
   setRadioSizeSelectValue,
+  retentionTimeValidated,
+  retentionSizeValidated,
+  onChangeRetentionSizeValidated,
+  onChangeRetentionTimeValidated,
 }) => {
   const { t } = useTranslation(["create-topic"]);
 
@@ -47,17 +56,6 @@ export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
   };
 
   const retentionTime = (value: RadioSelectType) => {
-    switch (value) {
-      case "day":
-        setCustomTimeValue({ value: 1, unit: "days" });
-        break;
-      case "week":
-        setCustomTimeValue({ value: 1, unit: "weeks" });
-        break;
-      case "custom":
-        //setCustomTimeValue({ value: 7, unit: "days" });
-        break;
-    }
     setRadioTimeSelectValue(value);
   };
 
@@ -115,6 +113,10 @@ export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
                 <CustomRetentionMessage
                   customTimeValue={customTimeValue}
                   setCustomTimeValue={setCustomTimeValue}
+                  retentionTimeValidated={retentionTimeValidated}
+                  onChangeRetentionTimeValidated={
+                    onChangeRetentionTimeValidated
+                  }
                 />
               )}
               <Radio
@@ -155,6 +157,10 @@ export const StepMessageRetention: React.FC<StepMessageRetentionProps> = ({
                 <CustomRetentionSize
                   customRetentionSizeValue={customRetentionSizeValue}
                   setCustomRetentionSizeValue={setCustomRetentionSizeValue}
+                  retentionSizeValidated={retentionSizeValidated}
+                  onChangeRetentionSizeValidated={
+                    onChangeRetentionSizeValidated
+                  }
                 />
               )}
             </Stack>

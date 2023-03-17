@@ -1,8 +1,10 @@
 import type { SelectProps } from "@patternfly/react-core";
+import { FormGroup } from "@patternfly/react-core";
 import { TextInput } from "@patternfly/react-core";
 import {
   Flex,
   FlexItem,
+  ValidatedOptions,
   Select,
   SelectOption,
   SelectVariant,
@@ -14,6 +16,8 @@ import type {
   RetentionSizeRadioSelect,
 } from "./types";
 import { retentionSizeSelectOptions } from "./types";
+import { useTranslation } from "@rhoas/app-services-ui-components";
+
 import { useState } from "react";
 
 export type CustomRetentionSizeProps = {
@@ -21,13 +25,19 @@ export type CustomRetentionSizeProps = {
   customRetentionSizeValue: CustomRetentionSizeSelect;
   setCustomRetentionSizeValue: (data: CustomRetentionSizeSelect) => void;
   setRadioSizeSelectValue?: (value: RetentionSizeRadioSelect) => void;
+  retentionSizeValidated: ValidatedOptions;
+  onChangeRetentionSizeValidated: (value: ValidatedOptions) => void;
 };
 
 const CustomRetentionSize: React.FC<CustomRetentionSizeProps> = ({
   customRetentionSizeValue,
   setCustomRetentionSizeValue,
   setRadioSizeSelectValue,
+  retentionSizeValidated,
+  onChangeRetentionSizeValidated,
 }) => {
+  const { t } = useTranslation(["create-topic"]);
+
   const [isRetentionSizeSelectOpen, setIsRetentionSizeSelectOpen] =
     useState<boolean>(false);
 
@@ -36,6 +46,7 @@ const CustomRetentionSize: React.FC<CustomRetentionSizeProps> = ({
   };
 
   const onSelect: SelectProps["onSelect"] = (event, value) => {
+    onChangeRetentionSizeValidated(ValidatedOptions.default);
     const inputUnit: CustomRetentionSizeSelect = {
       unit: value as CustomRetentionUnit,
       value: 1,
@@ -49,9 +60,13 @@ const CustomRetentionSize: React.FC<CustomRetentionSizeProps> = ({
       ...customRetentionSizeValue,
       value: Number(input),
     };
-    if (inputValue.value > -1) setCustomRetentionSizeValue(inputValue);
+    if (inputValue.value > -1) {
+      setCustomRetentionSizeValue(inputValue);
+      onChangeRetentionSizeValidated(ValidatedOptions.default);
+    }
     setRadioSizeSelectValue && setRadioSizeSelectValue("custom");
   };
+
   return (
     <div className="kafka-ui--radio__parameters">
       <Flex>
@@ -74,19 +89,25 @@ const CustomRetentionSize: React.FC<CustomRetentionSizeProps> = ({
           </Select>
         </FlexItem>
         <FlexItem>
-          <TextInput
-            aria-label="Retention size"
-            type="number"
-            value={
-              customRetentionSizeValue.value == 0
-                ? ""
-                : customRetentionSizeValue.value == -1
-                ? 1
-                : customRetentionSizeValue.value
-            }
-            onChange={onChange}
-            min={1}
-          />
+          <FormGroup
+            validated={retentionSizeValidated}
+            helperTextInvalid={t("common:required")}
+          >
+            <TextInput
+              aria-label="Retention size"
+              type="number"
+              value={
+                customRetentionSizeValue.value == 0
+                  ? ""
+                  : customRetentionSizeValue.value == -1
+                  ? 1
+                  : customRetentionSizeValue.value
+              }
+              onChange={onChange}
+              validated={retentionSizeValidated}
+              min={1}
+            />
+          </FormGroup>
         </FlexItem>
       </Flex>
     </div>

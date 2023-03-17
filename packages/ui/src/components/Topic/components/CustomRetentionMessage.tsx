@@ -1,7 +1,9 @@
 import type { SelectProps } from "@patternfly/react-core";
+import { FormGroup } from "@patternfly/react-core";
 import { TextInput } from "@patternfly/react-core";
 import {
   Flex,
+  ValidatedOptions,
   FlexItem,
   Select,
   SelectOption,
@@ -10,6 +12,7 @@ import {
 import type React from "react";
 import { useState } from "react";
 import type { CustomSelect, TimeUnit, RadioSelectType } from "./types";
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import { retentionTimeSelectOptions } from "./types";
 
 export type CustomRetentionMessageProps = {
@@ -17,13 +20,18 @@ export type CustomRetentionMessageProps = {
   customTimeValue: CustomSelect;
   setCustomTimeValue: (data: CustomSelect) => void;
   setRadioTimeSelectValue?: (value: RadioSelectType) => void;
+  retentionTimeValidated: ValidatedOptions;
+  onChangeRetentionTimeValidated: (value: ValidatedOptions) => void;
 };
 
 const CustomRetentionMessage: React.FC<CustomRetentionMessageProps> = ({
   customTimeValue,
   setCustomTimeValue,
   setRadioTimeSelectValue,
+  retentionTimeValidated,
+  onChangeRetentionTimeValidated,
 }) => {
+  const { t } = useTranslation(["create-topic"]);
   const [isRetentionTimeSelectOpen, setIsRetentionTimeSelectOpen] =
     useState<boolean>(false);
 
@@ -32,12 +40,12 @@ const CustomRetentionMessage: React.FC<CustomRetentionMessageProps> = ({
   };
 
   const onSelect: SelectProps["onSelect"] = (event, value) => {
+    onChangeRetentionTimeValidated(ValidatedOptions.default);
     const inputUnit: CustomSelect = {
       unit: value as TimeUnit,
       value: 1,
     };
     setCustomTimeValue(inputUnit);
-
     onRetentionTimeToggle(false);
   };
 
@@ -46,7 +54,10 @@ const CustomRetentionMessage: React.FC<CustomRetentionMessageProps> = ({
       ...customTimeValue,
       value: Number(input),
     };
-    if (inputValue.value > -1) setCustomTimeValue(inputValue);
+    if (inputValue.value > -1) {
+      onChangeRetentionTimeValidated(ValidatedOptions.default);
+      setCustomTimeValue(inputValue);
+    }
     setRadioTimeSelectValue && setRadioTimeSelectValue("custom");
   };
 
@@ -75,13 +86,19 @@ const CustomRetentionMessage: React.FC<CustomRetentionMessageProps> = ({
           </Select>
         </FlexItem>
         <FlexItem>
-          <TextInput
-            aria-label={"Retention time"}
-            type="number"
-            value={customTimeValue.value == 0 ? "" : customTimeValue.value}
-            onChange={onChange}
-            min={1}
-          />
+          <FormGroup
+            helperTextInvalid={t("common:required")}
+            validated={retentionTimeValidated}
+          >
+            <TextInput
+              aria-label={"Retention time"}
+              type="number"
+              value={customTimeValue.value == 0 ? "" : customTimeValue.value}
+              onChange={onChange}
+              min={1}
+              validated={retentionTimeValidated}
+            />
+          </FormGroup>
         </FlexItem>
       </Flex>
     </div>
