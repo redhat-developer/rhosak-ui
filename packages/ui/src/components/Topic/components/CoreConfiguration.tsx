@@ -139,6 +139,17 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
     />
   );
 
+  const partitionsHelperText =
+    isCreate && partitions >= availablePartitionLimit
+      ? t("partitions_warning")
+      : !isCreate && partitions > initialPartitions
+      ? t("partition_increase_helper_text")
+      : t("partition_helper_text");
+  const partitionsValidated =
+    (isCreate && partitions >= availablePartitionLimit) ||
+    (!isCreate && partitions > initialPartitions)
+      ? "warning"
+      : "default";
   return (
     <FormSection
       title={t("core_configuration")}
@@ -191,16 +202,8 @@ const CoreConfiguration: FunctionComponent<CoreConfigurationProps> = ({
         labelHead={t("partitions")}
         labelBody={t("partitions_description")}
         buttonAriaLabel="More info for partitions field"
-        helperText={
-          topicData.partitions.length >= availablePartitionLimit
-            ? t("partitions_warning")
-            : t("partition_helper_text")
-        }
-        validated={
-          topicData.partitions.length >= availablePartitionLimit
-            ? "warning"
-            : "default"
-        }
+        helperText={partitionsHelperText}
+        validated={partitionsValidated}
       >
         <NumberInput
           id="create-topic-partitions"

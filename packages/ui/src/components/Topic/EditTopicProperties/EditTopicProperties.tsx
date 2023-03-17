@@ -126,6 +126,7 @@ export const EditTopicProperties: FunctionComponent<
           onSave={onTransform}
           isModalOpen={warningModalOpen}
           setIsModalOpen={setWarningModalOpen}
+          isCreate={false}
         />
       )}
     </PageSection>
