@@ -32,8 +32,9 @@ export function useUser({
 
       const canOpenConnection = (instance: KafkaInstanceEnhanced): boolean => {
         return instance
-          ? !SuspendedStatuses.includes(instance.status) ||
-              !DeletingStatuses.includes(instance.status)
+          ? ![...SuspendedStatuses, ...DeletingStatuses].includes(
+              instance.status
+            )
           : false;
       };
 
