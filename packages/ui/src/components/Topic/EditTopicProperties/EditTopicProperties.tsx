@@ -1,4 +1,4 @@
-import { PageSection } from "@patternfly/react-core";
+import { PageSection, ValidatedOptions } from "@patternfly/react-core";
 import type { FunctionComponent } from "react";
 import { useState } from "react";
 import type { Topic } from "ui-models/src/models/topic";
@@ -29,6 +29,11 @@ export const EditTopicProperties: FunctionComponent<
   const millisecondsToTimeValue = millisecondsToTime(
     topic["retention.ms"].value
   );
+  const [initialPartitions] = useState<number>(topic.partitions.length);
+  const [retentionTimeValidated, setRetentionTimeValidated] =
+    useState<ValidatedOptions>(ValidatedOptions.default);
+  const [retentionSizeValidated, setRetentionSizeValidated] =
+    useState<ValidatedOptions>(ValidatedOptions.default);
   const bytesToSizeValue = bytesToMemorySize(topic["retention.bytes"].value);
   const [customTimeValue, setCustomTimeValue] = useState<CustomSelect>({
     unit:
@@ -70,19 +75,53 @@ export const EditTopicProperties: FunctionComponent<
 
   const [warningModalOpen, setWarningModalOpen] = useState<boolean>(false);
 
-  const onConfirmSave = () => {
-    if (partitions >= availablePartitionLimit) setWarningModalOpen(true);
-    else onTransform();
+  const validateRetentionTime = () => {
+    switch (radioTimeSelectValue) {
+      case "custom":
+        return customTimeValue.value == 0 ? false : true;
+      default:
+        return true;
+    }
   };
+  const validateRetentionSize = () => {
+    switch (radioSizeSelectValue) {
+      case "custom":
+        return customRetentionSizeValue.value == 0 ? false : true;
+      default:
+        return true;
+    }
+  };
+
+  const onConfirmSave = () => {
+    const isRetentionTimeValid = validateRetentionTime();
+    const isRetentionSizeValid = validateRetentionSize();
+    if (!isRetentionTimeValid)
+      setRetentionTimeValidated(ValidatedOptions.error);
+    if (!isRetentionSizeValid)
+      setRetentionSizeValidated(ValidatedOptions.error);
+    if (
+      isRetentionTimeValid &&
+      isRetentionSizeValid &&
+      partitions > initialPartitions
+    )
+      setWarningModalOpen(true);
+    else if (isRetentionTimeValid && isRetentionSizeValid) onTransform();
+  };
+
+  const retentionTimeTransform: CustomSelect =
+    radioTimeSelectValue == "unlimited"
+      ? { value: -1, unit: "unlimited" }
+      : radioTimeSelectValue == "day"
+      ? { value: 1, unit: "days" }
+      : radioTimeSelectValue == "week"
+      ? { value: 1, unit: "weeks" }
+      : customTimeValue;
 
   const onTransform = () => {
     const topicValues: TopicForm = {
       name: topicName,
       partitions: partitions,
-      retentionTime:
-        radioTimeSelectValue == "unlimited"
-          ? { value: -1, unit: "unlimited" }
-          : customTimeValue,
+      retentionTime: retentionTimeTransform,
       retentionSize:
         radioSizeSelectValue == "unlimited"
           ? { value: -1, unit: "unlimited" }
@@ -121,6 +160,11 @@ export const EditTopicProperties: FunctionComponent<
         onPartitionsChange={setPartitions}
         cleanupPolicy={cleanupPolicy}
         isSaving={isSaving}
+        retentionTimeValidated={retentionTimeValidated}
+        retentionSizeValidated={retentionSizeValidated}
+        onChangeRetentionSizeValidated={setRetentionSizeValidated}
+        onChangeRetentionTimeValidated={setRetentionTimeValidated}
+        initialPartitions={initialPartitions}
       />
       {warningModalOpen && (
         <PartitionLimitWarning

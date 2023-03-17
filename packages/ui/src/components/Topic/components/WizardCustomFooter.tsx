@@ -6,13 +6,19 @@ import {
   ValidatedOptions,
 } from "@patternfly/react-core";
 import { useTranslation } from "@rhoas/app-services-ui-components";
+import type { RadioSelectType, RetentionSizeRadioSelect } from "./types";
 
 export interface IWizardFooter {
   isLoading: boolean;
   onValidate: (value: () => void) => void;
   topicNameValidated: ValidatedOptions;
+  retentionTimeValidated: ValidatedOptions;
+  retentionSizeValidated: ValidatedOptions;
   closeWizard: () => void;
   isSaving: boolean;
+  onValidateRetentionValues: (value: () => void) => void;
+  radioTimeSelectValue: RadioSelectType;
+  radioSizeSelectValue: RetentionSizeRadioSelect;
 }
 
 export const WizardCustomFooter: React.FC<IWizardFooter> = ({
@@ -21,6 +27,11 @@ export const WizardCustomFooter: React.FC<IWizardFooter> = ({
   closeWizard,
   topicNameValidated,
   isSaving,
+  onValidateRetentionValues,
+  retentionSizeValidated,
+  retentionTimeValidated,
+  radioTimeSelectValue,
+  radioSizeSelectValue,
 }) => {
   const { t } = useTranslation(["create-topic", "common"]);
 
@@ -88,6 +99,42 @@ export const WizardCustomFooter: React.FC<IWizardFooter> = ({
                   variant="link"
                   onClick={closeWizard}
                   isDisabled={isSaving}
+                >
+                  {t("common:cancel")}
+                </Button>
+              </>
+            );
+          }
+          if (activeStep.name == t("message_retention")) {
+            return (
+              <>
+                <Button
+                  variant="primary"
+                  type="submit"
+                  onClick={() => onValidateRetentionValues(onNext)}
+                  ouiaId={"button-finish"}
+                  isDisabled={
+                    (retentionSizeValidated == ValidatedOptions.error &&
+                      radioSizeSelectValue == "custom") ||
+                    (retentionTimeValidated == ValidatedOptions.error &&
+                      radioTimeSelectValue == "custom")
+                      ? true
+                      : false
+                  }
+                >
+                  {t("common:next")}
+                </Button>
+                <Button
+                  ouiaId={"button-back"}
+                  variant="secondary"
+                  onClick={onBack}
+                >
+                  {t("common:back")}
+                </Button>
+                <Button
+                  ouiaId={"button-cancel"}
+                  variant="link"
+                  onClick={closeWizard}
                 >
                   {t("common:cancel")}
                 </Button>

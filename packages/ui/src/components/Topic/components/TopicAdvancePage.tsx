@@ -51,6 +51,11 @@ export type TopicAdvancePageProps = {
   radioSizeSelectValue: RetentionSizeRadioSelect;
   setRadioSizeSelectValue: (data: RetentionSizeRadioSelect) => void;
   isSaving: boolean;
+  retentionTimeValidated: ValidatedOptions;
+  retentionSizeValidated: ValidatedOptions;
+  onChangeRetentionTimeValidated: (value: ValidatedOptions) => void;
+  onChangeRetentionSizeValidated: (value: ValidatedOptions) => void;
+  initialPartitions: number;
 };
 
 export const TopicAdvancePage: React.FunctionComponent<
@@ -77,6 +82,11 @@ export const TopicAdvancePage: React.FunctionComponent<
   radioSizeSelectValue,
   setRadioSizeSelectValue,
   isSaving,
+  retentionSizeValidated,
+  retentionTimeValidated,
+  onChangeRetentionTimeValidated,
+  onChangeRetentionSizeValidated,
+  initialPartitions,
 }) => {
   const { t } = useTranslation(["create-topic", "common"]);
   const actionText = isCreate ? t("create_topic") : t("common:save");
@@ -125,6 +135,7 @@ export const TopicAdvancePage: React.FunctionComponent<
             <PageSection padding={{ default: "noPadding" }}>
               <Form>
                 <CoreConfiguration
+                  initialPartitions={initialPartitions}
                   isCreate={isCreate}
                   topicData={topicData}
                   topicName={topicName}
@@ -146,6 +157,14 @@ export const TopicAdvancePage: React.FunctionComponent<
                   setRadioTimeSelectValue={setRadioTimeSelectValue}
                   radioSizeSelectValue={radioSizeSelectValue}
                   setRadioSizeSelectValue={setRadioSizeSelectValue}
+                  retentionTimeValidated={retentionTimeValidated}
+                  retentionSizeValidated={retentionSizeValidated}
+                  onChangeRetentionTimeValidated={
+                    onChangeRetentionTimeValidated
+                  }
+                  onChangeRetentionSizeValidated={
+                    onChangeRetentionSizeValidated
+                  }
                 />
                 <Message
                   defaultMaximumMessageBytes={
@@ -210,7 +229,13 @@ export const TopicAdvancePage: React.FunctionComponent<
                       ? "topicAdvanceCreate-actionCreate"
                       : "tabProperties-actionSave"
                   }
-                  isDisabled={topicValidated !== "default" || isSaving}
+                  isDisabled={
+                    topicValidated !== "default" ||isSaving||
+                    (radioSizeSelectValue == "custom" &&
+                      retentionSizeValidated != "default") ||
+                    (radioTimeSelectValue == "custom" &&
+                      retentionTimeValidated != "default")
+                  }
                 >
                   {actionText}
                 </Button>
