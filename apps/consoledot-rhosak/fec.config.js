@@ -34,13 +34,6 @@ module.exports = {
   },
   moduleFederation: {
     exclude: ["react-router-dom"],
-    shared: [
-      {
-        "react-i18next": {
-          singleton: true,
-          requiredVersion: "*",
-        },
-      },
-    ],
+    shared: [],
   },
 };
