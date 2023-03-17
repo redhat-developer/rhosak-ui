@@ -22,15 +22,15 @@ module.exports = {
   // localChrome:
   //   "/Users/riccardoforina/Code/bf2fc6cc711aee1a0c2a/insights-chrome/build",
   routes: {
-    "/apps/application-services": {
-      host: "https://localhost:2222",
-    },
-    "/config": {
-      host: "http://localhost:8889",
-    },
-    "/beta/config": {
-      host: "http://localhost:8889",
-    },
+    // "/apps/application-services": {
+    //   host: "https://localhost:2222",
+    // },
+    // "/config": {
+    //   host: "http://localhost:8889",
+    // },
+    // "/beta/config": {
+    //   host: "http://localhost:8889",
+    // },
   },
   moduleFederation: {
     exclude: ["react-router-dom"],
