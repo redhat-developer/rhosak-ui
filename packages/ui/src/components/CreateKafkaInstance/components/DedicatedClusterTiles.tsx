@@ -50,6 +50,7 @@ export const DedicatedClusterTiles: VoidFunctionComponent<
                 isSelectableRaised={true}
                 isDisabledRaised={isDisabled || c.status !== "ready"}
                 onSelectableInputChange={() => onChange(c)}
+                onClick={() => onChange(c)}
               >
                 <CardTitle>{t("openshift_cluster")}</CardTitle>
                 <CardBody>{c.id}</CardBody>
@@ -83,12 +84,12 @@ export const DedicatedClusterTiles: VoidFunctionComponent<
       >
         {[
           <FormSelectOption
-            value=""
+            value={value?.id}
             key="placeholder"
             label={t("select_dedicated_cluster")}
           />,
           clusters.map((c, index) => {
-            return <FormSelectOption key={index} value={c} label={c.id} />;
+            return <FormSelectOption key={index} value={c.id} label={c.id} />;
           }),
         ]}
       </FormSelect>
