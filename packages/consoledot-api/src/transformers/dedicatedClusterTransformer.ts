@@ -19,7 +19,9 @@ export function dedicatedClusterTransformer(
         ? "ready"
         : c.status === "failed"
         ? "failed"
-        : "provisioning",
+        : c.status === "provisioning"
+        ? "provisioning"
+        : c.status,
     requiresPrivateNetwork: c.access_kafkas_via_private_network,
     az: c.multi_az ? "multi" : "single",
   };

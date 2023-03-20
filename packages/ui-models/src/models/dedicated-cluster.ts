@@ -3,7 +3,7 @@ import type { AZ, CloudProvider, CloudRegion } from "./kafka";
 export type DedicatedCluster = {
   id: string;
   name: string;
-  status: "ready" | "failed" | "provisioning";
+  status: ("ready" | "failed" | "provisioning") | string;
   requiresPrivateNetwork: boolean;
   cloudProvider: {
     id: CloudProvider;
