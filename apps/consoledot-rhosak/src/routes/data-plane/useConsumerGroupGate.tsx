@@ -1,4 +1,4 @@
-import { useConsumerGroup } from "consoledot-api";
+import { useConsumerGroup } from "consoledot-api/src";
 import { useRouteMatch } from "react-router-dom";
 import {
   ControlPlaneRouteRoot,

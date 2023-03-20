@@ -222,6 +222,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
                 onSave={onTransform}
                 isModalOpen={warningModalOpen}
                 setIsModalOpen={setWarningModalOpen}
+                isCreate={true}
               />
             )}
           </PageSection>
@@ -255,6 +256,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
               onSave={onTransform}
               isModalOpen={warningModalOpen}
               setIsModalOpen={setWarningModalOpen}
+              isCreate={true}
             />
           )}
         </PageSection>

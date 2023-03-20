@@ -1,4 +1,4 @@
-import { useTopic } from "consoledot-api";
+import { useTopic } from "consoledot-api/src";
 import { useRouteMatch } from "react-router-dom";
 import {
   ControlPlaneRouteRoot,

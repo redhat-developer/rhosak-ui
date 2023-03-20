@@ -1,11 +1,11 @@
-import { QuickStartContext } from "@patternfly/quickstarts";
+import { useChrome } from "@redhat-cloud-services/frontend-components/useChrome";
 import {
   usePaginationSearchParams,
   useSortableSearchParams,
   useURLSearchParamsChips,
 } from "@rhoas/app-services-ui-components";
 import { KafkaInstancesSortableColumns } from "consoledot-api";
-import { useCallback, useContext } from "react";
+import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import type { KafkaInstanceDrawerTab, KafkaInstancesProps } from "ui";
 import { useKafkaLabels } from "ui";
@@ -27,14 +27,12 @@ export function useKafkaInstancesTable({
   instanceDeletionHref,
   instanceChangeOwnerHref,
 }: UseKafkaInstancesTableProps) {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
-  const { setActiveQuickStart } = useContext(QuickStartContext);
+  const { quickStarts } = useChrome();
 
   const { selectedInstance, toggleExpanded, setActiveTab, isExpanded } =
     useDrawer(
       useCallback(() => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
         history.replace(instancesHref);
       }, [history, instancesHref])
     );
@@ -76,7 +74,6 @@ export function useKafkaInstancesTable({
       if (selectedInstance === id && isExpanded) {
         toggleExpanded(false);
       } else {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
         history.replace(instanceSelectedHref(id));
         toggleExpanded(true);
         setActiveTab(tab);
@@ -107,28 +104,25 @@ export function useKafkaInstancesTable({
   );
 
   const onCreate = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(instanceCreationHref);
   }, [history, instanceCreationHref]);
 
   const onDelete = useCallback<KafkaInstancesProps["onDelete"]>(
     ({ id }) => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       history.push(instanceDeletionHref(id));
     },
     [history, instanceDeletionHref]
   );
   const onChangeOwner = useCallback<KafkaInstancesProps["onChangeOwner"]>(
     ({ id }) => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       history.push(instanceChangeOwnerHref(id));
     },
     [history, instanceChangeOwnerHref]
   );
 
   const onQuickstartGuide = useCallback(
-    () => setActiveQuickStart && setActiveQuickStart("getting-started"),
-    [setActiveQuickStart]
+    () => quickStarts.toggle("getting-started"),
+    [quickStarts]
   );
 
   return {

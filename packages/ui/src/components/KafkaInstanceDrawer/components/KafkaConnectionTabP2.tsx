@@ -119,7 +119,11 @@ export const KafkaConnectionTabP2: FunctionComponent<
             <Trans
               i18nKey={"connection-tab:current_instance"}
               components={{
-                value: <Link to={linkToAccessTab}></Link>,
+                value: isKafkaPending ? (
+                  <span>Link is not available yet</span>
+                ) : (
+                  <Link to={linkToAccessTab}></Link>
+                ),
               }}
             />
           }

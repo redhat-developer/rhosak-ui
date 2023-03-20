@@ -1,4 +1,4 @@
-import { useMessagesFetchQuery } from "consoledot-api";
+import { useMessagesFetchQuery } from "consoledot-api/src";
 import type { VoidFunctionComponent } from "react";
 import { useCallback } from "react";
 import type { KafkaMessageBrowserProps } from "ui";

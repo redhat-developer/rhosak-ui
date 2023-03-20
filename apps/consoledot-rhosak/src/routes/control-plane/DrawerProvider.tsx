@@ -1,4 +1,4 @@
-import { useKafka, useSSOProvider } from "consoledot-api";
+import { useKafka, useSSOProvider } from "consoledot-api/src";
 import type { FunctionComponent, MutableRefObject } from "react";
 import {
   createContext,

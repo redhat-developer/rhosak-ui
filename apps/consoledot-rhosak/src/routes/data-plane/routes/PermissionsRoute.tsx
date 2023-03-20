@@ -5,7 +5,7 @@ import {
   useDeletePermissionsMutation,
   useServiceAccounts,
   useUserAccounts,
-} from "consoledot-api";
+} from "consoledot-api/src";
 import type { VoidFunctionComponent } from "react";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
@@ -25,7 +25,6 @@ export const PermissionsRoute: VoidFunctionComponent<
   const { mutateAsync } = useDeletePermissionsMutation();
   const dispatch = useDispatch();
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
 
   const { data: acls } = useAcls({
@@ -138,13 +137,11 @@ export const PermissionsRoute: VoidFunctionComponent<
 
   const onManagePermissionsActionItem = useCallback(
     (account: string) => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       history.push(editPermissionsHref(instance.id, account));
     },
     [history, instance.id, editPermissionsHref]
   );
   const onManagePermission = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(managePermissionsHref(instance.id));
   }, [history, instance.id, managePermissionsHref]);
 

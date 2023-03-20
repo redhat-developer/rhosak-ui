@@ -1,4 +1,4 @@
-import { useKafka } from "consoledot-api";
+import { useKafka } from "consoledot-api/src";
 import { useRouteMatch } from "react-router-dom";
 import {
   ControlPlaneRouteRoot,

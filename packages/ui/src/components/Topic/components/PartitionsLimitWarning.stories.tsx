@@ -13,12 +13,22 @@ const Template: ComponentStory<typeof PartitionLimitWarning> = (args) => (
   <PartitionLimitWarning {...args} />
 );
 
-export const EmptyState = Template.bind({});
-EmptyState.args = {};
-EmptyState.parameters = {
+export const CreateTopicWarning = Template.bind({});
+CreateTopicWarning.args = { isCreate: true };
+CreateTopicWarning.parameters = {
   docs: {
     description: {
-      story: `A modal when creating a toic that has reached or exceeded available number of partitions`,
+      story: `A modal when creating a topic that has reached or exceeded available number of partitions`,
+    },
+  },
+};
+
+export const EditTopicWarning = Template.bind({});
+EditTopicWarning.args = { isCreate: false };
+EditTopicWarning.parameters = {
+  docs: {
+    description: {
+      story: `A modal when editing a topic that shows up when user increases the number of partitions`,
     },
   },
 };

@@ -166,7 +166,7 @@ export const KafkaInstanceDrawerPanel: VoidFunctionComponent<
                 externalServer={getExternalServer(instance.bootstrapUrl)}
                 tokenEndPointUrl={tokenEndpointUrl}
                 linkToServiceAccount={"service-accounts"}
-                linkToAccessTab={`TODO/acls`}
+                linkToAccessTab={`${instance.id}/details/acls`}
                 adminAPIUrl={getAdminServerUrl(instance.adminUrl)}
                 showCreateServiceAccountModal={() => {
                   /* TODO */

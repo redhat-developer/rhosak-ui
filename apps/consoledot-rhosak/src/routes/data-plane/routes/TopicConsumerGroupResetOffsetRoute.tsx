@@ -1,12 +1,12 @@
-import { useCallback } from "react";
+import { useResetConsumerGroupMutation } from "consoledot-api/src";
 import type { VoidFunctionComponent } from "react";
-import { ConsumerGroupResetOffset } from "ui";
-import type { OffsetValue } from "ui";
-import type { DataPlaneTopicConsumerGroupNavigationsProps } from "../routesConsts";
+import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
-import { useResetConsumerGroupMutation } from "consoledot-api";
-import { useTopicConsumerGroupGate } from "../useTopicConsumerGroupGate";
+import type { OffsetValue } from "ui";
+import { ConsumerGroupResetOffset } from "ui";
 import { useAlerts } from "../../../useAlerts";
+import type { DataPlaneTopicConsumerGroupNavigationsProps } from "../routesConsts";
+import { useTopicConsumerGroupGate } from "../useTopicConsumerGroupGate";
 
 export const TopicConsumerGroupResetOffsetRoute: VoidFunctionComponent<
   DataPlaneTopicConsumerGroupNavigationsProps
@@ -17,11 +17,9 @@ export const TopicConsumerGroupResetOffsetRoute: VoidFunctionComponent<
 
   const { mutateAsync } = useResetConsumerGroupMutation();
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
 
   const onCancel = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(instanceTopicConsumerGroupsHref(instance.id, topic.name));
   }, [history, instance.id, topic.name, instanceTopicConsumerGroupsHref]);
 
@@ -52,7 +50,6 @@ export const TopicConsumerGroupResetOffsetRoute: VoidFunctionComponent<
           addAlert("danger", message, true, "reset-offset-error");
         },
         onSuccess: () => {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
           history.replace(
             instanceTopicConsumerGroupsHref(instance.id, topic.name)
           );

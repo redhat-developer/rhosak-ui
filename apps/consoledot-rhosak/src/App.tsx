@@ -12,7 +12,6 @@ import "./App.scss";
 import { Routes } from "./routes";
 
 const App = memo(() => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
   const { updateDocumentTitle, on } = useChrome();
 
@@ -28,7 +27,6 @@ const App = memo(() => {
     const unregister = on("APP_NAVIGATION", (event) => {
       console.dir(event);
       if (event.navId) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
         history.push("/" + event.navId === "/" ? "" : event.navId);
       }
     });

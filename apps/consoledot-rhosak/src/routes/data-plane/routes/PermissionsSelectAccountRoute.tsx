@@ -1,12 +1,12 @@
+import { useServiceAccounts, useUserAccounts } from "consoledot-api";
 import type { VoidFunctionComponent } from "react";
 import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
-import type { DataPlanePermissionsNavigationProps } from "../routesConsts";
 import type { Account } from "ui";
 import { PrincipalType, SelectAccount } from "ui";
-import { useServiceAccounts, useUserAccounts } from "consoledot-api";
-import { useDataPlaneGate } from "../useDataPlaneGate";
 import { useUserControlGate } from "../../../useUserControlGate";
+import type { DataPlanePermissionsNavigationProps } from "../routesConsts";
+import { useDataPlaneGate } from "../useDataPlaneGate";
 
 export const PermissionsSelectAccountRoute: VoidFunctionComponent<
   DataPlanePermissionsNavigationProps
@@ -50,12 +50,10 @@ export const PermissionsSelectAccountRoute: VoidFunctionComponent<
     (value) => value.id !== instance.owner && value.id !== userData.username
   );
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
 
   const onNext = useCallback(
     (selectedAccount: string | undefined) => {
-      //eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       history.push(
         editPermissionsHref(
           instance.id,

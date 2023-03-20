@@ -1,14 +1,14 @@
+import type { AclBinding } from "@rhoas/kafka-instance-sdk";
 import {
   useAcls,
   useConsumerGroups,
   useDeletePermissionsMutation,
   useTopics,
   useUpdatePermissionsMutation,
-} from "consoledot-api";
+} from "consoledot-api/src";
 import type { VoidFunctionComponent } from "react";
 import { useCallback } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
-import type { AclBinding } from "ui";
 import { EditPermissions } from "ui";
 import { useAlerts } from "../../../useAlerts";
 import {
@@ -62,7 +62,6 @@ export const PermissionsEditRoute: VoidFunctionComponent<
   const { mutateAsync } = useDeletePermissionsMutation();
   const updatePermissions = useUpdatePermissionsMutation();
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
 
   const onSaveAcls = useCallback(
@@ -86,7 +85,6 @@ export const PermissionsEditRoute: VoidFunctionComponent<
               },
 
               onSuccess: () => {
-                //eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
                 history.push(managePermissionsHref(instance.id));
               },
               onError: (_, message) => {
@@ -149,7 +147,6 @@ export const PermissionsEditRoute: VoidFunctionComponent<
   );
 
   const onClose = useCallback(() => {
-    //eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(managePermissionsHref(instance.id));
   }, [history, instance.id, managePermissionsHref]);
 

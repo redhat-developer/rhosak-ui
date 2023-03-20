@@ -1,6 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import type { Status } from "ui-models/src/models/kafka";
-import { ReadyStatuses, SuspendedStatuses } from "ui-models/src/models/kafka";
+import {
+  DeletingStatuses,
+  SuspendedStatuses,
+} from "ui-models/src/models/kafka";
 import { masQueries } from "../queryKeys";
 
 export function useUser({
@@ -27,7 +30,7 @@ export function useUser({
       }
 
       const canOpenConnection = (status: Status): boolean => {
-        return ReadyStatuses.includes(status);
+        return ![...SuspendedStatuses, ...DeletingStatuses].includes(status);
       };
 
       const isUserOwnerOrAdmin = (owner: string) => {

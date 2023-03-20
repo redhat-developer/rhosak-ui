@@ -7,6 +7,7 @@ export type PartitionLimitWarningProps = {
   onSave: (topicData: Topic) => void;
   isModalOpen: boolean;
   setIsModalOpen: (value: boolean) => void;
+  isCreate: boolean;
 };
 
 export const PartitionLimitWarning: React.FC<PartitionLimitWarningProps> = ({
@@ -14,6 +15,7 @@ export const PartitionLimitWarning: React.FC<PartitionLimitWarningProps> = ({
   onSave,
   isModalOpen,
   setIsModalOpen,
+  isCreate,
 }) => {
   const { t } = useTranslation(["create-topic"]);
 
@@ -41,7 +43,7 @@ export const PartitionLimitWarning: React.FC<PartitionLimitWarningProps> = ({
         </Button>,
       ]}
     >
-      {t("partition_warning_modal")}
+      {isCreate ? t("partition_warning_modal") : t("partition_increase")}
     </Modal>
   );
 };

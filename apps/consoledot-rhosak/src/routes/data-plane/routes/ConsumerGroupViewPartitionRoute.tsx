@@ -17,16 +17,13 @@ export const ConsumerGroupViewPartitionRoute: VoidFunctionComponent<
 }) => {
   const { instance, consumerGroup } = useConsumerGroupGate();
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
 
   const onCancel = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(instanceConsumerGroupsHref(instance.id));
   }, [history, instance.id, instanceConsumerGroupsHref]);
 
   const onDelete = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(
       `${viewPartitionConsumerGroupHref(
         instance.id,
@@ -41,7 +38,6 @@ export const ConsumerGroupViewPartitionRoute: VoidFunctionComponent<
   ]);
 
   const onClickResetOffset = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(
       `${viewPartitionConsumerGroupHref(
         instance.id,

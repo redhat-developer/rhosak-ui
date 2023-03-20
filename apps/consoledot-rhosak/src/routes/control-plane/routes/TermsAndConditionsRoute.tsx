@@ -1,4 +1,5 @@
-import { useSelfTermsReview } from "consoledot-api";
+import { useChrome } from "@redhat-cloud-services/frontend-components/useChrome";
+import { useSelfTermsReview } from "consoledot-api/src";
 import type { FunctionComponent } from "react";
 import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
@@ -8,21 +9,19 @@ export const TermsAndConditionsRoute: FunctionComponent<{
   createHref: string;
   cancelHref: string;
 }> = ({ createHref, cancelHref }) => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const { analytics } = useChrome();
   const history = useHistory();
   const { data: selfTermsReview } = useSelfTermsReview();
   const baselinedCreateHref =
     window.location.origin +
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
-    (history.createHref({
+    history.createHref({
       pathname: createHref,
-    }) as string);
+    });
   const baselinedCancelHref =
     window.location.origin +
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
-    (history.createHref({
+    history.createHref({
       pathname: cancelHref,
-    }) as string);
+    });
   const termsUrl = selfTermsReview?.termsUrl(
     baselinedCreateHref,
     baselinedCancelHref
@@ -37,9 +36,11 @@ export const TermsAndConditionsRoute: FunctionComponent<{
   );
 
   const onCancel = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+    void analytics.track("RHOSAK Create Instance", {
+      status: "failure-tos-refused",
+    });
     history.push(cancelHref);
-  }, [history, cancelHref]);
+  }, [analytics, history, cancelHref]);
 
   return (
     <TermsAndConditionsDialog

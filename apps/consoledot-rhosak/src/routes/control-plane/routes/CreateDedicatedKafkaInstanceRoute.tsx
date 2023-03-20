@@ -1,7 +1,7 @@
-import { QuickStartContext } from "@patternfly/quickstarts";
+import { useChrome } from "@redhat-cloud-services/frontend-components/useChrome";
 import { useCreateDedicatedKafkaMutation } from "consoledot-api";
 import type { FunctionComponent } from "react";
-import { useCallback, useContext } from "react";
+import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { CreateDedicatedKafkaInstance } from "ui";
 import type { CreateDedicatedKafkaInstanceServices } from "ui/src/components/CreateKafkaInstance/machines";
@@ -13,22 +13,19 @@ import { useSelfTermsReviewGate } from "./useSelfTermsReviewGate";
 export const CreateDedicatedKafkaInstanceRoute: FunctionComponent<
   DedicatedControlPlaneNavigationProps
 > = ({ instancesHref }) => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
   const callbacks = useCreateDedicatedKafkaCallbacks();
   const createDedicatedKafkaInstance = useCreateDedicatedKafkaMutation();
-  const qsContext = useContext(QuickStartContext);
+  const { quickStarts } = useChrome();
   useSelfTermsReviewGate();
 
   const onClickKafkaOverview = () => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(`overview`);
   };
 
   const onClickQuickStart = useCallback(() => {
-    qsContext.setActiveQuickStart &&
-      qsContext.setActiveQuickStart("getting-started");
-  }, [qsContext]);
+    quickStarts.toggle("getting-started");
+  }, [quickStarts]);
 
   const onCreate = useCallback<
     CreateDedicatedKafkaInstanceServices["onCreate"]

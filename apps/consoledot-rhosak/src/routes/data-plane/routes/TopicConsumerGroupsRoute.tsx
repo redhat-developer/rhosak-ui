@@ -6,7 +6,7 @@ import {
 import {
   KafkaConsumerGroupSortableColumns,
   useConsumerGroups,
-} from "consoledot-api";
+} from "consoledot-api/src";
 import type { VoidFunctionComponent } from "react";
 import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
@@ -26,7 +26,6 @@ export const TopicConsumerGroupsRoute: VoidFunctionComponent<
 }) => {
   const { instance, topic } = useTopicGate();
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const history = useHistory();
 
   const labels = useConsumerGroupLabels();
@@ -62,7 +61,6 @@ export const TopicConsumerGroupsRoute: VoidFunctionComponent<
   const onDeletConsumerGroup = useCallback(
     (groupId: string) => {
       //TODO: remove hardcode value
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       history.push(
         `${ControlPlaneRouteRoot}/${instance.id}/details/topics/${topic.name}/consumer-groups/${groupId}/delete`
       );
@@ -73,7 +71,6 @@ export const TopicConsumerGroupsRoute: VoidFunctionComponent<
   const onViewPartition = useCallback(
     (groupId: string) => {
       //TODO: remove hardcode value
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       history.push(
         `${ControlPlaneRouteRoot}/${instance.id}/details/topics/${topic.name}/consumer-groups/${groupId}/view-partition`
       );
@@ -84,7 +81,6 @@ export const TopicConsumerGroupsRoute: VoidFunctionComponent<
   const onClickResetOffset = useCallback(
     (groupId: string) => {
       //TODO: remove hardcode value
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       history.push(
         `${ControlPlaneRouteRoot}/${instance.id}/details/topics/${topic.name}/consumer-groups/${groupId}/reset-offset`
       );
