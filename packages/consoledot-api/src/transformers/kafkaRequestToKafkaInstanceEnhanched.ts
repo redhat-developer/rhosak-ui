@@ -1,4 +1,5 @@
 import type { KafkaRequest } from "@rhoas/kafka-management-sdk";
+import type { DedicatedCluster } from "ui-models/src/models/dedicated-cluster";
 import type {
   CloudProvider,
   Kafka,
@@ -18,7 +19,8 @@ export function kafkaRequestToKafkaInstanceEnhanched(
   instance: KafkaRequest,
   marketplaceSubscriptions: MarketPlaceSubscriptions[],
   developerPlanInstanceLimits: SizeWithLimits[],
-  standardPlanInstanceLimits: SizeWithLimits[]
+  standardPlanInstanceLimits: SizeWithLimits[],
+  clusters: DedicatedCluster[]
 ): KafkaInstanceEnhanced {
   const enhancedInstance: KafkaInstanceEnhanced = {
     billing: undefined,
@@ -44,6 +46,9 @@ export function kafkaRequestToKafkaInstanceEnhanched(
       new Date().toISOString()) as DateIsoString,
     request: instance,
     clusterId: instance.cluster_id ? instance.cluster_id : undefined,
+    clusterName: instance.cluster_id
+      ? clusters.find((c) => instance.cluster_id === c.id)?.name
+      : undefined,
     version: instance.version || "",
     bootstrapUrl: instance.bootstrap_server_host,
     adminUrl: instance.admin_api_server_url,

@@ -28,6 +28,7 @@ export type Kafka = {
   az: AZ;
   billing: "prepaid" | MarketplaceSubscription | "dedicated" | undefined;
   clusterId: string | undefined;
+  clusterName: string | undefined;
   version: string;
   bootstrapUrl: string | undefined;
   adminUrl: string | undefined;

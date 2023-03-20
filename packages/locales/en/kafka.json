@@ -162,6 +162,7 @@
     "billing": "Billing",
     "bootstrapUrl": "Bootstrap server",
     "clusterId": "Deployment",
+    "clusterName": "Deployment",
     "connectionRate": "Connection rate",
     "connections": "Connections",
     "createdAt": "Created",

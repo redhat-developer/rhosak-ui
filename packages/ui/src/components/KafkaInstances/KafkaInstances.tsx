@@ -32,7 +32,7 @@ const DedicatedColumns = [
   "name",
   "owner",
   "createdAt",
-  "clusterId",
+  "clusterName",
   "status",
 ] as const;
 
@@ -206,8 +206,8 @@ export const KafkaInstances = <
                         onClickSupportLink={onClickSupportLink}
                       />
                     );
-                  case "clusterId":
-                    return row.clusterId;
+                  case "clusterName":
+                    return row.clusterName;
                   default:
                     return row[column];
                 }

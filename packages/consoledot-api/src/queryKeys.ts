@@ -48,6 +48,8 @@ export const masQueries = {
 
 export const dedicatedQueries = {
   _root: () => ({ ...masQueries._root(), entity: "dedicated" } as const),
+  cluster: (params: { id: string }) =>
+    [{ ...dedicatedQueries._root(), subentity: "cluster" }, params] as const,
   clusters: () =>
     [{ ...dedicatedQueries._root(), subentity: "clusters" }] as const,
   clusterNames: (clusterIds: string[]) =>

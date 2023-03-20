@@ -1,5 +1,6 @@
 import type { KafkaRequest } from "@rhoas/kafka-management-sdk";
 import {
+  useDedicatedClustersFetchQuery,
   useProviderRegionSizesFetchQuery,
   useProvidersWithRegionsFetchQuery,
   useStandardQuotaFetchQuery,
@@ -10,6 +11,7 @@ export function useKafkaInstanceTransformer() {
   const getStandardQuotaQuery = useStandardQuotaFetchQuery();
   const getProvidersInfo = useProvidersWithRegionsFetchQuery();
   const getProviderRegionsSizes = useProviderRegionSizesFetchQuery();
+  const getClusters = useDedicatedClustersFetchQuery();
 
   return async function kafkaInstanceTransformer(instance: KafkaRequest) {
     if (!instance.region) {
@@ -42,11 +44,13 @@ export function useKafkaInstanceTransformer() {
       standardPlanLimitsQuery,
       developerPlanLimitsQuery,
     ]);
+    const { clusters } = await getClusters();
     return kafkaRequestToKafkaInstanceEnhanched(
       instance,
       standardQuota.marketplaceSubscriptions,
       developerPlanLimits,
-      standardPlanLimits
+      standardPlanLimits,
+      clusters
     );
   };
 }

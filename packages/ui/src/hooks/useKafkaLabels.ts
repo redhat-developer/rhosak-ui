@@ -65,6 +65,7 @@ export function useKafkaLabels() {
     messageSize: t("fields.messageSize"),
     billing: t("fields.billing"),
     clusterId: t("fields.clusterId"),
+    clusterName: t("fields.clusterName"),
     adminUrl: t("fields.adminUrl"),
     bootstrapUrl: t("fields.bootstrapUrl"),
     version: t("fields.version"),

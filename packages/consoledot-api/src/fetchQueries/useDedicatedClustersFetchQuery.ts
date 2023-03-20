@@ -13,11 +13,15 @@ export function useDedicatedClustersFetchQuery() {
     return queryClient.fetchQuery({
       queryKey: dedicatedQueries.clusters(),
       queryFn: async () => {
-        return fetchDedicatedClusters({
+        const res = await fetchDedicatedClusters({
           getEnterpriseOsdClusters: (...args) =>
             api.getEnterpriseOsdClusters(...args),
           fetchClustersMeta,
         });
+        res.clusters.forEach((c) =>
+          queryClient.setQueryData(dedicatedQueries.cluster({ id: c.id }), c)
+        );
+        return res;
       },
     });
   };

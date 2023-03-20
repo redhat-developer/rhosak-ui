@@ -26,12 +26,20 @@ export const useDeveloperInstanceAvailabilityFetchQuery = () => {
         try {
           const clusterResponse = await queryClient.fetchQuery({
             queryKey: dedicatedQueries.clusters(),
-            queryFn: () =>
-              fetchDedicatedClusters({
+            queryFn: async () => {
+              const res = await fetchDedicatedClusters({
                 getEnterpriseOsdClusters: (...args) =>
                   clustersApi.getEnterpriseOsdClusters(...args),
                 fetchClustersMeta,
-              }),
+              });
+              res.clusters.forEach((c) =>
+                queryClient.setQueryData(
+                  dedicatedQueries.cluster({ id: c.id }),
+                  c
+                )
+              );
+              return res;
+            },
           });
           clusterIds = clusterResponse.clusters.map((c) => c.id);
         } catch {
