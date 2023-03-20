@@ -33,7 +33,6 @@ export const CreateDedicatedKafkaInstanceRoute: FunctionComponent<
     function (instance, onSuccess, onError) {
       const onOnSuccess = () => {
         onSuccess();
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
         history.push(DedicatedControlPlaneRoutePath);
       };
       void createDedicatedKafkaInstance.mutateAsync({
@@ -46,7 +45,6 @@ export const CreateDedicatedKafkaInstanceRoute: FunctionComponent<
   );
 
   const onCancel = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(instancesHref);
   }, [history, instancesHref]);
 
