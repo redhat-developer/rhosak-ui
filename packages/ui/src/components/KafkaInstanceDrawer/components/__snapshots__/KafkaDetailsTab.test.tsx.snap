@@ -155,16 +155,11 @@ exports[`Details Tab renders standard instance 1`] = `
           >
             Cloud provider
           </dt>
-          <div
-            class="pf-c-skeleton"
-            style="--pf-c-skeleton--Width: 50%;"
+          <dd
+            class=""
           >
-            <span
-              class="pf-u-screen-reader"
-            >
-              Loading Cloud provider
-            </span>
-          </div>
+            aws
+          </dd>
           <dt
             class=""
           >
