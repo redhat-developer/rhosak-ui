@@ -31,6 +31,7 @@ export const instances: Kafka[] = [
     adminUrl: undefined,
     az: "multi",
     clusterId: undefined,
+    clusterName: undefined,
   },
   {
     id: "2",
@@ -57,6 +58,7 @@ export const instances: Kafka[] = [
     adminUrl: undefined,
     az: "single",
     clusterId: undefined,
+    clusterName: undefined,
   },
   {
     id: "3",
@@ -83,6 +85,7 @@ export const instances: Kafka[] = [
     adminUrl: undefined,
     az: "single",
     clusterId: undefined,
+    clusterName: undefined,
   },
   {
     id: "4",
@@ -109,5 +112,6 @@ export const instances: Kafka[] = [
     adminUrl: undefined,
     az: "single",
     clusterId: undefined,
+    clusterName: undefined,
   },
 ];
