@@ -103,7 +103,7 @@
   "regions_temporarily_unavailable": "Regions temporarily unavailable",
   "select_billing": "",
   "select_cloud_provider": "Select cloud provider",
-  "select_dedicated_cluster": "",
+  "select_dedicated_cluster": "Select cluster",
   "select_region": "Select region",
   "size_field_aria": "More info for Size field",
   "size_help_content": "Size of a $t(common:kafka) instance is based on streaming units. The number of streaming units defines the capacity, resources, and limits of an instance. An instance with a larger size can handle higher loads and process larger amounts of events, has more storage, and can handle more clients and connections.",

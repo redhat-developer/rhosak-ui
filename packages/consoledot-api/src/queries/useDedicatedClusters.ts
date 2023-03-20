@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useApiConfiguration } from "../ApiProvider";
 import { fetchDedicatedClusters } from "../fetchers";
+import { useClustersMetaFetchQuery } from "../fetchQueries/useClustersMetaFetchQuery";
 import { dedicatedQueries } from "../queryKeys";
 import { useApi } from "../useApi";
 
@@ -9,6 +10,7 @@ export function useDedicatedClusters(
 ) {
   const { refetchInterval } = useApiConfiguration();
   const { dedicatedClusters } = useApi();
+  const fetchClustersMeta = useClustersMetaFetchQuery();
 
   return useQuery({
     queryKey: dedicatedQueries.clusters(),
@@ -18,6 +20,7 @@ export function useDedicatedClusters(
       return fetchDedicatedClusters({
         getEnterpriseOsdClusters: (...args) =>
           api.getEnterpriseOsdClusters(...args),
+        fetchClustersMeta,
       });
     },
     refetchInterval: refetch ? refetchInterval : false,

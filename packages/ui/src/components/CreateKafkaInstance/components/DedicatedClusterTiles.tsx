@@ -2,7 +2,6 @@ import type { SelectProps } from "@patternfly/react-core";
 import {
   Card,
   CardBody,
-  CardFooter,
   CardTitle,
   Flex,
   FlexItem,
@@ -10,11 +9,18 @@ import {
   FormSelectOption,
   Skeleton,
   Spinner,
+  TextContent,
+  TextList,
+  TextListItem,
+  TextListItemVariants,
+  TextListVariants,
+  Truncate,
 } from "@patternfly/react-core";
 import { ErrorCircleOIcon, OkIcon } from "@patternfly/react-icons";
 import { useTranslation } from "@rhoas/app-services-ui-components";
-import type { VoidFunctionComponent } from "react";
+import type { CSSProperties, VoidFunctionComponent } from "react";
 import type { DedicatedCluster } from "ui-models/src/models/dedicated-cluster";
+import { useDedicatedClusterLabels } from "../../../hooks";
 
 export type DedicatedClusterTilesProps = {
   clusters: (DedicatedCluster & { isDisabled?: boolean })[];
@@ -26,7 +32,8 @@ export type DedicatedClusterTilesProps = {
 export const DedicatedClusterTiles: VoidFunctionComponent<
   DedicatedClusterTilesProps
 > = ({ clusters, value, onChange, isDisabled, validated }) => {
-  const { t } = useTranslation("create-kafka-instance");
+  const { t } = useTranslation(["create-kafka-instance"]);
+  const { fields } = useDedicatedClusterLabels();
   return (
     <>
       {clusters.length === 0 && (
@@ -35,7 +42,11 @@ export const DedicatedClusterTiles: VoidFunctionComponent<
           screenreaderText="Loading contents"
         />
       )}
-      <div role="listbox" aria-label={t("select_cloud_provider")}>
+      <div
+        className={"pf-u-mt-sm"}
+        role="listbox"
+        aria-label={t("selected_dedicated_cluster")}
+      >
         <Flex
           justifyContent={{ default: "justifyContentSpaceBetween" }}
           spacer={{ default: "spacerNone" }}
@@ -52,22 +63,60 @@ export const DedicatedClusterTiles: VoidFunctionComponent<
                 onSelectableInputChange={() => onChange(c)}
                 onClick={() => onChange(c)}
               >
-                <CardTitle>{t("openshift_cluster")}</CardTitle>
-                <CardBody>{c.id}</CardBody>
-                <CardFooter>
-                  {(() => {
-                    switch (c.status) {
-                      case "ready":
-                        return <OkIcon />;
-                      case "provisioning":
-                        return <Spinner size={"sm"} />;
-                      case "failed":
-                        return <ErrorCircleOIcon />;
-                    }
-                  })()}
-                  &nbsp;
-                  {c.status}
-                </CardFooter>
+                <CardTitle>{c.name}</CardTitle>
+                <CardBody>
+                  <TextContent>
+                    <TextList component={TextListVariants.dl}>
+                      <TextListItem component={TextListItemVariants.dt}>
+                        {fields.id}
+                      </TextListItem>
+                      <TextListItem
+                        component={TextListItemVariants.dd}
+                        className="pf-u-max-width"
+                        style={
+                          {
+                            "--pf-u-max-width--MaxWidth": "10ch",
+                          } as CSSProperties
+                        }
+                      >
+                        <Truncate
+                          content={c.id}
+                          trailingNumChars={5}
+                          position={"middle"}
+                        />
+                      </TextListItem>
+                      <TextListItem component={TextListItemVariants.dt}>
+                        {fields.status}
+                      </TextListItem>
+                      <TextListItem component={TextListItemVariants.dd}>
+                        {(() => {
+                          switch (c.status) {
+                            case "ready":
+                              return <OkIcon />;
+                            case "provisioning":
+                              return <Spinner size={"sm"} />;
+                            case "failed":
+                              return <ErrorCircleOIcon />;
+                          }
+                        })()}
+                        &nbsp;
+                        {c.status}
+                      </TextListItem>
+                      <TextListItem component={TextListItemVariants.dt}>
+                        {fields.cloudProvider}
+                      </TextListItem>
+                      <TextListItem component={TextListItemVariants.dd}>
+                        {c.cloudProvider.displayName}
+                      </TextListItem>
+                      <TextListItem component={TextListItemVariants.dt}>
+                        {fields.cloudRegion}
+                      </TextListItem>
+                      <TextListItem component={TextListItemVariants.dd}>
+                        {c.cloudRegion.displayName}
+                      </TextListItem>
+                    </TextList>
+                  </TextContent>
+                </CardBody>
               </Card>
             </FlexItem>
           ))}
@@ -76,8 +125,8 @@ export const DedicatedClusterTiles: VoidFunctionComponent<
       <FormSelect
         className={"pf-u-display-none"}
         value={value}
-        id="form-cloud-provider-option"
-        name="cloud-provider"
+        id="form-cluster-option"
+        name="cluster"
         isDisabled={isDisabled}
         validated={validated}
         onChange={(value) => onChange(value as unknown as DedicatedCluster)}

@@ -50,6 +50,11 @@ export const dedicatedQueries = {
   _root: () => ({ ...masQueries._root(), entity: "dedicated" } as const),
   clusters: () =>
     [{ ...dedicatedQueries._root(), subentity: "clusters" }] as const,
+  clusterNames: (clusterIds: string[]) =>
+    [
+      { ...dedicatedQueries._root(), subentity: "clusterNames" },
+      { clusterIds },
+    ] as const,
   clusterSizes: (
     params: Omit<FetchDedicatedClusterSizesParams, "getEnterpriseClusterById">
   ) =>

@@ -3,11 +3,13 @@ import { fetchDedicatedClusters, fetchKafkas } from "../fetchers";
 import { useKafkaInstanceTransformer } from "../queries";
 import { dedicatedQueries, kafkaQueries, masQueries } from "../queryKeys";
 import { useApi } from "../useApi";
+import { useClustersMetaFetchQuery } from "./useClustersMetaFetchQuery";
 
 export const useDeveloperInstanceAvailabilityFetchQuery = () => {
   const queryClient = useQueryClient();
   const { kafkasFleet, dedicatedClusters } = useApi();
   const dataMapper = useKafkaInstanceTransformer();
+  const fetchClustersMeta = useClustersMetaFetchQuery();
 
   return (getUsername: () => Promise<string>) => {
     const fleetApi = kafkasFleet();
@@ -28,6 +30,7 @@ export const useDeveloperInstanceAvailabilityFetchQuery = () => {
               fetchDedicatedClusters({
                 getEnterpriseOsdClusters: (...args) =>
                   clustersApi.getEnterpriseOsdClusters(...args),
+                fetchClustersMeta,
               }),
           });
           clusterIds = clusterResponse.clusters.map((c) => c.id);

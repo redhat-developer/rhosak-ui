@@ -1,3 +1,4 @@
+export * from "./fetchClustersMeta";
 export * from "./fetchConsumerGroup";
 export * from "./fetchConsumerGroups";
 export * from "./fetchDedicatedClusters";

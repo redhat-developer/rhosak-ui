@@ -59,7 +59,7 @@ export const DedicatedInstanceForm: VoidFunctionComponent<
           <FormAlerts error={error} onClickContactUS={onClickContactUs} />
           <Form onSubmit={onSubmit} id={formId}>
             <ConnectedFieldInstanceName />
-            <ConnectedFieldCloudProvider />
+            <ConnectedFieldCluster />
             <ConnectedFieldAZ />
             <ConnectedFieldSize
               onLearnHowToAddStreamingUnits={onLearnHowToAddStreamingUnits}
@@ -134,7 +134,7 @@ export const ConnectedFieldInstanceName: VoidFunctionComponent = () => {
   );
 };
 
-export const ConnectedFieldCloudProvider: VoidFunctionComponent = () => {
+export const ConnectedFieldCluster: VoidFunctionComponent = () => {
   const { form, capabilities, isClusterError, isFormEnabled, setCluster } =
     useDedicatedPlanMachine();
 

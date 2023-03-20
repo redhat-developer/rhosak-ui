@@ -8,6 +8,7 @@ export function useDedicatedClusterLabels() {
     [field in DedicatedClusterField]: string;
   } = {
     id: t("fields.id"),
+    name: t("fields.name"),
     status: t("fields.status"),
     cloudProvider: t("fields.cloudProvider"),
     az: t("fields.az"),

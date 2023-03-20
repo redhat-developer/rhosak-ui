@@ -6,7 +6,7 @@ import { useDedicatedClusterLabels } from "../../hooks";
 import type { EmptyStateNoDedicatedClustersProps } from "./components";
 import { EmptyStateNoDedicatedClusters } from "./components";
 
-const Columns = ["id", "status"] as const;
+const Columns = ["name", "id", "status"] as const;
 
 export type DedicatedClustersProps<
   T extends DedicatedCluster = DedicatedCluster
@@ -42,6 +42,8 @@ export const DedicatedClusters = <T extends DedicatedCluster>({
             <Td key={key} dataLabel={labels.fields[column]}>
               {(() => {
                 switch (column) {
+                  case "name":
+                    return row.name;
                   case "id":
                     return row.id;
                   case "status":

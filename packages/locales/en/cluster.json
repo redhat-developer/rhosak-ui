@@ -4,6 +4,7 @@
     "cloudProvider": "Cloud Provider",
     "cloudRegion": "Region",
     "id": "Cluster ID",
+    "name": "Cluster name",
     "requiresPrivateNetwork": "Requires private network",
     "status": "Status"
   }

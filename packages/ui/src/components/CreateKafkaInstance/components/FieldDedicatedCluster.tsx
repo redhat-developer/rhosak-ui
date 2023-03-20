@@ -16,8 +16,8 @@ export const FieldDedicatedCluster: VoidFunctionComponent<
 
   return (
     <FormGroup
-      label={t("cloud_provider")}
-      fieldId="form-cloud-provider-option"
+      label={t("openshift_cluster")}
+      fieldId="form-cluster-option"
       validated={validated}
       helperTextInvalid={t("common:required")}
       isRequired
