@@ -2,8 +2,8 @@ import type {
   EnterpriseDataplaneClustersApi,
   SupportedKafkaSize,
 } from "@rhoas/kafka-management-sdk";
-import type { DedicatedSizes } from "ui";
 import { apiSizeToComponentSize } from "../transformers/apiSizeToComponentSize";
+import { SizeWithLimits } from "./fetchProviderRegionSizes";
 
 export type FetchDedicatedClusterSizesParams = {
   getEnterpriseClusterById: EnterpriseDataplaneClustersApi["getEnterpriseClusterById"];
@@ -13,14 +13,29 @@ export type FetchDedicatedClusterSizesParams = {
 export async function fetchDedicatedClusterSizes({
   getEnterpriseClusterById,
   clusterId,
-}: FetchDedicatedClusterSizesParams): Promise<DedicatedSizes> {
+}: FetchDedicatedClusterSizesParams): Promise<SizeWithLimits[]> {
   const response = await getEnterpriseClusterById(clusterId);
-  const data = response.data as typeof response.data & { [key: string]: any }; // TODO: fix this with the latest SDK version
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
-  const supportedInstanceTypes = data.supported_instance_types.instance_types;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-  const sizes: DedicatedSizes = supportedInstanceTypes
-    .flatMap((i: { sizes: SupportedKafkaSize[] }) => i.sizes)
-    .map((s: SupportedKafkaSize) => apiSizeToComponentSize(() => false, s));
+  const data = response.data;
+  if (!data) {
+    throw new Error(`Invalid response for cluster ${clusterId}`);
+  }
+  const supportedInstanceTypes = data.supported_instance_types?.instance_types;
+  if (!supportedInstanceTypes) {
+    throw new Error(
+      `Invalid response for cluster ${clusterId}, missing supported instance types`
+    );
+  }
+  const availableSizes = supportedInstanceTypes.flatMap((i) => i.sizes);
+  const sizes = availableSizes.map((s: SupportedKafkaSize) =>
+    apiSizeToComponentSize(
+      (id) =>
+        availableSizes.find((s) => s.id === id)!.capacity_consumed! >
+        (data.capacity_information?.remaining_kafka_streaming_units ===
+        undefined
+          ? Infinity
+          : data.capacity_information?.remaining_kafka_streaming_units),
+      s
+    )
+  );
   return sizes;
 }
