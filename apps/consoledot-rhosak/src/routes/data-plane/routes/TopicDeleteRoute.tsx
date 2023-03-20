@@ -4,6 +4,7 @@ import type { VoidFunctionComponent } from "react";
 import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { DeleteKafkaTopic } from "ui/src/components/DeleteKafkaTopic";
+import { useAlerts } from "../../../useAlerts";
 import type { DataPlaneTopicNavigationProps } from "../routesConsts";
 import { useTopicGate } from "../useTopicGate";
 
@@ -14,6 +15,8 @@ export const TopicDeleteRoute: VoidFunctionComponent<
   const history = useHistory();
 
   const { instance, topic } = useTopicGate();
+
+  const { addAlert } = useAlerts();
   const { mutateAsync, isLoading: isDeleting } = useDeleteTopicMutation();
 
   void analytics.track("RHOSAK Delete Topic", {
@@ -23,8 +26,8 @@ export const TopicDeleteRoute: VoidFunctionComponent<
   });
 
   const onCancel = useCallback(() => {
-    history.push(instanceTopicsHref(instance.id));
-  }, [history, instance.id, instanceTopicsHref]);
+    history.goBack();
+  }, [history]);
 
   const onDelete = useCallback(() => {
     if (!instance.adminUrl) {
@@ -34,13 +37,13 @@ export const TopicDeleteRoute: VoidFunctionComponent<
       instanceId: instance.id,
       adminUrl: instance.adminUrl,
       name: topic.name,
-      onError: () => {
+      onError: (_, message) => {
         void analytics.track("RHOSAK Delete Topic", {
           entityId: instance.id,
           topic: topic.name,
           status: "failure",
         });
-        // TODO: alert
+        addAlert("danger", message, true, "delete-topic-error");
       },
       onSuccess: () => {
         void analytics.track("RHOSAK Delete Topic", {
@@ -49,6 +52,12 @@ export const TopicDeleteRoute: VoidFunctionComponent<
           status: "success",
         });
         history.replace(instanceTopicsHref(instance.id));
+        addAlert(
+          "success",
+          `Successfully deleted topic ${topic.name}`,
+          true,
+          "delete-topic-success"
+        );
       },
     });
   }, [
@@ -57,6 +66,7 @@ export const TopicDeleteRoute: VoidFunctionComponent<
     mutateAsync,
     topic.name,
     analytics,
+    addAlert,
     history,
     instanceTopicsHref,
   ]);

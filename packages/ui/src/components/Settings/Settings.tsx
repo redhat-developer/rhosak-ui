@@ -54,24 +54,9 @@ export const Settings: FunctionComponent<SettingsProps> = ({
     onSubmitReAuthentication(reAuthValue)
       .then((reauthentication) => {
         setConnectionStatus(reauthentication ? "On" : "Off");
-
-        // TODO: send notification
-        // addAlert({
-        //   variant: "success",
-        //   title: t("settings.success_alert", {
-        //     status: reauthentication ? "on" : "off",
-        //   }),
-        // });
       })
       .catch(() => {
         setConnectionStatus(!reAuthValue ? "On" : "Off");
-
-        // TODO: send notification
-        // addAlert({
-        //   variant: "danger",
-        //   title: t("settings.error_alert_title"),
-        //   description: t("settings.error_alert_title_description"),
-        // });
       });
   };
 

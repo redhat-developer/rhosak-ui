@@ -11,7 +11,7 @@ import { useControlPlaneGate } from "../useControlPlaneGate";
 
 export const ChangeOwnerRoute: FunctionComponent<
   ControlPlaneNavigationProps
-> = ({ instancesHref }) => {
+> = () => {
   const history = useHistory();
 
   const { instance } = useControlPlaneGate();
@@ -21,8 +21,8 @@ export const ChangeOwnerRoute: FunctionComponent<
   const { addAlert } = useAlerts();
 
   const onCancel = useCallback(() => {
-    history.push(instancesHref);
-  }, [history, instancesHref]);
+    history.goBack();
+  }, [history]);
 
   const onConfirm = useCallback(
     (newOwner: string) => {
@@ -33,7 +33,7 @@ export const ChangeOwnerRoute: FunctionComponent<
         },
         {
           onSuccess: () => {
-            history.replace(instancesHref);
+            history.goBack();
             addAlert(
               "success",
               "Kafka instance owner changed",
@@ -45,14 +45,7 @@ export const ChangeOwnerRoute: FunctionComponent<
         }
       );
     },
-    [
-      addAlert,
-      history,
-      instance.id,
-      instance.name,
-      instancesHref,
-      updateInstance,
-    ]
+    [addAlert, history, instance.id, instance.name, updateInstance]
   );
 
   const savingState = ((): ChangeKafkaOwnerProps["savingState"] => {
