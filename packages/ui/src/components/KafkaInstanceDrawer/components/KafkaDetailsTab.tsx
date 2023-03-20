@@ -5,6 +5,7 @@ import {
   TextListItem,
   TextListItemVariants,
   TextListVariants,
+  Truncate,
 } from "@patternfly/react-core";
 import { FormatDate, useTranslation } from "@rhoas/app-services-ui-components";
 import type { ReactChild, VoidFunctionComponent } from "react";
@@ -22,8 +23,13 @@ export type KafkaDetailsTabProps = {
   updatedAt: Date;
   expiryDate: Date | undefined;
   owner: string;
-  provider: string;
-  region: string;
+  deployment:
+    | { type: "cluster"; name: string; id: string }
+    | {
+        type: "cloud";
+        provider: string;
+        region: string;
+      };
   instanceType: Plan;
   size: string | undefined;
   ingress: number | undefined;
@@ -42,8 +48,7 @@ export const KafkaDetailsTab: VoidFunctionComponent<KafkaDetailsTabProps> = ({
   createdAt,
   updatedAt,
   owner,
-  provider,
-  region,
+  deployment,
   expiryDate,
   instanceType,
   size,
@@ -158,8 +163,24 @@ export const KafkaDetailsTab: VoidFunctionComponent<KafkaDetailsTabProps> = ({
             t("common:time_updated"),
             <FormatDate date={updatedAt} format={"long"} />
           )}
-          {renderTextListItem(t("common:cloud_provider"), provider)}
-          {renderTextListItem(t("common:region"), region)}
+          {deployment.type === "cluster" ? (
+            renderTextListItem(
+              t("create-kafka-instance:openshift_cluster"),
+              <>
+                {deployment.name}
+                <br />
+                <Truncate content={deployment.id} position={"middle"} />
+              </>
+            )
+          ) : (
+            <>
+              {renderTextListItem(
+                t("common:cloud_provider"),
+                deployment.provider
+              )}
+              {renderTextListItem(t("common:region"), deployment.region)}
+            </>
+          )}
           {renderTextListItem(
             t("create-kafka-instance:billing.field_label"),
             (() => {

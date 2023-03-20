@@ -142,12 +142,24 @@ export const KafkaInstanceDrawerPanel: VoidFunctionComponent<
                 connections={instance.connections}
                 connectionRate={instance.connectionRate}
                 messageSize={instance.messageSize}
-                provider={
-                  labels.providers[instance.provider] || instance.provider
-                }
-                region={
-                  labels.providerRegions[instance.provider][instance.region] ||
-                  instance.region
+                deployment={
+                  instance.clusterName !== undefined &&
+                  instance.clusterId !== undefined
+                    ? {
+                        type: "cluster",
+                        name: instance.clusterName,
+                        id: instance.clusterId,
+                      }
+                    : {
+                        type: "cloud",
+                        provider:
+                          labels.providers[instance.provider] ||
+                          instance.provider,
+                        region:
+                          labels.providerRegions[instance.provider][
+                            instance.region
+                          ] || instance.region,
+                      }
                 }
                 instanceType={instance.plan}
                 billing={instance.billing}

@@ -18,7 +18,6 @@ export default {
     size: "1",
     id: "c7tkgchgb2d04561srg",
     owner: "snaithan_kafka_devexp",
-    region: "US East, N. Virginia",
     createdAt: new Date(2022, 6, 2),
     updatedAt: new Date(2022, 6, 2),
     ingress: 50,
@@ -30,6 +29,11 @@ export default {
     messageSize: { type: "bytes", value: BigInt(1) },
     billing: "prepaid",
     kafkaVersion: "3.0.1",
+    deployment: {
+      type: "cloud",
+      region: "US East, N. Virginia",
+      provider: "aws",
+    },
   },
   argTypes: {
     billing: {
