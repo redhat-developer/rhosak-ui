@@ -22,7 +22,7 @@ export function useKafkaInstanceTransformer() {
     const standardQuota = await getStandardQuotaQuery();
 
     const providersInfo = await getProvidersInfo(
-      instance.billing_model !== "standard" ? "developer" : "standard"
+      instance.instance_type !== "standard" ? "developer" : "standard"
     );
     const providerInfo = providersInfo.providers.find(
       (p) => p.id === instance.cloud_provider
