@@ -84,11 +84,13 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
     onCloseCreateTopic && onCloseCreateTopic();
   };
 
+  const trimmedTopicName = topicName.trim();
+
   const steps: WizardStep[] = [
     {
       name: t("topic_name"),
       enableNext:
-        topicName.trim() !== "" &&
+        trimmedTopicName !== "" &&
         topicNameValidated === ValidatedOptions.default,
       component: (
         <StepTopicName
@@ -103,7 +105,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
     },
     {
       name: t("partitions"),
-      canJumpTo: topicName.trim() !== "",
+      canJumpTo: trimmedTopicName !== "",
       component: (
         <StepPartitions
           partitions={partitions}
@@ -114,7 +116,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
     },
     {
       name: t("message_retention"),
-      canJumpTo: topicName.trim() !== "",
+      canJumpTo: trimmedTopicName !== "",
       component: (
         <StepMessageRetention
           customRetentionSizeValue={customRetentionSizeValue}
@@ -130,7 +132,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
     },
     {
       name: t("replicas"),
-      canJumpTo: topicName.trim() !== "",
+      canJumpTo: trimmedTopicName !== "",
       component: (
         <StepReplicas
           minInSyncReplica={topicData["min.insync.replicas"]}
