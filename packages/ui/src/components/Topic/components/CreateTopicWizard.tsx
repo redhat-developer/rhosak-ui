@@ -88,7 +88,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
     {
       name: t("topic_name"),
       enableNext:
-        topicData?.name.trim() !== "" &&
+        topicName.trim() !== "" &&
         topicNameValidated === ValidatedOptions.default,
       component: (
         <StepTopicName
@@ -103,7 +103,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
     },
     {
       name: t("partitions"),
-      canJumpTo: topicData?.name.trim() !== "",
+      canJumpTo: topicName.trim() !== "",
       component: (
         <StepPartitions
           partitions={partitions}
@@ -114,7 +114,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
     },
     {
       name: t("message_retention"),
-      canJumpTo: topicData?.name.trim() !== "",
+      canJumpTo: topicName.trim() !== "",
       component: (
         <StepMessageRetention
           customRetentionSizeValue={customRetentionSizeValue}
@@ -130,7 +130,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
     },
     {
       name: t("replicas"),
-      canJumpTo: topicData?.name.trim() !== "",
+      canJumpTo: topicName.trim() !== "",
       component: (
         <StepReplicas
           minInSyncReplica={topicData["min.insync.replicas"]}
@@ -176,7 +176,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
       const isTopicNameValid = checkTopicName(topicName);
       if (!isTopicNameValid) {
         setIsLoading(false);
-        setInvalidText(t("already_exists", { name: topicData?.name })),
+        setInvalidText(t("already_exists", { name: topicName })),
           setTopicNameValidated(ValidatedOptions.error);
       } else onNext();
     }
