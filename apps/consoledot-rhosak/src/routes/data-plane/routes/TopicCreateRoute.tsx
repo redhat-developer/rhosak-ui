@@ -117,10 +117,7 @@ export const TopicCreateRoute: VoidFunctionComponent<
         };
   }, [instance.plan]);
 
-  const isSaving = (() => {
-    if (createTopic.isLoading) return true;
-    else return false;
-  })();
+  const isSaving = createTopic.isLoading;
 
   return (
     <CreateTopic
