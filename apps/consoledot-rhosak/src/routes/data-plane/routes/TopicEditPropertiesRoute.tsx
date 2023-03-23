@@ -63,10 +63,7 @@ export const TopicEditPropertiesRoute: VoidFunctionComponent<
     history.push(instanceTopicsHref(instance.id));
   }, [history, instance.id, instanceTopicsHref]);
 
-  const isSaving = (() => {
-    if (updateTopic.isLoading) return true;
-    else return false;
-  })();
+  const isSaving = updateTopic.isLoading;
 
   return (
     <>
