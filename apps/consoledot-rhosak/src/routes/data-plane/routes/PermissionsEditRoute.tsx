@@ -77,7 +77,6 @@ export const PermissionsEditRoute: VoidFunctionComponent<
               },
 
               onSuccess: () => {
-                //eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
                 history.push(managePermissionsHref(instance.id));
               },
               onError: (_, message) => {
@@ -104,7 +103,6 @@ export const PermissionsEditRoute: VoidFunctionComponent<
               addAlert("danger", message, true, "delete-error");
             },
             onSuccess: () => {
-              //eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
               history.push(managePermissionsHref(instance.id));
             },
           });
@@ -140,7 +138,6 @@ export const PermissionsEditRoute: VoidFunctionComponent<
   );
 
   const onClose = useCallback(() => {
-    //eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(managePermissionsHref(instance.id));
   }, [history, instance.id, managePermissionsHref]);
 

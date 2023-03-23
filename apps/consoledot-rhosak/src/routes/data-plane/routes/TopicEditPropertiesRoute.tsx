@@ -35,7 +35,6 @@ export const TopicEditPropertiesRoute: VoidFunctionComponent<
         topic: topicData,
 
         onSuccess: () => {
-          //eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
           history.push(instanceTopicsHref(instance.id));
           addAlert(
             "success",
