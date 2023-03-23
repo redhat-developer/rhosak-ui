@@ -20,11 +20,12 @@ export type EditTopicPropertiesProps = {
   onCancel: () => void;
   onSave: (data: TopicForm) => void;
   availablePartitionLimit: number;
+  isSaving: boolean;
 };
 
 export const EditTopicProperties: FunctionComponent<
   EditTopicPropertiesProps
-> = ({ topic, onCancel, onSave, availablePartitionLimit }) => {
+> = ({ topic, onCancel, onSave, availablePartitionLimit, isSaving }) => {
   const millisecondsToTimeValue = millisecondsToTime(
     topic["retention.ms"].value
   );
@@ -119,6 +120,7 @@ export const EditTopicProperties: FunctionComponent<
         partitions={partitions}
         onPartitionsChange={setPartitions}
         cleanupPolicy={cleanupPolicy}
+        isSaving={isSaving}
       />
       {warningModalOpen && (
         <PartitionLimitWarning

@@ -117,6 +117,11 @@ export const TopicCreateRoute: VoidFunctionComponent<
         };
   }, [instance.plan]);
 
+  const isSaving = (() => {
+    if (createTopic.isLoading) return true;
+    else return false;
+  })();
+
   return (
     <CreateTopic
       kafkaName={instance.name}
@@ -128,6 +133,7 @@ export const TopicCreateRoute: VoidFunctionComponent<
       checkTopicName={checkTopicName}
       availablePartitionLimit={instance.maxPartitions}
       availabilityZone={availabilityZone}
+      isSaving={isSaving}
     />
   );
 };

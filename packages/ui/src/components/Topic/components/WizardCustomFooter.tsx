@@ -12,6 +12,7 @@ export interface IWizardFooter {
   onValidate: (value: () => void) => void;
   topicNameValidated: ValidatedOptions;
   closeWizard: () => void;
+  isSaving: boolean;
 }
 
 export const WizardCustomFooter: React.FC<IWizardFooter> = ({
@@ -19,6 +20,7 @@ export const WizardCustomFooter: React.FC<IWizardFooter> = ({
   onValidate,
   closeWizard,
   topicNameValidated,
+  isSaving,
 }) => {
   const { t } = useTranslation(["create-topic", "common"]);
 
@@ -69,6 +71,7 @@ export const WizardCustomFooter: React.FC<IWizardFooter> = ({
                   type="submit"
                   onClick={onNext}
                   ouiaId={"button-finish"}
+                  isDisabled={isSaving}
                 >
                   {t("common:finish")}
                 </Button>
@@ -76,6 +79,7 @@ export const WizardCustomFooter: React.FC<IWizardFooter> = ({
                   ouiaId={"button-back"}
                   variant="secondary"
                   onClick={onBack}
+                  isDisabled={isSaving}
                 >
                   {t("common:back")}
                 </Button>
@@ -83,6 +87,7 @@ export const WizardCustomFooter: React.FC<IWizardFooter> = ({
                   ouiaId={"button-cancel"}
                   variant="link"
                   onClick={closeWizard}
+                  isDisabled={isSaving}
                 >
                   {t("common:cancel")}
                 </Button>

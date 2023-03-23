@@ -63,6 +63,11 @@ export const TopicEditPropertiesRoute: VoidFunctionComponent<
     history.push(instanceTopicsHref(instance.id));
   }, [history, instance.id, instanceTopicsHref]);
 
+  const isSaving = (() => {
+    if (updateTopic.isLoading) return true;
+    else return false;
+  })();
+
   return (
     <>
       <DataPlaneTopicHeaderConnected
@@ -76,6 +81,7 @@ export const TopicEditPropertiesRoute: VoidFunctionComponent<
         onCancel={onCancel}
         onSave={onSave}
         availablePartitionLimit={instance.maxPartitions}
+        isSaving={isSaving}
       />
     </>
   );
