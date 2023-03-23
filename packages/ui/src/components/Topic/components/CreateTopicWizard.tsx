@@ -190,6 +190,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
           <Divider className="kafka-ui--divider--FlexShrink" />
           <PageSection
             variant={PageSectionVariants.light}
+            className={"topic-properties"}
             hasOverflowScroll={true}
             aria-label={"TODO"}
           >
