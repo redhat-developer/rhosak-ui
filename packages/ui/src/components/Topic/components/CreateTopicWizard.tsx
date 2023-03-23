@@ -40,6 +40,7 @@ export type CreateTopicWizardProps = {
   checkTopicName: (value: string) => boolean;
   availablePartitionLimit: number;
   availabilityZone: AZ;
+  isSaving: boolean;
 };
 
 export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
@@ -50,6 +51,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
   checkTopicName,
   availablePartitionLimit,
   availabilityZone,
+  isSaving,
 }) => {
   const { t } = useTranslation(["create-topic", "common"]);
 
@@ -101,6 +103,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
           setInvalidText={setInvalidText}
         />
       ),
+      isDisabled: isSaving,
     },
     {
       name: t("partitions"),
@@ -112,6 +115,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
           availablePartitionLimit={availablePartitionLimit}
         />
       ),
+      isDisabled: isSaving,
     },
     {
       name: t("message_retention"),
@@ -128,6 +132,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
           setRadioSizeSelectValue={setRadioSizeSelectValue}
         />
       ),
+      isDisabled: isSaving,
     },
     {
       name: t("replicas"),
@@ -139,6 +144,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
         />
       ),
       nextButtonText: t("finish"),
+      isDisabled: isSaving,
     },
   ];
 
@@ -216,6 +222,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
                 radioSizeSelectValue={radioSizeSelectValue}
                 setRadioSizeSelectValue={setRadioSizeSelectValue}
                 topicData={topicData}
+                isSaving={isSaving}
               />
             }
             {warningModalOpen && (
@@ -249,6 +256,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
                 onValidate={onValidate}
                 topicNameValidated={topicNameValidated}
                 closeWizard={closeWizard}
+                isSaving={isSaving}
               />
             }
           />
