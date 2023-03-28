@@ -16,8 +16,9 @@ export const DateTimePicker: VoidFunctionComponent<DateTimePickerProps> = ({
   value,
   onChange,
 }) => {
-  const [timeSelected, setIsTimeSelected] = useState(false);
   const date = value ? parseISO(value) : undefined;
+
+  const [time, setTime] = useState<string | null>(null);
 
   const onSelectCalendar: DatePickerProps["onChange"] = (_, newDate) => {
     if (newDate) {
@@ -46,11 +47,12 @@ export const DateTimePicker: VoidFunctionComponent<DateTimePickerProps> = ({
       if (minute !== undefined) {
         newDate = setMinutes(newDate, minute);
       }
-
+      setTime(time);
       onChange(formatISO(newDate) as DateIsoString);
-      setIsTimeSelected(true);
     }
   };
+
+  console.log(date);
 
   return (
     <InputGroup>
@@ -61,7 +63,7 @@ export const DateTimePicker: VoidFunctionComponent<DateTimePickerProps> = ({
       />
       <TimePicker
         isDisabled={!date || isDisabled}
-        time={timeSelected ? date : undefined}
+        time={time ? time : ""}
         onChange={onSelectTime}
       />
     </InputGroup>
