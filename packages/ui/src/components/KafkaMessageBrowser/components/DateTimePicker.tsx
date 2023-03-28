@@ -52,8 +52,6 @@ export const DateTimePicker: VoidFunctionComponent<DateTimePickerProps> = ({
     }
   };
 
-  console.log(date);
-
   return (
     <InputGroup>
       <DatePicker
