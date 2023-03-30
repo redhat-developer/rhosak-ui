@@ -88,6 +88,9 @@ export const ResourceName: React.VFC<ResourceNameProps> = ({
       submitted={submitted}
       onFetchOptions={onFetchOptions}
       onValidationCheck={onValidation}
+      isInputFilterPersisted={true}
+      isInputValuePersisted={true}
+      width={220}
     />
   );
 };
