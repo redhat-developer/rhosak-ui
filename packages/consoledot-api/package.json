@@ -7,8 +7,8 @@
   "scripts": {
     "lint": "TIMING=1 eslint src",
     "build": "tsc --noEmit --skipLibCheck",
-    "_test": "TZ=UTC jest",
-    "_test:ci": "npm run test -- --coverage",
+    "test": "TZ=UTC jest",
+    "test:ci": "npm run test -- --coverage",
     "test:watch": "npm run test -- --watch"
   },
   "devDependencies": {

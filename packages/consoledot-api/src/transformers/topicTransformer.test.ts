@@ -9,7 +9,7 @@ describe("retentionTimeTransformer", () => {
   });
 
   it("retention time values when unit is unlimited", () => {
-    const value: CustomSelect = { unit: "unlimited", value: 1 };
+    const value: CustomSelect = { unit: "unlimited", value: -1 };
     const result = retentionTimeTransformer(value);
     expect(result).toBe(BigInt(-1));
   });
