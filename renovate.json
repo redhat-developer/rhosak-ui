@@ -11,8 +11,7 @@
   },
   "packageRules": [
     {
-      "matchDepTypes": ["devDependencies"],
-      "matchPackagePatterns": ["lint", "prettier"],
+      "matchPackagePatterns": ["*"],
       "automerge": true
     }
   ]
