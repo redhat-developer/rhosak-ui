@@ -31,6 +31,7 @@ export type PermissionsTableProps<T extends Permissions> = {
   | "onPageChange"
   | "isRowSelected"
   | "onClearAllFilters"
+  | "onCheck"
 >;
 
 export const PermissionsTable = <T extends Permissions>({
@@ -58,18 +59,20 @@ export const PermissionsTable = <T extends Permissions>({
     permission: t("table.permissions_column_title"),
     resource: t("table.resource_column_title"),
   };
-  const onCheck = useCallback(
-    (row: { rowIndex: number }, isSelecting: boolean) => {
-      if (row.rowIndex != undefined) {
-        setCheckedRows(
-          isSelecting
-            ? [...checkedRows, row.rowIndex]
-            : checkedRows.filter((t) => t !== row.rowIndex)
-        );
-      }
-    },
-    [checkedRows]
-  );
+
+  const onCheck: TableViewProps<T, (typeof Columns)[number]>["onCheck"] =
+    useCallback(
+      ({ rowIndex }, isSelecting) => {
+        if (rowIndex != undefined) {
+          setCheckedRows(
+            isSelecting
+              ? [...checkedRows, rowIndex]
+              : checkedRows.filter((t) => t !== rowIndex)
+          );
+        }
+      },
+      [checkedRows]
+    );
 
   const isRowChecked = (rowIndex: number) => {
     return checkedRows.includes(rowIndex);
