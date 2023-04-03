@@ -40,6 +40,7 @@ export type CreateTopicWizardProps = {
   checkTopicName: (value: string) => boolean;
   availablePartitionLimit: number;
   availabilityZone: AZ;
+  isSaving: boolean;
 };
 
 export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
@@ -50,6 +51,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
   checkTopicName,
   availablePartitionLimit,
   availabilityZone,
+  isSaving,
 }) => {
   const { t } = useTranslation(["create-topic", "common"]);
 
@@ -84,12 +86,13 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
     onCloseCreateTopic && onCloseCreateTopic();
   };
 
+  const trimmedTopicName = topicName.trim() !== "";
+
   const steps: WizardStep[] = [
     {
       name: t("topic_name"),
       enableNext:
-        topicData?.name.trim() !== "" &&
-        topicNameValidated === ValidatedOptions.default,
+        trimmedTopicName && topicNameValidated === ValidatedOptions.default,
       component: (
         <StepTopicName
           topicName={topicName}
@@ -100,10 +103,11 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
           setInvalidText={setInvalidText}
         />
       ),
+      isDisabled: isSaving,
     },
     {
       name: t("partitions"),
-      canJumpTo: topicData?.name.trim() !== "",
+      canJumpTo: trimmedTopicName,
       component: (
         <StepPartitions
           partitions={partitions}
@@ -111,10 +115,11 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
           availablePartitionLimit={availablePartitionLimit}
         />
       ),
+      isDisabled: isSaving,
     },
     {
       name: t("message_retention"),
-      canJumpTo: topicData?.name.trim() !== "",
+      canJumpTo: trimmedTopicName,
       component: (
         <StepMessageRetention
           customRetentionSizeValue={customRetentionSizeValue}
@@ -127,10 +132,11 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
           setRadioSizeSelectValue={setRadioSizeSelectValue}
         />
       ),
+      isDisabled: isSaving,
     },
     {
       name: t("replicas"),
-      canJumpTo: topicData?.name.trim() !== "",
+      canJumpTo: trimmedTopicName,
       component: (
         <StepReplicas
           minInSyncReplica={topicData["min.insync.replicas"]}
@@ -138,6 +144,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
         />
       ),
       nextButtonText: t("finish"),
+      isDisabled: isSaving,
     },
   ];
 
@@ -176,7 +183,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
       const isTopicNameValid = checkTopicName(topicName);
       if (!isTopicNameValid) {
         setIsLoading(false);
-        setInvalidText(t("already_exists", { name: topicData?.name })),
+        setInvalidText(t("already_exists", { name: topicName })),
           setTopicNameValidated(ValidatedOptions.error);
       } else onNext();
     }
@@ -189,6 +196,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
           <Divider className="kafka-ui--divider--FlexShrink" />
           <PageSection
             variant={PageSectionVariants.light}
+            className={"topic-properties"}
             hasOverflowScroll={true}
             aria-label={"TODO"}
           >
@@ -214,6 +222,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
                 radioSizeSelectValue={radioSizeSelectValue}
                 setRadioSizeSelectValue={setRadioSizeSelectValue}
                 topicData={topicData}
+                isSaving={isSaving}
               />
             }
             {warningModalOpen && (
@@ -247,6 +256,7 @@ export const CreateTopicWizard: React.FC<CreateTopicWizardProps> = ({
                 onValidate={onValidate}
                 topicNameValidated={topicNameValidated}
                 closeWizard={closeWizard}
+                isSaving={isSaving}
               />
             }
           />

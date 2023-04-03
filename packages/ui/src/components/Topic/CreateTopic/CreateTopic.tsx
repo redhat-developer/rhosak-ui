@@ -15,6 +15,7 @@ export type CreateTopicPageProps = {
   checkTopicName: (value: string) => boolean;
   availablePartitionLimit: number;
   availabilityZone: AZ;
+  isSaving: boolean;
 };
 
 export const CreateTopic: React.FC<CreateTopicPageProps> = ({
@@ -27,6 +28,7 @@ export const CreateTopic: React.FC<CreateTopicPageProps> = ({
   checkTopicName,
   availablePartitionLimit,
   availabilityZone,
+  isSaving,
 }) => {
   const [isSwitchChecked, setIsSwitchChecked] = useState<boolean>(false);
 
@@ -47,6 +49,7 @@ export const CreateTopic: React.FC<CreateTopicPageProps> = ({
         checkTopicName={checkTopicName}
         availablePartitionLimit={availablePartitionLimit}
         availabilityZone={availabilityZone}
+        isSaving={isSaving}
       />
     </>
   );

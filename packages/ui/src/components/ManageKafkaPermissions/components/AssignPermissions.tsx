@@ -39,7 +39,7 @@ export const AssignPermissions: React.VFC<AssignPermissionsProps> = ({
 }) => {
   return (
     <>
-      <TableComposable variant="compact">
+      <TableComposable variant="compact" gridBreakPoint="grid-lg">
         {addedAcls && addedAcls.length > 0 && <ShortcutsTableHead />}
         {addedAcls &&
           addedAcls.map((aclTemplate, idx) => {

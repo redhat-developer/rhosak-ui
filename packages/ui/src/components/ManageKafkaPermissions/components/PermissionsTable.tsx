@@ -4,7 +4,7 @@ import { TableView } from "@rhoas/app-services-ui-components";
 import { useTranslation } from "react-i18next";
 import type { Account, Permissions } from "../types";
 import { PrincipalCell, PermissionOperationCell, ResourceCell } from "./Cells";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { PageSection } from "@patternfly/react-core";
 import { PermissionsTableEmptyState } from "./EmptyPermissionsTable";
 
@@ -31,6 +31,7 @@ export type PermissionsTableProps<T extends Permissions> = {
   | "onPageChange"
   | "isRowSelected"
   | "onClearAllFilters"
+  | "onCheck"
 >;
 
 export const PermissionsTable = <T extends Permissions>({
@@ -58,15 +59,20 @@ export const PermissionsTable = <T extends Permissions>({
     permission: t("table.permissions_column_title"),
     resource: t("table.resource_column_title"),
   };
-  const onCheck = (isSelecting: boolean, rowIndex: number) => {
-    if (rowIndex != undefined) {
-      setCheckedRows(
-        isSelecting
-          ? [...checkedRows, rowIndex]
-          : checkedRows.filter((row) => row !== rowIndex)
-      );
-    }
-  };
+
+  const onCheck: TableViewProps<T, (typeof Columns)[number]>["onCheck"] =
+    useCallback(
+      ({ rowIndex }, isSelecting) => {
+        if (rowIndex != undefined) {
+          setCheckedRows(
+            isSelecting
+              ? [...checkedRows, rowIndex]
+              : checkedRows.filter((t) => t !== rowIndex)
+          );
+        }
+      },
+      [checkedRows]
+    );
 
   const isRowChecked = (rowIndex: number) => {
     return checkedRows.includes(rowIndex);
@@ -80,7 +86,7 @@ export const PermissionsTable = <T extends Permissions>({
     <PageSection hasOverflowScroll={true}>
       <TableView
         variant={TableVariant.compact}
-        tableOuiaId={"card-table"}
+        tableOuiaId={"permissions-table"}
         ariaLabel={t("consumerGroup.consumer_group_list")}
         actions={[
           {

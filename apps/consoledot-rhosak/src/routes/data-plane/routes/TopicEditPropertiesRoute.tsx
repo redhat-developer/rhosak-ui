@@ -35,7 +35,6 @@ export const TopicEditPropertiesRoute: VoidFunctionComponent<
         topic: topicData,
 
         onSuccess: () => {
-          //eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
           history.push(instanceTopicsHref(instance.id));
           addAlert(
             "success",
@@ -64,6 +63,8 @@ export const TopicEditPropertiesRoute: VoidFunctionComponent<
     history.push(instanceTopicsHref(instance.id));
   }, [history, instance.id, instanceTopicsHref]);
 
+  const isSaving = updateTopic.isLoading;
+
   return (
     <>
       <DataPlaneTopicHeaderConnected
@@ -78,6 +79,7 @@ export const TopicEditPropertiesRoute: VoidFunctionComponent<
         onCancel={onCancel}
         onSave={onSave}
         availablePartitionLimit={instance.maxPartitions}
+        isSaving={isSaving}
       />
     </>
   );

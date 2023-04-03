@@ -74,7 +74,6 @@ export const TopicCreateRoute: VoidFunctionComponent<
             status: "success",
           });
 
-          //eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
           history.push(instanceTopicsHref(instance.id));
           addAlert(
             "success",
@@ -118,6 +117,8 @@ export const TopicCreateRoute: VoidFunctionComponent<
         };
   }, [instance.plan]);
 
+  const isSaving = createTopic.isLoading;
+
   return (
     <CreateTopic
       kafkaName={instance.name}
@@ -129,6 +130,7 @@ export const TopicCreateRoute: VoidFunctionComponent<
       checkTopicName={checkTopicName}
       availablePartitionLimit={instance.maxPartitions}
       availabilityZone={availabilityZone}
+      isSaving={isSaving}
     />
   );
 };

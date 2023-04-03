@@ -121,7 +121,7 @@ exports[`ConnectionTab renders 1`] = `
         data-ouia-component-type="PF4/Button"
         data-ouia-safe="true"
         data-testid="drawerStreams-buttonCreateServiceAccount"
-        href="/application-services/service-account"
+        href="/to-service-account"
       >
         Create service account
       </a>

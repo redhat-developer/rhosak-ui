@@ -44,6 +44,7 @@ export const InteractiveExampleSelectedAccount: ComponentStory<
         acls={PermissionsForSelectedAccount}
         topicsList={["topic-1", "my-topic", "test-topic"]}
         consumerGroupsList={["consumer", "my-consumer", "test-consumer"]}
+        selectedAccount={"suuash-test-account"}
       />
     </div>
   );

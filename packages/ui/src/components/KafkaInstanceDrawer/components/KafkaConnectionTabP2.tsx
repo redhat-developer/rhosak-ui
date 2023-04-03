@@ -92,10 +92,10 @@ export const KafkaConnectionTabP2: FunctionComponent<
               }
               components={{
                 value: (
-                  <Link
-                    to={linkToServiceAccount}
+                  <a
+                    href={linkToServiceAccount}
                     data-testid="tableStreams-linkKafka"
-                  ></Link>
+                  ></a>
                 ),
               }}
             />
@@ -106,9 +106,7 @@ export const KafkaConnectionTabP2: FunctionComponent<
         variant={ButtonVariant.secondary}
         isInline
         data-testid="drawerStreams-buttonCreateServiceAccount"
-        href={`${
-          document.location.pathname.startsWith("/beta") ? "/beta" : ""
-        }/application-services/service-account`}
+        href={linkToServiceAccount}
         component={"a"}
       >
         {t("connection-tab:create_service_account")}

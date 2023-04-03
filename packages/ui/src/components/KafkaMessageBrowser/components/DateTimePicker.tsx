@@ -1,7 +1,7 @@
 import type { DatePickerProps, TimePickerProps } from "@patternfly/react-core";
 import { DatePicker, InputGroup, TimePicker } from "@patternfly/react-core";
 import { formatISO, parseISO, setHours, setMinutes } from "date-fns";
-import { formatInTimeZone } from "date-fns-tz";
+import { format } from "date-fns-tz";
 import type { VoidFunctionComponent } from "react";
 import { useState } from "react";
 import type { DateIsoString } from "../../../../../ui-models/src/types";
@@ -16,8 +16,9 @@ export const DateTimePicker: VoidFunctionComponent<DateTimePickerProps> = ({
   value,
   onChange,
 }) => {
-  const [timeSelected, setIsTimeSelected] = useState(false);
   const date = value ? parseISO(value) : undefined;
+
+  const [time, setTime] = useState<string | null>(null);
 
   const onSelectCalendar: DatePickerProps["onChange"] = (_, newDate) => {
     if (newDate) {
@@ -46,9 +47,8 @@ export const DateTimePicker: VoidFunctionComponent<DateTimePickerProps> = ({
       if (minute !== undefined) {
         newDate = setMinutes(newDate, minute);
       }
-
+      setTime(time);
       onChange(formatISO(newDate) as DateIsoString);
-      setIsTimeSelected(true);
     }
   };
 
@@ -56,12 +56,12 @@ export const DateTimePicker: VoidFunctionComponent<DateTimePickerProps> = ({
     <InputGroup>
       <DatePicker
         isDisabled={isDisabled}
-        value={date ? formatInTimeZone(date, "UTC", "yyyy-MM-dd") : undefined}
+        value={date ? format(date, "yyyy-MM-dd") : undefined}
         onChange={onSelectCalendar}
       />
       <TimePicker
         isDisabled={!date || isDisabled}
-        time={timeSelected ? date : undefined}
+        time={time ? time : ""}
         onChange={onSelectTime}
       />
     </InputGroup>

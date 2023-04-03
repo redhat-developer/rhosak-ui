@@ -67,7 +67,6 @@ export const PermissionsSelectAccountRoute: VoidFunctionComponent<
   );
 
   const onClose = useCallback(() => {
-    //eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
     history.push(managePermissionsHref(instance.id));
   }, [history, instance.id, managePermissionsHref]);
 

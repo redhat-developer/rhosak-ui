@@ -111,7 +111,6 @@ export const PermissionsEditRoute: VoidFunctionComponent<
               addAlert("danger", message, true, "delete-error");
             },
             onSuccess: () => {
-              //eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
               history.push(managePermissionsHref(instance.id));
             },
           });

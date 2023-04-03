@@ -177,7 +177,9 @@ export const KafkaInstanceDrawerPanel: VoidFunctionComponent<
                 isKafkaPending={isKafkaPending}
                 externalServer={getExternalServer(instance.bootstrapUrl)}
                 tokenEndPointUrl={tokenEndpointUrl}
-                linkToServiceAccount={"service-accounts"}
+                linkToServiceAccount={`${
+                  document.location.pathname.startsWith("/beta") ? "/beta" : ""
+                }/application-services/service-accounts`}
                 linkToAccessTab={`${instance.id}/details/acls`}
                 adminAPIUrl={getAdminServerUrl(instance.adminUrl)}
                 showCreateServiceAccountModal={() => {

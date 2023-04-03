@@ -50,6 +50,7 @@ export type TopicAdvancePageProps = {
   setRadioTimeSelectValue: (value: RadioSelectType) => void;
   radioSizeSelectValue: RetentionSizeRadioSelect;
   setRadioSizeSelectValue: (data: RetentionSizeRadioSelect) => void;
+  isSaving: boolean;
 };
 
 export const TopicAdvancePage: React.FunctionComponent<
@@ -75,6 +76,7 @@ export const TopicAdvancePage: React.FunctionComponent<
   customRetentionSizeValue,
   radioSizeSelectValue,
   setRadioSizeSelectValue,
+  isSaving,
 }) => {
   const { t } = useTranslation(["create-topic", "common"]);
   const actionText = isCreate ? t("create_topic") : t("common:save");
@@ -208,7 +210,7 @@ export const TopicAdvancePage: React.FunctionComponent<
                       ? "topicAdvanceCreate-actionCreate"
                       : "tabProperties-actionSave"
                   }
-                  isDisabled={topicValidated !== "default"}
+                  isDisabled={topicValidated !== "default" || isSaving}
                 >
                   {actionText}
                 </Button>
@@ -220,6 +222,7 @@ export const TopicAdvancePage: React.FunctionComponent<
                       ? "topicAdvanceCreate-actionCancel"
                       : "tabProperties-actionCancel"
                   }
+                  isDisabled={isSaving}
                 >
                   {t("common:cancel")}
                 </Button>
