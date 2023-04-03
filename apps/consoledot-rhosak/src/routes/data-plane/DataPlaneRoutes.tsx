@@ -93,7 +93,7 @@ export const DataPlaneRoutes: VoidFunctionComponent = () => {
           </Route>
 
           <Route path={`${DataPlaneRoutePath}/acls`}>
-            <Route path={`${DataPlaneRoutePath}/acls/select-account`}>
+            <Route path={`${DataPlaneRoutePath}/acls/select-account`} exact>
               <PermissionsSelectAccountRoute
                 editPermissionsHref={editPermissionsHref}
                 instancesHref={"/kafkas"}
