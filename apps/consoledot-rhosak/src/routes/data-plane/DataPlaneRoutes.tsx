@@ -91,24 +91,26 @@ export const DataPlaneRoutes: VoidFunctionComponent = () => {
           <Route path={`${DataPlaneRoutePath}/consumer-groups`} exact>
             <ConsumerGroupsRoute instancesHref={"/kafkas"} />
           </Route>
-
           <Route path={`${DataPlaneRoutePath}/acls`}>
-            <Route path={`${DataPlaneRoutePath}/acls/select-account`} exact>
-              <PermissionsSelectAccountRoute
-                editPermissionsHref={editPermissionsHref}
-                instancesHref={"/kafkas"}
-                managePermissionsHref={permissionsModalHref}
-              />
-            </Route>
-            <Route
-              path={`${DataPlaneRoutePath}/acls/select-account/:selectedAccount/edit-permissions`}
-            >
-              <PermissionsEditRoute
-                editPermissionsHref={editPermissionsHref}
-                instancesHref={"/kafkas"}
-                managePermissionsHref={permissionsModalHref}
-              />
-            </Route>
+            <Switch>
+              <Route path={`${DataPlaneRoutePath}/acls/select-account`} exact>
+                <PermissionsSelectAccountRoute
+                  editPermissionsHref={editPermissionsHref}
+                  instancesHref={"/kafkas"}
+                  managePermissionsHref={permissionsModalHref}
+                />
+              </Route>
+              <Route
+                path={`${DataPlaneRoutePath}/acls/select-account/:selectedAccount/edit-permissions`}
+                exact
+              >
+                <PermissionsEditRoute
+                  editPermissionsHref={editPermissionsHref}
+                  instancesHref={"/kafkas"}
+                  managePermissionsHref={permissionsModalHref}
+                />
+              </Route>
+            </Switch>
             <PermissionsRoute
               instancesHref={"/kafkas"}
               managePermissionsHref={managePermissionsHref}
