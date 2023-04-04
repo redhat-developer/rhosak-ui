@@ -32,13 +32,15 @@ export const useDeveloperInstanceAvailabilityFetchQuery = () => {
                   clustersApi.getEnterpriseOsdClusters(...args),
                 fetchClustersMeta,
               });
-              res.clusters.forEach((c) =>
-                queryClient.setQueryData(
-                  dedicatedQueries.cluster({ id: c.id }),
-                  c
-                )
-              );
-              return res;
+              if (res) {
+                res.clusters.forEach((c) =>
+                  queryClient.setQueryData(
+                    dedicatedQueries.cluster({ id: c.id }),
+                    c
+                  )
+                );
+              }
+              return res || { clusters: [] };
             },
           });
           clusterIds = clusterResponse.clusters.map((c) => c.id);

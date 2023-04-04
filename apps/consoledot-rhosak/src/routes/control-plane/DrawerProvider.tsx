@@ -14,9 +14,9 @@ import type { KafkaInstanceDrawerTab } from "ui";
 import { KafkaInstanceDrawer } from "ui";
 import type { ControlPlaneRouteParams } from "./routesConsts";
 import {
+  ControlPlaneRouteMatch,
   ControlPlaneRoutePath,
   ControlPlaneSpecialSegments,
-  DedicatedControlPlaneRouteMatch,
 } from "./routesConsts";
 
 type DrawerContextProps = {
@@ -35,7 +35,7 @@ export const DrawerProvider: FunctionComponent = ({ children }) => {
     ControlPlaneRoutePath
   );
   const dedicatedMatch = useRouteMatch<ControlPlaneRouteParams>(
-    DedicatedControlPlaneRouteMatch
+    ControlPlaneRouteMatch
   );
   const match = standardMatch || dedicatedMatch;
   if (!match) {

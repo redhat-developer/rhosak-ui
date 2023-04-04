@@ -15,13 +15,16 @@ export type FetchDedicatedClustersParams = {
 export async function fetchDedicatedClusters({
   getEnterpriseOsdClusters,
   fetchClustersMeta,
-}: FetchDedicatedClustersParams): Promise<{
-  clusters: DedicatedCluster[];
-  count: number;
-}> {
+}: FetchDedicatedClustersParams): Promise<
+  | false
+  | {
+      clusters: DedicatedCluster[];
+      count: number;
+    }
+> {
   const response = await getEnterpriseOsdClusters();
   if (response.status === 403) {
-    throw new MissingDedicatedEntitlement();
+    return false;
   }
   const rawClusters = response.data.items || [];
   const meta = await fetchClustersMeta(rawClusters.map((c) => c.id));
@@ -32,5 +35,3 @@ export async function fetchDedicatedClusters({
     count: response.data.total,
   };
 }
-
-export class MissingDedicatedEntitlement extends Error {}

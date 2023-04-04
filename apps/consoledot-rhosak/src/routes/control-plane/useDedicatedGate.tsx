@@ -3,7 +3,7 @@ import { useStandardQuota } from "consoledot-api/src/queries/useStandardQuota";
 
 export function useDedicatedGate() {
   const quota = useStandardQuota();
-  const dedicated = useDedicatedClusters({ refetch: false });
+  const dedicated = useDedicatedClusters();
 
   if (
     dedicated.isSuccess &&

@@ -7,50 +7,34 @@ export const ControlPlaneSpecialSegments = [
   TermsAndConditionsSegment,
 ];
 
-export const ControlPlaneRouteRoot = "/legacy" as const;
-export const ControlPlaneRoutePath =
-  `${ControlPlaneRouteRoot}/:id?/:section(${DeleteSegment}|${ChangeOwnerSegment})?` as const;
-export const ControlPlaneNewInstancePath =
-  `${ControlPlaneRouteRoot}/${NewInstanceSegment}` as const;
-export const ControlPlaneTermsAndConditionsPath =
-  `${ControlPlaneRouteRoot}/${TermsAndConditionsSegment}` as const;
-export const ControlPlaneDeleteInstancePath =
-  `${ControlPlaneRouteRoot}/:id/delete` as const;
-export const ControlPlaneChangeOwnerPath =
-  `${ControlPlaneRouteRoot}/:id/change-owner` as const;
+export const ControlPlaneRouteRoot = "/kafkas" as const;
 
-export const DedicatedControlPlaneRouteRoot = "/kafkas" as const;
-
-export const DedicatedControlPlaneRoutePath =
-  `${DedicatedControlPlaneRouteRoot}` as const;
-export const DedicatedControlPlaneNewInstanceRoutePath =
-  `${DedicatedControlPlaneRoutePath}/${NewInstanceSegment}` as const;
-export const DedicatedControlPlaneSelectedInstanceRoutePath = (
-  instanceId: string
-) => `${DedicatedControlPlaneRoutePath}/${instanceId}` as const;
-export const DedicatedControlPlaneDeleteInstanceRoutePath = (
-  instanceId: string
-) =>
-  `${DedicatedControlPlaneSelectedInstanceRoutePath(
+export const ControlPlaneRoutePath = `${ControlPlaneRouteRoot}` as const;
+export const ControlPlaneNewInstanceRoutePath =
+  `${ControlPlaneRoutePath}/${NewInstanceSegment}` as const;
+export const ControlPlaneSelectedInstanceRoutePath = (instanceId: string) =>
+  `${ControlPlaneRoutePath}/${instanceId}` as const;
+export const ControlPlaneDeleteInstanceRoutePath = (instanceId: string) =>
+  `${ControlPlaneSelectedInstanceRoutePath(
     instanceId
   )}/${DeleteSegment}` as const;
-export const DedicatedControlPlaneChangeOwnerRoutePath = (instanceId: string) =>
-  `${DedicatedControlPlaneSelectedInstanceRoutePath(
+export const ControlPlaneChangeOwnerRoutePath = (instanceId: string) =>
+  `${ControlPlaneSelectedInstanceRoutePath(
     instanceId
   )}/${ChangeOwnerSegment}` as const;
 
-export const DedicatedControlPlaneRouteMatch =
-  `${DedicatedControlPlaneRoutePath}/:id?/:section(${DeleteSegment}|${ChangeOwnerSegment})?` as const;
-export const DedicatedControlPlaneTermsAndConditionsMatch =
-  `${DedicatedControlPlaneRoutePath}/${TermsAndConditionsSegment}` as const;
-export const DedicatedControlPlaneNewInstanceMatch =
-  `${DedicatedControlPlaneRoutePath}/${NewInstanceSegment}` as const;
-export const DedicatedControlPlaneDeleteInstanceMatch =
-  `${DedicatedControlPlaneRoutePath}/:id/${DeleteSegment}` as const;
-export const DedicatedControlPlaneChangeOwnerMatch =
-  `${DedicatedControlPlaneRoutePath}/:id/${ChangeOwnerSegment}` as const;
+export const ControlPlaneRouteMatch =
+  `${ControlPlaneRoutePath}/:id?/:section(${DeleteSegment}|${ChangeOwnerSegment})?` as const;
+export const ControlPlaneTermsAndConditionsMatch =
+  `${ControlPlaneRoutePath}/${TermsAndConditionsSegment}` as const;
+export const ControlPlaneNewInstanceMatch =
+  `${ControlPlaneRoutePath}/${NewInstanceSegment}` as const;
+export const ControlPlaneDeleteInstanceMatch =
+  `${ControlPlaneRoutePath}/:id/${DeleteSegment}` as const;
+export const ControlPlaneChangeOwnerMatch =
+  `${ControlPlaneRoutePath}/:id/${ChangeOwnerSegment}` as const;
 
-export const DedicatedControlPlaneClustersPath = `/clusters`;
+export const ControlPlaneClustersPath = `/clusters`;
 
 export type ControlPlaneRouteParams = {
   id?: string;

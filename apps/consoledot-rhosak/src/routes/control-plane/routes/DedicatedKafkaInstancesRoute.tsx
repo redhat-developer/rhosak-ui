@@ -1,13 +1,9 @@
-import { Button } from "@patternfly/react-core";
 import { useDedicatedClusters, useKafkas } from "consoledot-api";
 import type { FunctionComponent } from "react";
-import { useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
 import type { ControlPlaneHeaderProps, KafkaInstancesProps } from "ui";
 import { EmptyStateNoDedicatedEntitlement, KafkaInstances } from "ui";
 import { ReadyStatuses } from "ui-models/src/models/kafka";
 import { EmptyStateNoDedicatedInstances } from "ui/src/components/KafkaInstances/components";
-import { useAlerts } from "../../../useAlerts";
 import type { DedicatedControlPlaneNavigationProps } from "../routesConsts";
 import { ConnectedControlPlaneHeader } from "./ConnectedControlPlaneHeader";
 import { useKafkaInstancesTable } from "./useKafkaInstancesTable";
@@ -33,7 +29,6 @@ export const DedicatedKafkaInstancesRoute: FunctionComponent<
   instanceChangeOwnerHref,
   getUrlForInstance,
 }) => {
-  const { addAlert } = useAlerts();
   const {
     selectedInstance,
     page,
@@ -70,48 +65,12 @@ export const DedicatedKafkaInstancesRoute: FunctionComponent<
     direction: sortDirection,
     deployment: "clusters",
   });
-  const { data: standardInstances } = useKafkas({
-    page: 1,
-    perPage: 1,
-    name: [],
-    owner: [],
-    status: [],
-    sort: "createdAt",
-    direction: "desc",
-    deployment: "standard",
-  });
-  const didAlertForLegacyInstances = useRef(false);
 
   const hasReadyClusters = dedicatedClusters.isLoading
     ? false
     : (dedicatedClusters.data?.clusters || []).filter(
         (c) => c.status === "ready"
       ).length > 0;
-
-  useEffect(() => {
-    if (
-      standardInstances &&
-      standardInstances.count > 0 &&
-      didAlertForLegacyInstances.current === false
-    ) {
-      didAlertForLegacyInstances.current = true;
-      addAlert(
-        "info",
-        "You have legacy instances",
-        true,
-        "legacy-instance",
-        <>
-          Instances created before March 15th, 2023 are visible{" "}
-          <Link to={"../legacy"}>here</Link>. Please note that you can't create
-          any more instances of that kind.
-          <br />
-          <Button
-            component={() => <Link to={"../legacy"}>Take me there</Link>}
-          />
-        </>
-      );
-    }
-  }, [addAlert, standardInstances]);
 
   return (
     <>

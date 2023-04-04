@@ -1,8 +1,8 @@
 import { useDedicatedClusters } from "consoledot-api";
 import type { VoidFunctionComponent } from "react";
 import { DedicatedClusters, EmptyStateNoDedicatedEntitlement } from "ui";
-import { useDedicatedGate } from "../../useDedicatedGate";
 import type { DedicatedControlPlaneNavigationProps } from "../routesConsts";
+import { useDedicatedGate } from "../useDedicatedGate";
 import { ConnectedControlPlaneHeader } from "./ConnectedControlPlaneHeader";
 
 export const DedicatedClustersRoute: VoidFunctionComponent<

@@ -18,6 +18,9 @@ export function useDedicatedClustersFetchQuery() {
             api.getEnterpriseOsdClusters(...args),
           fetchClustersMeta,
         });
+        if (!res) {
+          throw new Error("No clusters");
+        }
         res.clusters.forEach((c) =>
           queryClient.setQueryData(dedicatedQueries.cluster({ id: c.id }), c)
         );

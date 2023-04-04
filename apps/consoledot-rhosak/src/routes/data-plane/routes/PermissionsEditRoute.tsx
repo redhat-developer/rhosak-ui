@@ -11,10 +11,7 @@ import { useCallback } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { EditPermissions } from "ui";
 import { useAlerts } from "../../../useAlerts";
-import {
-  ControlPlaneRouteRoot,
-  DedicatedControlPlaneRouteRoot,
-} from "../../control-plane/routesConsts";
+import { ControlPlaneRouteRoot } from "../../control-plane/routesConsts";
 import type {
   DataPlanePermissionsNavigationProps,
   DataPlanePermissionsRouteParams,
@@ -32,7 +29,7 @@ export const PermissionsEditRoute: VoidFunctionComponent<
     DataPlanePermissionsRoutePath(ControlPlaneRouteRoot)
   );
   const dedicatedMatch = useRouteMatch<DataPlanePermissionsRouteParams>(
-    DataPlanePermissionsRoutePath(DedicatedControlPlaneRouteRoot)
+    DataPlanePermissionsRoutePath(ControlPlaneRouteRoot)
   );
   const match = standardMatch || dedicatedMatch;
   if (!match) {

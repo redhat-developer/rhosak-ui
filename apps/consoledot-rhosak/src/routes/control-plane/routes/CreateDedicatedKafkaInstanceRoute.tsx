@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 import { CreateDedicatedKafkaInstance } from "ui";
 import type { CreateDedicatedKafkaInstanceServices } from "ui/src/components/CreateKafkaInstance/machines";
 import type { DedicatedControlPlaneNavigationProps } from "../routesConsts";
-import { DedicatedControlPlaneRoutePath } from "../routesConsts";
+import { ControlPlaneRoutePath } from "../routesConsts";
 import { useCreateDedicatedKafkaCallbacks } from "./useCreateDedicatedKafkaCallbacks";
 import { useSelfTermsReviewGate } from "./useSelfTermsReviewGate";
 
@@ -33,7 +33,7 @@ export const CreateDedicatedKafkaInstanceRoute: FunctionComponent<
     function (instance, onSuccess, onError) {
       const onOnSuccess = () => {
         onSuccess();
-        history.push(DedicatedControlPlaneRoutePath);
+        history.push(ControlPlaneRoutePath);
       };
       void createDedicatedKafkaInstance.mutateAsync({
         instance,

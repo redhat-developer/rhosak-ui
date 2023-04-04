@@ -8,6 +8,9 @@ export async function fetchClustersMeta(
 ): Promise<{
   [id: string]: DedicatedClusterMeta;
 }> {
+  if (clusterIds.length <= 0) {
+    return {};
+  }
   const url = `${basePath}/api/clusters_mgmt/v1/clusters?size=${
     clusterIds.length
   }&search=(${clusterIds.map((id) => `id='${id}'`).join(" or ")})`;

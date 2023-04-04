@@ -5,9 +5,7 @@ import { useClustersMetaFetchQuery } from "../fetchQueries/useClustersMetaFetchQ
 import { dedicatedQueries } from "../queryKeys";
 import { useApi } from "../useApi";
 
-export function useDedicatedClusters(
-  { refetch }: { refetch: boolean } = { refetch: true }
-) {
+export function useDedicatedClusters() {
   const queryClient = useQueryClient();
   const { refetchInterval } = useApiConfiguration();
   const { dedicatedClusters } = useApi();
@@ -23,15 +21,14 @@ export function useDedicatedClusters(
           api.getEnterpriseOsdClusters(...args),
         fetchClustersMeta,
       });
+      if (!res) {
+        throw new Error("No clusters");
+      }
       res.clusters.forEach((c) =>
         queryClient.setQueryData(dedicatedQueries.cluster({ id: c.id }), c)
       );
       return res;
     },
-    refetchInterval: refetch ? refetchInterval : false,
-    refetchOnWindowFocus: !refetch ? false : undefined,
-    refetchOnReconnect: !refetch ? false : undefined,
-    refetchOnMount: !refetch ? false : undefined,
-    retry: false,
+    refetchInterval,
   });
 }

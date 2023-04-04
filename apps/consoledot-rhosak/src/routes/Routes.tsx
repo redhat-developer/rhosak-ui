@@ -1,16 +1,11 @@
 import type { VoidFunctionComponent } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-import {
-  ControlPlaneRoutes,
-  DedicatedControlPlaneRoutes,
-  DrawerProvider,
-} from "./control-plane";
+import { ControlPlaneRoutes, DrawerProvider } from "./control-plane";
 import { DedicatedClustersRoute } from "./control-plane/routes/DedicatedClustersRoute";
 import {
+  ControlPlaneClustersPath,
+  ControlPlaneRoutePath,
   ControlPlaneRouteRoot,
-  DedicatedControlPlaneClustersPath,
-  DedicatedControlPlaneRoutePath,
-  DedicatedControlPlaneRouteRoot,
 } from "./control-plane/routesConsts";
 import { DataPlaneRoutes } from "./data-plane";
 import { DataPlaneRoutePath } from "./data-plane/routesConsts";
@@ -23,12 +18,13 @@ export const Routes: VoidFunctionComponent = () => {
         <OverviewRoute />
       </Route>
       <Route path={"/"} exact>
-        <Redirect to={DedicatedControlPlaneRoutePath} />
+        <Redirect to={ControlPlaneRoutePath} />
       </Route>
       <Route path={ControlPlaneRouteRoot}>
         <DrawerProvider>
           {/* don't move these routes around! the order is important */}
           <ControlPlaneRoutes />
+
           <Route
             path={DataPlaneRoutePath(ControlPlaneRouteRoot)}
             render={({ match }) => (
@@ -41,26 +37,10 @@ export const Routes: VoidFunctionComponent = () => {
           />
         </DrawerProvider>
       </Route>
-      <Route path={DedicatedControlPlaneRouteRoot}>
-        <DrawerProvider>
-          {/* don't move these routes around! the order is important */}
-          <DedicatedControlPlaneRoutes />
-          <Route
-            path={DataPlaneRoutePath(DedicatedControlPlaneRoutePath)}
-            render={({ match }) => (
-              <DataPlaneRoutes
-                root={DataPlaneRoutePath(DedicatedControlPlaneRoutePath)}
-                instancesHref={DedicatedControlPlaneRouteRoot}
-                instanceId={match.params.id}
-              />
-            )}
-          />
-        </DrawerProvider>
-      </Route>
-      <Route path={DedicatedControlPlaneClustersPath}>
+      <Route path={ControlPlaneClustersPath}>
         <DedicatedClustersRoute
-          instancesHref={DedicatedControlPlaneRoutePath}
-          clustersHref={DedicatedControlPlaneClustersPath}
+          instancesHref={ControlPlaneRoutePath}
+          clustersHref={ControlPlaneClustersPath}
         />
       </Route>
     </Switch>

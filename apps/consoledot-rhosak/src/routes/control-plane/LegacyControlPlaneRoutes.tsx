@@ -4,60 +4,54 @@ import { Route } from "react-router-dom";
 import { RedirectOnGateError } from "../RedirectOnGateError";
 import {
   ChangeOwnerRoute,
-  CreateDedicatedKafkaInstanceRoute,
+  CreateKafkaInstanceRoute,
   DeleteKafkaInstanceRoute,
+  KafkaInstancesRoute,
   TermsAndConditionsRoute,
 } from "./routes";
-import { DedicatedKafkaInstancesRoute } from "./routes/DedicatedKafkaInstancesRoute";
 import {
   ControlPlaneChangeOwnerMatch,
   ControlPlaneChangeOwnerRoutePath,
-  ControlPlaneClustersPath,
   ControlPlaneDeleteInstanceMatch,
   ControlPlaneDeleteInstanceRoutePath,
   ControlPlaneNewInstanceMatch,
   ControlPlaneNewInstanceRoutePath,
-  ControlPlaneRouteMatch,
   ControlPlaneRoutePath,
+  ControlPlaneRouteRoot,
   ControlPlaneSelectedInstanceRoutePath,
   ControlPlaneTermsAndConditionsMatch,
 } from "./routesConsts";
 import { useDedicatedGate } from "./useDedicatedGate";
 
-export const DedicatedControlPlaneRoutes: VoidFunctionComponent = () => {
+export const LegacyControlPlaneRoutes: VoidFunctionComponent = () => {
   const gate = useDedicatedGate();
 
-  return gate !== "standard-only" ? (
-    <Route path={ControlPlaneRouteMatch} exact={true}>
+  return gate === "standard-only" ? (
+    <Route path={ControlPlaneRoutePath} exact>
       <Route path={ControlPlaneTermsAndConditionsMatch}>
         <TermsAndConditionsRoute
-          createHref={ControlPlaneNewInstanceRoutePath}
-          cancelHref={ControlPlaneRoutePath}
+          createHref={ControlPlaneNewInstanceMatch}
+          cancelHref={ControlPlaneRouteRoot}
         />
       </Route>
-      <Route path={ControlPlaneNewInstanceMatch}>
-        <RedirectOnGateError redirectUrl={ControlPlaneTermsAndConditionsMatch}>
-          <Suspense fallback={null}>
-            <CreateDedicatedKafkaInstanceRoute
-              instancesHref={ControlPlaneRoutePath}
-              clustersHref={ControlPlaneClustersPath}
-            />
-          </Suspense>
-        </RedirectOnGateError>
-      </Route>
-      <RedirectOnGateError redirectUrl={ControlPlaneRoutePath}>
+      <RedirectOnGateError redirectUrl={ControlPlaneTermsAndConditionsMatch}>
+        <Suspense fallback={null}>
+          <Route path={ControlPlaneNewInstanceMatch}>
+            <CreateKafkaInstanceRoute instancesHref={ControlPlaneRouteRoot} />
+          </Route>
+        </Suspense>
+      </RedirectOnGateError>
+      <RedirectOnGateError redirectUrl={ControlPlaneRouteRoot}>
         <Route path={ControlPlaneDeleteInstanceMatch}>
-          <DeleteKafkaInstanceRoute instancesHref={ControlPlaneRoutePath} />
+          <DeleteKafkaInstanceRoute instancesHref={ControlPlaneRouteRoot} />
         </Route>
         <Route path={ControlPlaneChangeOwnerMatch}>
-          <ChangeOwnerRoute instancesHref={ControlPlaneRoutePath} />
+          <ChangeOwnerRoute instancesHref={ControlPlaneRouteRoot} />
         </Route>
       </RedirectOnGateError>
-
-      <DedicatedKafkaInstancesRoute
+      <KafkaInstancesRoute
         activeSection={"instances"}
         instancesHref={ControlPlaneRoutePath}
-        clustersHref={ControlPlaneClustersPath}
         instanceSelectedHref={ControlPlaneSelectedInstanceRoutePath}
         instanceCreationHref={ControlPlaneNewInstanceRoutePath}
         instanceDeletionHref={ControlPlaneDeleteInstanceRoutePath}
