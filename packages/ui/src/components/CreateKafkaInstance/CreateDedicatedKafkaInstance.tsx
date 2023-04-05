@@ -19,6 +19,7 @@ import {
   CreateDedicatedKafkaInstanceProvider,
   useCreateDedicatedKafkaInstance,
 } from "./machines";
+import { TrialInstanceForm } from "./TrialInstanceForm";
 
 export type CreateDedicatedKafkaInstanceProps =
   ConnectedCreateDedicatedKafkaInstanceProps &
@@ -27,7 +28,9 @@ export const CreateDedicatedKafkaInstance: FunctionComponent<
   CreateDedicatedKafkaInstanceProps
 > = ({
   checkDedicatedQuota,
+  checkDeveloperAvailability,
   getDedicatedSizes,
+  getTrialSizes,
   fetchClusters,
   onCreate,
   ...props
@@ -35,7 +38,9 @@ export const CreateDedicatedKafkaInstance: FunctionComponent<
   props.isModalOpen ? (
     <CreateDedicatedKafkaInstanceProvider
       checkDedicatedQuota={checkDedicatedQuota}
+      checkDeveloperAvailability={checkDeveloperAvailability}
       getDedicatedSizes={getDedicatedSizes}
+      getTrialSizes={getTrialSizes}
       fetchClusters={fetchClusters}
       onCreate={onCreate}
     >
@@ -86,7 +91,7 @@ export const ConnectedCreateDedicatedKafkaInstance: VoidFunctionComponent<
 }) => {
   const { t } = useTranslation("create-kafka-instance");
 
-  const { isLoading, isAvailable, isSaving } =
+  const { isLoading, isDedicated, isDeveloper, isSaving } =
     useCreateDedicatedKafkaInstance();
 
   const FORM_ID = "create_kafka_instance_form";
@@ -153,7 +158,7 @@ export const ConnectedCreateDedicatedKafkaInstance: VoidFunctionComponent<
                 />
               </>
             );
-          case isAvailable:
+          case isDedicated:
             return (
               <DedicatedInstanceForm
                 formId={FORM_ID}
@@ -162,6 +167,17 @@ export const ConnectedCreateDedicatedKafkaInstance: VoidFunctionComponent<
                 onLearnMoreAboutSizes={onLearnMoreAboutSizes}
                 onClickQuickStart={onClickQuickStart}
                 subscriptionOptionsHref={subscriptionOptionsHref}
+              />
+            );
+          case isDeveloper:
+            return (
+              <TrialInstanceForm
+                formId={FORM_ID}
+                onClickContactUs={onClickContactUs}
+                onLearnHowToAddStreamingUnits={onLearnHowToAddStreamingUnits}
+                onLearnMoreAboutSizes={onLearnMoreAboutSizes}
+                onClickQuickStart={onClickQuickStart}
+                onClickKafkaOverview={onClickKafkaOverview}
               />
             );
           default:

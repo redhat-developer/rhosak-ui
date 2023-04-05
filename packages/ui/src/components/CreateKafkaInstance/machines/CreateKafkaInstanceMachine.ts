@@ -69,11 +69,6 @@ const CreateKafkaInstanceMachine =
               type: "no standard quota available";
               hasTrialQuota: boolean;
             }
-          | {
-              type: "trial available";
-              capabilities: TrialPlanInitializationData;
-            }
-          | { type: "trial used" }
           | { type: "developer available" }
           | { type: "developer used" }
           | { type: "developer unavailable" }
@@ -121,7 +116,7 @@ const CreateKafkaInstanceMachine =
                     onError: [
                       {
                         actions: "setStandardUnavailable",
-                        target: "standard",
+                        target: "#createKafkaInstance.system unavailable",
                       },
                     ],
                   },

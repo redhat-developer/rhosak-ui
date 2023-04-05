@@ -8,7 +8,8 @@ export type UseCreateDedicatedKafkaInstanceSelectorReturn = {
   dedicatedPlanMachine: ActorRefFrom<typeof DedicatedPlanMachine> | undefined;
   isLoading: boolean;
   isSystemUnavailable: boolean;
-  isAvailable: boolean;
+  isDedicated: boolean;
+  isDeveloper: boolean;
   isSaving: boolean;
   isSaved: boolean;
 };
@@ -27,7 +28,8 @@ export function useCreateDedicatedKafkaInstance() {
 
       const isLoading = state.hasTag("loading");
       const isSystemUnavailable = state.hasTag("systemUnavailable");
-      const isAvailable = state.hasTag("dedicatedPlan");
+      const isDedicated = state.hasTag("dedicatedPlan");
+      const isDeveloper = state.hasTag("developerPlan");
       const isSaving = state.hasTag("saving");
       const isSaved = state.done === true;
 
@@ -35,7 +37,8 @@ export function useCreateDedicatedKafkaInstance() {
         dedicatedPlanMachine,
         isLoading,
         isSystemUnavailable,
-        isAvailable,
+        isDedicated,
+        isDeveloper,
         isSaving,
         isSaved,
       };

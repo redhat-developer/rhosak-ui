@@ -20,6 +20,7 @@ export type CreateDedicatedKafkaInstanceError =
   | "insufficient-quota"
   | "name-taken"
   | "cluster-unavailable"
+  | "developer-unavailable"
   | "unknown";
 
 export type StandardPlanAvailability =

@@ -1,27 +1,38 @@
 import { DedicatedCluster } from "ui-models/src/models/dedicated-cluster";
-import { assign, createMachine, EventFrom, forwardTo } from "xstate";
+import { CloudProvider, CloudRegion } from "ui-models/src/models/kafka";
+import { assign, createMachine, EventFrom, forwardTo, send } from "xstate";
 import type {
   CreateDedicatedKafkaFormData,
   CreateDedicatedKafkaInstanceError,
   DedicatedPlanInitializationData,
   DedicatedSizes,
 } from "../types";
-import { DedicatedClustersInfo } from "../types";
+import {
+  DedicatedClustersInfo,
+  TrialPlanInitializationData,
+  TrialSizes,
+} from "../types";
 import {
   DedicatedPlanMachine,
   DedicatedPlanMachineContext,
 } from "./DedicatedPlanMachine";
+import { TrialPlanMachine, TrialPlanMachineContext } from "./TrialPlanMachine";
 
-type Quota = Pick<
-  DedicatedPlanInitializationData,
-  "plan" | "remainingDedicatedQuota" | "instanceAvailability"
->;
+type Quota =
+  | Pick<
+      DedicatedPlanInitializationData,
+      "plan" | "remainingDedicatedQuota" | "instanceAvailability"
+    >
+  | Pick<TrialPlanInitializationData, "plan" | "instanceAvailability">;
 
 export type CreateDedicatedKafkaInstanceMachineContext = {
   quota: Quota | undefined;
   clusters: DedicatedClustersInfo | undefined;
   defaultCluster: DedicatedCluster | undefined;
-  capabilities: DedicatedPlanInitializationData | undefined;
+  capabilities:
+    | DedicatedPlanInitializationData
+    | TrialPlanInitializationData
+    | undefined;
 };
 
 const CreateDedicatedKafkaInstanceMachine =
@@ -52,7 +63,11 @@ const CreateDedicatedKafkaInstanceMachine =
             }
           | {
               type: "no dedicated quota available";
+              hasTrialQuota: boolean;
             }
+          | { type: "developer available" }
+          | { type: "developer used" }
+          | { type: "developer unavailable" }
           | {
               type: "clusters available";
               clusters: DedicatedClustersInfo;
@@ -71,6 +86,9 @@ const CreateDedicatedKafkaInstanceMachine =
           };
           dedicatedPlan: {
             data: DedicatedPlanMachineContext;
+          };
+          trialPlan: {
+            data: TrialPlanMachineContext;
           };
         },
       },
@@ -107,8 +125,7 @@ const CreateDedicatedKafkaInstanceMachine =
                     },
                     "no dedicated quota available": {
                       actions: "setDedicatedUnavailable",
-                      target:
-                        "#createDedicatedKafkaInstance.system unavailable",
+                      target: "checking developer availability",
                     },
                   },
                 },
@@ -117,6 +134,39 @@ const CreateDedicatedKafkaInstanceMachine =
                   always: {
                     target:
                       "#createDedicatedKafkaInstance.loading.fetching clusters",
+                  },
+                },
+                developer: {
+                  type: "final",
+                  always: {
+                    target:
+                      "#createDedicatedKafkaInstance.loading.fetching providers",
+                  },
+                },
+                "checking developer availability": {
+                  invoke: {
+                    src: "checkDeveloperAvailability",
+                    onError: [
+                      {
+                        actions: "setDeveloperUnavailable",
+                        target:
+                          "#createDedicatedKafkaInstance.system unavailable",
+                      },
+                    ],
+                  },
+                  on: {
+                    "developer used": {
+                      actions: "setDeveloperUsed",
+                      target: "developer",
+                    },
+                    "developer available": {
+                      actions: "setDeveloperAvailable",
+                      target: "developer",
+                    },
+                    "developer unavailable": {
+                      actions: "setDeveloperUnavailable",
+                      target: "developer",
+                    },
                   },
                 },
               },
@@ -142,6 +192,10 @@ const CreateDedicatedKafkaInstanceMachine =
                 },
               },
             },
+            "fetching providers": {
+              entry: "setAwsTrial",
+              always: "ready",
+            },
             ready: {
               type: "final",
               entry: "setCapabilities",
@@ -151,6 +205,10 @@ const CreateDedicatedKafkaInstanceMachine =
             {
               cond: "dedicated plan",
               target: "dedicated plan",
+            },
+            {
+              cond: "developer plan",
+              target: "developer plan",
             },
             {
               target: "system unavailable",
@@ -193,6 +251,38 @@ const CreateDedicatedKafkaInstanceMachine =
             },
           },
         },
+        "developer plan": {
+          invoke: {
+            src: "trialPlan",
+            id: "trialPlanService",
+          },
+          tags: "developerPlan",
+          initial: "idle",
+          states: {
+            idle: {
+              on: {
+                save: {
+                  target: "saving",
+                },
+              },
+            },
+            saving: {
+              invoke: {
+                src: "createInstance",
+              },
+              tags: "saving",
+              on: {
+                createSuccess: {
+                  target: "#createDedicatedKafkaInstance.complete",
+                },
+                createError: {
+                  actions: "notifyCreateErrorToTrialPlan",
+                  target: "idle",
+                },
+              },
+            },
+          },
+        },
         complete: {
           type: "final",
         },
@@ -200,6 +290,25 @@ const CreateDedicatedKafkaInstanceMachine =
     },
     {
       actions: {
+        /* eslint-disable @typescript-eslint/no-unused-vars */
+        setDeveloperAvailable: assign((_) => ({
+          quota: {
+            plan: "developer" as const,
+            instanceAvailability: "available" as const,
+          },
+        })),
+        setDeveloperUnavailable: assign((_) => ({
+          quota: {
+            plan: "developer" as const,
+            instanceAvailability: "unavailable" as const,
+          },
+        })),
+        setDeveloperUsed: assign((_) => ({
+          quota: {
+            plan: "developer" as const,
+            instanceAvailability: "used" as const,
+          },
+        })),
         setDedicatedAvailable: assign((_, event) => ({
           quota: {
             plan: "dedicated" as const,
@@ -207,7 +316,7 @@ const CreateDedicatedKafkaInstanceMachine =
             remainingDedicatedQuota: event.quota.remainingDedicatedQuota,
           },
         })),
-        setDedicatedOutOfQuota: assign((_, event) => ({
+        setDedicatedOutOfQuota: assign((_) => ({
           quota: {
             plan: "dedicated" as const,
             instanceAvailability: "out-of-quota" as const,
@@ -236,24 +345,71 @@ const CreateDedicatedKafkaInstanceMachine =
             quota,
           };
         }),
+        setAwsTrial: assign((_) => {
+          const quota: Pick<
+            TrialPlanInitializationData,
+            "plan" | "instanceAvailability"
+          > = {
+            plan: "developer",
+            instanceAvailability: "available",
+          };
+          return { quota };
+        }),
         setCapabilities: assign((context) => {
-          const { clusters, defaultCluster, quota } = context;
-          if (!clusters || !quota || quota.plan !== "dedicated") {
+          const { quota } = context;
+
+          if (!quota) {
             throw new Error("unexpected condition, invalid quota");
           }
-          const capabilities: DedicatedPlanInitializationData = {
-            plan: "dedicated",
-            availableClusters: clusters,
-            defaultCluster,
-            instanceAvailability: quota.instanceAvailability,
-            remainingDedicatedQuota: quota.remainingDedicatedQuota,
-          };
-          return { capabilities };
+
+          if (quota.plan === "dedicated") {
+            const { clusters, defaultCluster } = context;
+
+            if (!clusters) {
+              throw new Error("unexpected condition, no clusters");
+            }
+            const capabilities: DedicatedPlanInitializationData = {
+              plan: "dedicated",
+              availableClusters: clusters,
+              defaultCluster,
+              instanceAvailability: quota.instanceAvailability,
+              remainingDedicatedQuota: quota.remainingDedicatedQuota,
+            };
+            return { capabilities };
+          }
+
+          if (quota.plan === "developer") {
+            const capabilities: TrialPlanInitializationData = {
+              ...quota,
+              availableProviders: [
+                {
+                  id: "aws",
+                  displayName: "",
+                  regions: [
+                    { id: "us-east-1", displayName: "", isDisabled: false },
+                  ],
+                },
+              ],
+              defaultProvider: "aws",
+            };
+            return {
+              capabilities,
+            };
+          }
+
+          throw new Error("unexpected condition, unknown quota");
         }),
         notifyCreateErrorToDedicatedPlan: forwardTo("dedicatedPlanService"),
+        notifyCreateErrorToTrialPlan: send(
+          (_, event) => {
+            return { type: "createError", error: event.error };
+          },
+          { to: "trialPlanService" }
+        ),
       },
       guards: {
         "dedicated plan": (context) => context.quota?.plan === "dedicated",
+        "developer plan": (context) => context.quota?.plan === "developer",
       },
     }
   );
@@ -276,14 +432,20 @@ export type CreateDedicatedKafkaInstanceServices = {
       p: EventOptions<"no dedicated quota available">
     ) => void;
   }) => void;
-  fetchClusters: (
-    plan: "dedicated",
-    events: {
-      onAvailable: (p: EventOptions<"clusters available">) => void;
-      onUnavailable: () => void;
-    }
-  ) => void;
+  checkDeveloperAvailability: (events: {
+    onUsed: () => void;
+    onAvailable: () => void;
+    onUnavailable: () => void;
+  }) => void;
+  fetchClusters: (events: {
+    onAvailable: (p: EventOptions<"clusters available">) => void;
+    onUnavailable: () => void;
+  }) => void;
   getDedicatedSizes: (cluster: DedicatedCluster) => Promise<DedicatedSizes>;
+  getTrialSizes: (
+    provider: CloudProvider,
+    region: CloudRegion
+  ) => Promise<TrialSizes>;
   onCreate: (
     data: CreateDedicatedKafkaFormData,
     onSuccess: () => void,
@@ -293,8 +455,11 @@ export type CreateDedicatedKafkaInstanceServices = {
 
 export function makeCreateDedicatedKafkaInstanceMachine({
   checkDedicatedQuota: checkDedicatedQuotaCb,
+  checkDeveloperAvailability: checkDeveloperAvailabilityCb,
   fetchClusters: fetchClustersCb,
   getDedicatedSizes: getDedicatedSizesCb,
+  getTrialSizes: getTrialSizesCb,
+
   onCreate,
 }: CreateDedicatedKafkaInstanceServices) {
   return CreateDedicatedKafkaInstanceMachine.withConfig({
@@ -302,8 +467,8 @@ export function makeCreateDedicatedKafkaInstanceMachine({
       checkDedicatedQuota: () => {
         return (send) =>
           checkDedicatedQuotaCb({
-            onNoQuotaAvailable: () => {
-              send({ type: "no dedicated quota available" });
+            onNoQuotaAvailable: ({ hasTrialQuota }) => {
+              send({ type: "no dedicated quota available", hasTrialQuota });
             },
             onOutOfQuota: () => {
               send({ type: "out of dedicated quota" });
@@ -313,11 +478,18 @@ export function makeCreateDedicatedKafkaInstanceMachine({
             },
           });
       },
-      fetchClusters: (context) => {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const instanceType = context.quota!.plan;
+      checkDeveloperAvailability: () => {
         return (send) => {
-          fetchClustersCb(instanceType, {
+          checkDeveloperAvailabilityCb({
+            onAvailable: () => send("developer available"),
+            onUsed: () => send("developer used"),
+            onUnavailable: () => send("developer unavailable"),
+          });
+        };
+      },
+      fetchClusters: () => {
+        return (send) => {
+          fetchClustersCb({
             onAvailable: ({ clusters, defaultCluster }) =>
               send({
                 type: "clusters available",
@@ -364,6 +536,21 @@ export function makeCreateDedicatedKafkaInstanceMachine({
             getSizes: (context) => {
               const form = context.form as Required<typeof context.form>;
               return getDedicatedSizesCb(form.cluster);
+            },
+          },
+        });
+      },
+      trialPlan: (context) => {
+        return TrialPlanMachine.withContext({
+          capabilities: context.capabilities as TrialPlanInitializationData,
+          sizes: undefined,
+          form: {},
+          creationError: undefined,
+        }).withConfig({
+          services: {
+            getSizes: (context) => {
+              const form = context.form as Required<typeof context.form>;
+              return getTrialSizesCb(form.provider, form.region);
             },
           },
         });

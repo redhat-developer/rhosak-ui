@@ -2,6 +2,7 @@ import type { AppServicesApi } from "@rhoas/account-management-sdk";
 import type { MarketPlaceSubscriptions } from "ui-models/src/models/kafka";
 import {
   dedicatedId,
+  developerId,
   isStandardQuota,
   resourceName,
 } from "../utilsAndConstants";
@@ -34,12 +35,21 @@ export const fetchDedicatedQuota = async (
 
   const dedicatedQuota = dedicatedQuotas?.find(isStandardQuota);
   const hasDedicatedQuota = dedicatedQuota !== undefined;
+  const hasTrialQuota =
+    (!hasDedicatedQuota &&
+      quotaResponse.data.items?.some((q) =>
+        q.related_resources?.find(
+          (r) => r.resource_name === resourceName && r.product === developerId
+        )
+      )) ||
+    false;
 
   const remainingDedicatedQuota = dedicatedQuota
     ? dedicatedQuota.allowed - dedicatedQuota.consumed
     : undefined;
 
   return {
+    hasTrialQuota,
     hasDedicatedQuota,
     remainingDedicatedQuota,
   };

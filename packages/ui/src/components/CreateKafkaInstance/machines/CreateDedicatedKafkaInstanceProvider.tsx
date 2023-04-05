@@ -16,17 +16,21 @@ export const CreateDedicatedKafkaInstanceProvider: FunctionComponent<
   CreateDedicatedKafkaInstanceServices
 > = ({
   onCreate,
+  checkDeveloperAvailability,
   checkDedicatedQuota,
   fetchClusters,
   getDedicatedSizes,
+  getTrialSizes,
   children,
 }) => {
   const service = useInterpret(
     () =>
       makeCreateDedicatedKafkaInstanceMachine({
         checkDedicatedQuota,
+        checkDeveloperAvailability,
         fetchClusters,
         getDedicatedSizes,
+        getTrialSizes,
         onCreate,
       }),
     { devTools: true }
