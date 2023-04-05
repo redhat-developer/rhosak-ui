@@ -7,13 +7,14 @@ export function useDedicatedGate() {
 
   if (
     dedicated.isSuccess &&
+    dedicated.data.isEntitled !== false &&
     quota.data &&
     quota.data.hasStandardQuota === false
   ) {
     return "dedicated-only" as const;
   }
 
-  if (dedicated.isError) {
+  if (dedicated.isSuccess && dedicated.data.isEntitled === false) {
     return "standard-only" as const;
   }
 

@@ -1,13 +1,12 @@
 import { useKafkas } from "consoledot-api";
 import type { FunctionComponent } from "react";
-import type { ControlPlaneHeaderProps, KafkaInstancesProps } from "ui";
+import type { KafkaInstancesProps } from "ui";
 import { KafkaInstances, LegacyControlPlaneHeader } from "ui";
 import { ReadyStatuses } from "ui-models/src/models/kafka";
 import { useUserControlGate } from "../../../useUserControlGate";
 import { useKafkaInstancesTable } from "./useKafkaInstancesTable";
 
 export type KafkaInstancesRoute = {
-  activeSection: ControlPlaneHeaderProps["activeSection"];
   instancesHref: string;
   instanceSelectedHref: (id: string) => string;
   instanceCreationHref: string;
@@ -16,7 +15,6 @@ export type KafkaInstancesRoute = {
 } & Pick<KafkaInstancesProps, "getUrlForInstance">;
 
 export const KafkaInstancesRoute: FunctionComponent<KafkaInstancesRoute> = ({
-  activeSection,
   instancesHref,
   instanceDeletionHref,
   instanceSelectedHref,
@@ -58,7 +56,7 @@ export const KafkaInstancesRoute: FunctionComponent<KafkaInstancesRoute> = ({
     status: statusesChips.chips,
     sort: sort || "createdAt",
     direction: sortDirection,
-    deployment: "standard",
+    instanceType: "legacy",
   });
 
   return (

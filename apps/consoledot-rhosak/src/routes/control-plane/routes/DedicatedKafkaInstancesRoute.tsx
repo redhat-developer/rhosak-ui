@@ -63,7 +63,7 @@ export const DedicatedKafkaInstancesRoute: FunctionComponent<
     status: statusesChips.chips,
     sort: sort || "createdAt",
     direction: sortDirection,
-    deployment: "clusters",
+    instanceType: "dedicated",
   });
 
   const hasReadyClusters = dedicatedClusters.isLoading

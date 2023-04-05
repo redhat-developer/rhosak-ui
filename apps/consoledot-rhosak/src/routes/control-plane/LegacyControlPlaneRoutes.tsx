@@ -21,12 +21,9 @@ import {
   ControlPlaneSelectedInstanceRoutePath,
   ControlPlaneTermsAndConditionsMatch,
 } from "./routesConsts";
-import { useDedicatedGate } from "./useDedicatedGate";
 
 export const LegacyControlPlaneRoutes: VoidFunctionComponent = () => {
-  const gate = useDedicatedGate();
-
-  return gate === "standard-only" ? (
+  return (
     <Route path={ControlPlaneRoutePath} exact>
       <Route path={ControlPlaneTermsAndConditionsMatch}>
         <TermsAndConditionsRoute
@@ -50,7 +47,6 @@ export const LegacyControlPlaneRoutes: VoidFunctionComponent = () => {
         </Route>
       </RedirectOnGateError>
       <KafkaInstancesRoute
-        activeSection={"instances"}
         instancesHref={ControlPlaneRoutePath}
         instanceSelectedHref={ControlPlaneSelectedInstanceRoutePath}
         instanceCreationHref={ControlPlaneNewInstanceRoutePath}
@@ -61,5 +57,5 @@ export const LegacyControlPlaneRoutes: VoidFunctionComponent = () => {
         }
       />
     </Route>
-  ) : null;
+  );
 };

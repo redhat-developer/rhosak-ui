@@ -24,8 +24,8 @@ export type FetchKafkasParams = {
   status: SimplifiedStatus[];
   sort: KafkaInstancesSortableColumn;
   direction: "asc" | "desc";
-  clusterIds: string[] | undefined;
-  deployment: "standard" | "clusters";
+  instanceType: "developer" | "legacy" | "dedicated";
+  clusterIds?: string[];
 };
 
 export async function fetchKafkas(params: FetchKafkasParams): Promise<{
@@ -40,19 +40,21 @@ export async function fetchKafkas(params: FetchKafkasParams): Promise<{
     direction,
     page,
     perPage,
+    instanceType,
     clusterIds,
-    deployment,
     dataMapper,
     getKafkas,
   } = params;
-  const search = filtersToSearch(name, owner, status, clusterIds, deployment);
 
   if (
-    deployment === "clusters" &&
+    instanceType === "dedicated" &&
     (clusterIds === undefined || clusterIds?.length === 0)
   ) {
     return Promise.resolve({ instances: [], count: 0 });
   }
+
+  const search = filtersToSearch(name, owner, status, instanceType, clusterIds);
+
   const res = await getKafkas(
     page.toString(10),
     perPage.toString(10),
@@ -72,8 +74,8 @@ export function filtersToSearch(
   name: string[],
   owner: string[],
   status: SimplifiedStatus[],
-  clusters: string[] | undefined,
-  deployment: "standard" | "clusters"
+  deployment: "developer" | "legacy" | "dedicated",
+  clusters: string[] | undefined
 ): string {
   const querystring = [
     valuesToQuery("name", name, "%", "or"),
@@ -84,13 +86,11 @@ export function filtersToSearch(
       "=",
       "or"
     ),
-    clusters
-      ? valuesToQuery(
-          "cluster_id",
-          clusters,
-          deployment === "standard" ? "<>" : "=",
-          deployment === "standard" ? "and" : "or"
-        )
+    deployment === "dedicated" && clusters
+      ? valuesToQuery("cluster_id", clusters, "=", "or")
+      : null,
+    deployment === "developer"
+      ? valuesToQuery("instance_type", ["developer"], "=", "or")
       : null,
   ]
     .filter(Boolean)

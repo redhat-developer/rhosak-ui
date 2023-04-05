@@ -22,12 +22,9 @@ import {
   ControlPlaneSelectedInstanceRoutePath,
   ControlPlaneTermsAndConditionsMatch,
 } from "./routesConsts";
-import { useDedicatedGate } from "./useDedicatedGate";
 
 export const DedicatedControlPlaneRoutes: VoidFunctionComponent = () => {
-  const gate = useDedicatedGate();
-
-  return gate !== "standard-only" ? (
+  return (
     <Route path={ControlPlaneRouteMatch} exact={true}>
       <Route path={ControlPlaneTermsAndConditionsMatch}>
         <TermsAndConditionsRoute
@@ -67,5 +64,5 @@ export const DedicatedControlPlaneRoutes: VoidFunctionComponent = () => {
         }
       />
     </Route>
-  ) : null;
+  );
 };
