@@ -124,6 +124,9 @@ function apiStatusToUIStatus(status: string): Status {
     failed: "degraded",
     deprovision: "deprovision",
     deleting: "deleting",
+    suspending: "suspending",
+    suspended: "suspended",
+    resuming: "resuming",
   };
   return mapping[status] || "degraded";
 }
