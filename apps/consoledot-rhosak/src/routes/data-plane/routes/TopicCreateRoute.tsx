@@ -9,7 +9,7 @@ import { useCallback, useMemo } from "react";
 import { useHistory } from "react-router-dom";
 import type { CreateTopicPageProps, TopicForm } from "ui";
 import { CreateTopic } from "ui";
-import { useAlerts } from "../../../useAlerts";
+import { useAlerts } from "../../../hooks";
 import type { DataPlaneNavigationProps } from "../routesConsts";
 import { useDataPlaneGate } from "../useDataPlaneGate";
 

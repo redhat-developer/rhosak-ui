@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import type { OffsetValue } from "ui";
 import { ConsumerGroupResetOffset } from "ui";
-import { useAlerts } from "../../../useAlerts";
+import { useAlerts } from "../../../hooks";
 import type { DataPlaneTopicConsumerGroupNavigationsProps } from "../routesConsts";
 import { useTopicConsumerGroupGate } from "../useTopicConsumerGroupGate";
 

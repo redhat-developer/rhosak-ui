@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import type { Account } from "ui";
 import { PrincipalType, SelectAccount } from "ui";
-import { useUserControlGate } from "../../../useUserControlGate";
+import { useUserControlGate } from "../../../hooks";
 import type { DataPlanePermissionsNavigationProps } from "../routesConsts";
 import { useDataPlaneGate } from "../useDataPlaneGate";
 

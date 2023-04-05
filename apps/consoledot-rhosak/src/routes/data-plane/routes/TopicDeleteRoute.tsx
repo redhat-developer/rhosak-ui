@@ -4,7 +4,7 @@ import type { VoidFunctionComponent } from "react";
 import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { DeleteKafkaTopic } from "ui/src/components/DeleteKafkaTopic";
-import { useAlerts } from "../../../useAlerts";
+import { useAlerts } from "../../../hooks";
 import type { DataPlaneTopicNavigationProps } from "../routesConsts";
 import { useTopicGate } from "../useTopicGate";
 

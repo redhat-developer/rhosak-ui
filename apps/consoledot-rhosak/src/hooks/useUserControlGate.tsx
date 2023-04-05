@@ -1,5 +1,5 @@
 import { useChrome } from "@redhat-cloud-services/frontend-components/useChrome";
-import { useUser } from "consoledot-api/src";
+import { useUser } from "consoledot-api";
 import { useCallback } from "react";
 
 export function useUserControlGate() {

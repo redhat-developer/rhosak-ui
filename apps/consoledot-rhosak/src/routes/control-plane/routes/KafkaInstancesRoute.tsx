@@ -3,7 +3,7 @@ import type { FunctionComponent } from "react";
 import type { KafkaInstancesProps } from "ui";
 import { KafkaInstances, LegacyControlPlaneHeader } from "ui";
 import { ReadyStatuses } from "ui-models/src/models/kafka";
-import { useUserControlGate } from "../../../useUserControlGate";
+import { useUserControlGate } from "../../../hooks";
 import { useKafkaInstancesTable } from "./useKafkaInstancesTable";
 
 export type KafkaInstancesRoute = {

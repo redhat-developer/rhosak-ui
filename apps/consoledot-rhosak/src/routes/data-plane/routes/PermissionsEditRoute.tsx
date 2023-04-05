@@ -10,7 +10,7 @@ import type { VoidFunctionComponent } from "react";
 import { useCallback } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { EditPermissions } from "ui";
-import { useAlerts } from "../../../useAlerts";
+import { useAlerts } from "../../../hooks";
 import { ControlPlaneRouteRoot } from "../../control-plane/routesConsts";
 import type {
   DataPlanePermissionsNavigationProps,

@@ -5,6 +5,7 @@ import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import type { CreateKafkaInstanceServices } from "ui";
 import { CreateKafkaInstance } from "ui";
+import { useConsoledotLink } from "../../../hooks";
 import type { ControlPlaneNavigationProps } from "../routesConsts";
 import { ControlPlaneRouteRoot } from "../routesConsts";
 import { useCreateKafkaCallbacks } from "./useCreateKafkaCallbacks";
@@ -13,6 +14,7 @@ import { useSelfTermsReviewGate } from "./useSelfTermsReviewGate";
 export const CreateKafkaInstanceRoute: FunctionComponent<
   ControlPlaneNavigationProps
 > = ({ instancesHref }) => {
+  const makeConsoledotLink = useConsoledotLink();
   const { analytics, quickStarts } = useChrome();
   const history = useHistory();
   const callbacks = useCreateKafkaCallbacks();
@@ -65,7 +67,9 @@ export const CreateKafkaInstanceRoute: FunctionComponent<
       onCreate={onCreate}
       onLearnHowToAddStreamingUnits={onClickKafkaOverview}
       onLearnMoreAboutSizes={onClickKafkaOverview}
-      subscriptionOptionsHref={document.location.href + "/../overview"}
+      subscriptionOptionsHref={makeConsoledotLink(
+        "/application-services/overview"
+      )}
       appendTo={() =>
         (document.getElementById("chrome-app-render-root") as HTMLElement) ||
         document.body

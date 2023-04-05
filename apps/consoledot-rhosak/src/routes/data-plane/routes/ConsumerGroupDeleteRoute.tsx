@@ -3,7 +3,7 @@ import type { VoidFunctionComponent } from "react";
 import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { DeleteConsumerGroup } from "ui";
-import { useAlerts } from "../../../useAlerts";
+import { useAlerts } from "../../../hooks";
 import type { DataPlaneConsumerGroupNavigationsProps } from "../routesConsts";
 import { useConsumerGroupGate } from "../useConsumerGroupGate";
 

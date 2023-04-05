@@ -12,6 +12,7 @@ import {
 import { useRouteMatch } from "react-router-dom";
 import type { KafkaInstanceDrawerTab } from "ui";
 import { KafkaInstanceDrawer } from "ui";
+import { useConsoledotLink } from "../../hooks";
 import type { ControlPlaneRouteParams } from "./routesConsts";
 import {
   ControlPlaneRouteMatch,
@@ -30,6 +31,7 @@ type DrawerContextProps = {
 const DrawerContext = createContext<DrawerContextProps>(null!);
 
 export const DrawerProvider: FunctionComponent = ({ children }) => {
+  const makeConsoledotLink = useConsoledotLink();
   const match = useRouteMatch<ControlPlaneRouteParams>(ControlPlaneRouteMatch);
   if (!match) {
     throw Error("DrawerProvider used outside the expected route");
@@ -87,6 +89,9 @@ export const DrawerProvider: FunctionComponent = ({ children }) => {
         isExpanded={isExpanded}
         onClose={() => toggleExpanded(false)}
         tokenEndpointUrl={tokenEndPointUrl}
+        serviceAccountsHref={makeConsoledotLink(
+          "/application-services/service-accounts"
+        )}
       >
         {children}
       </KafkaInstanceDrawer>

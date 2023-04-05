@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import type { DataPlaneHeaderProps } from "ui";
 import { DataPlaneHeader } from "ui";
-import { useUserControlGate } from "../../../useUserControlGate";
+import { useUserControlGate } from "../../../hooks";
 import { useDrawer } from "../../control-plane";
 import type { ControlPlaneNavigationProps } from "../../control-plane/routesConsts";
 import { useDataPlaneGate } from "../useDataPlaneGate";

@@ -4,14 +4,19 @@ import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import type { TopicForm } from "ui";
 import { EditTopicProperties } from "ui";
-import { useAlerts } from "../../../useAlerts";
+import { useAlerts } from "../../../hooks";
 import type { DataPlaneNavigationProps } from "../routesConsts";
 import { useTopicGate } from "../useTopicGate";
 import { DataPlaneTopicHeaderConnected } from "./DataPlaneTopicHeaderConnected";
 
 export const TopicEditPropertiesRoute: VoidFunctionComponent<
   DataPlaneNavigationProps
-> = ({ instanceDetailsHref, instanceTopicsHref, instancesHref, instanceConsumerGroupsHref }) => {
+> = ({
+  instanceDetailsHref,
+  instanceTopicsHref,
+  instancesHref,
+  instanceConsumerGroupsHref,
+}) => {
   const history = useHistory();
   const { instance, topic } = useTopicGate();
   const { addAlert } = useAlerts();

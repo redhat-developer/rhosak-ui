@@ -35,6 +35,7 @@ export type KafkaInstanceDrawerProps = {
   isExpanded: boolean;
   activeTab: KafkaInstanceDrawerTab;
   onTabChange: (tab: KafkaInstanceDrawerTab) => void;
+  serviceAccountsHref: string;
   tokenEndpointUrl: string | undefined;
   onClose: () => void;
 };
@@ -49,6 +50,7 @@ export const KafkaInstanceDrawer: FunctionComponent<
   onClose,
   children,
   tokenEndpointUrl,
+  serviceAccountsHref,
 }) => {
   const content = useMemo(() => {
     return (
@@ -60,11 +62,19 @@ export const KafkaInstanceDrawer: FunctionComponent<
             onTabChange={onTabChange}
             onClose={onClose}
             tokenEndpointUrl={tokenEndpointUrl}
+            serviceAccountsHref={serviceAccountsHref}
           />
         ) : null}
       </DrawerPanelContent>
     );
-  }, [activeTab, instance, onClose, onTabChange, tokenEndpointUrl]);
+  }, [
+    activeTab,
+    instance,
+    onClose,
+    onTabChange,
+    serviceAccountsHref,
+    tokenEndpointUrl,
+  ]);
   return (
     <Drawer isExpanded={isExpanded} isInline={true}>
       <DrawerContent panelContent={content}>
@@ -84,7 +94,14 @@ export const KafkaInstanceDrawerPanel: VoidFunctionComponent<
   Required<Omit<KafkaInstanceDrawerProps, "isExpanded">> & {
     activeTab: KafkaInstanceDrawerTab;
   }
-> = ({ instance, activeTab, onTabChange, onClose, tokenEndpointUrl }) => {
+> = ({
+  instance,
+  activeTab,
+  onTabChange,
+  onClose,
+  tokenEndpointUrl,
+  serviceAccountsHref,
+}) => {
   const { t } = useTranslation(["kafka"]);
   const labels = useKafkaLabels();
 
@@ -177,9 +194,7 @@ export const KafkaInstanceDrawerPanel: VoidFunctionComponent<
                 isKafkaPending={isKafkaPending}
                 externalServer={getExternalServer(instance.bootstrapUrl)}
                 tokenEndPointUrl={tokenEndpointUrl}
-                linkToServiceAccount={`${
-                  document.location.pathname.startsWith("/beta") ? "/beta" : ""
-                }/application-services/service-accounts`}
+                linkToServiceAccount={serviceAccountsHref}
                 linkToAccessTab={`${instance.id}/details/acls`}
                 adminAPIUrl={getAdminServerUrl(instance.adminUrl)}
                 showCreateServiceAccountModal={() => {

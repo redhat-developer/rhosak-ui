@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import type { ChangeKafkaOwnerProps } from "ui";
 import { ChangeKafkaOwner } from "ui";
-import { useAlerts } from "../../../useAlerts";
+import { useAlerts } from "../../../hooks";
 
 import type { ControlPlaneNavigationProps } from "../routesConsts";
 import { useControlPlaneGate } from "../useControlPlaneGate";
