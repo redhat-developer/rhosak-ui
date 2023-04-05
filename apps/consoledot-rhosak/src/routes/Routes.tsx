@@ -17,12 +17,15 @@ export const Routes: VoidFunctionComponent = () => {
       <Route path={"/overview"} exact>
         <OverviewRoute />
       </Route>
+
       <Route path={"/"} exact>
         <Redirect to={ControlPlaneRoutePath} />
       </Route>
+
       <Route path={ControlPlaneRouteRoot}>
         <DrawerProvider>
           {/* don't move these routes around! the order is important */}
+
           <ControlPlaneRoutes />
 
           <Route
@@ -37,6 +40,7 @@ export const Routes: VoidFunctionComponent = () => {
           />
         </DrawerProvider>
       </Route>
+
       <Route path={ControlPlaneClustersPath}>
         <DedicatedClustersRoute
           instancesHref={ControlPlaneRoutePath}

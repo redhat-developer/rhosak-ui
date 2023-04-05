@@ -16,6 +16,7 @@ import {
   ControlPlaneDeleteInstanceRoutePath,
   ControlPlaneNewInstanceMatch,
   ControlPlaneNewInstanceRoutePath,
+  ControlPlaneRouteMatch,
   ControlPlaneRoutePath,
   ControlPlaneRouteRoot,
   ControlPlaneSelectedInstanceRoutePath,
@@ -24,20 +25,22 @@ import {
 
 export const LegacyControlPlaneRoutes: VoidFunctionComponent = () => {
   return (
-    <Route path={ControlPlaneRoutePath} exact>
+    <Route path={ControlPlaneRouteMatch} exact={true}>
       <Route path={ControlPlaneTermsAndConditionsMatch}>
         <TermsAndConditionsRoute
           createHref={ControlPlaneNewInstanceMatch}
           cancelHref={ControlPlaneRouteRoot}
         />
       </Route>
-      <RedirectOnGateError redirectUrl={ControlPlaneTermsAndConditionsMatch}>
-        <Suspense fallback={null}>
-          <Route path={ControlPlaneNewInstanceMatch}>
+
+      <Route path={ControlPlaneNewInstanceMatch}>
+        <RedirectOnGateError redirectUrl={ControlPlaneTermsAndConditionsMatch}>
+          <Suspense fallback={null}>
             <CreateKafkaInstanceRoute instancesHref={ControlPlaneRouteRoot} />
-          </Route>
-        </Suspense>
-      </RedirectOnGateError>
+          </Suspense>
+        </RedirectOnGateError>
+      </Route>
+
       <RedirectOnGateError redirectUrl={ControlPlaneRouteRoot}>
         <Route path={ControlPlaneDeleteInstanceMatch}>
           <DeleteKafkaInstanceRoute instancesHref={ControlPlaneRouteRoot} />
@@ -46,6 +49,7 @@ export const LegacyControlPlaneRoutes: VoidFunctionComponent = () => {
           <ChangeOwnerRoute instancesHref={ControlPlaneRouteRoot} />
         </Route>
       </RedirectOnGateError>
+
       <KafkaInstancesRoute
         instancesHref={ControlPlaneRoutePath}
         instanceSelectedHref={ControlPlaneSelectedInstanceRoutePath}

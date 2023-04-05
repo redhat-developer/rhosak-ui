@@ -15,7 +15,6 @@ import { KafkaInstanceDrawer } from "ui";
 import type { ControlPlaneRouteParams } from "./routesConsts";
 import {
   ControlPlaneRouteMatch,
-  ControlPlaneRoutePath,
   ControlPlaneSpecialSegments,
 } from "./routesConsts";
 
@@ -31,13 +30,7 @@ type DrawerContextProps = {
 const DrawerContext = createContext<DrawerContextProps>(null!);
 
 export const DrawerProvider: FunctionComponent = ({ children }) => {
-  const standardMatch = useRouteMatch<ControlPlaneRouteParams>(
-    ControlPlaneRoutePath
-  );
-  const dedicatedMatch = useRouteMatch<ControlPlaneRouteParams>(
-    ControlPlaneRouteMatch
-  );
-  const match = standardMatch || dedicatedMatch;
+  const match = useRouteMatch<ControlPlaneRouteParams>(ControlPlaneRouteMatch);
   if (!match) {
     throw Error("DrawerProvider used outside the expected route");
   }

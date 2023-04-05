@@ -7,13 +7,9 @@ import { useTopicGate } from "./useTopicGate";
 
 export function useTopicConsumerGroupGate() {
   const { instance, topic } = useTopicGate();
-  const standardMatch = useRouteMatch<DataPlaneTopicConsumerRouteParams>(
+  const match = useRouteMatch<DataPlaneTopicConsumerRouteParams>(
     DataPlaneTopicConsumerGroupRoutePath(ControlPlaneRouteRoot)
   );
-  const dedicatedMatch = useRouteMatch<DataPlaneTopicConsumerRouteParams>(
-    DataPlaneTopicConsumerGroupRoutePath(ControlPlaneRouteRoot)
-  );
-  const match = standardMatch || dedicatedMatch;
   if (!match) {
     throw Error("useTopicConsumerGroupGate used outside the expected route");
   }

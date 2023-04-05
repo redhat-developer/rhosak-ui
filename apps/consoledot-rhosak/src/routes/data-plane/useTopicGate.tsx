@@ -7,13 +7,9 @@ import { useDataPlaneGate } from "./useDataPlaneGate";
 
 export function useTopicGate() {
   const { instance } = useDataPlaneGate();
-  const standardMatch = useRouteMatch<DataPlaneTopicRouteParams>(
+  const match = useRouteMatch<DataPlaneTopicRouteParams>(
     DataPlaneTopicRoutePath(ControlPlaneRouteRoot)
   );
-  const dedicatedMatch = useRouteMatch<DataPlaneTopicRouteParams>(
-    DataPlaneTopicRoutePath(ControlPlaneRouteRoot)
-  );
-  const match = standardMatch || dedicatedMatch;
   if (!match) {
     throw Error("useDataPlaneGate used outside the expected route");
   }

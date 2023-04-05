@@ -32,6 +32,7 @@ export const DedicatedControlPlaneRoutes: VoidFunctionComponent = () => {
           cancelHref={ControlPlaneRoutePath}
         />
       </Route>
+
       <Route path={ControlPlaneNewInstanceMatch}>
         <RedirectOnGateError redirectUrl={ControlPlaneTermsAndConditionsMatch}>
           <Suspense fallback={null}>
@@ -42,6 +43,7 @@ export const DedicatedControlPlaneRoutes: VoidFunctionComponent = () => {
           </Suspense>
         </RedirectOnGateError>
       </Route>
+
       <RedirectOnGateError redirectUrl={ControlPlaneRoutePath}>
         <Route path={ControlPlaneDeleteInstanceMatch}>
           <DeleteKafkaInstanceRoute instancesHref={ControlPlaneRoutePath} />

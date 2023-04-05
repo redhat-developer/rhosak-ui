@@ -5,13 +5,9 @@ import type { DataPlaneRouteParams } from "./routesConsts";
 import { DataPlaneRoutePath } from "./routesConsts";
 
 export function useDataPlaneGate() {
-  const standardMatch = useRouteMatch<DataPlaneRouteParams>(
+  const match = useRouteMatch<DataPlaneRouteParams>(
     DataPlaneRoutePath(ControlPlaneRouteRoot)
   );
-  const dedicatedMatch = useRouteMatch<DataPlaneRouteParams>(
-    DataPlaneRoutePath(ControlPlaneRouteRoot)
-  );
-  const match = standardMatch || dedicatedMatch;
   if (!match) {
     throw Error("useDataPlaneGate used outside the expected route");
   }

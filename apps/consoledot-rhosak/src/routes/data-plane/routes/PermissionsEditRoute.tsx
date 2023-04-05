@@ -25,13 +25,9 @@ export const PermissionsEditRoute: VoidFunctionComponent<
   const { instance } = useDataPlaneGate();
   const { addAlert } = useAlerts();
 
-  const standardMatch = useRouteMatch<DataPlanePermissionsRouteParams>(
+  const match = useRouteMatch<DataPlanePermissionsRouteParams>(
     DataPlanePermissionsRoutePath(ControlPlaneRouteRoot)
   );
-  const dedicatedMatch = useRouteMatch<DataPlanePermissionsRouteParams>(
-    DataPlanePermissionsRoutePath(ControlPlaneRouteRoot)
-  );
-  const match = standardMatch || dedicatedMatch;
   if (!match) {
     throw Error("EditPermissions used outside the expected route");
   }
