@@ -2,16 +2,16 @@ import { Loading } from "@rhoas/app-services-ui-components";
 import type { VoidFunctionComponent } from "react";
 import { DedicatedControlPlaneRoutes } from "./DedicatedControlPlaneRoutes";
 import { LegacyControlPlaneRoutes } from "./LegacyControlPlaneRoutes";
-import { useDedicatedGate } from "./useDedicatedGate";
+import { useEntitlements } from "./useEntitlements";
 
 export const ControlPlaneRoutes: VoidFunctionComponent = () => {
-  const gate = useDedicatedGate();
+  const gate = useEntitlements();
 
   if (gate === "loading") {
     return <Loading />;
   }
 
-  if (gate === "standard-only") {
+  if (gate === "standard") {
     return <LegacyControlPlaneRoutes />;
   }
 

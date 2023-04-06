@@ -17,7 +17,7 @@ export async function fetchDedicatedClusters({
   getEnterpriseOsdClusters,
   fetchClustersMeta,
 }: FetchDedicatedClustersParams): Promise<{
-  isEntitled: boolean;
+  isSetup: boolean;
   clusters: DedicatedCluster[];
   count: number;
 }> {
@@ -27,7 +27,7 @@ export async function fetchDedicatedClusters({
     const rawClusters = response.data.items || [];
     const meta = await fetchClustersMeta(rawClusters.map((c) => c.id));
     return {
-      isEntitled: true,
+      isSetup: true,
       clusters: rawClusters.map((c) =>
         dedicatedClusterTransformer(c, meta[c.id])
       ),
@@ -37,7 +37,7 @@ export async function fetchDedicatedClusters({
     if (e instanceof AxiosError) {
       if (e.response?.status === 403) {
         return {
-          isEntitled: false,
+          isSetup: false,
           clusters: [],
           count: 0,
         };

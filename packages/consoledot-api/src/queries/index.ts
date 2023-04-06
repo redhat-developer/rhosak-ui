@@ -14,3 +14,4 @@ export * from "./useServiceAccounts";
 export * from "./useUser";
 export * from "./useSSOProvider";
 export * from "./useSelfTermsReview";
+export * from "./useDedicatedQuota";

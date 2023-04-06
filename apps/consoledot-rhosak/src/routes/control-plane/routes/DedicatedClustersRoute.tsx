@@ -2,14 +2,14 @@ import { useDedicatedClusters } from "consoledot-api";
 import type { VoidFunctionComponent } from "react";
 import { DedicatedClusters, EmptyStateNoDedicatedEntitlement } from "ui";
 import type { DedicatedControlPlaneNavigationProps } from "../routesConsts";
-import { useDedicatedGate } from "../useDedicatedGate";
+import { useEntitlements } from "../useEntitlements";
 import { ConnectedControlPlaneHeader } from "./ConnectedControlPlaneHeader";
 
 export const DedicatedClustersRoute: VoidFunctionComponent<
   DedicatedControlPlaneNavigationProps
 > = ({ clustersHref, instancesHref }) => {
-  const dedicatedGate = useDedicatedGate();
-  const noEntitlement = dedicatedGate === "standard-only";
+  const dedicatedGate = useEntitlements();
+  const noEntitlement = dedicatedGate === "trial";
 
   return (
     <>
