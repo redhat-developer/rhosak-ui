@@ -43,7 +43,7 @@ import {
 export type ClientType = "java" | "python" | "quarkus" | "springboot";
 
 export type KafkaSampleCodeProps = {
-  kafkaBootstrapUrl: string;
+  kafkaBootstrapUrl: string | undefined;
   tokenEndpointUrl: string | undefined;
 };
 
@@ -113,7 +113,7 @@ export const KafkaSampleCode: VoidFunctionComponent<KafkaSampleCodeProps> = ({
         {(() => {
           switch (clientSelect) {
             case "java":
-              return tokenEndpointUrl ? (
+              return kafkaBootstrapUrl && tokenEndpointUrl ? (
                 <SampleCodeSnippet
                   codeBlockCode={javaConfigCodeBlock(
                     kafkaBootstrapUrl,
@@ -126,7 +126,7 @@ export const KafkaSampleCode: VoidFunctionComponent<KafkaSampleCodeProps> = ({
                 <Skeleton fontSize="4xl" />
               );
             case "python":
-              return tokenEndpointUrl ? (
+              return kafkaBootstrapUrl && tokenEndpointUrl ? (
                 <SampleCodeSnippet
                   codeBlockCode={pythonConfigCodeBlock(tokenEndpointUrl)}
                   expandableCode={pythonConfigExpandabledBlock(
@@ -138,7 +138,7 @@ export const KafkaSampleCode: VoidFunctionComponent<KafkaSampleCodeProps> = ({
                 <Skeleton fontSize="4xl" />
               );
             case "quarkus":
-              return tokenEndpointUrl ? (
+              return kafkaBootstrapUrl && tokenEndpointUrl ? (
                 <SampleCodeSnippet
                   codeBlockCode={quarkusConfigCodeBlock}
                   expandableCode={quarkusConfigExpandableBlock(
@@ -151,7 +151,7 @@ export const KafkaSampleCode: VoidFunctionComponent<KafkaSampleCodeProps> = ({
                 <Skeleton fontSize="4xl" />
               );
             case "springboot":
-              return tokenEndpointUrl ? (
+              return kafkaBootstrapUrl && tokenEndpointUrl ? (
                 <SampleCodeSnippet
                   codeBlockCode={springBootConfigCodeBlock(
                     kafkaBootstrapUrl,

@@ -185,7 +185,7 @@ export const KafkaInstanceDrawerPanel: VoidFunctionComponent<
           >
             <div className={"pf-u-pt-md pf-u-pb-md"}>
               <KafkaSampleCode
-                kafkaBootstrapUrl={getExternalServer(instance.bootstrapUrl)!}
+                kafkaBootstrapUrl={getExternalServer(instance.bootstrapUrl)}
                 tokenEndpointUrl={tokenEndpointUrl}
               />
             </div>
