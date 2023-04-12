@@ -110,8 +110,8 @@
   },
   "create_instance": "Create Kafka instance",
   "create_kafka_instance": "Create a Kafka instance",
-  "current_owner": "Current owner",
   "create_trial_instance": "Create a trial Kafka instance",
+  "current_owner": "Current owner",
   "dataPlaneNavigation": {
     "consumer_groups": "Consumer groups",
     "dashboard": "Dashboard",
