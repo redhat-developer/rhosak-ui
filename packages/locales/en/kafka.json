@@ -109,6 +109,8 @@
     "standard": "Standard"
   },
   "create_instance": "Create Kafka instance",
+  "create_kafka_instance": "Create a Kafka instance",
+  "create_trial_instance": "Create a trial Kafka instance",
   "current_owner": "Current owner",
   "dataPlaneNavigation": {
     "consumer_groups": "Consumer groups",
@@ -140,9 +142,14 @@
   "duration_value": "48 hours",
   "egress": "Egress",
   "egress_value": "up to 30 MiB/second each",
+  "empty_state_instance_creation_ready": "To get started, create a Kafka instance. The creation <0>prerequisites</0> include an OpenShift cluster that's registered for use with OpenShift Streams for Apache Kafka. For help getting started, access the <1>quick start guide</1>.",
   "empty_state_instances_no_dedicated_clusters_body": "The creation <0>prerequisites</0> are an OpenShift cluster that's enabled for Streams for Apache Kafka instances.",
   "empty_state_instances_no_dedicated_clusters_prerequisites_button": "Learn more about prerequisites",
   "empty_state_instances_no_dedicated_clusters_title": "Kafka instances",
+  "empty_state_legacy_instance_body": "To get started, enable an OpenShift cluster for Streams for Apache Kafka. Learn more about <0>prerequisites</0>",
+  "empty_state_no_cluster_body": "To get started, enable an OpenShift cluster for Streams for Apache Kafka. Learn more about <0>prerequisites</0>",
+  "empty_state_no_cluster_instance_body": "To get started, enable an OpenShift cluster for Streams for Apache Kafka. <0>Learn more about prerequisites</0>",
+  "empty_state_no_cluster_title": "No OpenShift clusters",
   "empty_state_no_dedicated_clusters_body": "The creation <0>prerequisites</0> are an OpenShift cluster that's enabled for Streams for Apache Kafka instances.",
   "empty_state_no_dedicated_clusters_prerequisite_button": "Learn more about prerequisites",
   "empty_state_no_dedicated_clusters_title": "No OpenShift clusters for Kafka instances",
@@ -154,6 +161,9 @@
   "empty_state_no_instances_body": "For help getting started, access the <0>quick start guide</0>",
   "empty_state_no_instances_create_instance": "$t(kafka:create_instance)",
   "empty_state_no_instances_title": "No Kafka instances",
+  "empty_state_no_quota_cluster_body": "If you are interested in using this service, learn about <0>subscription options</0>.",
+  "empty_state_no_quota_instance_body": "If you are interested in using this service, create a trial instance or learn about <0>subscription options</0>. For help getting started, access the <1>quick start guide</1>.",
+  "empty_state_no_quota_title": "Welcome to Streams for Apache Kafka",
   "empty_state_no_results_found_body": "Adjust your filters and try again, or <0>clear all filters</0>.",
   "empty_state_no_results_found_title": "No results found",
   "fields": {
