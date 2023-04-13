@@ -1,0 +1,7 @@
+.mas-c-status.pf-l-split.pf-m-gutter > *:not(:last-child) {
+  --pf-l-split--m-gutter--MarginRight: var(--pf-global--spacer--sm);
+}
+
+.mas-m-deleting {
+  color: var(--pf-global--Color--200);
+}
