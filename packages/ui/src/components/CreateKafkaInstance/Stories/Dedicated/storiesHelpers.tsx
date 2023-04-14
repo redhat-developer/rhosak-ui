@@ -68,7 +68,7 @@ const CLUSTERS = {
   c1: {
     id: "c1",
     status: "ready",
-    name: "c1",
+    name: "my awesome cluster name",
     az: "multi",
     cloudProvider: AWS,
     cloudRegion: AWS.regions[0],
@@ -77,7 +77,7 @@ const CLUSTERS = {
   c2: {
     id: "c2",
     status: "provisioning",
-    name: "c2",
+    name: "the less awesome one with quirks and a name that is too long",
     az: "multi",
     cloudProvider: AWS,
     cloudRegion: AWS.regions[0],

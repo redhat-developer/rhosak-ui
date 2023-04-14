@@ -3,16 +3,15 @@ import {
   Card,
   CardBody,
   CardTitle,
+  DescriptionList,
+  DescriptionListDescription,
+  DescriptionListGroup,
+  DescriptionListTerm,
   FormSelect,
   FormSelectOption,
   Gallery,
   GalleryItem,
   Skeleton,
-  TextContent,
-  TextList,
-  TextListItem,
-  TextListItemVariants,
-  TextListVariants,
   Truncate,
 } from "@patternfly/react-core";
 import { useTranslation } from "@rhoas/app-services-ui-components";
@@ -62,13 +61,10 @@ export const DedicatedClusterTiles: VoidFunctionComponent<
                 >
                   <CardTitle>{c.name}</CardTitle>
                   <CardBody>
-                    <TextContent>
-                      <TextList component={TextListVariants.dl}>
-                        <TextListItem component={TextListItemVariants.dt}>
-                          {fields.id}
-                        </TextListItem>
-                        <TextListItem
-                          component={TextListItemVariants.dd}
+                    <DescriptionList>
+                      <DescriptionListGroup>
+                        <DescriptionListTerm>{fields.id}</DescriptionListTerm>
+                        <DescriptionListDescription
                           className="pf-u-max-width"
                           style={
                             {
@@ -81,27 +77,33 @@ export const DedicatedClusterTiles: VoidFunctionComponent<
                             trailingNumChars={5}
                             position={"middle"}
                           />
-                        </TextListItem>
-                        <TextListItem component={TextListItemVariants.dt}>
+                        </DescriptionListDescription>
+                      </DescriptionListGroup>
+                      <DescriptionListGroup>
+                        <DescriptionListTerm>
                           {fields.status}
-                        </TextListItem>
-                        <TextListItem component={TextListItemVariants.dd}>
+                        </DescriptionListTerm>
+                        <DescriptionListDescription>
                           <KafkaClusterStatus status={c.status} />
-                        </TextListItem>
-                        <TextListItem component={TextListItemVariants.dt}>
+                        </DescriptionListDescription>
+                      </DescriptionListGroup>
+                      <DescriptionListGroup>
+                        <DescriptionListTerm>
                           {fields.cloudProvider}
-                        </TextListItem>
-                        <TextListItem component={TextListItemVariants.dd}>
+                        </DescriptionListTerm>
+                        <DescriptionListDescription>
                           {c.cloudProvider.displayName}
-                        </TextListItem>
-                        <TextListItem component={TextListItemVariants.dt}>
+                        </DescriptionListDescription>
+                      </DescriptionListGroup>
+                      <DescriptionListGroup>
+                        <DescriptionListTerm>
                           {fields.cloudRegion}
-                        </TextListItem>
-                        <TextListItem component={TextListItemVariants.dd}>
+                        </DescriptionListTerm>
+                        <DescriptionListDescription>
                           {c.cloudRegion.displayName}
-                        </TextListItem>
-                      </TextList>
-                    </TextContent>
+                        </DescriptionListDescription>
+                      </DescriptionListGroup>
+                    </DescriptionList>
                   </CardBody>
                 </Card>
               </GalleryItem>
