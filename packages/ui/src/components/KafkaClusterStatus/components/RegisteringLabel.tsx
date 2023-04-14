@@ -27,7 +27,7 @@ export const RegisteringLabel: VoidFunctionComponent<RegisteringLabelProps> = ({
 
   return (
     <>
-      <Split hasGutter className="mas-c-status">
+      <Split hasGutter className="mas-c-cluster-status">
         <SplitItem>
           <Spinner size="md" />
         </SplitItem>

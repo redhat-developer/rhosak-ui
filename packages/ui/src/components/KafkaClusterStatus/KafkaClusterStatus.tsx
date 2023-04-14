@@ -29,7 +29,7 @@ export const KafkaClusterStatus: VoidFunctionComponent<
     case "cleanup":
       return (
         <div>
-          <p className="mas-m-deleting"> {t("unregistering")}</p>
+          <p className="mas-m-unregistering"> {t("unregistering")}</p>
         </div>
       );
   }
