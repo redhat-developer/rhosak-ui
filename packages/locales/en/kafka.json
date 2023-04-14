@@ -6,6 +6,13 @@
   "client_connections": "Client connections",
   "client_connections_value": "up to 500",
   "clientID": "Client ID",
+  "cluster_accepted_description": "Registration request accepted",
+  "cluster_accepted_title": "Cluster accepted",
+  "cluster_pending_description": "Waiting for fleet shard operator",
+  "cluster_pending_title": "Pending",
+  "cluster_provisioned_description": "The OpenShift cluster is provisioned",
+  "cluster_provisioned_title": "Provisioned",
+  "cluster_status_popover_title": "Registering cluster",
   "clusters_description": "OpenShift clusters that you own and manage are used for deploying Kafka instances. <0>Learn more about the prerequisites</0>.",
   "connection_rate": "Connection rate",
   "connection_rate_value": "up to 100 connections/second",
@@ -215,6 +222,9 @@
   "owner_transfer_failed_message": "We're unable to change the owner of {{name}} at this time. Try again later.",
   "partitions": "Partitions",
   "partitions_value": "up to 500",
+  "preparing_cluster_description": "Waiting for components to become ready.",
+  "provisioning_cluster_description": "Provisioning the OpenShift cluster",
+  "registering": "Registering",
   "rhosakTitle": "Red Hat OpenShift Streams for Apache Kafka",
   "sample_code": {
     "bracket_text": "Update values in brackets (< >) with your own values.",
@@ -313,6 +323,7 @@
   "topic": {
     "topic": "Topic"
   },
+  "unregistering": "Unregistering",
   "will_expire": "This trial instance will expire in <time>{{time}}</time>",
   "will_expire_short": "Expires in <time>{{time}}</time>"
 }
