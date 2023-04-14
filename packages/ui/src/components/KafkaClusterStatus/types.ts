@@ -1,14 +1,16 @@
+import type { Status as ClusterStatus } from "ui-models/src/models/dedicated-cluster";
+
 export type PopoverStatus =
-  | "cluster-accepted"
+  | "accepted"
   | "provisioning"
   | "provisioned"
-  | "preparing";
+  | "waitingOperator";
 
 export const PopoverStatusOrder: PopoverStatus[] = [
-  "cluster-accepted",
+  "accepted",
   "provisioning",
   "provisioned",
-  "preparing",
+  "waitingOperator",
 ];
 
-export type Status = "registering" | "unregistering" | "ready" | "failed";
+export type Status = ClusterStatus;

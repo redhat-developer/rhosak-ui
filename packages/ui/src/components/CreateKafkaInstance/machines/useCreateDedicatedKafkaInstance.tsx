@@ -3,9 +3,11 @@ import { useCallback, useContext } from "react";
 import type { ActorRefFrom } from "xstate";
 import { CreateDedicatedKafkaInstanceContext } from "./CreateDedicatedKafkaInstanceProvider";
 import type { DedicatedPlanMachine } from "./DedicatedPlanMachine";
+import type { DedicatedTrialPlanMachine } from "./DedicatedTrialPlanMachine";
 
 export type UseCreateDedicatedKafkaInstanceSelectorReturn = {
   dedicatedPlanMachine: ActorRefFrom<typeof DedicatedPlanMachine> | undefined;
+  trialPlanMachine: ActorRefFrom<typeof DedicatedTrialPlanMachine> | undefined;
   isLoading: boolean;
   isSystemUnavailable: boolean;
   isDedicated: boolean;
@@ -25,6 +27,9 @@ export function useCreateDedicatedKafkaInstance() {
       const dedicatedPlanMachine = state.children["dedicatedPlanService"] as
         | ActorRefFrom<typeof DedicatedPlanMachine>
         | undefined;
+      const trialPlanMachine = state.children["trialPlanService"] as
+        | ActorRefFrom<typeof DedicatedTrialPlanMachine>
+        | undefined;
 
       const isLoading = state.hasTag("loading");
       const isSystemUnavailable = state.hasTag("systemUnavailable");
@@ -35,6 +40,7 @@ export function useCreateDedicatedKafkaInstance() {
 
       return {
         dedicatedPlanMachine,
+        trialPlanMachine,
         isLoading,
         isSystemUnavailable,
         isDedicated,

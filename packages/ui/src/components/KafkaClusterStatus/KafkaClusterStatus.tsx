@@ -1,37 +1,36 @@
+import { useTranslation } from "@rhoas/app-services-ui-components";
 import type { VoidFunctionComponent } from "react";
 import { StatusLabel } from "../KafkaInstanceStatus/components";
+import "./components/ClusterStatusLabel.css";
 import { FailedClusterLabel } from "./components/FailedClusterLabel";
 import { RegisteringLabel } from "./components/RegisteringLabel";
-import type { PopoverStatus, Status } from "./types";
-import "./components/ClusterStatusLabel.css";
-import { useTranslation } from "@rhoas/app-services-ui-components";
+import type { Status } from "./types";
 
 export type KafkaClusterStatusProps = {
   status: Status;
-  registeringStep: PopoverStatus;
 };
 
 export const KafkaClusterStatus: VoidFunctionComponent<
   KafkaClusterStatusProps
-> = ({ status, registeringStep }) => {
+> = ({ status }) => {
   const { t } = useTranslation("kafka");
 
-  const showLabel = () => {
-    switch (status) {
-      case "ready":
-        return <StatusLabel value={"ready"} />;
-      case "registering":
-        return <RegisteringLabel registeringStep={registeringStep} />;
-      case "failed":
-        return <FailedClusterLabel />;
-      case "unregistering":
-        return (
-          <div>
-            <p className="mas-m-deleting"> {t("unregistering")}</p>
-          </div>
-        );
-    }
-  };
-
-  return showLabel();
+  switch (status) {
+    case "ready":
+      return <StatusLabel value={"ready"} />;
+    case "accepted":
+    case "provisioning":
+    case "provisioned":
+    case "waitingOperator":
+      return <RegisteringLabel registeringStep={status} />;
+    case "failed":
+      return <FailedClusterLabel />;
+    case "deprovisioning":
+    case "cleanup":
+      return (
+        <div>
+          <p className="mas-m-deleting"> {t("unregistering")}</p>
+        </div>
+      );
+  }
 };

@@ -1,6 +1,6 @@
 import { ProgressStep, ProgressStepper } from "@patternfly/react-core";
-import type { VoidFunctionComponent } from "react";
 import { useTranslation } from "@rhoas/app-services-ui-components";
+import type { VoidFunctionComponent } from "react";
 import type { PopoverStatus } from "../types";
 import { PopoverStatusOrder } from "../types";
 
@@ -25,9 +25,9 @@ export const ClusterRegisteringStateProgressStepper: VoidFunctionComponent<
   return (
     <ProgressStepper isVertical={true}>
       <ProgressStep
-        id={"cluster-accepted"}
-        titleId={"cluster-accepted"}
-        isCurrent={registeringStep === "cluster-accepted"}
+        id={"accepted"}
+        titleId={"accepted"}
+        isCurrent={registeringStep === "accepted"}
         description={t("cluster_accepted_description")}
         aria-label={t("cluster_accepted_description")}
         variant={getVariant(0)}
@@ -59,7 +59,7 @@ export const ClusterRegisteringStateProgressStepper: VoidFunctionComponent<
       <ProgressStep
         id={"preparing"}
         titleId={"preparing"}
-        isCurrent={registeringStep === "preparing"}
+        isCurrent={registeringStep === "waitingOperator"}
         description={t("preparing_cluster_description")}
         aria-label={t("preparing_cluster_description")}
         variant={getVariant(3)}

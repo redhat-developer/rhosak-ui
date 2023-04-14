@@ -13,13 +13,13 @@ import { ModalAlertsLoading, ModalAlertsSystemUnavailable } from "./components";
 
 import "./CreateKafkaInstance.css";
 import { DedicatedInstanceForm } from "./DedicatedInstanceForm";
+import { DedicatedTrialInstanceForm } from "./DedicatedTrialInstanceForm";
 import { LoadingForm } from "./LoadingForm";
 import type { CreateDedicatedKafkaInstanceServices } from "./machines";
 import {
   CreateDedicatedKafkaInstanceProvider,
   useCreateDedicatedKafkaInstance,
 } from "./machines";
-import { TrialInstanceForm } from "./TrialInstanceForm";
 
 export type CreateDedicatedKafkaInstanceProps =
   ConnectedCreateDedicatedKafkaInstanceProps &
@@ -171,7 +171,7 @@ export const ConnectedCreateDedicatedKafkaInstance: VoidFunctionComponent<
             );
           case isDeveloper:
             return (
-              <TrialInstanceForm
+              <DedicatedTrialInstanceForm
                 formId={FORM_ID}
                 onClickContactUs={onClickContactUs}
                 onLearnHowToAddStreamingUnits={onLearnHowToAddStreamingUnits}

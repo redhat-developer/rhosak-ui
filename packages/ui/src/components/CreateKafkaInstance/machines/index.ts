@@ -7,3 +7,4 @@ export * from "./useCreateDedicatedKafkaInstance";
 export * from "./useStandardPlan";
 export * from "./useTrialPlan";
 export * from "./useDedicatedPlan";
+export * from "./useDedicatedTrialPlan";
