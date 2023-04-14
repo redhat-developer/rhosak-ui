@@ -6,8 +6,16 @@ export default {
   args: { registeringStep: "cluster-accepted" },
 } as ComponentMeta<typeof KafkaClusterStatus>;
 
-const Template: ComponentStory<typeof KafkaClusterStatus> = (args) => {
-  return <KafkaClusterStatus {...args} />;
+const Template: ComponentStory<typeof KafkaClusterStatus> = (
+  args,
+  { viewMode }
+) => {
+  const inDocs = viewMode === "docs";
+  return (
+    <div style={{ paddingTop: inDocs ? 0 : 250 }}>
+      <KafkaClusterStatus {...args} />
+    </div>
+  );
 };
 
 export const KafkaClusterReady = Template.bind({});

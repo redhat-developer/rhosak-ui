@@ -47,7 +47,7 @@ export const RegisteringLabel: VoidFunctionComponent<RegisteringLabelProps> = ({
         </SplitItem>
       </Split>
       <Popover
-        position={"bottom"}
+        position={"right"}
         enableFlip={true}
         headerContent={t("cluster_status_popover_title")}
         bodyContent={
