@@ -222,7 +222,7 @@
   "owner_transfer_failed_message": "We're unable to change the owner of {{name}} at this time. Try again later.",
   "partitions": "Partitions",
   "partitions_value": "up to 500",
-  "preparing_cluster_description": "Waiting for components to become ready.",
+  "preparing_cluster_description": "Waiting for components to become ready",
   "provisioning_cluster_description": "Provisioning the OpenShift cluster",
   "registering": "Registering",
   "rhosakTitle": "Red Hat OpenShift Streams for Apache Kafka",
