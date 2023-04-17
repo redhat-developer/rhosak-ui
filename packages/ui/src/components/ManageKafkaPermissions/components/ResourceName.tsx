@@ -91,6 +91,7 @@ export const ResourceName: React.VFC<ResourceNameProps> = ({
       isInputFilterPersisted={true}
       isInputValuePersisted={true}
       width={220}
+      createText={t("resourcePrefix.create_text")}
     />
   );
 };
