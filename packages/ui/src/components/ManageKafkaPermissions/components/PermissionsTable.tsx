@@ -88,6 +88,8 @@ export const PermissionsTable = <T extends Permissions>({
         variant={TableVariant.compact}
         tableOuiaId={"permissions-table"}
         ariaLabel={t("consumerGroup.consumer_group_list")}
+        toolbarKebabOuiaId={"permissions-tolbar-kebab"}
+        toolbarOuiaId={"permissions-toolbar"}
         actions={[
           {
             onClick: onManagePermissions,
