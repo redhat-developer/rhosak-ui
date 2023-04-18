@@ -9,15 +9,10 @@ import {
 } from "./control-plane/routesConsts";
 import { DataPlaneRoutes } from "./data-plane";
 import { DataPlaneRoutePath } from "./data-plane/routesConsts";
-import { OverviewRoute } from "./overview";
 
 export const Routes: VoidFunctionComponent = () => {
   return (
     <Switch>
-      <Route path={"/overview"} exact>
-        <OverviewRoute />
-      </Route>
-
       <Route path={"/"} exact>
         <Redirect to={ControlPlaneRoutePath} />
       </Route>
