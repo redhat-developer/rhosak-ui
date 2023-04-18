@@ -1,8 +1,10 @@
 import type { ComponentMeta, ComponentStory } from "@storybook/react";
+import { sub } from "date-fns";
 import { KafkaClusterStatus } from "./KafkaClusterStatus";
 
 export default {
   component: KafkaClusterStatus,
+  args: { createdAt: new Date() },
 } as ComponentMeta<typeof KafkaClusterStatus>;
 
 const Template: ComponentStory<typeof KafkaClusterStatus> = (
@@ -19,6 +21,18 @@ const Template: ComponentStory<typeof KafkaClusterStatus> = (
 
 export const KafkaClusterAccepted = Template.bind({});
 KafkaClusterAccepted.args = { status: "accepted" };
+
+export const CreatingOver15Minutes = Template.bind({});
+CreatingOver15Minutes.args = {
+  status: "provisioning",
+  createdAt: sub(new Date(), { minutes: 16 }),
+};
+
+export const CreatingOver30Minutes = Template.bind({});
+CreatingOver30Minutes.args = {
+  status: "provisioning",
+  createdAt: sub(new Date(), { minutes: 31 }),
+};
 
 export const KafkaClusterProvisioning = Template.bind({});
 KafkaClusterProvisioning.args = { status: "provisioning" };

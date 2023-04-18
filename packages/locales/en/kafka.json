@@ -13,6 +13,7 @@
   "cluster_provisioned_description": "The OpenShift cluster is provisioned",
   "cluster_provisioned_title": "Provisioned",
   "cluster_status_popover_title": "Registering cluster",
+  "cluster_status_warning_popover_description": "If your cluster continues to take longer than expected, <0>open a support case</0>.",
   "clusters_description": "OpenShift clusters that you own and manage are used for deploying Kafka instances. <0>Learn more about the prerequisites</0>.",
   "connection_rate": "Connection rate",
   "connection_rate_value": "up to 100 connections/second",
