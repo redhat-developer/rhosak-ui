@@ -8,21 +8,12 @@ import {
   ControlPlaneRouteRoot,
 } from "./control-plane/routesConsts";
 import { DataPlaneRoutes } from "./data-plane";
-import { DataPlaneRoutePath } from "./data-plane/routesConsts";
-import { OverviewRoute } from "./overview";
 
 export const Routes: VoidFunctionComponent = () => {
   return (
     <Switch>
-      <Route path={"/overview"} exact>
-        <OverviewRoute />
-      </Route>
-
-      <Route path={"/"} exact>
-        <Redirect to={ControlPlaneRoutePath} />
-      </Route>
-
-      <Route path={ControlPlaneRouteRoot}>
+      <Redirect from={"/"} to={"/kafkas"} exact />
+      <Route path={"/kafkas"}>
         <DrawerProvider>
           {/* don't move these routes around! the order is important */}
 
