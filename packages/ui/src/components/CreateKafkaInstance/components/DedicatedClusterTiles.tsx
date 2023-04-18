@@ -84,7 +84,13 @@ export const DedicatedClusterTiles: VoidFunctionComponent<
                           {fields.status}
                         </DescriptionListTerm>
                         <DescriptionListDescription>
-                          <KafkaClusterStatus status={c.status} />
+                          <KafkaClusterStatus
+                            status={c.status}
+                            createdAt={new Date()} //TODO
+                            onClickSupportLink={() => {
+                              "TODO";
+                            }} //TODO
+                          />
                         </DescriptionListDescription>
                       </DescriptionListGroup>
                       <DescriptionListGroup>
