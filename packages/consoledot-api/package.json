@@ -25,7 +25,7 @@
     "jest-fail-on-console": "3.0.2",
     "local-storage-helpers": "*",
     "prando": "6.0.1",
-    "prettier": "2.8.3",
+    "prettier": "2.8.8",
     "regenerator-runtime": "0.13.11",
     "tsconfig": "*",
     "typescript": "4.9.4",
