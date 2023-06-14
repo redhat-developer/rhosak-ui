@@ -67,7 +67,7 @@
     "@babel/preset-react": "7.18.6",
     "@babel/preset-typescript": "7.18.6",
     "@pmmmwh/react-refresh-webpack-plugin": "0.5.10",
-    "@redhat-cloud-services/frontend-components-config": "4.7.2",
+    "@redhat-cloud-services/frontend-components-config": "4.7.3",
     "@testing-library/jest-dom": "5.16.5",
     "@testing-library/react": "12.1.5",
     "@types/react": "17.0.52",
