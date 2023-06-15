@@ -40,6 +40,7 @@ describe("Create topic", () => {
     expect(comp.getByText("Required")).toBeInTheDocument();
     const button = await comp.findByText("Next");
     expect(button).toBeDisabled();
+    expect(await comp.findByText("Next")).toBeDisabled();
     userEvent.type(
       await comp.findByPlaceholderText("Enter topic name"),
       "my-test"
@@ -62,6 +63,15 @@ describe("Create topic", () => {
     );
     userEvent.click(button);
     userEvent.type(await comp.findByLabelText("Partitions"), "15");
+    expect(
+      comp.getByText(
+        "This Kafka instance has reached its maximum partition limit and might experience degraded performance. To create more partitions, migrate to a larger Kafka instance or split your workloads across multiple instances."
+      )
+    ).toBeInTheDocument();
+    userEvent.type(await comp.findByLabelText("Partitions"), "1");
+    expect(comp.getByLabelText("Minus")).toBeDisabled();
+    userEvent.type(await comp.findByLabelText("Partitions"), "4");
+    expect(comp.findByLabelText("Minus")).toBeEnabled();
     const partitions = await comp.findAllByText("Partitions");
     expect(partitions[0]).toBeInTheDocument();
     expect(partitions[1]).toBeInTheDocument();
@@ -158,7 +168,7 @@ describe("Create topic", () => {
     expect(onCloseCreateTopic).toBeCalledTimes(1);
   });
 
-  xit("should render invalid topic name", async () => {
+  it("should render invalid topic name", async () => {
     const comp = render(<InvalidTopicName />);
     await waitForI18n(comp);
     expect(
@@ -171,7 +181,7 @@ describe("Create topic", () => {
     const backButton = await comp.findByText("Back");
     expect(backButton).toBeDisabled();
   });
-  xit("should render invalid topic length", async () => {
+  it("should render invalid topic length", async () => {
     const comp = render(<InvalidLength />);
     await waitForI18n(comp);
     expect(
@@ -184,7 +194,7 @@ describe("Create topic", () => {
     const backButton = await comp.findByText("Back");
     expect(backButton).toBeDisabled();
   });
-  xit("should render partitions warning", async () => {
+  it("should render partitions warning", async () => {
     const onSave = jest.fn();
     const comp = render(<PartitionLimitReached onSave={onSave} />);
     await waitForI18n(comp);
