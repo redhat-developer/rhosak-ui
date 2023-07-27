@@ -23,7 +23,7 @@
     "@patternfly/react-core": "4.267.6",
     "@patternfly/react-icons": "4.93.3",
     "@patternfly/react-table": "4.112.6",
-    "@patternfly/react-tokens": "4.94.3",
+    "@patternfly/react-tokens": "4.94.7",
     "@redhat-cloud-services/frontend-components": "3.9.32",
     "@redhat-cloud-services/frontend-components-notifications": "3.2.12",
     "@redhat-cloud-services/frontend-components-utilities": "3.3.13",
