@@ -50,7 +50,7 @@
     "prando": "6.0.1",
     "prettier": "2.8.8",
     "regenerator-runtime": "0.13.11",
-    "storybook-xstate-addon": "2.3.6",
+    "storybook-xstate-addon": "2.3.9",
     "tsconfig": "*",
     "typescript": "4.9.4",
     "ui-models": "*",
